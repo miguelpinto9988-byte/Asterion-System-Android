@@ -1,73 +1,38 @@
-# Asterion System — Android nativo
+# Asterion System — Android nativo Java
 
-**Estado:** fase 01 publicada en GitHub, compilación y pruebas de CI pendientes de verificación. Esta es una base técnica, no una aplicación funcional completa.
+**Estado:** fases 00 (documentación), 01 (proyecto base) y 02 (arquitectura interna). La fase 02 no genera APK ni nuevas interfaces de usuario.
 
-## Objetivo
+Repositorio público del proyecto independiente de Agenda Clara. La arquitectura se inspira en los principios funcionales estudiados de Hunter System, pero el código aquí es original.
 
-Establecer un proyecto Android **nativo en Java**, sin WebView y sin lógica basada en JavaScript. La fase 01 incluye exclusivamente la estructura de compilación, una actividad inicial de verificación, una prueba JVM mínima, documentación y GitHub Actions.
+## Arquitectura disponible
 
-No implementa motores de reglas, almacenamiento persistente, navegación funcional, multimedia, notificaciones, automatizaciones ni integraciones.
+- **`:app`**: shell Android en Java, `MainActivity`, adaptador de ciclo de vida y coordinador. Pantalla existente en `app/src/main/res/layout/activity_main.xml`.
+- **`:core`**: módulo Java puro sin dependencias Android, con contratos para casos de uso, motor de reglas, datos y reloj, y utilidades estructurales de eventos, identificadores, estado y ciclo de vida.
+- **Documentación**: `docs/fase-01/` y `docs/fase-02/`.
 
-## Herramientas acordadas
+## Tecnologías
 
-| Herramienta | Versión/configuración |
-|---|---|
-| Java | JDK 17 para compilación |
-| Android Gradle Plugin | 8.13.2 |
-| Gradle | 8.13 |
-| Android compileSdk / targetSdk | 36 / 36 |
-| minSdk | 26 (Android 8.0) |
-| Identificador provisional | `pe.asterionsystem.app` |
-| Primera versión | `0.1.0` (`versionCode=1`) |
+Java 17 para código fuente; Android nativo con vistas XML; Android Gradle Plugin 8.13.2, Gradle 8.13, `compileSdk/targetSdk 36` y `minSdk 26`. El proyecto no usa WebView, HTML, CSS, JavaScript ni Compose como interfaz.
 
-Las versiones se fijan para evitar actualizaciones implícitas.
+## Política de compilación
 
-## Preparación local
+**No compilar ninguna APK sin autorización explícita del propietario.** El único workflow Android, `.github/workflows/android-ci.yml`, tiene activación `workflow_dispatch` y no responde a `push` ni a `pull_request`. Publicar código **no** dispara una compilación Android.
 
-1. Instala Android Studio con JDK 17 (o selecciónalo para Gradle), Android SDK Platform 36 y Build Tools 35.0.0.
-2. Abre la carpeta del proyecto en Android Studio.
-3. **Genera el Gradle Wrapper oficial antes de compilar localmente.** El repositorio todavía no incluye `gradle-wrapper.jar` ni los scripts `gradlew` porque no se verificó un origen binario para esos archivos. Desde un entorno con Gradle 8.13 ejecuta:
+En fase 02 solo se efectuó una verificación local de Java puro mediante `javac --release 17` y una prueba rápida de sus contratos; no se utilizó Gradle ni se generó APK. Las clases de prueba JUnit del proyecto están preparadas, pero todavía no se han ejecutado mediante Gradle.
 
-   ```bash
-   gradle wrapper --gradle-version 8.13 --distribution-type bin
-   ```
+El Gradle Wrapper oficial sigue pendiente de incorporación. Los scripts Gradle están listos para abrir el proyecto en Android Studio sin ejecutar ninguna compilación hasta que la solicites.
 
-   Después podrás ejecutar:
+## Documentación de fase 02
 
-   ```bash
-   ./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
-   ```
+- [Arquitectura y política de eventos](docs/fase-02/02-arquitectura.md)
+- [Contratos Java](docs/fase-02/02-contratos.md)
+- [Verificaciones y limitaciones](docs/fase-02/02-validacion.md)
+- [Trazabilidad y riesgos](docs/fase-02/02-fases-y-riesgos.md)
 
-   El workflow de GitHub Actions instala Gradle 8.13 directamente y no depende del wrapper.
+## Límites de fases
 
-4. Si se compila correctamente, la APK debug se encontrará en `app/build/outputs/apk/debug/app-debug.apk`.
+En esta etapa **no** se desarrolla la interfaz definitiva (fase 03 pendiente), navegación/restauración (04), SQLite/Room (05), reglas funcionales (06), ni contenidos, planificación, seguimiento, personalización o sincronización (07/08/09/11/14 pendientes). Los sistemas multimedia (10), notificaciones (12) e integraciones (13) están excluidos.
 
-## Estado
+La previsualización visual se realiza sobre archivos XML de Android, no mediante HTML. Los recursos XML existentes no han cambiado en fase 02.
 
-- [x] Proyecto Gradle para Java y Android.
-- [x] Actividad inicial y recursos XML neutros.
-- [x] Prueba unitaria mínima.
-- [x] Workflow de compilación, lint, pruebas y firma debug.
-- [x] Documentación de fase 01.
-- [x] Repositorio público inicializado.
-- [ ] Confirmar resultados de GitHub Actions.
-- [ ] Confirmar APK compilada y firmada de depuración.
-- [ ] Generar y versionar el Gradle Wrapper oficial (recomendado).
-- [ ] Corregir nombre del repositorio: se creó con un punto final accidental (`Asterion-System-Android.`).
-
-**No se afirma que una APK exista hasta que el workflow finalice correctamente.**
-
-## Seguridad y propiedad intelectual
-
-No se incorpora código ni recursos de Hunter System. La documentación de fase 00 no se publica automáticamente. No subas contraseñas, claves de firma, tokens ni datos personales.
-
-No se ha elegido licencia de código abierto. Un repositorio público no concede por sí solo permisos de reutilización.
-
-## Documentación
-
-- [Alcance](docs/fase-01/01-plan-y-alcance.md)
-- [Decisiones técnicas](docs/fase-01/01-decisiones-tecnicas.md)
-- [Control de calidad](docs/fase-01/01-validacion.md)
-- [Publicación GitHub](docs/fase-01/01-publicacion-github.md)
-
-Próxima fase autorizable tras cerrar la fase 01: **02 — arquitectura interna**.
+No se ha elegido una licencia de código abierto. Los secretos y certificados de firma no deben incorporarse al repositorio público.

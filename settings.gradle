@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = 'Asterion-System-Android'
-include ':app'
+include ':app', ':core'
