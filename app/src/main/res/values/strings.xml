@@ -126,4 +126,9 @@
     <string name="offline_error_unavailable">El almacenamiento local no está disponible. Comprueba el dispositivo y vuelve a intentarlo.</string>
     <string name="offline_error_generic">No se pudo completar la operación local. Puedes volver a intentarlo sin conexión.</string>
     <string name="offline_retry_read">Reintentar consulta</string>
+    <string name="plan_accessible_day_selected">Día seleccionado: %1$s, %2$s</string>
+    <string name="plan_accessible_day">Seleccionar %1$s, %2$s</string>
+    <string name="plan_date_format_hint">AAAA-MM-DD</string>
+    <string name="plan_time_format_hint">HH:mm</string>
+    <string name="plan_duration_format_hint">Ejemplo: 30</string>
 </resources>

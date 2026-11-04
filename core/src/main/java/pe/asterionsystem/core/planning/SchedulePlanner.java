@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Map;
 import pe.asterionsystem.core.catalog.CatalogItem;
 import pe.asterionsystem.core.catalog.CatalogItemKind;
 import pe.asterionsystem.core.catalog.CatalogQuery;
@@ -38,9 +39,16 @@ public final class SchedulePlanner {
     }
 
     public List<ScheduleListing> listWithTitles(LocalDate day) {
-        List<ScheduleListing> rows = new ArrayList<>();
-        for (ScheduledActivity entry : forDate(day)) {
-            rows.add(new ScheduleListing(entry, titleFor(entry.activityId())));
+        List<ScheduledActivity> scheduled = forDate(day);
+        List<EntityId> ids = new ArrayList<>(scheduled.size());
+        for (ScheduledActivity entry : scheduled) {
+            ids.add(entry.activityId());
+        }
+        Map<EntityId, String> titles = catalog.titlesById(ids);
+        List<ScheduleListing> rows = new ArrayList<>(scheduled.size());
+        for (ScheduledActivity entry : scheduled) {
+            rows.add(new ScheduleListing(entry,
+                    titles.getOrDefault(entry.activityId(), "Actividad no disponible")));
         }
         return rows;
     }

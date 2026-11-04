@@ -33,17 +33,23 @@ public final class SQLiteLocalStorageCheck implements LocalStorageCheck {
     }
 
     private static boolean foreignKeysOk(SQLiteDatabase database) {
+        try (Cursor setting = database.rawQuery("PRAGMA foreign_keys", null)) {
+            if (!setting.moveToFirst() || setting.getInt(0) != 1) return false;
+        }
         try (Cursor cursor = database.rawQuery("PRAGMA foreign_key_check", null)) {
-            // Any returned row is a violation. The query does not alter data.
+            // A returned row means a broken reference; never repair on this path.
             return !cursor.moveToFirst();
         }
     }
 
-    private static long count(SQLiteDatabase database, String table) {
-        // Values are fixed application-owned identifiers, never user input.
-        try (Cursor cursor = database.rawQuery("SELECT COUNT(*) FROM " + table, null)) {
-            if (!cursor.moveToFirst()) throw new SQLiteException("No se pudo contar " + table);
-            return cursor.getLong(0);
+    private static long[] counts(SQLiteDatabase database) {
+        // All three counts use a single read statement and one consistent snapshot.
+        final String sql = "SELECT (SELECT COUNT(*) FROM catalog_items), "
+                + "(SELECT COUNT(*) FROM planned_activities), "
+                + "(SELECT COUNT(*) FROM tracking_results)";
+        try (Cursor cursor = database.rawQuery(sql, null)) {
+            if (!cursor.moveToFirst()) throw new SQLiteException("No se pudieron consultar los contadores");
+            return new long[]{cursor.getLong(0), cursor.getLong(1), cursor.getLong(2)};
         }
     }
 
@@ -53,10 +59,9 @@ public final class SQLiteLocalStorageCheck implements LocalStorageCheck {
             SQLiteDatabase database = helper.getReadableDatabase();
             boolean integrity = quickCheck(database);
             boolean references = foreignKeysOk(database);
-            long catalog = count(database, "catalog_items");
-            long plan = count(database, "planned_activities");
-            long tracking = count(database, "tracking_results");
-            return new LocalStorageReport(integrity, references, catalog, plan, tracking);
+            long[] summary = counts(database);
+            return new LocalStorageReport(integrity, references,
+                    summary[0], summary[1], summary[2]);
         } catch (SQLiteException failure) {
             // Do not try destructive recovery: caller can retry after resolving cause.
             throw new StorageException("No se pudo inspeccionar el almacenamiento", failure);

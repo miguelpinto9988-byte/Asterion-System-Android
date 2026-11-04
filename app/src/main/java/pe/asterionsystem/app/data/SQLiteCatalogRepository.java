@@ -10,6 +10,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import pe.asterionsystem.core.catalog.CatalogCategory;
 import pe.asterionsystem.core.catalog.CatalogItem;
 import pe.asterionsystem.core.catalog.CatalogItemKind;
@@ -95,6 +99,51 @@ public final class SQLiteCatalogRepository implements CatalogRepository {
         } catch (SQLiteException failure) {
             throw new StorageException("No se pudo consultar el elemento", failure);
         }
+    }
+
+
+    /**
+     * One parameterized IN query per batch (<= 200 bind values). Avoids the
+     * prior N+1 lookups when rendering a full day of scheduled activities.
+     */
+    @Override public Map<EntityId, String> titlesById(List<EntityId> ids) {
+        requireWorker();
+        Objects.requireNonNull(ids, "ids");
+        if (ids.isEmpty()) return Collections.emptyMap();
+        Set<EntityId> unique = new LinkedHashSet<>();
+        for (EntityId id : ids) {
+            EntityId checked = Objects.requireNonNull(id, "catalog item id");
+            if (checked.value().length() > 64) {
+                throw new IllegalArgumentException("ID de catálogo demasiado largo");
+            }
+            unique.add(checked);
+        }
+        List<EntityId> distinct = new ArrayList<>(unique);
+        Map<EntityId, String> result = new LinkedHashMap<>();
+        final int batchSize = 200;
+        try {
+            SQLiteDatabase readable = helper.getReadableDatabase();
+            for (int from = 0; from < distinct.size(); from += batchSize) {
+                int to = Math.min(distinct.size(), from + batchSize);
+                StringBuilder sql = new StringBuilder(
+                        "SELECT id,title FROM catalog_items WHERE id IN (");
+                String[] args = new String[to - from];
+                for (int j = from; j < to; j++) {
+                    if (j > from) sql.append(',');
+                    sql.append('?');
+                    args[j - from] = distinct.get(j).value();
+                }
+                sql.append(')');
+                try (Cursor cursor = readable.rawQuery(sql.toString(), args)) {
+                    while (cursor.moveToNext()) {
+                        result.put(new EntityId(cursor.getString(0)), cursor.getString(1));
+                    }
+                }
+            }
+        } catch (SQLiteException failure) {
+            throw new StorageException("No se pudieron consultar los títulos del catálogo", failure);
+        }
+        return Collections.unmodifiableMap(result);
     }
 
     private static String literalLike(String input) {

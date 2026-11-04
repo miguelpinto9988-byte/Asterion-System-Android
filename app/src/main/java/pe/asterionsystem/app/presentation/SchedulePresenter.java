@@ -124,7 +124,14 @@ public final class SchedulePresenter implements AutoCloseable {
             Button b = screen.findViewById(DAY_BUTTONS[i]);
             b.setText(day.getDayOfWeek().getDisplayName(TextStyle.NARROW, new Locale("es"))
                     + "\n" + day.getDayOfMonth());
-            b.setEnabled(!day.equals(selectedDate));
+            boolean chosen = day.equals(selectedDate);
+            b.setSelected(chosen);
+            String spokenDay = day.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es"));
+            b.setContentDescription(activity.getString(chosen
+                    ? R.string.plan_accessible_day_selected : R.string.plan_accessible_day,
+                    spokenDay, day.toString()));
+            // Keep every day operable; selection is announced through accessibility state.
+            b.setEnabled(true);
             b.setOnClickListener(v -> {
                 selectedDate = day;
                 refreshCalendar(screen, edit);

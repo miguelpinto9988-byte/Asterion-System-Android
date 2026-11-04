@@ -1,6 +1,6 @@
 # Asterion System — Android nativo Java
 
-**Estado:** implementadas fases 00, 01, 02, 04, 05, 06, 07, 08, 09, 11 y **14 (funcionamiento local e integridad)**. La fase 03 de identidad visual definitiva permanece pendiente.
+**Estado:** implementadas fases 00, 01, 02, 04, 05, 06, 07, 08, 09, 11, 14 y **15 (optimización, seguridad y accesibilidad)**. La fase 03 de diseño definitivo sigue pendiente.
 
 Proyecto Java nativo Android con vistas XML. El HTML se utiliza **solo como previsualización externa**. No se han incorporado HTML, JavaScript, CSS, WebView o Compose a las pantallas Android.
 
@@ -46,6 +46,16 @@ Solo se documentaron los contratos hipotéticos de sincronización futura en `do
 
 Comprobaciones de fuente: `python3 tests/phase14_offline_static_smoke.py`. Pruebas SQLite de escritorio desde las constantes Java: `python3 tests/phase14_sqlite_integrity_smoke.py`. Prueba JVM solo Java puro: `sh tests/phase14_core_jvm_smoke.sh`. Ninguno de esos comandos genera APK. La verificación independiente del núcleo mediante `javac --release 17` superó 13 aserciones, y SQLite de escritorio superó 6 pruebas con un esquema equivalente; la ejecución de los scripts de comprobación contra el checkout completo sigue pendiente.
 
+## Fase 15 — Optimización, integridad y accesibilidad
+
+- **Planificador:** resuelve títulos del catálogo mediante `CatalogRepository.titlesById` y consultas SQLite por lotes de hasta 200 IDs, usando parámetros enlazados. Evita una consulta individual por cada programación.
+- **Catálogo:** espera 280 ms tras la última edición del texto para ejecutar la búsqueda. Cancela solicitudes diferidas, invalida respuestas obsoletas y retira el `TextWatcher` al reemplazar la pantalla.
+- **Diagnóstico:** verifica que las claves foráneas estén activas; obtiene los contadores de las tres tablas en una sentencia SQL consistente.
+- **Seguridad:** conserva los permisos restringidos, `SharedPreferences` privado, SQLite v5, el manejo no destructivo de corrupción y las consultas parametrizadas.
+- **Accesibilidad:** siete regiones de estado con avisos para lectores de pantalla, tres controles con `labelFor`, anuncios de día completo y fila compacta con altura mínima 48 dp.
+
+Pruebas **sin Android** efectuadas: previsualización HTML externa con 36 verificaciones Chromium y cinco ensayos equivalentes SQLite de escritorio con el esquema de consultas por lotes. Se añadieron pruebas estáticas Python y fuente JUnit para una ejecución posterior autorizada. No constituyen pruebas de una APK Android real.
+
 ## Sin compilar APK
 
 **No se compila ni genera APK sin autorización expresa.** `.github/workflows/android-ci.yml` conserva solamente `workflow_dispatch`. Las publicaciones en GitHub no activan trabajos automáticos de compilación.
@@ -55,6 +65,13 @@ Las verificaciones de las fases 08 y 09 incluyen SQLite de escritorio y previsua
 Para comprobar archivos y referencias sin generar APK: `python3 tests/phase11_preferences_static_smoke.py`. Para una prueba JVM independiente, ejecutar `sh tests/phase11_jvm_smoke.sh`: compila exclusivamente tres clases Java de `:core` con `javac --release 17` y ejecuta 18 comprobaciones. Esta prueba local pasó durante el desarrollo, con hashes de archivos idénticos a los publicados. Las pruebas JUnit fuente permanecen disponibles, pero **no** se ejecutó Gradle, la compilación Android ni la generación de APK durante la fase 11.
 
 ## Documentación
+
+- [Fase 15 — Auditoría y riesgos](docs/fase-15/15-auditoria-y-riesgos.md)
+- [Fase 15 — Optimización e integridad](docs/fase-15/15-optimizacion-e-integridad.md)
+- [Fase 15 — Seguridad y accesibilidad](docs/fase-15/15-seguridad-y-accesibilidad.md)
+- [Fase 15 — Validación](docs/fase-15/15-validacion.md)
+- [Fase 15 — Trazabilidad](docs/fase-15/15-trazabilidad.md)
+
 
 - [Fase 14 — Auditoría offline](docs/fase-14/14-auditoria-offline.md)
 - [Fase 14 — Integridad y recuperación](docs/fase-14/14-integridad-y-recuperacion.md)
@@ -80,6 +97,6 @@ Para comprobar archivos y referencias sin generar APK: `python3 tests/phase11_pr
 
 ## Fases
 
-La fase 03 (diseño visual definitivo) continúa pendiente de aprobación. Fase 14 aprobada y desarrollada. Fases 15 y 16 están incluidas en el plan maestro para validación, optimización y publicación futura, sujetas a alcance y autorización. Fases 10, 12 y 13 excluidas.
+La fase 03 (diseño visual definitivo) continúa pendiente de aprobación. Fases 14 y 15 aprobadas y desarrolladas. La fase 16 (compilación, firma y entrega APK) no está autorizada. Fases 15 y 16 están incluidas en el plan maestro para validación, optimización y publicación futura, sujetas a alcance y autorización. Fases 10, 12 y 13 excluidas.
 
 El repositorio es público pero no se ha seleccionado licencia de reutilización; no incorporar contraseñas, certificados o datos sensibles.

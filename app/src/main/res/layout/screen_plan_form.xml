@@ -46,14 +46,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:labelFor="@id/plan_date"
             android:text="@string/plan_date_label"
             android:textColor="@color/asterion_text" />
 
         <EditText
             android:id="@+id/plan_date"
+            android:minHeight="48dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="AAAA-MM-DD"
+            android:hint="@string/plan_date_format_hint"
             android:inputType="date"
             android:maxLength="10"
             android:singleLine="true"
@@ -63,14 +65,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:labelFor="@id/plan_time"
             android:text="@string/plan_time_label"
             android:textColor="@color/asterion_text" />
 
         <EditText
             android:id="@+id/plan_time"
+            android:minHeight="48dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="09:00"
+            android:hint="@string/plan_time_format_hint"
             android:inputType="time"
             android:maxLength="5"
             android:singleLine="true"
@@ -80,14 +84,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:labelFor="@id/plan_duration"
             android:text="@string/plan_duration_label"
             android:textColor="@color/asterion_text" />
 
         <EditText
             android:id="@+id/plan_duration"
+            android:minHeight="48dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="30"
+            android:hint="@string/plan_duration_format_hint"
             android:inputType="number"
             android:maxLength="3"
             android:singleLine="true"
@@ -95,6 +101,7 @@
 
         <TextView
             android:id="@+id/plan_form_status"
+            android:accessibilityLiveRegion="polite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"

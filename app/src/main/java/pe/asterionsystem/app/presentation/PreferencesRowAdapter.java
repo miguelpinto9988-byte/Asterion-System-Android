@@ -29,7 +29,7 @@ public final class PreferencesRowAdapter extends ArrayAdapter<String> {
         boolean compact = preferences.listDensity() == AppPreferences.ListDensity.COMPACT;
         row.setTextSize(TypedValue.COMPLEX_UNIT_SP, large ? 19f : 16f);
         row.setPadding(dp(16), dp(compact ? 6 : 14), dp(16), dp(compact ? 6 : 14));
-        row.setMinHeight(dp(compact ? 44 : 56));
+        row.setMinHeight(dp(compact ? 48 : 56));
         return row;
     }
 }

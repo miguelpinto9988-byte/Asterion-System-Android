@@ -34,6 +34,7 @@ import pe.asterionsystem.core.domain.EntityId;
  */
 public final class CatalogPresenter implements AutoCloseable {
     private static final String KEY_SEARCH = "asterion.catalog.search.v1";
+    private static final long SEARCH_DEBOUNCE_MS = 280L;
     private static final String KEY_CATEGORY = "asterion.catalog.category.v1";
     private static final String KEY_KIND = "asterion.catalog.kind.v1";
 
@@ -45,6 +46,9 @@ public final class CatalogPresenter implements AutoCloseable {
     private long generation;
     private long listBindingGeneration;
     private boolean closed;
+    private Runnable pendingSearch;
+    private EditText watchedSearch;
+    private TextWatcher searchWatcher;
     private String searchText = "";
     private String categoryId = "";
     private CatalogItemKind kind;
@@ -86,7 +90,24 @@ public final class CatalogPresenter implements AutoCloseable {
         return !closed && activeScreen == screen && generation == requestGeneration;
     }
 
+    private void cancelPendingSearch() {
+        if (pendingSearch != null) {
+            main.removeCallbacks(pendingSearch);
+            pendingSearch = null;
+        }
+    }
+
+    private void detachWatcher() {
+        if (watchedSearch != null && searchWatcher != null) {
+            watchedSearch.removeTextChangedListener(searchWatcher);
+        }
+        watchedSearch = null;
+        searchWatcher = null;
+    }
+
     public void bindList(View screen, Consumer<EntityId> openDetail, Runnable goBack) {
+        cancelPendingSearch();
+        detachWatcher();
         activeScreen = screen;
         final long listBinding = ++listBindingGeneration;
         ++generation;
@@ -149,18 +170,32 @@ public final class CatalogPresenter implements AutoCloseable {
         // A fixed session token guards callbacks after a screen replacement.
         final Runnable safeRefresh = () -> {
             if (closed || activeScreen != screen || listBindingGeneration != listBinding) return;
+            cancelPendingSearch();
             refresh.run();
         };
 
         search.setText(searchText);
-        search.addTextChangedListener(new TextWatcher() {
+        watchedSearch = search;
+        searchWatcher = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 searchText = s.toString();
-                safeRefresh.run();
+                if (closed || activeScreen != screen
+                        || listBindingGeneration != listBinding) return;
+                // Invalidate an outstanding query immediately, then wait for a typing pause.
+                ++generation;
+                cancelPendingSearch();
+                Runnable task = () -> {
+                    pendingSearch = null;
+                    safeRefresh.run();
+                };
+                pendingSearch = task;
+                status.setText(R.string.catalog_loading);
+                main.postDelayed(task, SEARCH_DEBOUNCE_MS);
             }
             @Override public void afterTextChanged(Editable s) { }
-        });
+        };
+        search.addTextChangedListener(searchWatcher);
 
         ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(activity,
                 R.array.catalog_type_options, android.R.layout.simple_spinner_item);
@@ -212,6 +247,8 @@ public final class CatalogPresenter implements AutoCloseable {
     }
 
     public void bindDetail(View screen, EntityId id, Runnable goBack) {
+        cancelPendingSearch();
+        detachWatcher();
         activeScreen = screen;
         ++listBindingGeneration;
         final long session = ++generation;
@@ -249,6 +286,8 @@ public final class CatalogPresenter implements AutoCloseable {
     @Override public void close() {
         if (closed) return;
         closed = true;
+        cancelPendingSearch();
+        detachWatcher();
         ++listBindingGeneration;
         activeScreen = null;
         ++generation;
