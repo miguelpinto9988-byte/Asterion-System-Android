@@ -56,6 +56,22 @@ Comprobaciones de fuente: `python3 tests/phase14_offline_static_smoke.py`. Prueb
 
 Pruebas **sin Android** efectuadas: previsualización HTML externa con 36 verificaciones Chromium y cinco ensayos equivalentes SQLite de escritorio con el esquema de consultas por lotes. Se añadieron pruebas estáticas Python y fuente JUnit para una ejecución posterior autorizada. No constituyen pruebas de una APK Android real.
 
+## Fase 16 — Preparación previa a la compilación (autorización parcial)
+
+**La fase 16 está aprobada como plan, pero solo se han autorizado 16.1–16.3:** auditoría técnica, correcciones fuente previas y estrategia provisional de empaquetado. Las etapas de compilación, validación del artefacto, entrega y cierre (16.4–16.7) **están detenidas** hasta recibir otro permiso explícito.
+
+- Se revisó AGP **8.13.2**, Gradle **8.13** en CI manual, JDK **17**, `minSdk 26` y `targetSdk/compileSdk 36`.
+- Se preparó un ajuste de áreas de seguridad Android API 35+ en `MainActivity` y `activity_main.xml` para compatibilidad con edge-to-edge, **todavía no probado en Android**.
+- Se añadió `tests/phase16_preflight_static.py`, que examina código, XML, manifiesto, privacidad y CI usando solamente Python. No se invocó Gradle ni se construyó una APK.
+- No hay Gradle Wrapper versionado; el workflow manual instala Gradle 8.13. Release no tiene firma de distribución configurada.
+- La primera compilación **recomendada para valorar posteriormente** sería debug, pero su ejecución **no está autorizada** por esta preparación.
+
+Documentación:
+- [Auditoría previa](docs/fase-16/16-01-auditoria-precompilacion.md)
+- [Corrección y verificador estático](docs/fase-16/16-02-correcciones-y-preflight.md)
+- [Empaquetado y permisos](docs/fase-16/16-03-empaquetado-y-permisos.md)
+- [Estados de las siete etapas](docs/fase-16/16-estado-y-trazabilidad.md)
+
 ## Sin compilar APK
 
 **No se compila ni genera APK sin autorización expresa.** `.github/workflows/android-ci.yml` conserva solamente `workflow_dispatch`. Las publicaciones en GitHub no activan trabajos automáticos de compilación.
@@ -97,6 +113,6 @@ Para comprobar archivos y referencias sin generar APK: `python3 tests/phase11_pr
 
 ## Fases
 
-La fase 03 (diseño visual definitivo) continúa pendiente de aprobación. Fases 14 y 15 aprobadas y desarrolladas. La fase 16 (compilación, firma y entrega APK) no está autorizada. Fases 15 y 16 están incluidas en el plan maestro para validación, optimización y publicación futura, sujetas a alcance y autorización. Fases 10, 12 y 13 excluidas.
+La fase 03 (diseño visual definitivo) continúa pendiente. Las fases 14 y 15 están publicadas. La fase 16 tiene aprobada únicamente la **preparación 16.1–16.3**; la compilación, firma y entrega de APK permanecen **no autorizadas**. Las fases 10, 12 y 13 están excluidas.
 
 El repositorio es público pero no se ha seleccionado licencia de reutilización; no incorporar contraseñas, certificados o datos sensibles.

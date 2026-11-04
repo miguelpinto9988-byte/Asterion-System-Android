@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowInsets;
 import android.window.OnBackInvokedCallback;
 import android.window.OnBackInvokedDispatcher;
 import android.widget.FrameLayout;
@@ -72,6 +73,7 @@ public final class MainActivity extends Activity {
         navigation = new NavigationController(
                 new InMemoryStateStore<>(NavigationState.initial()), events);
         setContentView(R.layout.activity_main);
+        configureSafeSystemInsets();
         preferencesService = new PreferencesService(
                 new AndroidPreferencesRepository(getApplicationContext()));
         settingsPresenter = new SettingsPresenter(preferencesService);
@@ -115,6 +117,24 @@ public final class MainActivity extends Activity {
         if (!navigation.restore(initialNavigation(savedInstanceState))) {
             renderNavigation();
         }
+    }
+
+    /**
+     * Target 36 is edge-to-edge on Android 15+ / Android 16. Apply the current
+     * system bars and cutout insets to the full-screen navigation container.
+     * Older OS versions keep their framework-managed window fitting.
+     * This replaces fitsSystemWindows to avoid applying insets twice.
+     */
+    private void configureSafeSystemInsets() {
+        if (Build.VERSION.SDK_INT < 35) return;
+        View root = findViewById(R.id.bootstrap_root);
+        root.setOnApplyWindowInsetsListener((view, insets) -> {
+            android.graphics.Insets safe = insets.getInsets(
+                    WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+            view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
+            return insets;
+        });
+        root.requestApplyInsets();
     }
 
     /**
