@@ -1,44 +1,49 @@
 # Asterion System — Android nativo Java
 
-**Estado:** fases 00 (documentación), 01 (proyecto base), 02 (arquitectura), 04 (navegación) y **05 (infraestructura de datos SQLite)**. La fase 03 de diseño visual definitivo sigue pendiente.
+**Estado:** fases 00 (documentación), 01 (proyecto base), 02 (arquitectura), 04 (navegación), 05 (almacenamiento SQLite) y **06 (motor central de reglas en Java puro)**. La fase 03 de identidad visual sigue pendiente de autorización.
 
-Proyecto independiente de Agenda Clara, con código propio basado en principios de arquitectura modular. El núcleo usa Java puro; las interfaces Android usan Java y XML nativos.
+Proyecto nuevo y de código original. La aplicación Android utiliza Java + vistas XML nativas; HTML se utiliza únicamente para previsualizaciones externas.
 
-## Módulos
+## Arquitectura
 
-- **`:core`** — Java sin Android: eventos, estado, navegación, contratos de motores y datos, `TechnicalRecord`, contrato CRUD, worker asíncrono.
-- **`:app`** — Android Java: pantalla inicial, navegación entre dos pantallas XML, `SQLiteOpenHelper`, migraciones y adaptador SQLite.
-- **`docs/fase-0*`** — documentación y trazabilidad.
-- **`tests/phase05_sqlite_smoke.py`** — validación del SQL definido en Java mediante SQLite de Python, sin SDK ni APK.
+- `:core`: Java 17 puro. Eventos, navegación, estado, datos y motor de reglas.
+- `:app`: Android Java + XML. Dos pantallas provisionales `screen_home.xml` y `screen_secondary.xml`, navegación, adaptadores de ciclo de vida, e infraestructura SQLite técnica.
+- `docs/fase-06/`: arquitectura, validaciones y trazabilidad.
 
-## Fase 05: almacenamiento
+## Motor central, fase 06
 
-La base técnica `asterion_internal.db`, esquema v2, contiene únicamente la tabla `technical_records`: ID, título, nota y timestamps. Implementa CRUD, transacciones, índices, validaciones y migración no destructiva v1→v2. El repositorio SQLite impide consultas en el hilo principal; las operaciones se pueden enviar a un worker mediante `BackgroundRecordOperations`.
+Las clases `RuleContext`, `NumericCondition`, `DecisionRule`, `RuleCatalog`, `DeterministicRuleEngine`, `RuleEvaluation`, `RuleEngineService` y `RuleEvaluationCompletedEvent` implementan un evaluador **numérico, tipado, determinista, inmutable y acotado**.
 
-**Importante:** el almacenamiento todavía no está conectado a las pantallas Android; hacerlo necesitará una fase y alcance aprobados. El laboratorio de datos en HTML, entregado por separado, es una simulación con almacenamiento de navegador, no SQLite de Android.
+- Hasta 32 valores de entrada y 64 reglas por evaluación.
+- Prioridades descendentes y desempate estable por identificador.
+- Detección de conflictos cuando dos reglas de máxima prioridad producen resultados diferentes.
+- Resultados `MATCH`, `NO_MATCH`, `CONFLICT`, `INVALID_RULESET`.
+- Trazas y diagnósticos para cada evaluación.
+- Reutilización del `EventBus` de fase 02; el motor no modifica la base de datos.
+- `RuleCatalog` es un contrato de lectura para una futura fuente de reglas, sin implementación SQLite en fase 06.
 
-## Pantallas y previsualización
+**No hay todavía reglas específicas de negocio ni pantallas Android que ejecuten este motor.** La base SQLite técnica de fase 05 permanece desacoplada.
 
-Las pantallas Android siguen en `app/src/main/res/layout/screen_home.xml` y `screen_secondary.xml`. En Android Studio se visualizan con **Design** o **Split**. La previsualización HTML interactiva es exclusivamente una herramienta externa, no forma parte de la aplicación.
+## Previsualización HTML
 
-## Política de compilación
+El archivo HTML interactivo de fase 06 se entrega separadamente: simula las pantallas XML existentes, el laboratorio CRUD de fase 05 y las condiciones/decisiones del motor de fase 06. La simulación **no ejecuta el Java real ni forma parte de la APK**.
 
-**Prohibido compilar/generar APK sin autorización expresa.** `.github/workflows/android-ci.yml` mantiene exclusivamente `workflow_dispatch`; los commits no generan APK. No se ejecutará Gradle ni `assembleDebug` en fase 05.
+## Pruebas y restricción de compilación
 
-## Configuración
+El núcleo se compiló con `javac --release 17`; diez métodos de pruebas de lógica pasaron con sustitutos mínimos de JUnit, no con Gradle/JUnit real. El JavaScript del simulador pasó comprobaciones sintácticas y seis escenarios con DOM simulado. Pruebas de dispositivo y Android pendientes.
 
-Java 17, Android XML Views, Android Gradle Plugin 8.13.2, Gradle 8.13, compile/target SDK 36 y mínimo SDK 26. El repositorio no integra WebView, HTML, CSS, JavaScript ni Compose en el código de la aplicación.
+**No compilar APK sin autorización expresa.** El workflow `.github/workflows/android-ci.yml` conserva solo el disparador manual `workflow_dispatch`. Esta fase no modifica ese archivo ni ejecuta Gradle.
 
 ## Documentación
 
-- [Fase 04 — Navegación](docs/fase-04/04-arquitectura-y-pantallas.md)
-- [Fase 05 — Arquitectura de almacenamiento](docs/fase-05/05-arquitectura-almacenamiento.md)
-- [Fase 05 — Esquema y migraciones](docs/fase-05/05-esquema-y-migraciones.md)
-- [Fase 05 — Validación y límites](docs/fase-05/05-validacion.md)
-- [Fase 05 — Trazabilidad](docs/fase-05/05-trazabilidad.md)
+- [Fase 04: navegación](docs/fase-04/04-arquitectura-y-pantallas.md)
+- [Fase 05: SQLite](docs/fase-05/05-arquitectura-almacenamiento.md)
+- [Fase 06: arquitectura](docs/fase-06/06-arquitectura-motor.md)
+- [Fase 06: validación](docs/fase-06/06-validacion.md)
+- [Fase 06: trazabilidad](docs/fase-06/06-trazabilidad.md)
 
-## Fases futuras
+## Próximas decisiones
 
-La siguiente fase incluida es **06 — Motor central de reglas** y requiere autorización individual. Fase 03 sigue pendiente. Fases 07, 08, 09, 11 y 14 pendientes; fases 10, 12 y 13 excluidas.
+Las fases aprobadas de optimización y publicación son posteriores; las fases de catálogo, planificación, seguimiento, personalización y sincronización siguen pendientes. No se añadirá ninguna funcionalidad de fases pendientes sin autorización. Las fases 10, 12 y 13 se mantienen excluidas.
 
-El repositorio es público, pero no se ha seleccionado una licencia de código abierto. No publiques credenciales, certificados o datos sensibles.
+Repositorios públicos no implican por sí mismos licencia libre. No incorporar secretos ni claves de firma.
