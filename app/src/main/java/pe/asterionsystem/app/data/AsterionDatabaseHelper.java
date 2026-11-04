@@ -148,7 +148,8 @@ public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
             + ")";
 
     public AsterionDatabaseHelper(Context context) {
-        super(context.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION);
+        super(context.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION,
+                new NonDestructiveDatabaseErrorHandler());
         setWriteAheadLoggingEnabled(true);
     }
 

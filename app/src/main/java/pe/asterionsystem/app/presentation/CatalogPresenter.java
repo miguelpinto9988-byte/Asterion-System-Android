@@ -43,6 +43,7 @@ public final class CatalogPresenter implements AutoCloseable {
     private final Handler main = new Handler(Looper.getMainLooper());
     private View activeScreen;
     private long generation;
+    private long listBindingGeneration;
     private boolean closed;
     private String searchText = "";
     private String categoryId = "";
@@ -87,7 +88,8 @@ public final class CatalogPresenter implements AutoCloseable {
 
     public void bindList(View screen, Consumer<EntityId> openDetail, Runnable goBack) {
         activeScreen = screen;
-        long session = ++generation;
+        final long listBinding = ++listBindingGeneration;
+        ++generation;
         final EditText search = screen.findViewById(R.id.catalog_search);
         final Spinner categories = screen.findViewById(R.id.catalog_category_filter);
         final Spinner kinds = screen.findViewById(R.id.catalog_type_filter);
@@ -95,6 +97,8 @@ public final class CatalogPresenter implements AutoCloseable {
         final TextView status = screen.findViewById(R.id.catalog_status);
         Button back = screen.findViewById(R.id.catalog_back_home);
         back.setOnClickListener(view -> goBack.run());
+        screen.<Button>findViewById(R.id.catalog_retry)
+                .setOnClickListener(view -> bindList(screen, openDetail, goBack));
 
         final List<CatalogCategory> availableCategories = new ArrayList<>();
         final List<CatalogItem> visibleItems = new ArrayList<>();
@@ -107,7 +111,7 @@ public final class CatalogPresenter implements AutoCloseable {
         });
 
         final Runnable refresh = () -> {
-            if (closed || activeScreen != screen) return;
+            if (closed || activeScreen != screen || listBindingGeneration != listBinding) return;
             final CatalogQuery query;
             try {
                 query = new CatalogQuery(searchText,
@@ -120,9 +124,10 @@ public final class CatalogPresenter implements AutoCloseable {
             final long request = ++generation;
             status.setText(R.string.catalog_loading);
             operations.search(query).whenComplete((items, error) -> main.post(() -> {
-                if (closed || activeScreen != screen || generation != request) return;
+                if (closed || activeScreen != screen || generation != request
+                        || listBindingGeneration != listBinding) return;
                 if (error != null) {
-                    status.setText(R.string.catalog_error);
+                    status.setText(OfflineErrorMessages.forError(error));
                     visibleItems.clear();
                     itemAdapter.clear();
                     return;
@@ -143,7 +148,7 @@ public final class CatalogPresenter implements AutoCloseable {
 
         // A fixed session token guards callbacks after a screen replacement.
         final Runnable safeRefresh = () -> {
-            if (closed || activeScreen != screen) return;
+            if (closed || activeScreen != screen || listBindingGeneration != listBinding) return;
             refresh.run();
         };
 
@@ -173,9 +178,9 @@ public final class CatalogPresenter implements AutoCloseable {
         });
 
         operations.categories().whenComplete((categoriesList, error) -> main.post(() -> {
-            if (closed || activeScreen != screen) return;
+            if (closed || activeScreen != screen || listBindingGeneration != listBinding) return;
             if (error != null) {
-                status.setText(R.string.catalog_error);
+                status.setText(OfflineErrorMessages.forError(error));
                 return;
             }
             availableCategories.clear();
@@ -208,9 +213,12 @@ public final class CatalogPresenter implements AutoCloseable {
 
     public void bindDetail(View screen, EntityId id, Runnable goBack) {
         activeScreen = screen;
+        ++listBindingGeneration;
         final long session = ++generation;
         Button back = screen.findViewById(R.id.catalog_detail_back);
         back.setOnClickListener(view -> goBack.run());
+        screen.<Button>findViewById(R.id.catalog_detail_retry)
+                .setOnClickListener(view -> bindDetail(screen, id, goBack));
         TextView title = screen.findViewById(R.id.catalog_detail_title);
         TextView type = screen.findViewById(R.id.catalog_detail_type);
         TextView category = screen.findViewById(R.id.catalog_detail_category);
@@ -219,7 +227,7 @@ public final class CatalogPresenter implements AutoCloseable {
         operations.findById(id).whenComplete((optional, error) -> main.post(() -> {
             if (!isCurrent(screen, session)) return;
             if (error != null) {
-                title.setText(R.string.catalog_error);
+                title.setText(OfflineErrorMessages.forError(error));
                 return;
             }
             if (!optional.isPresent()) {
@@ -241,6 +249,7 @@ public final class CatalogPresenter implements AutoCloseable {
     @Override public void close() {
         if (closed) return;
         closed = true;
+        ++listBindingGeneration;
         activeScreen = null;
         ++generation;
         operations.closeAfter(database::close);

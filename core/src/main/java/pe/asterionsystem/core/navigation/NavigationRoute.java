@@ -10,7 +10,8 @@ public enum NavigationRoute {
     PLAN_FORM("plan_form"),
     PROGRESS("progress"),
     PROGRESS_SUMMARY("progress_summary"),
-    SETTINGS("settings");
+    SETTINGS("settings"),
+    LOCAL_STATUS("local_status");
 
     private final String id;
 

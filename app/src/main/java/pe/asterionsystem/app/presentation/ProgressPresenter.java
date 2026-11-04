@@ -75,6 +75,8 @@ public final class ProgressPresenter implements AutoCloseable {
         ++generation;
         view.<Button>findViewById(R.id.progress_back).setOnClickListener(v -> back.run());
         view.<Button>findViewById(R.id.progress_show_summary).setOnClickListener(v -> summary.run());
+        view.<Button>findViewById(R.id.progress_retry)
+                .setOnClickListener(v -> refreshTracking(view));
         view.<Button>findViewById(R.id.progress_prev_day).setOnClickListener(v -> {
             selectedDay = selectedDay.minusDays(1);
             refreshTracking(view);
@@ -107,7 +109,7 @@ public final class ProgressPresenter implements AutoCloseable {
         operations.forDate(date).whenComplete((entries, error) -> main.post(() -> {
             if (!current(view, token)) return;
             if (error != null) {
-                status.setText(R.string.progress_load_error);
+                status.setText(OfflineErrorMessages.forError(error));
                 return;
             }
             loaded.clear();
@@ -185,7 +187,7 @@ public final class ProgressPresenter implements AutoCloseable {
                         } else {
                             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                             ((TextView) parentScreen.findViewById(R.id.progress_status))
-                                    .setText(R.string.progress_save_error);
+                                    .setText(OfflineErrorMessages.forError(error));
                         }
                     }));
                 }));
@@ -196,6 +198,8 @@ public final class ProgressPresenter implements AutoCloseable {
         screen = view;
         ++generation;
         view.<Button>findViewById(R.id.progress_summary_back).setOnClickListener(v -> back.run());
+        view.<Button>findViewById(R.id.progress_summary_retry)
+                .setOnClickListener(v -> refreshSummary(view));
         view.<Button>findViewById(R.id.progress_summary_prev).setOnClickListener(v -> {
             selectedDay = selectedDay.minusWeeks(1);
             refreshSummary(view);
@@ -218,7 +222,7 @@ public final class ProgressPresenter implements AutoCloseable {
         operations.summaryForWeek(monday).whenComplete((data, error) -> main.post(() -> {
             if (!current(view, token)) return;
             if (error != null) {
-                status.setText(R.string.progress_load_error);
+                status.setText(OfflineErrorMessages.forError(error));
                 return;
             }
             ((TextView) view.findViewById(R.id.progress_summary_total))

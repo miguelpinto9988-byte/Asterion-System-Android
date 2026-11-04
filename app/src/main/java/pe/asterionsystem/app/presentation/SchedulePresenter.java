@@ -101,6 +101,8 @@ public final class SchedulePresenter implements AutoCloseable {
         ++generation;
         screen.<Button>findViewById(R.id.plan_back).setOnClickListener(v -> back.run());
         screen.<Button>findViewById(R.id.plan_create).setOnClickListener(v -> create.run());
+        screen.<Button>findViewById(R.id.plan_retry)
+                .setOnClickListener(v -> refreshCalendar(screen, edit));
         screen.<Button>findViewById(R.id.plan_previous_week).setOnClickListener(v -> {
             selectedDate = selectedDate.minusWeeks(1);
             refreshCalendar(screen, edit);
@@ -145,7 +147,7 @@ public final class SchedulePresenter implements AutoCloseable {
         operations.listWithTitles(selectedDate).whenComplete((entries, error) -> main.post(() -> {
             if (!current(screen, token)) return;
             if (error != null) {
-                status.setText(R.string.plan_load_error);
+                status.setText(OfflineErrorMessages.forError(error));
                 return;
             }
             shown.clear();
@@ -174,6 +176,8 @@ public final class SchedulePresenter implements AutoCloseable {
         final Button save = screen.findViewById(R.id.plan_save);
         final Button delete = screen.findViewById(R.id.plan_delete);
         screen.<Button>findViewById(R.id.plan_cancel).setOnClickListener(v -> back.run());
+        screen.<Button>findViewById(R.id.plan_form_retry)
+                .setOnClickListener(v -> bindForm(screen, back));
         save.setEnabled(false);
         delete.setVisibility(requestedId == null ? View.GONE : View.VISIBLE);
         delete.setEnabled(false);
@@ -190,7 +194,8 @@ public final class SchedulePresenter implements AutoCloseable {
                     if (!current(screen, token)) return;
                     if (error != null || data == null || data.activities.isEmpty()
                             || (requestedId != null && !data.original.isPresent())) {
-                        status.setText(R.string.plan_load_error);
+                        status.setText(error == null ? R.string.plan_load_error
+                                : OfflineErrorMessages.forError(error));
                         return;
                     }
                     List<String> labels = new ArrayList<>();
@@ -243,7 +248,9 @@ public final class SchedulePresenter implements AutoCloseable {
                                     save.setEnabled(true);
                                     Throwable why = unwrap(problem);
                                     status.setText(why instanceof ScheduleConflictException
-                                            ? R.string.plan_conflict : R.string.plan_save_error);
+                                            ? R.string.plan_conflict : (why == null
+                                                    ? R.string.plan_save_error
+                                                    : OfflineErrorMessages.forError(why)));
                                 } else {
                                     selectedDate = entry.date();
                                     editingId = null;
@@ -268,7 +275,9 @@ public final class SchedulePresenter implements AutoCloseable {
                                                     back.run();
                                                 } else {
                                                     delete.setEnabled(true);
-                                                    status.setText(R.string.plan_save_error);
+                                                    status.setText(problem == null
+                                                            ? R.string.plan_save_error
+                                                            : OfflineErrorMessages.forError(problem));
                                                 }
                                             }));
                                 }).show());

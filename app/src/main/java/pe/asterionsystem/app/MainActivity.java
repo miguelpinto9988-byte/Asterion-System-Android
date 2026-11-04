@@ -12,6 +12,7 @@ import pe.asterionsystem.app.data.AsterionDatabaseHelper;
 import pe.asterionsystem.app.data.SQLiteCatalogRepository;
 import pe.asterionsystem.app.data.SQLiteScheduleRepository;
 import pe.asterionsystem.app.data.SQLiteProgressRepository;
+import pe.asterionsystem.app.data.SQLiteLocalStorageCheck;
 import pe.asterionsystem.app.platform.AndroidLifecycleAdapter;
 import pe.asterionsystem.app.platform.NavigationBundleAdapter;
 import pe.asterionsystem.app.platform.AndroidPreferencesRepository;
@@ -19,6 +20,7 @@ import pe.asterionsystem.app.presentation.CatalogPresenter;
 import pe.asterionsystem.app.presentation.NavigationRenderer;
 import pe.asterionsystem.app.presentation.SchedulePresenter;
 import pe.asterionsystem.app.presentation.ProgressPresenter;
+import pe.asterionsystem.app.presentation.LocalStatusPresenter;
 import pe.asterionsystem.app.presentation.SettingsPresenter;
 import pe.asterionsystem.core.catalog.BackgroundCatalogOperations;
 import pe.asterionsystem.core.domain.EntityId;
@@ -34,6 +36,8 @@ import pe.asterionsystem.core.planning.BackgroundScheduleOperations;
 import pe.asterionsystem.core.planning.SchedulePlanner;
 import pe.asterionsystem.core.progress.BackgroundProgressOperations;
 import pe.asterionsystem.core.progress.ProgressService;
+import pe.asterionsystem.core.offline.LocalStorageService;
+import pe.asterionsystem.core.offline.BackgroundLocalStorageChecks;
 import pe.asterionsystem.core.state.InMemoryStateStore;
 import pe.asterionsystem.core.settings.AppPreferences;
 import pe.asterionsystem.core.settings.PreferencesService;
@@ -48,6 +52,7 @@ public final class MainActivity extends Activity {
     private CatalogPresenter catalogPresenter;
     private SchedulePresenter schedulePresenter;
     private ProgressPresenter progressPresenter;
+    private LocalStatusPresenter localStatusPresenter;
     private PreferencesService preferencesService;
     private SettingsPresenter settingsPresenter;
     private EntityId selectedCatalogItem;
@@ -90,6 +95,11 @@ public final class MainActivity extends Activity {
                 new BackgroundProgressOperations(new ProgressService(
                         new SQLiteProgressRepository(progressDb))));
         progressPresenter.restore(savedInstanceState);
+
+        AsterionDatabaseHelper healthDb = new AsterionDatabaseHelper(getApplicationContext());
+        localStatusPresenter = new LocalStatusPresenter(this, healthDb,
+                new BackgroundLocalStorageChecks(new LocalStorageService(
+                        new SQLiteLocalStorageCheck(healthDb))));
 
         if (savedInstanceState != null) {
             String rawId = savedInstanceState.getString(KEY_CATALOG_SELECTED_ID, "");
@@ -137,7 +147,8 @@ public final class MainActivity extends Activity {
                 () -> navigation.navigateTo(NavigationRoute.CATALOG),
                 () -> navigation.navigateTo(NavigationRoute.PLAN),
                 () -> navigation.navigateTo(NavigationRoute.PROGRESS),
-                () -> navigation.navigateTo(NavigationRoute.SETTINGS));
+                () -> navigation.navigateTo(NavigationRoute.SETTINGS),
+                () -> navigation.navigateTo(NavigationRoute.LOCAL_STATUS));
 
         if (route == NavigationRoute.CATALOG) {
             catalogPresenter.bindList(screen, id -> {
@@ -170,6 +181,9 @@ public final class MainActivity extends Activity {
             selectedCatalogItem = null;
         } else if (route == NavigationRoute.SETTINGS) {
             settingsPresenter.bind(screen, () -> navigation.goBack(), this::renderNavigation);
+            selectedCatalogItem = null;
+        } else if (route == NavigationRoute.LOCAL_STATUS) {
+            localStatusPresenter.bind(screen, () -> navigation.goBack());
             selectedCatalogItem = null;
         } else {
             selectedCatalogItem = null;
@@ -230,6 +244,7 @@ public final class MainActivity extends Activity {
             getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(systemBackCallback);
             backCallbackRegistered = false;
         }
+        localStatusPresenter.close();
         progressPresenter.close();
         schedulePresenter.close();
         catalogPresenter.close();

@@ -3,7 +3,7 @@
     <string name="app_name">Asterion System</string>
     <string name="bootstrap_caption">Fase 01 · Proyecto Android nativo</string>
     <string name="bootstrap_description">Estructura inicial en Java. Funcionalidades pendientes.</string>
-    <string name="navigation_home_subtitle">Fase 11 · Preferencias locales</string>
+    <string name="navigation_home_subtitle">Fase 14 · Funcionamiento local sin conexión</string>
     <string name="navigation_placeholder_text">Interfaz provisional XML. El catálogo incluye solo contenidos de demostración.</string>
     <string name="navigation_open_secondary">Abrir pantalla secundaria</string>
     <string name="navigation_secondary_title">Pantalla secundaria</string>
@@ -105,4 +105,25 @@
     <string name="settings_reset">Restablecer preferencias</string>
     <string name="settings_back">Volver al inicio</string>
     <string name="settings_privacy_note">Solo se guardan estas tres preferencias en el dispositivo. Restablecerlas no borra el catálogo, las actividades ni el seguimiento.</string>
+
+    <string name="local_status_open">Comprobar almacenamiento local</string>
+    <string name="local_status_title">Estado del almacenamiento local</string>
+    <string name="local_status_description">Comprobación local y de solo lectura. La aplicación no necesita internet para consultar, programar o registrar actividades.</string>
+    <string name="local_status_checking">Comprobando integridad local…</string>
+    <string name="local_status_readonly">La comprobación no modifica tus registros.</string>
+    <string name="local_status_healthy">Comprobación completada: sin incidencias detectadas</string>
+    <string name="local_status_attention">Advertencia: se detectaron incidencias locales</string>
+    <string name="local_status_checks">Integridad SQLite: %1$s\nRelaciones entre tablas: %2$s</string>
+    <string name="local_status_pass">Correcto</string>
+    <string name="local_status_warn">Revisar</string>
+    <string name="local_status_records">Contenidos: %1$d\nProgramaciones: %2$d\nResultados: %3$d</string>
+    <string name="local_status_advisory">Las comprobaciones no sustituyen una copia de seguridad ni garantizan recuperar datos si el dispositivo se daña. Ningún error provoca reparación o borrado automático.</string>
+    <string name="local_status_no_repair">No se modificó ni restableció ningún dato. Revisa el espacio del dispositivo y vuelve a comprobarlo cuando corresponda.</string>
+    <string name="local_status_retry">Volver a comprobar</string>
+    <string name="local_status_back">Volver al inicio</string>
+    <string name="offline_error_integrity">No se pudo acceder con seguridad a la base local. No se alterarán los registros.</string>
+    <string name="offline_error_full">El almacenamiento está lleno. Libera espacio y vuelve a intentarlo manualmente.</string>
+    <string name="offline_error_unavailable">El almacenamiento local no está disponible. Comprueba el dispositivo y vuelve a intentarlo.</string>
+    <string name="offline_error_generic">No se pudo completar la operación local. Puedes volver a intentarlo sin conexión.</string>
+    <string name="offline_retry_read">Reintentar consulta</string>
 </resources>

@@ -56,6 +56,12 @@
         android:textColor="@color/asterion_text_secondary"
         android:textSize="13sp" />
 
+    <Button
+        android:id="@+id/catalog_retry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/offline_retry_read" />
+
     <ListView
         android:id="@+id/catalog_results"
         android:layout_width="match_parent"

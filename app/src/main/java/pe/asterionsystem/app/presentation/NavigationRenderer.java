@@ -25,7 +25,8 @@ public final class NavigationRenderer {
 
     public View render(NavigationRoute route, Runnable openSecondary,
                        Runnable back, Runnable openCatalog, Runnable openPlan,
-                       Runnable openProgress, Runnable openSettings) {
+                       Runnable openProgress, Runnable openSettings,
+                       Runnable openLocalStatus) {
         Objects.requireNonNull(route, "route");
         final int layout;
         switch (route) {
@@ -38,6 +39,7 @@ public final class NavigationRenderer {
             case PROGRESS: layout = R.layout.screen_progress; break;
             case PROGRESS_SUMMARY: layout = R.layout.screen_progress_summary; break;
             case SETTINGS: layout = R.layout.screen_settings; break;
+            case LOCAL_STATUS: layout = R.layout.screen_local_status; break;
             default: throw new IllegalArgumentException("Ruta no soportada: " + route);
         }
         View screen = LayoutInflater.from(activity).inflate(layout, host, false);
@@ -52,6 +54,8 @@ public final class NavigationRenderer {
             openProgressButton.setOnClickListener(view -> openProgress.run());
             Button openSettingsButton = screen.findViewById(R.id.open_settings);
             openSettingsButton.setOnClickListener(view -> openSettings.run());
+            Button openLocalStatusButton = screen.findViewById(R.id.open_local_status);
+            openLocalStatusButton.setOnClickListener(view -> openLocalStatus.run());
         } else if (route == NavigationRoute.SECONDARY) {
             Button backButton = screen.findViewById(R.id.back_to_home);
             backButton.setOnClickListener(view -> back.run());

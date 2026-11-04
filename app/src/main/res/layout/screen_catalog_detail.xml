@@ -53,6 +53,12 @@
             android:textSize="14sp" />
 
         <Button
+            android:id="@+id/catalog_detail_retry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/offline_retry_read" />
+
+        <Button
             android:id="@+id/catalog_detail_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
