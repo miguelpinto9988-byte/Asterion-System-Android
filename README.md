@@ -1,38 +1,46 @@
 # Asterion System — Android nativo Java
 
-**Estado:** fases 00 (documentación), 01 (proyecto base) y 02 (arquitectura interna). La fase 02 no genera APK ni nuevas interfaces de usuario.
+**Estado:** fases 00 (documentación), 01 (proyecto base), 02 (arquitectura interna) y 04 (navegación y estado temporal) implementadas. La fase 03 de diseño visual definitivo sigue pendiente.
 
-Repositorio público del proyecto independiente de Agenda Clara. La arquitectura se inspira en los principios funcionales estudiados de Hunter System, pero el código aquí es original.
+Repositorio público de una aplicación nueva, independiente de Agenda Clara, que adopta principios arquitectónicos estudiados de Hunter System con código original.
 
-## Arquitectura disponible
+## Módulos existentes
 
-- **`:app`**: shell Android en Java, `MainActivity`, adaptador de ciclo de vida y coordinador. Pantalla existente en `app/src/main/res/layout/activity_main.xml`.
-- **`:core`**: módulo Java puro sin dependencias Android, con contratos para casos de uso, motor de reglas, datos y reloj, y utilidades estructurales de eventos, identificadores, estado y ciclo de vida.
-- **Documentación**: `docs/fase-01/` y `docs/fase-02/`.
+- **`:core`** — Java puro: contratos de dominio, motores, eventos, estado, ciclo de vida y navegación inmutable. No depende del SDK de Android.
+- **`:app`** — Android Java: `MainActivity`, coordinador de ciclo de vida, adaptador de `Bundle` y renderizador de pantallas XML nativas.
+- **`docs/`** — registros de fases 01, 02 y 04.
+
+## Pantallas XML actuales
+
+Los diseños provisionales son `app/src/main/res/layout/screen_home.xml` y `screen_secondary.xml`. Se visualizan con **Android Studio → Design** o **Split** abriendo cada archivo. `activity_main.xml` define el contenedor de navegación; por sí mismo no representa el contenido de las dos pantallas.
+
+El código Java únicamente elige qué XML inflar y conecta los eventos de pulsación. **No** se utiliza HTML, CSS, JavaScript, WebView ni Jetpack Compose.
+
+## Estado de navegación
+
+`NavigationController` mantiene la ruta activa y el historial en `StateStore<NavigationState>`. Permite ir a la pantalla secundaria y retroceder, evita destinos duplicados y publica `NavigationChangedEvent` al cambiar el estado. El estado temporal puede restaurarse al recrear la Activity mediante `onSaveInstanceState`.
+
+No se almacena información en una base de datos todavía y la aplicación no contiene funcionalidades de Hunter.
+
+## Política estricta de compilación
+
+**No compilar ni generar APK sin autorización expresa del propietario.** El workflow `.github/workflows/android-ci.yml` está configurado exclusivamente con `workflow_dispatch`; publicar cambios no activa compilación automática.
+
+La fase 04 se comprobó con `javac --release 17`, pruebas de lógica JVM y validación XML. **No** se ha compilado el proyecto Android ni ejecutado Gradle en esta fase; la validez real en dispositivo queda pendiente de autorización.
 
 ## Tecnologías
 
-Java 17 para código fuente; Android nativo con vistas XML; Android Gradle Plugin 8.13.2, Gradle 8.13, `compileSdk/targetSdk 36` y `minSdk 26`. El proyecto no usa WebView, HTML, CSS, JavaScript ni Compose como interfaz.
+Java 17; Android XML Views; Android Gradle Plugin 8.13.2; Gradle 8.13; `compileSdk/targetSdk=36`; `minSdk=26`.
 
-## Política de compilación
+## Documentación
 
-**No compilar ninguna APK sin autorización explícita del propietario.** El único workflow Android, `.github/workflows/android-ci.yml`, tiene activación `workflow_dispatch` y no responde a `push` ni a `pull_request`. Publicar código **no** dispara una compilación Android.
+- [Fase 02 — Arquitectura](docs/fase-02/02-arquitectura.md)
+- [Fase 04 — Arquitectura y XML](docs/fase-04/04-arquitectura-y-pantallas.md)
+- [Fase 04 — Validación](docs/fase-04/04-validacion-y-limitaciones.md)
+- [Fase 04 — Trazabilidad](docs/fase-04/04-trazabilidad.md)
 
-En fase 02 solo se efectuó una verificación local de Java puro mediante `javac --release 17` y una prueba rápida de sus contratos; no se utilizó Gradle ni se generó APK. Las clases de prueba JUnit del proyecto están preparadas, pero todavía no se han ejecutado mediante Gradle.
+## Fases futuras
 
-El Gradle Wrapper oficial sigue pendiente de incorporación. Los scripts Gradle están listos para abrir el proyecto en Android Studio sin ejecutar ninguna compilación hasta que la solicites.
+La siguiente fase incluida en el plan es **05 — Base de datos y almacenamiento**, pendiente de autorización individual. La fase 03 sigue pendiente de decisión; las fases 10, 12 y 13 están excluidas.
 
-## Documentación de fase 02
-
-- [Arquitectura y política de eventos](docs/fase-02/02-arquitectura.md)
-- [Contratos Java](docs/fase-02/02-contratos.md)
-- [Verificaciones y limitaciones](docs/fase-02/02-validacion.md)
-- [Trazabilidad y riesgos](docs/fase-02/02-fases-y-riesgos.md)
-
-## Límites de fases
-
-En esta etapa **no** se desarrolla la interfaz definitiva (fase 03 pendiente), navegación/restauración (04), SQLite/Room (05), reglas funcionales (06), ni contenidos, planificación, seguimiento, personalización o sincronización (07/08/09/11/14 pendientes). Los sistemas multimedia (10), notificaciones (12) e integraciones (13) están excluidos.
-
-La previsualización visual se realiza sobre archivos XML de Android, no mediante HTML. Los recursos XML existentes no han cambiado en fase 02.
-
-No se ha elegido una licencia de código abierto. Los secretos y certificados de firma no deben incorporarse al repositorio público.
+No hay licencia de código abierto elegida. Los secretos y certificados de firma no deben incorporarse al repositorio público.

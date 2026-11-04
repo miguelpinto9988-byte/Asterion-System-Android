@@ -3,4 +3,10 @@
     <string name="app_name">Asterion System</string>
     <string name="bootstrap_caption">Fase 01 · Proyecto Android nativo</string>
     <string name="bootstrap_description">Estructura inicial en Java. Funcionalidades pendientes.</string>
+    <string name="navigation_home_subtitle">Fase 04 · Navegación nativa</string>
+    <string name="navigation_placeholder_text">Pantallas provisionales XML. Funcionalidades pendientes.</string>
+    <string name="navigation_open_secondary">Abrir pantalla secundaria</string>
+    <string name="navigation_secondary_title">Pantalla secundaria</string>
+    <string name="navigation_secondary_description">Navegación de demostración, sin funciones de negocio.</string>
+    <string name="navigation_back_to_home">Volver al inicio</string>
 </resources>
