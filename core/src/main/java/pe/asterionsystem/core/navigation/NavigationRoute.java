@@ -1,9 +1,11 @@
 package pe.asterionsystem.core.navigation;
 
-/** Stable identifiers for provisional phase-04 screens. */
+/** Stable identifiers for phase-04 and phase-07 native XML screens. */
 public enum NavigationRoute {
     HOME("home"),
-    SECONDARY("secondary");
+    SECONDARY("secondary"),
+    CATALOG("catalog"),
+    CATALOG_DETAIL("catalog_detail");
 
     private final String id;
 

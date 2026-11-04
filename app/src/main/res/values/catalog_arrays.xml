@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="catalog_type_options">
+        <item>@string/catalog_all_types</item>
+        <item>@string/catalog_type_content</item>
+        <item>@string/catalog_type_activity</item>
+    </string-array>
+</resources>

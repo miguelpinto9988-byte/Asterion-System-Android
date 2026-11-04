@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asterion_background"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/catalog_title"
+        android:textColor="@color/asterion_text"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/catalog_demo_note"
+        android:textColor="@color/asterion_text_secondary"
+        android:textSize="13sp" />
+
+    <EditText
+        android:id="@+id/catalog_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/catalog_search_hint"
+        android:inputType="text"
+        android:maxLength="120"
+        android:singleLine="true"
+        android:textColor="@color/asterion_text" />
+
+    <Spinner
+        android:id="@+id/catalog_category_filter"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:contentDescription="@string/catalog_category_filter_label" />
+
+    <Spinner
+        android:id="@+id/catalog_type_filter"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:contentDescription="@string/catalog_type_filter_label" />
+
+    <TextView
+        android:id="@+id/catalog_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/catalog_loading"
+        android:textColor="@color/asterion_text_secondary"
+        android:textSize="13sp" />
+
+    <ListView
+        android:id="@+id/catalog_results"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:choiceMode="none" />
+
+    <Button
+        android:id="@+id/catalog_back_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/catalog_back_to_home" />
+</LinearLayout>

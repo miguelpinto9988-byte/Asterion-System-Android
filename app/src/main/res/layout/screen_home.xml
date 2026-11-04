@@ -40,4 +40,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/navigation_open_secondary" />
+
+    <Button
+        android:id="@+id/open_catalog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/catalog_open_button" />
 </LinearLayout>

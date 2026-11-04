@@ -18,17 +18,11 @@ NAMES = (
 )
 
 
+from java_sql_constants import java_sql_constant
+
+
 def java_sql(name: str) -> str:
-    source = JAVA_SOURCE.read_text(encoding="utf-8")
-    pattern = r"public static final String\s+" + re.escape(name) + r"\s*=\s*(.*?);"
-    match = re.search(pattern, source, re.S)
-    if not match:
-        raise AssertionError(f"Missing Java SQL constant: {name}")
-    expression = match.group(1)
-    fragments = re.findall(r'"([^"]*)"', expression)
-    if not fragments or re.sub(r'"[^"]*"', "", expression).strip("+ \r\n\t"):
-        raise AssertionError(f"Unexpected Java SQL expression in {name}")
-    return "".join(fragments)
+    return java_sql_constant(JAVA_SOURCE, name)
 
 
 SQL = {name: java_sql(name) for name in NAMES}
