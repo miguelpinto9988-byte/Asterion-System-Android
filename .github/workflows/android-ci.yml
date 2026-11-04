@@ -1,10 +1,8 @@
 name: Android — fase 01
 
+# La compilación de APK no se inicia automáticamente.
+# Ejecutar únicamente mediante autorización expresa del propietario.
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
