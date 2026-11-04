@@ -96,8 +96,7 @@ public final class ProgressPresenter implements AutoCloseable {
         TextView status = view.findViewById(R.id.progress_status);
         ListView list = view.findViewById(R.id.progress_list);
         List<ProgressEntry> loaded = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                activity, android.R.layout.simple_list_item_1, new ArrayList<String>());
+        ArrayAdapter<String> adapter = new PreferencesRowAdapter(activity);
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, row, position, id) -> {
             if (current(view, token) && position >= 0 && position < loaded.size()) {

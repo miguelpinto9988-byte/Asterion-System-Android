@@ -14,10 +14,12 @@ import pe.asterionsystem.app.data.SQLiteScheduleRepository;
 import pe.asterionsystem.app.data.SQLiteProgressRepository;
 import pe.asterionsystem.app.platform.AndroidLifecycleAdapter;
 import pe.asterionsystem.app.platform.NavigationBundleAdapter;
+import pe.asterionsystem.app.platform.AndroidPreferencesRepository;
 import pe.asterionsystem.app.presentation.CatalogPresenter;
 import pe.asterionsystem.app.presentation.NavigationRenderer;
 import pe.asterionsystem.app.presentation.SchedulePresenter;
 import pe.asterionsystem.app.presentation.ProgressPresenter;
+import pe.asterionsystem.app.presentation.SettingsPresenter;
 import pe.asterionsystem.core.catalog.BackgroundCatalogOperations;
 import pe.asterionsystem.core.domain.EntityId;
 import pe.asterionsystem.core.events.EventBus;
@@ -33,8 +35,10 @@ import pe.asterionsystem.core.planning.SchedulePlanner;
 import pe.asterionsystem.core.progress.BackgroundProgressOperations;
 import pe.asterionsystem.core.progress.ProgressService;
 import pe.asterionsystem.core.state.InMemoryStateStore;
+import pe.asterionsystem.core.settings.AppPreferences;
+import pe.asterionsystem.core.settings.PreferencesService;
 
-/** Native Android shell. Catalog, planning and explicit tracking enabled; reminders and execution excluded. */
+/** Native Android shell with XML screens and private preferences; no reminders or auto-execution. */
 public final class MainActivity extends Activity {
     private static final String KEY_CATALOG_SELECTED_ID = "asterion.catalog.selected.id.v1";
 
@@ -44,6 +48,8 @@ public final class MainActivity extends Activity {
     private CatalogPresenter catalogPresenter;
     private SchedulePresenter schedulePresenter;
     private ProgressPresenter progressPresenter;
+    private PreferencesService preferencesService;
+    private SettingsPresenter settingsPresenter;
     private EntityId selectedCatalogItem;
     private Subscription navigationSubscription;
     private OnBackInvokedCallback systemBackCallback;
@@ -61,7 +67,11 @@ public final class MainActivity extends Activity {
         navigation = new NavigationController(
                 new InMemoryStateStore<>(NavigationState.initial()), events);
         setContentView(R.layout.activity_main);
-        renderer = new NavigationRenderer(this, (FrameLayout) findViewById(R.id.navigation_host));
+        preferencesService = new PreferencesService(
+                new AndroidPreferencesRepository(getApplicationContext()));
+        settingsPresenter = new SettingsPresenter(preferencesService);
+        renderer = new NavigationRenderer(this, (FrameLayout) findViewById(R.id.navigation_host),
+                preferencesService);
 
         AsterionDatabaseHelper database = new AsterionDatabaseHelper(getApplicationContext());
         catalogPresenter = new CatalogPresenter(this, database,
@@ -92,9 +102,26 @@ public final class MainActivity extends Activity {
         }
         navigationSubscription = events.subscribe(NavigationChangedEvent.class,
                 event -> renderNavigation());
-        if (!navigation.restore(NavigationBundleAdapter.read(savedInstanceState))) {
+        if (!navigation.restore(initialNavigation(savedInstanceState))) {
             renderNavigation();
         }
+    }
+
+    /**
+     * Cold launches honor the preferred section. A real saved Bundle always wins:
+     * it restores the route being viewed instead of applying a new start route.
+     */
+    private NavigationState initialNavigation(Bundle saved) {
+        if (saved != null) return NavigationBundleAdapter.read(saved);
+        AppPreferences.StartSection preferred = preferencesService.current().startSection();
+        NavigationRoute route;
+        switch (preferred) {
+            case CATALOG: route = NavigationRoute.CATALOG; break;
+            case PLAN: route = NavigationRoute.PLAN; break;
+            case PROGRESS: route = NavigationRoute.PROGRESS; break;
+            default: route = NavigationRoute.HOME; break;
+        }
+        return NavigationState.initial().navigateTo(route);
     }
 
     private void renderNavigation() {
@@ -109,7 +136,8 @@ public final class MainActivity extends Activity {
                 () -> navigation.goBack(),
                 () -> navigation.navigateTo(NavigationRoute.CATALOG),
                 () -> navigation.navigateTo(NavigationRoute.PLAN),
-                () -> navigation.navigateTo(NavigationRoute.PROGRESS));
+                () -> navigation.navigateTo(NavigationRoute.PROGRESS),
+                () -> navigation.navigateTo(NavigationRoute.SETTINGS));
 
         if (route == NavigationRoute.CATALOG) {
             catalogPresenter.bindList(screen, id -> {
@@ -139,6 +167,9 @@ public final class MainActivity extends Activity {
             selectedCatalogItem = null;
         } else if (route == NavigationRoute.PROGRESS_SUMMARY) {
             progressPresenter.bindSummary(screen, () -> navigation.goBack());
+            selectedCatalogItem = null;
+        } else if (route == NavigationRoute.SETTINGS) {
+            settingsPresenter.bind(screen, () -> navigation.goBack(), this::renderNavigation);
             selectedCatalogItem = null;
         } else {
             selectedCatalogItem = null;

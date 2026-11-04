@@ -8,19 +8,24 @@ import android.widget.FrameLayout;
 import java.util.Objects;
 import pe.asterionsystem.app.R;
 import pe.asterionsystem.core.navigation.NavigationRoute;
+import pe.asterionsystem.core.settings.PreferencesService;
 
 /** Native XML screen selection. Domain state and SQL are not handled here. */
 public final class NavigationRenderer {
     private final Activity activity;
     private final FrameLayout host;
+    private final PreferencesService preferences;
 
-    public NavigationRenderer(Activity activity, FrameLayout host) {
+    public NavigationRenderer(Activity activity, FrameLayout host,
+                              PreferencesService preferences) {
         this.activity = Objects.requireNonNull(activity, "activity");
         this.host = Objects.requireNonNull(host, "host");
+        this.preferences = Objects.requireNonNull(preferences, "preferences");
     }
 
     public View render(NavigationRoute route, Runnable openSecondary,
-                       Runnable back, Runnable openCatalog, Runnable openPlan, Runnable openProgress) {
+                       Runnable back, Runnable openCatalog, Runnable openPlan,
+                       Runnable openProgress, Runnable openSettings) {
         Objects.requireNonNull(route, "route");
         final int layout;
         switch (route) {
@@ -32,6 +37,7 @@ public final class NavigationRenderer {
             case PLAN_FORM: layout = R.layout.screen_plan_form; break;
             case PROGRESS: layout = R.layout.screen_progress; break;
             case PROGRESS_SUMMARY: layout = R.layout.screen_progress_summary; break;
+            case SETTINGS: layout = R.layout.screen_settings; break;
             default: throw new IllegalArgumentException("Ruta no soportada: " + route);
         }
         View screen = LayoutInflater.from(activity).inflate(layout, host, false);
@@ -44,10 +50,13 @@ public final class NavigationRenderer {
             openPlanButton.setOnClickListener(view -> openPlan.run());
             Button openProgressButton = screen.findViewById(R.id.open_progress);
             openProgressButton.setOnClickListener(view -> openProgress.run());
+            Button openSettingsButton = screen.findViewById(R.id.open_settings);
+            openSettingsButton.setOnClickListener(view -> openSettings.run());
         } else if (route == NavigationRoute.SECONDARY) {
             Button backButton = screen.findViewById(R.id.back_to_home);
             backButton.setOnClickListener(view -> back.run());
         }
+        NativePreferencesApplier.apply(screen, preferences.current());
         host.removeAllViews();
         host.addView(screen);
         return screen;

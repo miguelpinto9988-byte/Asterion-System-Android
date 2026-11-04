@@ -3,7 +3,7 @@
     <string name="app_name">Asterion System</string>
     <string name="bootstrap_caption">Fase 01 · Proyecto Android nativo</string>
     <string name="bootstrap_description">Estructura inicial en Java. Funcionalidades pendientes.</string>
-    <string name="navigation_home_subtitle">Fase 09 · Seguimiento nativo</string>
+    <string name="navigation_home_subtitle">Fase 11 · Preferencias locales</string>
     <string name="navigation_placeholder_text">Interfaz provisional XML. El catálogo incluye solo contenidos de demostración.</string>
     <string name="navigation_open_secondary">Abrir pantalla secundaria</string>
     <string name="navigation_secondary_title">Pantalla secundaria</string>
@@ -86,4 +86,23 @@
     <string name="progress_summary_no_evaluated">Sin resultados evaluados todavía</string>
     <string name="progress_summary_explanation">El cumplimiento divide las realizadas entre las realizadas y omitidas. Las pendientes no se incluyen en ese porcentaje.</string>
     <string name="progress_summary_back">Volver al seguimiento</string>
+
+    <string name="settings_open">Abrir configuración</string>
+    <string name="settings_title">Configuración Asterion</string>
+    <string name="settings_description">Preferencias locales de presentación y acceso</string>
+    <string name="settings_text_heading">Tamaño de texto</string>
+    <string name="settings_text_normal">Normal</string>
+    <string name="settings_text_large">Grande</string>
+    <string name="settings_density_heading">Densidad de las listas</string>
+    <string name="settings_density_normal">Normal</string>
+    <string name="settings_density_compact">Compacta</string>
+    <string name="settings_start_heading">Sección inicial preferida</string>
+    <string name="settings_start_home">Inicio</string>
+    <string name="settings_start_catalog">Catálogo</string>
+    <string name="settings_start_plan">Planificador</string>
+    <string name="settings_start_progress">Seguimiento</string>
+    <string name="settings_start_explanation">La sección inicial se aplica al abrir la aplicación desde cero. Una pantalla restaurada tiene prioridad.</string>
+    <string name="settings_reset">Restablecer preferencias</string>
+    <string name="settings_back">Volver al inicio</string>
+    <string name="settings_privacy_note">Solo se guardan estas tres preferencias en el dispositivo. Restablecerlas no borra el catálogo, las actividades ni el seguimiento.</string>
 </resources>

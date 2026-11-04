@@ -133,8 +133,7 @@ public final class SchedulePresenter implements AutoCloseable {
         TextView status = screen.findViewById(R.id.plan_status);
         ListView list = screen.findViewById(R.id.plan_entries);
         List<ScheduleListing> shown = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                activity, android.R.layout.simple_list_item_1, new ArrayList<String>());
+        ArrayAdapter<String> adapter = new PreferencesRowAdapter(activity);
         list.setAdapter(adapter);
         list.setOnItemClickListener((parent, view, position, rowId) -> {
             if (position >= 0 && position < shown.size() && !closed && activeScreen == screen) {

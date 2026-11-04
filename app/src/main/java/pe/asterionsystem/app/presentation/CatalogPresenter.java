@@ -98,8 +98,7 @@ public final class CatalogPresenter implements AutoCloseable {
 
         final List<CatalogCategory> availableCategories = new ArrayList<>();
         final List<CatalogItem> visibleItems = new ArrayList<>();
-        final ArrayAdapter<String> itemAdapter = new ArrayAdapter<>(
-                activity, android.R.layout.simple_list_item_1, new ArrayList<String>());
+        final ArrayAdapter<String> itemAdapter = new PreferencesRowAdapter(activity);
         results.setAdapter(itemAdapter);
         results.setOnItemClickListener((parent, view, position, id) -> {
             if (position >= 0 && position < visibleItems.size() && !closed && activeScreen == screen) {
