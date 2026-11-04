@@ -3,7 +3,7 @@
     <string name="app_name">Asterion System</string>
     <string name="bootstrap_caption">Fase 01 · Proyecto Android nativo</string>
     <string name="bootstrap_description">Estructura inicial en Java. Funcionalidades pendientes.</string>
-    <string name="navigation_home_subtitle">Fase 08 · Planificación nativa</string>
+    <string name="navigation_home_subtitle">Fase 09 · Seguimiento nativo</string>
     <string name="navigation_placeholder_text">Interfaz provisional XML. El catálogo incluye solo contenidos de demostración.</string>
     <string name="navigation_open_secondary">Abrir pantalla secundaria</string>
     <string name="navigation_secondary_title">Pantalla secundaria</string>
@@ -57,4 +57,33 @@
     <string name="plan_conflict">Conflicto: el horario coincide con otra actividad.</string>
     <string name="plan_invalid">Comprueba la fecha, la hora y la duración.</string>
     <string name="plan_save_error">No se pudo guardar el cambio.</string>
+
+    <string name="progress_open">Abrir seguimiento y progreso</string>
+    <string name="progress_title">Seguimiento Asterion</string>
+    <string name="progress_description">Selecciona una actividad programada para registrar su resultado</string>
+    <string name="progress_previous_day">Día anterior</string>
+    <string name="progress_next_day_label">Día siguiente</string>
+    <string name="progress_loading">Cargando seguimiento…</string>
+    <string name="progress_load_error">No se pudieron cargar los registros</string>
+    <string name="progress_no_plans">No hay actividades programadas para este día</string>
+    <string name="progress_results_count">%1$d actividades para este día</string>
+    <string name="progress_pending">Pendiente</string>
+    <string name="progress_done">Realizada</string>
+    <string name="progress_skipped">Omitida</string>
+    <string name="progress_status_label">Estado del resultado</string>
+    <string name="progress_note_hint">Observación opcional, máximo 500 caracteres</string>
+    <string name="progress_save">Guardar resultado</string>
+    <string name="progress_save_error">No se pudo guardar el resultado</string>
+    <string name="progress_open_summary">Ver resumen semanal</string>
+    <string name="progress_summary_title">Resumen semanal</string>
+    <string name="progress_previous_week">Semana anterior</string>
+    <string name="progress_next_week">Semana siguiente</string>
+    <string name="progress_summary_total_label">Programadas</string>
+    <string name="progress_summary_done_label">Realizadas</string>
+    <string name="progress_summary_skipped_label">Omitidas</string>
+    <string name="progress_summary_pending_label">Pendientes</string>
+    <string name="progress_summary_rate">%1$d%% de cumplimiento entre %2$d actividades evaluadas</string>
+    <string name="progress_summary_no_evaluated">Sin resultados evaluados todavía</string>
+    <string name="progress_summary_explanation">El cumplimiento divide las realizadas entre las realizadas y omitidas. Las pendientes no se incluyen en ese porcentaje.</string>
+    <string name="progress_summary_back">Volver al seguimiento</string>
 </resources>

@@ -20,7 +20,7 @@ public final class NavigationRenderer {
     }
 
     public View render(NavigationRoute route, Runnable openSecondary,
-                       Runnable back, Runnable openCatalog, Runnable openPlan) {
+                       Runnable back, Runnable openCatalog, Runnable openPlan, Runnable openProgress) {
         Objects.requireNonNull(route, "route");
         final int layout;
         switch (route) {
@@ -30,6 +30,8 @@ public final class NavigationRenderer {
             case CATALOG_DETAIL: layout = R.layout.screen_catalog_detail; break;
             case PLAN: layout = R.layout.screen_plan; break;
             case PLAN_FORM: layout = R.layout.screen_plan_form; break;
+            case PROGRESS: layout = R.layout.screen_progress; break;
+            case PROGRESS_SUMMARY: layout = R.layout.screen_progress_summary; break;
             default: throw new IllegalArgumentException("Ruta no soportada: " + route);
         }
         View screen = LayoutInflater.from(activity).inflate(layout, host, false);
@@ -40,6 +42,8 @@ public final class NavigationRenderer {
             openCatalogButton.setOnClickListener(view -> openCatalog.run());
             Button openPlanButton = screen.findViewById(R.id.open_plan);
             openPlanButton.setOnClickListener(view -> openPlan.run());
+            Button openProgressButton = screen.findViewById(R.id.open_progress);
+            openProgressButton.setOnClickListener(view -> openProgress.run());
         } else if (route == NavigationRoute.SECONDARY) {
             Button backButton = screen.findViewById(R.id.back_to_home);
             backButton.setOnClickListener(view -> back.run());

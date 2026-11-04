@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Private Android SQLite database. Migrations 1->2->3 are additive and
+ * Private Android SQLite database. Migrations 1->2->3->4->5 are additive and
  * run transactionally inside SQLiteOpenHelper. Never drop existing records.
  */
 public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "asterion_internal.db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String TABLE_RECORDS = "technical_records";
 
     public static final String COL_ID = "id";
@@ -136,6 +136,17 @@ public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
             + "WHERE id = NEW.catalog_item_id AND kind = 'activity') "
             + "BEGIN SELECT RAISE(ABORT, 'invalid_catalog_activity'); END";
 
+
+    // Phase 09. Absence of a row = PENDING. One outcome per scheduled occurrence.
+    public static final String CREATE_TRACKING_RESULTS =
+            "CREATE TABLE tracking_results ("
+            + "schedule_id TEXT NOT NULL PRIMARY KEY "
+            + "REFERENCES planned_activities(id) ON DELETE CASCADE, "
+            + "status TEXT NOT NULL CHECK(status IN ('completed','skipped')), "
+            + "note TEXT NOT NULL CHECK(length(note) <= 500), "
+            + "recorded_at_ms INTEGER NOT NULL CHECK(recorded_at_ms >= 0)"
+            + ")";
+
     public AsterionDatabaseHelper(Context context) {
         super(context.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION);
         setWriteAheadLoggingEnabled(true);
@@ -151,6 +162,7 @@ public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
         migrateFromV1ToV2(db);
         migrateFromV2ToV3(db);
         migrateFromV3ToV4(db);
+        migrateFromV4ToV5(db);
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -166,6 +178,10 @@ public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
         if (version == 3 && newVersion >= 4) {
             migrateFromV3ToV4(db);
             version = 4;
+        }
+        if (version == 4 && newVersion >= 5) {
+            migrateFromV4ToV5(db);
+            version = 5;
         }
         if (version != newVersion) {
             throw new SQLiteException("Migración no disponible: " + oldVersion + " → " + newVersion);
@@ -192,6 +208,10 @@ public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_CATEGORY_INDEX);
         db.execSQL(CREATE_ITEM_INDEX);
         seedDemonstrationCatalog(db);
+    }
+
+    private static void migrateFromV4ToV5(SQLiteDatabase db) {
+        db.execSQL(CREATE_TRACKING_RESULTS);
     }
 
     private static void migrateFromV3ToV4(SQLiteDatabase db) {

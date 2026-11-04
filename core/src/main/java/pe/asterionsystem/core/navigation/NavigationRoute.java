@@ -7,7 +7,9 @@ public enum NavigationRoute {
     CATALOG("catalog"),
     CATALOG_DETAIL("catalog_detail"),
     PLAN("plan"),
-    PLAN_FORM("plan_form");
+    PLAN_FORM("plan_form"),
+    PROGRESS("progress"),
+    PROGRESS_SUMMARY("progress_summary");
 
     private final String id;
 

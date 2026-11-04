@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asterion_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="22dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/progress_summary_title"
+            android:textColor="@color/asterion_text"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/progress_summary_prev"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/progress_previous_week"
+                android:text="‹" />
+
+            <TextView
+                android:id="@+id/progress_summary_week"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/asterion_text"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/progress_summary_next"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/progress_next_week"
+                android:text="›" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="@string/progress_summary_total_label"
+            android:textColor="@color/asterion_text_secondary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/progress_summary_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="@color/asterion_text"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/progress_summary_done_label"
+            android:textColor="@color/asterion_text_secondary" />
+
+        <TextView
+            android:id="@+id/progress_summary_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="@color/asterion_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/progress_summary_skipped_label"
+            android:textColor="@color/asterion_text_secondary" />
+
+        <TextView
+            android:id="@+id/progress_summary_skipped"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="@color/asterion_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/progress_summary_pending_label"
+            android:textColor="@color/asterion_text_secondary" />
+
+        <TextView
+            android:id="@+id/progress_summary_pending"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="@color/asterion_text"
+            android:textSize="22sp" />
+
+        <ProgressBar
+            android:id="@+id/progress_summary_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            android:layout_marginTop="24dp"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/progress_summary_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/progress_loading"
+            android:textColor="@color/asterion_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/progress_summary_explanation"
+            android:textColor="@color/asterion_text_secondary"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/progress_summary_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/progress_summary_back" />
+    </LinearLayout>
+</ScrollView>

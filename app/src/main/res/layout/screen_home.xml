@@ -49,6 +49,13 @@
         android:text="@string/plan_open" />
 
     <Button
+        android:id="@+id/open_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/progress_open" />
+
+    <Button
         android:id="@+id/open_catalog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
