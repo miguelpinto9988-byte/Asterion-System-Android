@@ -4,9 +4,10 @@
 
 1. Compilación **exclusiva de fuentes Java** del módulo `:core` y de las clases `ApplicationCoordinator`, `LifecycleChangedEvent` y `AndroidLifecycleAdapter` con `javac --release 17` en entorno local: correcta.
 2. Prueba independiente ejecutada con `java -ea`: entrega de eventos tipados, orden de suscriptores, cierre idempotente, errores de listeners, rechazo de eventos nulos, actualización de estado, traducción del ciclo de vida e igualdad/validación de identificadores: correcta.
-3. Pruebas JUnit agregadas al código, **pendientes de ejecución con Gradle**. No se afirma que hayan sido ejecutadas.
-4. `activity_main.xml` se conserva sin cambios; las modificaciones de Java no crean pantallas nuevas.
-5. El workflow de GitHub Actions debe permanecer con activación **solo manual**.
+3. Los **10 métodos de prueba** de la fase 02 se compilaron con `javac --release 17` y se ejecutaron correctamente en un **arnés Java temporal** que reproduce las aserciones JUnit utilizadas: **10/10**. Este control no depende de Android ni genera APK.
+4. Las pruebas JUnit genuinas por Gradle **siguen pendientes**; el arnés local no es el runner oficial de JUnit.
+5. `activity_main.xml` se conserva sin cambios; las modificaciones de Java no crean pantallas nuevas.
+6. El workflow de GitHub Actions debe permanecer con activación **solo manual**.
 
 ## No realizado, por instrucción expresa
 
