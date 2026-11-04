@@ -1,0 +1,32 @@
+# Android / Gradle
+.gradle/
+**/build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+Thumbs.db
+
+# Signing credentials, env vars and private data
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+.env
+.env.*
+*.properties.local
+secrets.properties
+**/google-services.json
+
+# Files not intended for this public source repository
+*.apk
+*.aab
+*.log
