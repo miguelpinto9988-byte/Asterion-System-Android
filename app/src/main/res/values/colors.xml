@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="asterion_background">#FFFFFF</color>
+    <color name="asterion_text">#1C2638</color>
+    <color name="asterion_text_secondary">#526072</color>
+</resources>

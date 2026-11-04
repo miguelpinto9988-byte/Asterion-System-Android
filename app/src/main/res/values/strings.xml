@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asterion System</string>
+    <string name="bootstrap_caption">Fase 01 · Proyecto Android nativo</string>
+    <string name="bootstrap_description">Estructura inicial en Java. Funcionalidades pendientes.</string>
+</resources>
