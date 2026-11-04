@@ -2,6 +2,7 @@ package pe.asterionsystem.core.engine;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -94,6 +95,6 @@ public final class DeterministicRuleEngine implements RuleEvaluator<RuleContext,
     }
 
     private static RuleEvaluation invalid(String code) {
-        return new RuleEvaluation(Status.INVALID_RULESET, null, null, List.of(), List.of(code));
+        return new RuleEvaluation(Status.INVALID_RULESET, null, null, Collections.emptyList(), Collections.singletonList(code));
     }
 }
