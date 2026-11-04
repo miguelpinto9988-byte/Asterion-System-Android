@@ -5,7 +5,9 @@ public enum NavigationRoute {
     HOME("home"),
     SECONDARY("secondary"),
     CATALOG("catalog"),
-    CATALOG_DETAIL("catalog_detail");
+    CATALOG_DETAIL("catalog_detail"),
+    PLAN("plan"),
+    PLAN_FORM("plan_form");
 
     private final String id;
 

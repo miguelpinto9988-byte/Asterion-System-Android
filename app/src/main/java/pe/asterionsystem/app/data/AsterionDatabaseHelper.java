@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "asterion_internal.db";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String TABLE_RECORDS = "technical_records";
 
     public static final String COL_ID = "id";
@@ -90,6 +90,52 @@ public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
             "CREATE INDEX idx_catalog_item_filters "
             + "ON catalog_items (category_id, kind, title COLLATE NOCASE, id)";
 
+
+    // Phase 08: one-day local wall-time plan; half-open intervals [start, end).
+    public static final String CREATE_PLAN_TABLE =
+            "CREATE TABLE planned_activities ("
+            + "id TEXT NOT NULL PRIMARY KEY CHECK(length(id) BETWEEN 1 AND 64), "
+            + "catalog_item_id TEXT NOT NULL REFERENCES catalog_items(id) ON DELETE RESTRICT, "
+            + "local_date TEXT NOT NULL CHECK(length(local_date) = 10), "
+            + "start_minute INTEGER NOT NULL CHECK(start_minute BETWEEN 0 AND 1439), "
+            + "duration_minutes INTEGER NOT NULL CHECK(duration_minutes BETWEEN 1 AND 720 "
+            + "AND start_minute + duration_minutes <= 1440), "
+            + "created_at_ms INTEGER NOT NULL CHECK(created_at_ms >= 0), "
+            + "updated_at_ms INTEGER NOT NULL CHECK(updated_at_ms >= created_at_ms)"
+            + ")";
+
+    public static final String CREATE_PLAN_INDEX =
+            "CREATE INDEX idx_plan_date_start ON planned_activities "
+            + "(local_date, start_minute, id)";
+
+    public static final String CREATE_PLAN_OVERLAP_INSERT =
+            "CREATE TRIGGER trg_plan_overlap_insert BEFORE INSERT ON planned_activities "
+            + "WHEN EXISTS (SELECT 1 FROM planned_activities existing "
+            + "WHERE existing.local_date = NEW.local_date "
+            + "AND existing.start_minute < NEW.start_minute + NEW.duration_minutes "
+            + "AND NEW.start_minute < existing.start_minute + existing.duration_minutes) "
+            + "BEGIN SELECT RAISE(ABORT, 'schedule_overlap'); END";
+
+    public static final String CREATE_PLAN_OVERLAP_UPDATE =
+            "CREATE TRIGGER trg_plan_overlap_update BEFORE UPDATE ON planned_activities "
+            + "WHEN EXISTS (SELECT 1 FROM planned_activities existing "
+            + "WHERE existing.id <> NEW.id AND existing.local_date = NEW.local_date "
+            + "AND existing.start_minute < NEW.start_minute + NEW.duration_minutes "
+            + "AND NEW.start_minute < existing.start_minute + existing.duration_minutes) "
+            + "BEGIN SELECT RAISE(ABORT, 'schedule_overlap'); END";
+
+    public static final String CREATE_PLAN_ACTIVITY_INSERT =
+            "CREATE TRIGGER trg_plan_activity_insert BEFORE INSERT ON planned_activities "
+            + "WHEN NOT EXISTS (SELECT 1 FROM catalog_items "
+            + "WHERE id = NEW.catalog_item_id AND kind = 'activity') "
+            + "BEGIN SELECT RAISE(ABORT, 'invalid_catalog_activity'); END";
+
+    public static final String CREATE_PLAN_ACTIVITY_UPDATE =
+            "CREATE TRIGGER trg_plan_activity_update BEFORE UPDATE ON planned_activities "
+            + "WHEN NOT EXISTS (SELECT 1 FROM catalog_items "
+            + "WHERE id = NEW.catalog_item_id AND kind = 'activity') "
+            + "BEGIN SELECT RAISE(ABORT, 'invalid_catalog_activity'); END";
+
     public AsterionDatabaseHelper(Context context) {
         super(context.getApplicationContext(), DATABASE_NAME, null, DATABASE_VERSION);
         setWriteAheadLoggingEnabled(true);
@@ -104,6 +150,7 @@ public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_V1);
         migrateFromV1ToV2(db);
         migrateFromV2ToV3(db);
+        migrateFromV3ToV4(db);
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -115,6 +162,10 @@ public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
         if (version == 2 && newVersion >= 3) {
             migrateFromV2ToV3(db);
             version = 3;
+        }
+        if (version == 3 && newVersion >= 4) {
+            migrateFromV3ToV4(db);
+            version = 4;
         }
         if (version != newVersion) {
             throw new SQLiteException("Migración no disponible: " + oldVersion + " → " + newVersion);
@@ -141,6 +192,15 @@ public final class AsterionDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_CATEGORY_INDEX);
         db.execSQL(CREATE_ITEM_INDEX);
         seedDemonstrationCatalog(db);
+    }
+
+    private static void migrateFromV3ToV4(SQLiteDatabase db) {
+        db.execSQL(CREATE_PLAN_TABLE);
+        db.execSQL(CREATE_PLAN_INDEX);
+        db.execSQL(CREATE_PLAN_OVERLAP_INSERT);
+        db.execSQL(CREATE_PLAN_OVERLAP_UPDATE);
+        db.execSQL(CREATE_PLAN_ACTIVITY_INSERT);
+        db.execSQL(CREATE_PLAN_ACTIVITY_UPDATE);
     }
 
     private static void seedDemonstrationCatalog(SQLiteDatabase db) {

@@ -10,10 +10,12 @@ import android.widget.FrameLayout;
 import pe.asterionsystem.app.application.ApplicationCoordinator;
 import pe.asterionsystem.app.data.AsterionDatabaseHelper;
 import pe.asterionsystem.app.data.SQLiteCatalogRepository;
+import pe.asterionsystem.app.data.SQLiteScheduleRepository;
 import pe.asterionsystem.app.platform.AndroidLifecycleAdapter;
 import pe.asterionsystem.app.platform.NavigationBundleAdapter;
 import pe.asterionsystem.app.presentation.CatalogPresenter;
 import pe.asterionsystem.app.presentation.NavigationRenderer;
+import pe.asterionsystem.app.presentation.SchedulePresenter;
 import pe.asterionsystem.core.catalog.BackgroundCatalogOperations;
 import pe.asterionsystem.core.domain.EntityId;
 import pe.asterionsystem.core.events.EventBus;
@@ -24,9 +26,11 @@ import pe.asterionsystem.core.navigation.NavigationChangedEvent;
 import pe.asterionsystem.core.navigation.NavigationController;
 import pe.asterionsystem.core.navigation.NavigationRoute;
 import pe.asterionsystem.core.navigation.NavigationState;
+import pe.asterionsystem.core.planning.BackgroundScheduleOperations;
+import pe.asterionsystem.core.planning.SchedulePlanner;
 import pe.asterionsystem.core.state.InMemoryStateStore;
 
-/** Native Android shell. Catalog is read-only; planning and progress are not enabled. */
+/** Native Android shell. Catalog and planning are enabled; progress, reminders and execution remain excluded. */
 public final class MainActivity extends Activity {
     private static final String KEY_CATALOG_SELECTED_ID = "asterion.catalog.selected.id.v1";
 
@@ -34,6 +38,7 @@ public final class MainActivity extends Activity {
     private NavigationController navigation;
     private NavigationRenderer renderer;
     private CatalogPresenter catalogPresenter;
+    private SchedulePresenter schedulePresenter;
     private EntityId selectedCatalogItem;
     private Subscription navigationSubscription;
     private OnBackInvokedCallback systemBackCallback;
@@ -57,6 +62,13 @@ public final class MainActivity extends Activity {
         catalogPresenter = new CatalogPresenter(this, database,
                 new BackgroundCatalogOperations(new SQLiteCatalogRepository(database)));
         catalogPresenter.restore(savedInstanceState);
+
+        AsterionDatabaseHelper plannerDb = new AsterionDatabaseHelper(getApplicationContext());
+        schedulePresenter = new SchedulePresenter(this, plannerDb,
+                new BackgroundScheduleOperations(new SchedulePlanner(
+                        new SQLiteScheduleRepository(plannerDb),
+                        new SQLiteCatalogRepository(plannerDb))));
+        schedulePresenter.restore(savedInstanceState);
 
         if (savedInstanceState != null) {
             String rawId = savedInstanceState.getString(KEY_CATALOG_SELECTED_ID, "");
@@ -84,7 +96,8 @@ public final class MainActivity extends Activity {
         View screen = renderer.render(route,
                 () -> navigation.navigateTo(NavigationRoute.SECONDARY),
                 () -> navigation.goBack(),
-                () -> navigation.navigateTo(NavigationRoute.CATALOG));
+                () -> navigation.navigateTo(NavigationRoute.CATALOG),
+                () -> navigation.navigateTo(NavigationRoute.PLAN));
 
         if (route == NavigationRoute.CATALOG) {
             catalogPresenter.bindList(screen, id -> {
@@ -93,6 +106,21 @@ public final class MainActivity extends Activity {
             }, () -> navigation.goBack());
         } else if (route == NavigationRoute.CATALOG_DETAIL) {
             catalogPresenter.bindDetail(screen, selectedCatalogItem, () -> navigation.goBack());
+        } else if (route == NavigationRoute.PLAN) {
+            schedulePresenter.bindCalendar(screen,
+                    () -> navigation.goBack(),
+                    () -> {
+                        schedulePresenter.newEntry();
+                        navigation.navigateTo(NavigationRoute.PLAN_FORM);
+                    },
+                    id -> {
+                        schedulePresenter.editEntry(id);
+                        navigation.navigateTo(NavigationRoute.PLAN_FORM);
+                    });
+            selectedCatalogItem = null;
+        } else if (route == NavigationRoute.PLAN_FORM) {
+            schedulePresenter.bindForm(screen, () -> navigation.goBack());
+            selectedCatalogItem = null;
         } else {
             selectedCatalogItem = null;
         }
@@ -119,6 +147,7 @@ public final class MainActivity extends Activity {
     @Override protected void onSaveInstanceState(Bundle output) {
         NavigationBundleAdapter.save(output, navigation.state());
         catalogPresenter.save(output);
+        schedulePresenter.save(output);
         if (selectedCatalogItem != null) {
             output.putString(KEY_CATALOG_SELECTED_ID, selectedCatalogItem.value());
         }
@@ -150,6 +179,7 @@ public final class MainActivity extends Activity {
             getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(systemBackCallback);
             backCallbackRegistered = false;
         }
+        schedulePresenter.close();
         catalogPresenter.close();
         navigationSubscription.close();
         lifecycleAdapter.onDestroyed();

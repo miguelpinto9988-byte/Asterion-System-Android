@@ -1,45 +1,37 @@
-# Asterion System — Android nativo (Java + XML)
+# Asterion System — Android nativo Java
 
-**Fases implementadas:** 00 (análisis), 01 (proyecto base), 02 (arquitectura), 04 (navegación), 05 (SQLite), 06 (motor de reglas) y **07 (catálogo de contenidos y actividades)**. La fase 03 de diseño visual definitivo sigue pendiente de autorización.
+**Estado:** implementadas fases 00, 01, 02, 04, 05, 06, 07 y **08 (planificación y programación)**. La fase 03 (diseño definitivo) permanece pendiente.
+
+Proyecto Java nativo Android con vistas XML. El HTML se utiliza **solo como previsualización externa**. No se han incorporado HTML, JavaScript, CSS, WebView o Compose a las pantallas Android.
 
 ## Arquitectura
 
-- **`:core`** — Java puro: dominio, eventos, navegación, estado, contratos de datos, motor de reglas y catálogo.
-- **`:app`** — Android Java con pantallas XML nativas, adaptadores Android, SQLite y presentadores de UI.
-- **`docs/fase-0*`** — documentación y criterios de aceptación de cada fase.
-- **`tests/`** — pruebas SQLite de escritorio, independientes de Android.
+- `:core`: Java puro; dominio, eventos, estado, navegación, reglas, catálogo y planificación.
+- `:app`: `MainActivity`, adaptadores Android, pantallas XML, SQLiteOpenHelper y repositorios SQLite.
+- SQLite `asterion_internal.db`: esquema v4 con migración adicional 3→4, no destructiva.
+- `docs/fase-08/`: especificaciones y pruebas de planificación.
 
-El proyecto es original e independiente de Agenda Clara; no copia código ni activos de Hunter System.
+## Fase 08
 
-## Fase 07: catálogo
+El planificador permite programar **actividades del catálogo** con fecha civil local, hora inicial y duración de 1–720 minutos sin cruzar medianoche. Un servicio Java y cuatro triggers SQLite previenen entradas superpuestas, incluidos conflictos durante escrituras concurrentes. Las pantallas `screen_plan.xml` y `screen_plan_form.xml` permiten consultar la semana, seleccionar días, crear, editar y eliminar programaciones. Ninguna programación ejecuta automáticamente una actividad ni produce recordatorios.
 
-Las pantallas `screen_catalog.xml` y `screen_catalog_detail.xml` permiten consultar cuatro fichas técnicas de demostración clasificadas en tres categorías, con etiquetas, búsqueda y filtros. `screen_home.xml` incluye un botón de acceso. `MainActivity` preserva filtros y selección temporal en `Bundle`.
+La previsualización HTML (entregada fuera de la app) simula ese comportamiento con almacenamiento del navegador; no equivale a la ejecución Android.
 
-La infraestructura SQLite migra a **esquema v3**, añadiendo `catalog_categories`, `catalog_items`, `catalog_tags` y `catalog_item_tags` sin eliminar `technical_records`. Se emplean consultas parametrizadas y un worker Java para evitar trabajar en el hilo principal Android.
+## Sin compilar APK
 
-**Las fichas son datos de prueba, no contenidos definitivos.** Todavía no existen programación, seguimiento, multimedia ni edición de catálogo.
+**No se compila ni genera APK sin autorización expresa.** `.github/workflows/android-ci.yml` conserva solamente `workflow_dispatch`. Las publicaciones en GitHub no activan trabajos automáticos de compilación.
 
-## Previsualización
+La lógica SQL se probó localmente con SQLite de escritorio. La previsualización se verificó mediante Chromium y las pruebas Java JUnit permanecen preparadas, **sin ejecutarse por Gradle**. La compilación y ejecución Android siguen pendientes.
 
-La revisión del diseño y comportamiento se realiza mediante el HTML independiente `Asterion-System_Fase-07_Previsualizacion_Interactiva.html` entregado en la conversación. Incluye catálogo, filtros, detalle y simuladores técnicos de las fases 05 y 06. El HTML **no** se incorpora a la APK ni se conecta a SQLite Android. Las pantallas reales se mantienen exclusivamente en XML y Java.
+## Documentación
 
-## Prohibición de compilación APK
+- [Arquitectura de planificación](docs/fase-08/08-arquitectura.md)
+- [Esquema y migración](docs/fase-08/08-esquema-y-migracion.md)
+- [Validación y limitaciones](docs/fase-08/08-validacion.md)
+- [Trazabilidad](docs/fase-08/08-trazabilidad.md)
 
-No ejecutar `assembleDebug`, `assembleRelease` ni producir ninguna APK sin autorización expresa. El workflow `.github/workflows/android-ci.yml` permanece limitado a `workflow_dispatch`; publicar commits no inicia compilaciones automáticas.
+## Fases
 
-## Tecnologías
+Fases 03, 09, 11 y 14 pendientes de aprobación. Fases 15 y 16 están incluidas en el plan maestro para validación, optimización y publicación futura, sujetas a alcance y autorización. Fases 10, 12 y 13 excluidas.
 
-Java 17, Android Views XML, Android Gradle Plugin 8.13.2, Gradle 8.13; `compileSdk=36`, `targetSdk=36`, `minSdk=26`. Sin WebView, JavaScript ni Compose como interfaz de la aplicación.
-
-## Referencias
-
-- [Arquitectura del catálogo](docs/fase-07/07-arquitectura-catalogo.md)
-- [SQLite v3 y migración](docs/fase-07/07-esquema-y-migracion.md)
-- [Validación y límites](docs/fase-07/07-validacion.md)
-- [Trazabilidad](docs/fase-07/07-trazabilidad.md)
-
-## Próximas decisiones
-
-Fases 08, 09, 11 y 14 siguen pendientes de aprobación, igual que la fase 03. La siguiente fase por orden es **08 (planificación y programación)**, no autorizada todavía. Las fases 10, 12 y 13 siguen excluidas.
-
-No hay licencia de código abierto seleccionada. No almacenes ni publiques credenciales y claves de firma.
+El repositorio es público pero no se ha seleccionado licencia de reutilización; no incorporar contraseñas, certificados o datos sensibles.

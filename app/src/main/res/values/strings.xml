@@ -3,7 +3,7 @@
     <string name="app_name">Asterion System</string>
     <string name="bootstrap_caption">Fase 01 · Proyecto Android nativo</string>
     <string name="bootstrap_description">Estructura inicial en Java. Funcionalidades pendientes.</string>
-    <string name="navigation_home_subtitle">Fase 07 · Catálogo nativo</string>
+    <string name="navigation_home_subtitle">Fase 08 · Planificación nativa</string>
     <string name="navigation_placeholder_text">Interfaz provisional XML. El catálogo incluye solo contenidos de demostración.</string>
     <string name="navigation_open_secondary">Abrir pantalla secundaria</string>
     <string name="navigation_secondary_title">Pantalla secundaria</string>
@@ -28,4 +28,33 @@
     <string name="catalog_missing">No se encontró este elemento</string>
     <string name="catalog_tags_label">Etiquetas: %1$s</string>
     <string name="catalog_category_label">Categoría: %1$s</string>
+
+    <string name="plan_open">Abrir planificador semanal</string>
+    <string name="plan_title">Planificador Asterion</string>
+    <string name="plan_subtitle">Programación local, sin recordatorios automáticos</string>
+    <string name="plan_previous_week">Semana anterior</string>
+    <string name="plan_next_week">Semana siguiente</string>
+    <string name="plan_selected_day">Actividades del %1$s</string>
+    <string name="plan_loading">Consultando planificación…</string>
+    <string name="plan_empty">No hay actividades programadas este día</string>
+    <string name="plan_count">%1$d actividades programadas</string>
+    <string name="plan_load_error">No se pudo cargar la planificación</string>
+    <string name="plan_create">Programar actividad</string>
+    <string name="plan_back">Volver al inicio</string>
+    <string name="plan_form_title">Programar actividad</string>
+    <string name="plan_form_subtitle">Elige una actividad del catálogo y un horario local</string>
+    <string name="plan_activity_label">Actividad del catálogo</string>
+    <string name="plan_date_label">Fecha (AAAA-MM-DD)</string>
+    <string name="plan_time_label">Hora inicial (HH:mm)</string>
+    <string name="plan_duration_label">Duración en minutos (1 a 720)</string>
+    <string name="plan_new_hint">Completa los campos y guarda.</string>
+    <string name="plan_edit_hint">Puedes cambiar el horario o eliminar esta programación.</string>
+    <string name="plan_saving">Guardando programación…</string>
+    <string name="plan_save">Guardar horario</string>
+    <string name="plan_delete">Eliminar programación</string>
+    <string name="plan_cancel">Cancelar y volver</string>
+    <string name="plan_confirm_delete">¿Eliminar esta programación?</string>
+    <string name="plan_conflict">Conflicto: el horario coincide con otra actividad.</string>
+    <string name="plan_invalid">Comprueba la fecha, la hora y la duración.</string>
+    <string name="plan_save_error">No se pudo guardar el cambio.</string>
 </resources>

@@ -20,7 +20,7 @@ public final class NavigationRenderer {
     }
 
     public View render(NavigationRoute route, Runnable openSecondary,
-                       Runnable back, Runnable openCatalog) {
+                       Runnable back, Runnable openCatalog, Runnable openPlan) {
         Objects.requireNonNull(route, "route");
         final int layout;
         switch (route) {
@@ -28,6 +28,8 @@ public final class NavigationRenderer {
             case SECONDARY: layout = R.layout.screen_secondary; break;
             case CATALOG: layout = R.layout.screen_catalog; break;
             case CATALOG_DETAIL: layout = R.layout.screen_catalog_detail; break;
+            case PLAN: layout = R.layout.screen_plan; break;
+            case PLAN_FORM: layout = R.layout.screen_plan_form; break;
             default: throw new IllegalArgumentException("Ruta no soportada: " + route);
         }
         View screen = LayoutInflater.from(activity).inflate(layout, host, false);
@@ -36,6 +38,8 @@ public final class NavigationRenderer {
             openSecond.setOnClickListener(view -> openSecondary.run());
             Button openCatalogButton = screen.findViewById(R.id.open_catalog);
             openCatalogButton.setOnClickListener(view -> openCatalog.run());
+            Button openPlanButton = screen.findViewById(R.id.open_plan);
+            openPlanButton.setOnClickListener(view -> openPlan.run());
         } else if (route == NavigationRoute.SECONDARY) {
             Button backButton = screen.findViewById(R.id.back_to_home);
             backButton.setOnClickListener(view -> back.run());

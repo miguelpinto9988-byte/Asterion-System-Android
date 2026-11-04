@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asterion_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/plan_form_title"
+            android:textColor="@color/asterion_text"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/plan_form_subtitle"
+            android:textColor="@color/asterion_text_secondary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/plan_activity_label"
+            android:textColor="@color/asterion_text" />
+
+        <Spinner
+            android:id="@+id/plan_activity"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:contentDescription="@string/plan_activity_label" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/plan_date_label"
+            android:textColor="@color/asterion_text" />
+
+        <EditText
+            android:id="@+id/plan_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="AAAA-MM-DD"
+            android:inputType="date"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:textColor="@color/asterion_text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/plan_time_label"
+            android:textColor="@color/asterion_text" />
+
+        <EditText
+            android:id="@+id/plan_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="09:00"
+            android:inputType="time"
+            android:maxLength="5"
+            android:singleLine="true"
+            android:textColor="@color/asterion_text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/plan_duration_label"
+            android:textColor="@color/asterion_text" />
+
+        <EditText
+            android:id="@+id/plan_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="30"
+            android:inputType="number"
+            android:maxLength="3"
+            android:singleLine="true"
+            android:textColor="@color/asterion_text" />
+
+        <TextView
+            android:id="@+id/plan_form_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/plan_loading"
+            android:textColor="@color/asterion_text_secondary"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/plan_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/plan_save" />
+
+        <Button
+            android:id="@+id/plan_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/plan_delete" />
+
+        <Button
+            android:id="@+id/plan_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/plan_cancel" />
+    </LinearLayout>
+</ScrollView>
