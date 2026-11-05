@@ -53,7 +53,7 @@ jobs:
           python3 tests/phase03_visual_source_contract.py
 
       - name: Ejecutar pruebas de core, pruebas debug, lint y ensamblado debug
-        run: gradle --no-daemon --stacktrace :core:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
+        run: gradle --no-daemon --stacktrace --continue :core:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
 
       - name: Verificar APK firmada de desarrollo
         run: |

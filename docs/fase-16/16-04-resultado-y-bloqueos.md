@@ -58,6 +58,29 @@ Se consultaron las 11 pantallas XML y los recursos base del repositorio en la ra
 
 Estas comprobaciones **no usan `aapt2`**, por lo que no garantizan una compilación sin errores. El workflow manual añade la ejecución de `tests/phase16_preflight_static.py` y `tests/phase03_visual_source_contract.py` antes de las tareas Gradle; esas pruebas Python están **preparadas, no ejecutadas** en el checkout completo.
 
+## Primera ejecución real del workflow — 5 de noviembre de 2026
+
+- **Run ID:** [42091749135](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42091749135).
+- **Commit ejecutado:** `7da6b9af3e9b32a1d6dbe6f3328a4f6b77f5037a`.
+- **Evento:** `workflow_dispatch` iniciado manualmente por el propietario.
+- **Estado final:** `failure`.
+- **Preparación JDK 17, Gradle 8.13 y SDK Android 36:** completada.
+- **Verificaciones estáticas fase 03 y 16:** superadas.
+- **Tarea `:core:test`:** 58 pruebas, **57 superadas y 1 fallida**.
+- **Prueba fallida:** `SchedulePlannerBulkTitlesTest.emptyDayProducesNoListings`; el doble de prueba reclamaba tres IDs al resolver un día vacío.
+- **Tareas `:app:testDebugUnitTest`, `:app:lintDebug`, `:app:assembleDebug`:** no ejecutadas debido a la detención en `:core:test`.
+- **Verificación de APK / artifact:** omitidas; ningún APK generado.
+
+### Corrección acotada tras la ejecución fallida
+
+Se corrigieron únicamente `SchedulePlanner.listWithTitles`, su prueba JUnit y el comando de diagnóstico del workflow:
+
+1. Para un día sin actividades, `listWithTitles` devuelve la lista vacía sin consultar títulos al catálogo.
+2. La prueba exige ahora **cero consultas** de catálogo, tanto agrupadas como individuales, para ese caso.
+3. Se incorpora `--continue` a Gradle para que futuras ejecuciones intenten ejecutar las demás tareas independientes aunque alguna prueba falle; **Gradle seguirá devolviendo error si hay fallos**, y la verificación/subida de la APK permanecerán bloqueadas hasta el éxito del paso completo.
+
+**Importante:** estas correcciones todavía no se han validado mediante una segunda ejecución Gradle. No se modifica ninguna regla de negocio, firma de release, SQLite, Android SDK ni disparadores automáticos.
+
 ## Procedimiento necesario para completar la compilación
 
 1. Abrir [GitHub Actions del repositorio](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/workflows/android-ci.yml).

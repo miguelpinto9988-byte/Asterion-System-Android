@@ -3,6 +3,7 @@ package pe.asterionsystem.core.planning;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Map;
@@ -40,6 +41,8 @@ public final class SchedulePlanner {
 
     public List<ScheduleListing> listWithTitles(LocalDate day) {
         List<ScheduledActivity> scheduled = forDate(day);
+        // No catalog lookup is necessary when the selected day has no entries.
+        if (scheduled.isEmpty()) return Collections.emptyList();
         List<EntityId> ids = new ArrayList<>(scheduled.size());
         for (ScheduledActivity entry : scheduled) {
             ids.add(entry.activityId());

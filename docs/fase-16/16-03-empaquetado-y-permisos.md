@@ -1,10 +1,10 @@
 # Fase 16.3 — Estrategia provisional de empaquetado y autorización
 
-**Actualización, 5 de noviembre de 2026:** el propietario autorizó expresamente una primera compilación **APK debug** con pruebas y lint Gradle. La autorización **no comprende** release ni firma de distribución. La compilación está pendiente por impedimentos técnicos de este entorno.
+**Actualización, 5 de noviembre de 2026:** el propietario autorizó expresamente una primera compilación **APK debug** con pruebas y lint Gradle. La autorización **no comprende** release ni firma de distribución. La primera ejecución de GitHub Actions se inició manualmente el 5 de noviembre de 2026, pero terminó con un error JUnit; la corrección está preparada y su ejecución pendiente.
 
 ## Primera variante recomendada
 
-**Depuración / `debug`** para la primera validación Android real, aprobada para una primera compilación, todavía no ejecutada.
+**Depuración / `debug`** para la primera validación Android real, aprobada para una primera compilación, ya intentada y fallida durante las pruebas.
 
 - ID: `pe.asterionsystem.app`
 - `versionCode`: `1` (actual, provisional)
@@ -23,7 +23,7 @@
 
 ## Barrera de autorización
 
-**Esa aprobación adicional ya se recibió para la variante `debug` y para pruebas/lint de Gradle.** El impedimento actual es técnico: este entorno no dispone de Gradle ni Android SDK y la conexión de GitHub disponible no incorpora el comando de iniciar workflow manual. No es necesario solicitar de nuevo la autorización; hace falta ejecutar el workflow desde una interfaz habilitada.
+**Esa aprobación adicional ya se recibió para la variante `debug` y para pruebas/lint de Gradle.** El primer workflow fue iniciado manualmente por el propietario, pero falló en una prueba JUnit antes de crear una APK. El código corregido debe validarse mediante una nueva ejecución manual. La conexión disponible no permite iniciar por sí misma un evento `workflow_dispatch`. No se requiere volver a autorizar la variante debug.
 
 Ejemplo de mensaje futuro, **no autorizado por este documento**:
 
@@ -33,7 +33,7 @@ Para cualquier variante o fase futura sin autorización, **no ejecutar** comando
 
 ## Etapas restantes
 
-- **16.4 Compilación:** autorizada para debug, pero técnicamente no ejecutada.
+- **16.4 Compilación:** primer intento fallido en `:core:test` (57/58 correctas); corrección en fuente y repetición manual pendientes.
 - **16.5 Validación de APK:** pendiente de que la ejecución genere una APK real.
 - **16.6 Entrega e instalación:** bloqueada, sin artefacto verificable.
 - **16.7 Cierre y publicación del paquete:** bloqueada hasta la aprobación y validación del artefacto. Publicar **solo documentación o cambios fuente** durante preparación no equivale a entregar APK.

@@ -62,6 +62,7 @@ public final class SchedulePlannerBulkTitlesTest {
         List<ScheduleListing> result = new SchedulePlanner(new FakeSchedules(), catalog)
                 .listWithTitles(DATE.plusDays(1));
         assertTrue(result.isEmpty());
-        assertEquals(1, catalog.batchCalls);
+        assertEquals(0, catalog.batchCalls);
+        assertEquals(0, catalog.singleCalls);
     }
 }

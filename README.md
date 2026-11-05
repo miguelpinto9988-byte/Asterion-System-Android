@@ -67,15 +67,15 @@ La integración incorpora **ilustraciones vectoriales originales** del Guardián
 - [Prueba estática sin Android](tests/phase03_visual_source_contract.py)
 - [Integración vectorial y componentes](docs/fase-03/03-integracion-vectorial.md)
 
-## Fase 16 — Preparación previa a la compilación (autorización parcial)
+## Fase 16 — Primera compilación debug autorizada y diagnóstico inicial
 
-**La fase 16 cuenta ya con autorización expresa para la primera compilación APK `debug`, y para ejecutar las pruebas y lint de Gradle necesarios.** Sin embargo, la compilación **no se ha ejecutado**: el entorno de trabajo no dispone de Android SDK ni Gradle, no tiene acceso de red para instalarlos, y la conexión actual de GitHub no permite iniciar una nueva ejecución de `workflow_dispatch`. La versión `release` y la firma de distribución siguen excluidas.
+**La fase 16 cuenta ya con autorización expresa para la primera compilación APK `debug`, y para ejecutar las pruebas y lint de Gradle necesarios.** El **5 de noviembre de 2026** se inició [la primera ejecución manual de GitHub Actions](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42091749135): 58 pruebas JUnit, 57 correctas y una fallida. Se corrigió el caso de día vacío y hace falta repetir la ejecución para validar el arreglo. La versión `release` y la firma de distribución siguen excluidas.
 
 - Se revisó AGP **8.13.2**, Gradle **8.13** en CI manual, JDK **17**, `minSdk 26` y `targetSdk/compileSdk 36`.
 - Se preparó un ajuste de áreas de seguridad Android API 35+ en `MainActivity` y `activity_main.xml` para compatibilidad con edge-to-edge, **todavía no probado en Android**.
-- Se añadió `tests/phase16_preflight_static.py`, que examina código, XML, manifiesto, privacidad y CI usando solamente Python. No se invocó Gradle ni se construyó una APK.
+- Se añadió `tests/phase16_preflight_static.py`, que examina código, XML, manifiesto, privacidad y CI usando solamente Python. La verificación estática se superó en el primer workflow; Gradle se ejecutó, pero se detuvo en una prueba antes de generar una APK.
 - No hay Gradle Wrapper versionado; el workflow manual instala Gradle 8.13. Release no tiene firma de distribución configurada.
-- La primera compilación **recomendada para valorar posteriormente** sería debug, pero su ejecución **no está autorizada** por esta preparación.
+- La variante `debug` está autorizada. El primer intento falló en una prueba JUnit ya corregida en fuente. Se necesita una nueva ejecución manual.
 
 Documentación:
 - [Auditoría previa](docs/fase-16/16-01-auditoria-precompilacion.md)
@@ -83,11 +83,11 @@ Documentación:
 - [Empaquetado y permisos](docs/fase-16/16-03-empaquetado-y-permisos.md)
 - [Estados de las siete etapas](docs/fase-16/16-estado-y-trazabilidad.md)
 
-## Fase 16.4 — Ejecución autorizada, entorno bloqueado
+## Fase 16.4 — Primera ejecución fallida; corrección preparada
 
 Se autorizó compilar `debug` y ejecutar JUnit y lint de Gradle. El workflow `.github/workflows/android-ci.yml` continúa **solo manual**, con tareas `:core:test`, `:app:testDebugUnitTest`, `:app:lintDebug` y `:app:assembleDebug`, y validación posterior mediante `apksigner`, `aapt` y `sha256sum`.
 
-**No hay una APK producida en esta sesión.** Consulta el [informe de ejecución y procedimiento manual](docs/fase-16/16-04-resultado-y-bloqueos.md). El workflow debe activarse manualmente desde GitHub Actions; no se han añadido triggers automáticos.
+**Aún no existe una APK debug del código actual.** La primera ejecución falló en `:core:test` (57/58 pruebas correctas). La corrección se publicó en fuente, pendiente de nueva ejecución manual. Consulta el [informe de errores y correcciones](docs/fase-16/16-04-resultado-y-bloqueos.md).
 
 ## Sin compilar APK
 
@@ -130,6 +130,6 @@ Para comprobar archivos y referencias sin generar APK: `python3 tests/phase11_pr
 
 ## Fases
 
-La fase 03 incorpora el diseño oscuro vectorial publicado. Las fases 14 y 15 están publicadas. La primera compilación `debug` de fase 16 está **autorizada pero pendiente de ejecución**; la firma de distribución y la versión `release` no están autorizadas. Las fases 10, 12 y 13 permanecen excluidas.
+La fase 03 incorpora el diseño oscuro vectorial publicado. Las fases 14 y 15 están publicadas. La primera compilación `debug` de fase 16 está **autorizada, con un intento fallido y una corrección pendiente de nueva prueba**; la firma de distribución y la versión `release` no están autorizadas. Las fases 10, 12 y 13 permanecen excluidas.
 
 El repositorio es público pero no se ha seleccionado licencia de reutilización; no incorporar contraseñas, certificados o datos sensibles.
