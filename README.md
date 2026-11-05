@@ -56,6 +56,16 @@ Comprobaciones de fuente: `python3 tests/phase14_offline_static_smoke.py`. Prueb
 
 Pruebas **sin Android** efectuadas: previsualización HTML externa con 36 verificaciones Chromium y cinco ensayos equivalentes SQLite de escritorio con el esquema de consultas por lotes. Se añadieron pruebas estáticas Python y fuente JUnit para una ejecución posterior autorizada. No constituyen pruebas de una APK Android real.
 
+## Fase 03 — Integración visual nativa de fantasía oscura
+
+Se incorporó al código fuente una primera versión del sistema visual oscuro de Asterion System, basado en la previsualización revisada: paleta azul-violeta, fondos degradados, botones de estados accesibles, tipografía serif para encabezados y controles táctiles de 48dp. Se conservaron todas las rutas y funcionalidades Java/XML existentes.
+
+La integración no incluye personajes oficiales ni material de terceros; las ilustraciones originales quedan para una revisión posterior. **Pendiente de validación Android real y aprobación final del aspecto visual.**
+
+- [Identidad y alcance](docs/fase-03/03-identidad-visual.md)
+- [Verificaciones y pendientes](docs/fase-03/03-validacion-y-pendientes.md)
+- [Prueba estática sin Android](tests/phase03_visual_source_contract.py)
+
 ## Fase 16 — Preparación previa a la compilación (autorización parcial)
 
 **La fase 16 está aprobada como plan, pero solo se han autorizado 16.1–16.3:** auditoría técnica, correcciones fuente previas y estrategia provisional de empaquetado. Las etapas de compilación, validación del artefacto, entrega y cierre (16.4–16.7) **están detenidas** hasta recibir otro permiso explícito.

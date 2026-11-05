@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="asterion_background">#FFFFFF</color>
-    <color name="asterion_text">#1C2638</color>
-    <color name="asterion_text_secondary">#526072</color>
+    <!-- Phase 03: original dark-fantasy system. Functional text retains high contrast. -->
+    <color name="asterion_background">#090E1D</color>
+    <color name="asterion_surface">#141D37</color>
+    <color name="asterion_surface_raised">#202B4A</color>
+    <color name="asterion_text">#F4F7FF</color>
+    <color name="asterion_text_secondary">#C3CDE5</color>
+    <color name="asterion_accent">#76C7FF</color>
+    <color name="asterion_violet">#A79BFF</color>
+    <color name="asterion_outline">#6477BE</color>
+    <color name="asterion_success">#91F4CC</color>
 </resources>

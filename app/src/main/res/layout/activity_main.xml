@@ -3,7 +3,7 @@
     android:id="@+id/bootstrap_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/asterion_background">
+    android:background="@drawable/asterion_night_backdrop">
 
     <FrameLayout
         android:id="@+id/navigation_host"

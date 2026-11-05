@@ -7,9 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/asterion_background"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="20dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,7 +17,9 @@
         android:gravity="center"
         android:text="@string/app_name"
         android:textColor="@color/asterion_text"
-        android:textSize="26sp"
+        android:textSize="30sp"
+        android:fontFamily="serif"
+        android:letterSpacing="0.045"
         android:textStyle="bold" />
 
     <TextView
@@ -35,47 +37,49 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/navigation_placeholder_text"
+        android:background="@drawable/asterion_arcane_panel"
+        android:padding="16dp"
         android:textColor="@color/asterion_text_secondary"
         android:textSize="14sp" />
 
     <Button
         android:id="@+id/open_secondary"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/navigation_open_secondary" />
 
     <Button
         android:id="@+id/open_plan"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/plan_open" />
 
     <Button
         android:id="@+id/open_progress"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/progress_open" />
 
     <Button
         android:id="@+id/open_settings"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/settings_open" />
 
     <Button
         android:id="@+id/open_local_status"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/local_status_open" />
 
     <Button
         android:id="@+id/open_catalog"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/catalog_open_button" />
