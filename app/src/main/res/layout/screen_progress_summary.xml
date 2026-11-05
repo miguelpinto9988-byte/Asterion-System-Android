@@ -11,6 +11,14 @@
         android:orientation="vertical"
         android:padding="22dp">
 
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/asterion_crest" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,6 +26,7 @@
             android:text="@string/progress_summary_title"
             android:textColor="@color/asterion_text"
             android:textSize="24sp"
+            android:letterSpacing="0.04"
             android:textStyle="bold"
         android:fontFamily="serif" />
 
@@ -61,6 +70,9 @@
 
         <TextView
             android:id="@+id/progress_summary_total"
+            android:background="@drawable/asterion_list_card"
+            android:padding="12dp"
+            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="—"
@@ -78,6 +90,9 @@
 
         <TextView
             android:id="@+id/progress_summary_done"
+            android:background="@drawable/asterion_list_card"
+            android:padding="12dp"
+            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="—"
@@ -93,6 +108,9 @@
 
         <TextView
             android:id="@+id/progress_summary_skipped"
+            android:background="@drawable/asterion_list_card"
+            android:padding="12dp"
+            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="—"
@@ -108,6 +126,9 @@
 
         <TextView
             android:id="@+id/progress_summary_pending"
+            android:background="@drawable/asterion_list_card"
+            android:padding="12dp"
+            android:layout_marginTop="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="—"
@@ -120,7 +141,9 @@
             android:layout_width="match_parent"
             android:layout_height="18dp"
             android:layout_marginTop="24dp"
-            android:max="100" />
+            android:max="100"
+            android:progressTint="@color/asterion_accent"
+            android:progressBackgroundTint="@color/asterion_surface_raised" />
 
         <TextView
             android:id="@+id/progress_summary_state"

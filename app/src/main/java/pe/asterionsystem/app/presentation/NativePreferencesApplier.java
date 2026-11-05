@@ -30,7 +30,7 @@ public final class NativePreferencesApplier {
             ListView list = (ListView) view;
             float density = view.getResources().getDisplayMetrics().density;
             list.setDividerHeight(Math.max(1, Math.round(
-                    (p.listDensity() == AppPreferences.ListDensity.COMPACT ? 1 : 2) * density)));
+                    (p.listDensity() == AppPreferences.ListDensity.COMPACT ? 6 : 10) * density)));
         }
         if (view instanceof ViewGroup) {
             ViewGroup container = (ViewGroup) view;

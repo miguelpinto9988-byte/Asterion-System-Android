@@ -11,6 +11,14 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/asterion_crest" />
+
         <TextView
             android:id="@+id/catalog_detail_title"
             android:accessibilityLiveRegion="polite"
@@ -19,6 +27,7 @@
             android:text="@string/catalog_loading"
             android:textColor="@color/asterion_text"
             android:textSize="24sp"
+            android:letterSpacing="0.04"
             android:textStyle="bold"
         android:fontFamily="serif" />
 
@@ -40,6 +49,8 @@
 
         <TextView
             android:id="@+id/catalog_detail_description"
+            android:background="@drawable/asterion_list_card"
+            android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

@@ -7,13 +7,22 @@
     android:orientation="vertical"
     android:padding="24dp">
 
-    <TextView
+    <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/asterion_crest" />
+
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/navigation_secondary_title"
         android:textColor="@color/asterion_text"
         android:textSize="26sp"
+            android:letterSpacing="0.04"
         android:textStyle="bold"
         android:fontFamily="serif" />
 

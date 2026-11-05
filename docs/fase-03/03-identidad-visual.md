@@ -15,7 +15,7 @@
 
 La integración inicial aplica fondo oscuro a Inicio, Catálogo, detalle, Planificador, formulario, Seguimiento, resumen, Configuración, Estado local y pantalla secundaria. La pantalla Inicio usa botones de ancho completo y un panel de bienvenida ornamental. Las preferencias existentes de texto grande y densidad se conservan.
 
-Los personajes del concepto gráfico se reservan para ilustraciones **originales, opcionales y no funcionales**, pendientes de revisión de peso, licencias y adaptación móvil. No se incluyen personajes oficiales de Solo Leveling ni recursos de terceros sin licencia.
+Se han añadido dos ilustraciones vectoriales originales (`asterion_guardian.xml`, `asterion_shadow_sentinel.xml`), un emblema vectorial y cinco iconos de módulos. El guardián aparece en el encabezado Inicio y el centinela en la tarjeta Estado local. No se incluyen personajes oficiales de Solo Leveling, fuentes externas ni recursos de terceros sin licencia.
 
 ## Compatibilidad y límites
 

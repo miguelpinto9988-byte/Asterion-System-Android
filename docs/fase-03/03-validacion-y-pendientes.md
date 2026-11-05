@@ -14,6 +14,6 @@
 - Medir contraste de estados deshabilitados, texto secundario, spinners y listas dinámicas.
 - Revisar escalado de fuentes, teclado, orientación, TalkBack y pantallas pequeñas.
 - Validar imágenes originales de personajes antes de incluirlas en Android.
-- Revisar la previsualización HTML existente con el usuario antes de considerar el diseño visual definitivamente cerrado.
+- Revisar la nueva previsualización HTML interactiva con el usuario antes de considerar el diseño visual definitivamente cerrado. La simulación en Chromium verificó 23 interacciones entre escritorio y móvil; no verifica vistas Android.
 
 No se ejecutó Gradle, no se compiló APK y no se activó GitHub Actions.

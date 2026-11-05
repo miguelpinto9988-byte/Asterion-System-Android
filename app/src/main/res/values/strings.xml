@@ -131,4 +131,20 @@
     <string name="plan_date_format_hint">AAAA-MM-DD</string>
     <string name="plan_time_format_hint">HH:mm</string>
     <string name="plan_duration_format_hint">Ejemplo: 30</string>
+
+    <!-- Phase 03: original visual narrative, not a new business feature. -->
+    <string name="design_header_tagline">FANTASÍA OSCURA · INTERFAZ NATIVA</string>
+    <string name="design_hero_title">Tu sistema, a tu ritmo</string>
+    <string name="design_hero_description">Organiza tus actividades, consulta tu progreso y conserva el control.</string>
+    <string name="design_offline_state">◈ DATOS EN ESTE DISPOSITIVO</string>
+    <string name="design_guardian_description">Ilustración original de un guardián de Asterion con aura azul violeta</string>
+    <string name="design_section_actions">Módulos del sistema</string>
+    <string name="design_actions_caption">Selecciona un módulo para continuar</string>
+    <string name="design_nav_catalog">Catálogo</string>
+    <string name="design_nav_plan">Planificador</string>
+    <string name="design_nav_progress">Seguimiento</string>
+    <string name="design_nav_settings">Configuración</string>
+    <string name="design_local_title">Estado del sistema local</string>
+    <string name="design_local_description">Diagnóstico de almacenamiento y referencias SQLite, sin conexión.</string>
+    <string name="design_footer_note">ASTERION · MODO LOCAL · DISEÑO ORIGINAL</string>
 </resources>

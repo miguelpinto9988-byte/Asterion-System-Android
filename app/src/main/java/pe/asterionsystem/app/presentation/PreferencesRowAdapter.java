@@ -28,6 +28,10 @@ public final class PreferencesRowAdapter extends ArrayAdapter<String> {
         boolean large = preferences.textSize() == AppPreferences.TextSize.LARGE;
         boolean compact = preferences.listDensity() == AppPreferences.ListDensity.COMPACT;
         row.setTextSize(TypedValue.COMPLEX_UNIT_SP, large ? 19f : 16f);
+        row.setTextColor(getContext().getColor(R.color.asterion_text));
+        row.setBackgroundResource(R.drawable.asterion_list_row_selector);
+        row.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        row.setLineSpacing(dp(3), 1.0f);
         row.setPadding(dp(16), dp(compact ? 6 : 14), dp(16), dp(compact ? 6 : 14));
         row.setMinHeight(dp(compact ? 48 : 56));
         return row;
