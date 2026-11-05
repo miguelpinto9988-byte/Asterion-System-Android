@@ -102,6 +102,21 @@ class PreflightNoBuild(unittest.TestCase):
                 self.assertIn(match.group(2), self.res[match.group(1)],
                               f"{path.relative_to(ROOT)}: {match.group(0)}")
 
+    def test_java_generated_r_imports_are_declared(self):
+        """A nested-package class must import the application's generated R."""
+        for path in APP_JAVA.rglob("*.java"):
+            source = read(path)
+            package = re.search(r"(?m)^\s*package\s+([\w.]+)\s*;", source)
+            self.assertIsNotNone(package, str(path))
+            if package.group(1) == "pe.asterionsystem.app":
+                continue  # R is in the same package.
+            uses_app_r = re.search(
+                r"(?<![\w.])R\.(?:id|string|color|array|layout|drawable|style)\.[A-Za-z_0-9]+",
+                source)
+            if uses_app_r:
+                self.assertRegex(source, r"(?m)^import pe\.asterionsystem\.app\.R;",
+                                 f"Missing R import: {path.relative_to(ROOT)}")
+
     def test_sdk36_edge_to_edge_safe_insets(self):
         main = read(APP_JAVA / "pe/asterionsystem/app/MainActivity.java")
         xml = read(APP / "res/layout/activity_main.xml")

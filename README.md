@@ -87,7 +87,7 @@ Documentación:
 
 Se autorizó compilar `debug` y ejecutar JUnit y lint de Gradle. El workflow `.github/workflows/android-ci.yml` continúa **solo manual**, con tareas `:core:test`, `:app:testDebugUnitTest`, `:app:lintDebug` y `:app:assembleDebug`, y validación posterior mediante `apksigner`, `aapt` y `sha256sum`.
 
-**Aún no existe una APK debug del código actual.** La primera ejecución falló en `:core:test` (57/58 pruebas correctas). La corrección se publicó en fuente, pendiente de nueva ejecución manual. Consulta el [informe de errores y correcciones](docs/fase-16/16-04-resultado-y-bloqueos.md).
+**Aún no existe una APK debug del código actual.** La primera ejecución falló en una prueba JUnit; la segunda superó `:core:test` desde caché y encontró un error de importación `R` al compilar Java Android. Este segundo error ya está corregido en fuente, pendiente de nueva ejecución manual. Consulta el [informe de errores y correcciones](docs/fase-16/16-04-resultado-y-bloqueos.md).
 
 ## Sin compilar APK
 

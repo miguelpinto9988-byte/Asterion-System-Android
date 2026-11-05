@@ -5,7 +5,7 @@
 | 16.1 Auditoría previa | **Realizada en código fuente** | `16-01-auditoria-precompilacion.md` |
 | 16.2 Correcciones previas | **Preparada y revisada estáticamente**; sin compilación | `MainActivity`, `activity_main.xml`, `tests/phase16_preflight_static.py`, `16-02-correcciones-y-preflight.md` |
 | 16.3 Estrategia de empaquetado | **Propuesta documentada**, selección definitiva pendiente | `16-03-empaquetado-y-permisos.md` |
-| 16.4 Compilación Android | **Intentada; falló una prueba JUnit (`57/58` correctas)** | [Run #42091749135](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42091749135); arreglo en fuente, repetición pendiente |
+| 16.4 Compilación Android | **Dos intentos; corrección del fallo Java de importación `R` pendiente de validación** | [Run #42091749135](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42091749135); arreglo en fuente, repetición pendiente |
 | 16.5 Validación del artefacto | **Pendiente de una APK `debug` real** | No existe artefacto APK para verificar |
 | 16.6 Entrega y documentación de instalación | **Pendiente de un artefacto verificable** | No se emitirán instrucciones definitivas para una APK inexistente |
 | 16.7 Publicación y cierre de APK | **Pendiente** | La publicación de documentos de preparación no equivale a distribuir APK |

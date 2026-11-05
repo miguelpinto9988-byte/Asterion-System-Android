@@ -18,14 +18,14 @@ No se autorizó `release`, firma de distribución, activación automática del C
 
 ## Resultado real
 
-**La compilación no pudo iniciarse en esta sesión y no se generó una APK de Asterion System.**
+**Se registraron dos ejecuciones manuales en GitHub Actions: ambas fallaron antes de generar la APK.** En el entorno local del asistente no se pudo compilar directamente por falta de SDK y Gradle. La última ejecución falló por un import Java faltante, corregido en fuente y pendiente de validación.
 
-### Bloqueos comprobados
+### Bloqueos locales detectados antes de la primera ejecución manual (histórico)
 
 1. **Entorno de ejecución:** JDK local `openjdk 21` (el proyecto fija Java 17); no hay comando `gradle`, `sdkmanager`, `adb` ni variables configuradas `ANDROID_HOME` o `ANDROID_SDK_ROOT`. Sin Android SDK ni Gradle no puede compilarse el módulo `:app` ni ejecutarse `lintDebug`.
 2. **Red:** la conexión saliente del contenedor no resuelve los hosts de descarga de Google/Gradle/GitHub. No es viable instalar ahora el SDK o la distribución Gradle desde el contenedor.
-3. **Acceso GitHub:** la conexión de repositorio permite leer/modificar archivos, consultar ejecuciones y artefactos, pero **no dispone de una acción para crear un nuevo evento `workflow_dispatch`**. No se ejecutó una compilación remota.
-4. **Ejecuciones previas:** la API de Actions mostró dos ejecuciones anteriores del **4 de noviembre de 2026**, sobre commits antiguos; ninguna corresponde a la integración visual y el commit de preparación actual. Sus resultados **no** validan la versión actual.
+3. **Acceso GitHub:** la conexión permite leer/modificar archivos, consultar ejecuciones y artefactos, pero **no dispone de una acción para crear un nuevo `workflow_dispatch`**. El propietario inició posteriormente las dos ejecuciones manuales descritas abajo.
+4. **Ejecuciones históricas:** al comenzar la preparación solo había dos runs del 4 de noviembre de 2026 sobre commits antiguos. Posteriormente, el propietario activó los runs nuevos #42091749135 y #42093311100, descritos a continuación.
 
 ### Modificaciones preparadas para el workflow manual
 
@@ -80,6 +80,25 @@ Se corrigieron únicamente `SchedulePlanner.listWithTitles`, su prueba JUnit y e
 3. Se incorpora `--continue` a Gradle para que futuras ejecuciones intenten ejecutar las demás tareas independientes aunque alguna prueba falle; **Gradle seguirá devolviendo error si hay fallos**, y la verificación/subida de la APK permanecerán bloqueadas hasta el éxito del paso completo.
 
 **Importante:** estas correcciones todavía no se han validado mediante una segunda ejecución Gradle. No se modifica ninguna regla de negocio, firma de release, SQLite, Android SDK ni disparadores automáticos.
+
+## Segunda ejecución real — 5 de noviembre de 2026
+
+- **Run ID:** [42093311100](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42093311100).
+- **Commit ejecutado:** `ab23a18b8874ea6f628fc542c9a694c113b529f6`.
+- **Evento:** `workflow_dispatch`; resultado `failure`.
+- **Preflight estático fase 03/16:** correcto.
+- **`:core:test`:** correcto (`FROM-CACHE`, sin fallos), lo que confirma que la corrección del día vacío ya no bloquea las tareas.
+- **Falló:** `:app:compileDebugJavaWithJavac`, en `PreferencesRowAdapter.java` líneas 31 y 32: `package R does not exist`. La clase usa `R.color.asterion_text` y `R.drawable.asterion_list_row_selector` pero no importaba el paquete del `R` generado (`pe.asterionsystem.app.R`).
+- **`:app:lintDebug` y `:app:assembleDebug`:** no se completaron porque dependen de la compilación Java.
+- **Firma, hash y artefacto APK:** pasos omitidos; no hay APK verificable.
+
+### Corrección acotada posterior
+
+1. Se añadió `import pe.asterionsystem.app.R;` a `PreferencesRowAdapter.java`, sin modificar el comportamiento de sus filas ni sus referencias.
+2. Se añadió la prueba `test_java_generated_r_imports_are_declared` al preflight Python; detecta referencias `R.*` en subpaquetes Java sin la importación correspondiente.
+3. Se revisaron los 22 archivos Java bajo `:app`; el adaptador era el único caso con referencias `R.*` sin importación correspondiente.
+
+**Estado:** corrección publicada como fuente, pero todavía pendiente de una nueva ejecución real de Gradle para demostrar que compila. Solo se autorizó APK debug; CI permanece exclusivamente manual.
 
 ## Procedimiento necesario para completar la compilación
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
+import pe.asterionsystem.app.R;
 import pe.asterionsystem.app.platform.AndroidPreferencesRepository;
 import pe.asterionsystem.core.settings.AppPreferences;
 
