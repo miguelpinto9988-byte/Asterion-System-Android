@@ -69,7 +69,7 @@ La integración incorpora **ilustraciones vectoriales originales** del Guardián
 
 ## Fase 16 — Preparación previa a la compilación (autorización parcial)
 
-**La fase 16 está aprobada como plan, pero solo se han autorizado 16.1–16.3:** auditoría técnica, correcciones fuente previas y estrategia provisional de empaquetado. Las etapas de compilación, validación del artefacto, entrega y cierre (16.4–16.7) **están detenidas** hasta recibir otro permiso explícito.
+**La fase 16 cuenta ya con autorización expresa para la primera compilación APK `debug`, y para ejecutar las pruebas y lint de Gradle necesarios.** Sin embargo, la compilación **no se ha ejecutado**: el entorno de trabajo no dispone de Android SDK ni Gradle, no tiene acceso de red para instalarlos, y la conexión actual de GitHub no permite iniciar una nueva ejecución de `workflow_dispatch`. La versión `release` y la firma de distribución siguen excluidas.
 
 - Se revisó AGP **8.13.2**, Gradle **8.13** en CI manual, JDK **17**, `minSdk 26` y `targetSdk/compileSdk 36`.
 - Se preparó un ajuste de áreas de seguridad Android API 35+ en `MainActivity` y `activity_main.xml` para compatibilidad con edge-to-edge, **todavía no probado en Android**.
@@ -82,6 +82,12 @@ Documentación:
 - [Corrección y verificador estático](docs/fase-16/16-02-correcciones-y-preflight.md)
 - [Empaquetado y permisos](docs/fase-16/16-03-empaquetado-y-permisos.md)
 - [Estados de las siete etapas](docs/fase-16/16-estado-y-trazabilidad.md)
+
+## Fase 16.4 — Ejecución autorizada, entorno bloqueado
+
+Se autorizó compilar `debug` y ejecutar JUnit y lint de Gradle. El workflow `.github/workflows/android-ci.yml` continúa **solo manual**, con tareas `:core:test`, `:app:testDebugUnitTest`, `:app:lintDebug` y `:app:assembleDebug`, y validación posterior mediante `apksigner`, `aapt` y `sha256sum`.
+
+**No hay una APK producida en esta sesión.** Consulta el [informe de ejecución y procedimiento manual](docs/fase-16/16-04-resultado-y-bloqueos.md). El workflow debe activarse manualmente desde GitHub Actions; no se han añadido triggers automáticos.
 
 ## Sin compilar APK
 
@@ -124,6 +130,6 @@ Para comprobar archivos y referencias sin generar APK: `python3 tests/phase11_pr
 
 ## Fases
 
-La fase 03 (diseño visual definitivo) continúa pendiente. Las fases 14 y 15 están publicadas. La fase 16 tiene aprobada únicamente la **preparación 16.1–16.3**; la compilación, firma y entrega de APK permanecen **no autorizadas**. Las fases 10, 12 y 13 están excluidas.
+La fase 03 incorpora el diseño oscuro vectorial publicado. Las fases 14 y 15 están publicadas. La primera compilación `debug` de fase 16 está **autorizada pero pendiente de ejecución**; la firma de distribución y la versión `release` no están autorizadas. Las fases 10, 12 y 13 permanecen excluidas.
 
 El repositorio es público pero no se ha seleccionado licencia de reutilización; no incorporar contraseñas, certificados o datos sensibles.

@@ -1,10 +1,10 @@
 # Fase 16.3 — Estrategia provisional de empaquetado y autorización
 
-Esta especificación **no autoriza compilar, firmar, ejecutar workflows o publicar APK**.
+**Actualización, 5 de noviembre de 2026:** el propietario autorizó expresamente una primera compilación **APK debug** con pruebas y lint Gradle. La autorización **no comprende** release ni firma de distribución. La compilación está pendiente por impedimentos técnicos de este entorno.
 
 ## Primera variante recomendada
 
-**Depuración / `debug`** para la primera validación Android real, cuando el propietario lo apruebe por separado.
+**Depuración / `debug`** para la primera validación Android real, aprobada para una primera compilación, todavía no ejecutada.
 
 - ID: `pe.asterionsystem.app`
 - `versionCode`: `1` (actual, provisional)
@@ -23,18 +23,18 @@ Esta especificación **no autoriza compilar, firmar, ejecutar workflows o public
 
 ## Barrera de autorización
 
-La etapa 16.4 queda explícitamente **detenida** hasta que exista un mensaje separado del propietario que identifique una autorización para compilar una variante concreta. También deberá aclararse si se permite ejecutar tareas Gradle de pruebas y lint, además de la tarea de compilación.
+**Esa aprobación adicional ya se recibió para la variante `debug` y para pruebas/lint de Gradle.** El impedimento actual es técnico: este entorno no dispone de Gradle ni Android SDK y la conexión de GitHub disponible no incorpora el comando de iniciar workflow manual. No es necesario solicitar de nuevo la autorización; hace falta ejecutar el workflow desde una interfaz habilitada.
 
 Ejemplo de mensaje futuro, **no autorizado por este documento**:
 
 > Autorizo expresamente una compilación Android debug de Asterion System y las tareas Gradle de prueba/lint necesarias, sin publicar ninguna clave de firma ni activar CI automáticamente.
 
-Si la autorización no está presente, **no ejecutar** comandos `gradle`, `./gradlew`, `assembleDebug`, `assembleRelease`, `testDebugUnitTest`, `lintDebug` ni ninguna ejecución de `workflow_dispatch`.
+Para cualquier variante o fase futura sin autorización, **no ejecutar** comandos `gradle`, `./gradlew`, `assembleDebug`, `assembleRelease`, `testDebugUnitTest`, `lintDebug` ni ninguna ejecución de `workflow_dispatch`.
 
 ## Etapas restantes
 
-- **16.4 Compilación:** bloqueada, no ejecutada.
-- **16.5 Validación de APK:** bloqueada, no existe APK generada.
+- **16.4 Compilación:** autorizada para debug, pero técnicamente no ejecutada.
+- **16.5 Validación de APK:** pendiente de que la ejecución genere una APK real.
 - **16.6 Entrega e instalación:** bloqueada, sin artefacto verificable.
 - **16.7 Cierre y publicación del paquete:** bloqueada hasta la aprobación y validación del artefacto. Publicar **solo documentación o cambios fuente** durante preparación no equivale a entregar APK.
 

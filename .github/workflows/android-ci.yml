@@ -1,4 +1,4 @@
-name: Android — fase 01
+name: Asterion Android — debug manual
 
 # La compilación de APK no se inicia automáticamente.
 # Ejecutar únicamente mediante autorización expresa del propietario.
@@ -45,8 +45,8 @@ jobs:
           yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses >/dev/null || true
           "$SDKMANAGER" --sdk_root="$SDK_ROOT" 'platforms;android-36' 'build-tools;35.0.0'
 
-      - name: Ejecutar pruebas, lint y compilación
-        run: gradle --no-daemon :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
+      - name: Ejecutar pruebas de core, pruebas debug, lint y ensamblado debug
+        run: gradle --no-daemon --stacktrace :core:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
 
       - name: Verificar APK firmada de desarrollo
         run: |
@@ -54,12 +54,15 @@ jobs:
           APK=app/build/outputs/apk/debug/app-debug.apk
           test -s "$APK"
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$APK"
+          BADGING="$("$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK")"
+          printf '%s\n' "$BADGING" | grep -F "package: name='pe.asterionsystem.app' versionCode='1' versionName='0.1.0'"
+          ls -lh "$APK"
           sha256sum "$APK"
 
       - name: Publicar APK de depuración como artefacto CI
         uses: actions/upload-artifact@v4
         with:
-          name: asterion-phase01-debug-apk
+          name: asterion-fase16-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
