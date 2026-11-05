@@ -45,6 +45,13 @@ jobs:
           yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses >/dev/null || true
           "$SDKMANAGER" --sdk_root="$SDK_ROOT" 'platforms;android-36' 'build-tools;35.0.0'
 
+      - name: Verificar recursos XML y contratos de fase 03/16 sin compilar
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tests/phase16_preflight_static.py
+          python3 tests/phase03_visual_source_contract.py
+
       - name: Ejecutar pruebas de core, pruebas debug, lint y ensamblado debug
         run: gradle --no-daemon --stacktrace :core:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
 

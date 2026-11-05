@@ -52,6 +52,12 @@ En éxito, el workflow verifica el archivo `app/build/outputs/apk/debug/app-debu
 
 El workflow no incorpora tareas release, configuración de firma de distribución ni disparadores `push`, `pull_request` o `schedule`.
 
+## Revisión complementaria de recursos, antes de compilar
+
+Se consultaron las 11 pantallas XML y los recursos base del repositorio en la rama `main`. No se identificaron referencias inexistentes en los atributos `@string`, `@color` o `@drawable` examinados. Se comprobaron también las referencias `R.id` utilizadas por `MainActivity`, `NavigationRenderer`, `CatalogPresenter`, `SchedulePresenter`, `ProgressPresenter`, `SettingsPresenter` y `LocalStatusPresenter` contra los IDs declarados en los XML correspondientes: no hubo faltantes. Se verificó además que SQLite sigue en versión 5, las excepciones de recuperación son no destructivas y los patrones de exclusión de archivos APK y claves están presentes en `.gitignore`.
+
+Estas comprobaciones **no usan `aapt2`**, por lo que no garantizan una compilación sin errores. El workflow manual añade la ejecución de `tests/phase16_preflight_static.py` y `tests/phase03_visual_source_contract.py` antes de las tareas Gradle; esas pruebas Python están **preparadas, no ejecutadas** en el checkout completo.
+
 ## Procedimiento necesario para completar la compilación
 
 1. Abrir [GitHub Actions del repositorio](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/workflows/android-ci.yml).
