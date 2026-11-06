@@ -29,12 +29,8 @@ public final class SplashActivity extends ComponentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (Build.VERSION.SDK_INT >= 30) {
-            WindowInsetsController controller = getWindow().getInsetsController();
-            if (controller != null) {
-                controller.hide(WindowInsets.Type.navigationBars());
-            }
-        }
+        // The decor view does not exist yet during onCreate on Android 16.
+        // Never request the WindowInsetsController before window focus.
         setContentView(R.layout.activity_splash);
 
         boolean morning = SplashTimeWindow.isMorning(
@@ -46,6 +42,20 @@ public final class SplashActivity extends ComponentActivity {
         artwork.setContentDescription(getString(morning
                 ? R.string.splash_day_description
                 : R.string.splash_night_description));
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        // Android 16 can throw NullPointerException if PhoneWindow's
+        // insets controller is requested before its decor view is attached.
+        if (hasFocus && Build.VERSION.SDK_INT >= 30) {
+            WindowInsetsController controller =
+                    getWindow().getDecorView().getWindowInsetsController();
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.navigationBars());
+            }
+        }
     }
 
     @Override
