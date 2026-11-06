@@ -1,0 +1,439 @@
+package pe.asterionsystem.app;
+
+import android.app.Activity;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.text.Editable;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.AdapterView;
+import org.json.JSONObject;
+import org.json.JSONException;
+import pe.asterionsystem.app.presentation.NeonFrameDrawable;
+
+/** Native, data-driven forms for steps 2–4. These are provisional layouts; no HTML or runtime art. */
+final class ProfileRegistrationSteps {
+    static final int WHITE = Color.rgb(243, 247, 255);
+    static final int MUTED = Color.rgb(186, 203, 236);
+    static final int[] CAT_COLORS = {
+        Color.rgb(32,136,183), Color.rgb(132,86,202), Color.rgb(211,148,55),
+        Color.rgb(37,141,112), Color.rgb(185,81,114), Color.rgb(100,116,139)
+    };
+    static final String[] CATS = {
+        "Tren superior", "Tren central", "Tren inferior", "Movilidad", "Cardio", "Descanso"
+    };
+    static final String[] CAT_GLYPHS = {"↟", "◈", "↡", "✧", "♥", "☾"};
+    static final String[] DAYS = {"L","M","M","J","V","S","D"};
+    static final String[] DAY_NAMES = {"Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"};
+    static final String[] ACCENTS = {"#258FE6","#9A68F2","#ED72B8","#34BC91","#E65260","#F2F5FF"};
+
+    private final Activity activity;
+    private final JSONObject draft;
+    private final Runnable persist;
+    private final java.util.function.Consumer<Boolean> confirmListener;
+    private final float density;
+
+    ProfileRegistrationSteps(Activity activity, JSONObject draft, Runnable persist,
+                             java.util.function.Consumer<Boolean> confirmListener) {
+        this.activity = activity;
+        this.draft = draft;
+        this.persist = persist;
+        this.confirmListener = confirmListener;
+        this.density = activity.getResources().getDisplayMetrics().density;
+    }
+
+    private int dp(float value) { return Math.round(value * density); }
+    private String get(String k, String fallback) {
+        String value = draft.optString(k, fallback);
+        return value == null ? fallback : value;
+    }
+    private void put(String k, Object value) {
+        try {
+            draft.put(k, value);
+            persist.run();
+        } catch (JSONException impossible) {
+            throw new IllegalStateException(impossible);
+        }
+    }
+    private LinearLayout vertical() {
+        LinearLayout group = new LinearLayout(activity);
+        group.setOrientation(LinearLayout.VERTICAL);
+        group.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
+        return group;
+    }
+    private LinearLayout row() {
+        LinearLayout group = new LinearLayout(activity);
+        group.setOrientation(LinearLayout.HORIZONTAL);
+        group.setGravity(Gravity.CENTER_VERTICAL);
+        group.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
+        return group;
+    }
+    private TextView text(String text, int sp, int color) {
+        TextView view = new TextView(activity);
+        view.setText(text);
+        view.setTextColor(color);
+        view.setTextSize(sp);
+        view.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        view.setGravity(Gravity.CENTER_VERTICAL);
+        return view;
+    }
+    private void addHeading(LinearLayout parent, String heading) {
+        TextView view = text(heading, 16, WHITE);
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(-1, -2);
+        p.topMargin = dp(19);
+        p.bottomMargin = dp(8);
+        view.setLayoutParams(p);
+        parent.addView(view);
+    }
+    private void addInfo(LinearLayout parent, String content) {
+        TextView view = text(content, 12, MUTED);
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(-1, -2);
+        p.bottomMargin = dp(8);
+        view.setLayoutParams(p);
+        parent.addView(view);
+    }
+    private EditText input(LinearLayout parent, String key, String hint, boolean multiline) {
+        EditText edit = new EditText(activity);
+        edit.setHint(hint);
+        edit.setTextColor(WHITE);
+        edit.setHintTextColor(MUTED);
+        edit.setTextSize(15);
+        edit.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        edit.setPadding(dp(11),dp(7),dp(11),dp(7));
+        edit.setInputType(multiline
+                ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE
+                : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        if(multiline)edit.setMinLines(3); else edit.setSingleLine(true);
+        edit.setBackground(fieldBackground());
+        edit.setText(get(key, ""));
+        edit.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s,int st,int c,int after) { }
+            @Override public void onTextChanged(CharSequence s,int st,int before,int count) {
+                put(key, s.toString());
+            }
+            @Override public void afterTextChanged(Editable s) { }
+        });
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(-1, -2);
+        p.bottomMargin = dp(7);
+        parent.addView(edit,p);
+        return edit;
+    }
+    private GradientDrawable fieldBackground() {
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(Color.argb(238, 13, 24, 51));
+        bg.setCornerRadius(dp(8));
+        bg.setStroke(dp(1),Color.rgb(115,139,197));
+        return bg;
+    }
+    private RadioGroup radios(LinearLayout parent, String key, String[] ids, String[] labels,
+                              String defaultId) {
+        RadioGroup group = new RadioGroup(activity);
+        group.setOrientation(RadioGroup.VERTICAL);
+        String selected = get(key,defaultId);
+        for(int i=0;i<ids.length;i++){
+            final String value=ids[i];
+            RadioButton button = new RadioButton(activity);
+            button.setId(View.generateViewId());
+            button.setText(labels[i]);
+            button.setTextColor(WHITE);
+            button.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+            button.setTextSize(13);
+            button.setButtonTintList(ColorStateList.valueOf(Color.rgb(172,148,245)));
+            button.setMinHeight(dp(44));
+            group.addView(button);
+            if(value.equals(selected))button.setChecked(true);
+            button.setOnClickListener(v->put(key,value));
+        }
+        parent.addView(group);
+        return group;
+    }
+    private CheckBox check(LinearLayout parent, String key,String label,boolean defaultChecked) {
+        CheckBox view = new CheckBox(activity);
+        view.setText(label);
+        view.setTextColor(WHITE);
+        view.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        view.setButtonTintList(ColorStateList.valueOf(Color.rgb(172,148,245)));
+        view.setTextSize(13);
+        view.setMinHeight(dp(45));
+        view.setChecked(Boolean.parseBoolean(get(key,String.valueOf(defaultChecked))));
+        view.setOnCheckedChangeListener((button,checked)->put(key,checked));
+        parent.addView(view);
+        return view;
+    }
+    private Spinner spinner(LinearLayout parent, String key,String[] choices,String defaultValue) {
+        Spinner control = new Spinner(activity);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                activity, android.R.layout.simple_spinner_dropdown_item, choices);
+        control.setAdapter(adapter);
+        control.setBackground(fieldBackground());
+        control.setPadding(dp(7),0,dp(7),0);
+        String selected=get(key,defaultValue);
+        for(int i=0;i<choices.length;i++)if(selected.equals(choices[i]))control.setSelection(i);
+        control.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override public void onItemSelected(AdapterView<?> p, View v,int i,long id){
+                if(v instanceof TextView){
+                    ((TextView)v).setTextColor(WHITE);
+                    ((TextView)v).setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                }
+                put(key,choices[i]);
+            }
+            @Override public void onNothingSelected(AdapterView<?> p) { }
+        });
+        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(-1,dp(54));
+        lp.bottomMargin=dp(10);
+        parent.addView(control,lp);
+        return control;
+    }
+
+    View step2() {
+        LinearLayout out=vertical();
+        addHeading(out,"01 — Experiencia de entrenamiento");
+        radios(out,"experience",new String[]{"principiante","intermedio","avanzado"},
+                new String[]{"Principiante","Intermedio","Avanzado"},"principiante");
+        addHeading(out,"02 — Objetivo principal");
+        radios(out,"goal",new String[]{"bienestar","fuerza","resistencia","movilidad","constancia"},
+                new String[]{"Mejorar mi bienestar general","Desarrollar fuerza funcional",
+                        "Mejorar mi resistencia","Mejorar mi movilidad",
+                        "Crear un hábito de actividad física"},"bienestar");
+        addHeading(out,"03 — Objetivo personalizado");
+        addInfo(out,"Tu texto se conservará exactamente para las futuras preferencias del motor de progreso.");
+        input(out,"custom_goal","Describe tu objetivo con tus propias palabras",true);
+        addHeading(out,"04 — Modalidad del Sistema");
+        addInfo(out,"Descanso preferido entre series o rondas (puede ajustarse después).");
+        radios(out,"rest_seconds",new String[]{"30","60","90"},
+                new String[]{"30 segundos","60 segundos","90 segundos"},"60");
+        LinearLayout missionExtra=vertical();
+        LinearLayout routineExtra=vertical();
+        RadioGroup mode = radios(out,"mode",new String[]{"misiones","rutinas"},
+                new String[]{"Misiones diarias","Rutinas"},"misiones");
+        addInfo(missionExtra,"El número de misiones incluye actividades ligeras, aprendizaje y descansos; no significa entrenar varias veces al día.");
+        spinner(missionExtra,"missions",new String[]{"1","2","3","4","5","6","7"},"3");
+        addInfo(routineExtra,"Tiempo disponible por sesión");
+        spinner(routineExtra,"minutes",new String[]{"10","15","20","30","45","60"},"30");
+        addInfo(routineExtra,"¿Cómo prefieres seguir tu rutina?");
+        radios(routineExtra,"sequence",new String[]{"rondas","series"},
+                new String[]{"Sesiones por rondas","Sesiones por series"},"rondas");
+        out.addView(missionExtra);out.addView(routineExtra);
+        Runnable showMode=()->{
+            boolean missions=get("mode","misiones").equals("misiones");
+            missionExtra.setVisibility(missions?View.VISIBLE:View.GONE);
+            routineExtra.setVisibility(missions?View.GONE:View.VISIBLE);
+        };
+        showMode.run();
+        for(int i=0;i<mode.getChildCount();i++){
+            RadioButton button=(RadioButton)mode.getChildAt(i);
+            button.setOnClickListener(v->{
+                put("mode",iMode(mode,button)==0?"misiones":"rutinas");
+                showMode.run();
+            });
+        }
+
+        addHeading(out,"05 — Planificación semanal");
+        addInfo(out,"Pulsa varias veces un día para avanzar: superior → central → inferior → movilidad → cardio → descanso.");
+        LinearLayout week=row();
+        final int[] index=readWeek();
+        for(int day=0;day<7;day++){
+            final int d=day;
+            TextView chip=text("",13,WHITE);
+            chip.setGravity(Gravity.CENTER);
+            chip.setMinHeight(dp(72));
+            LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(0,dp(72),1);
+            p.setMargins(dp(1),dp(1),dp(1),dp(1));
+            week.addView(chip,p);
+            Runnable refresh=()->{
+                chip.setText(DAYS[d]+"\n"+CAT_GLYPHS[index[d]]);
+                GradientDrawable bg=new GradientDrawable();
+                bg.setColor(CAT_COLORS[index[d]]);
+                bg.setCornerRadius(dp(9));
+                chip.setBackground(bg);
+                chip.setContentDescription(DAY_NAMES[d]+": "+CATS[index[d]]+". Tocar para cambiar.");
+            };
+            refresh.run();
+            chip.setOnClickListener(v->{
+                index[d]=(index[d]+1)%6;
+                put("week",formatWeek(index));
+                refresh.run();
+            });
+        }
+        out.addView(week);
+        for(int k=0;k<6;k++){
+            TextView legend=text(CAT_GLYPHS[k]+"  "+CATS[k],12,CAT_COLORS[k]);
+            legend.setPadding(dp(2),dp(4),0,dp(4));
+            out.addView(legend);
+        }
+
+        addHeading(out,"06 — Equipamiento disponible");
+        check(out,"bodyweight","Peso corporal / sin equipo",true);
+        CheckBox dumbbells=check(out,"dumbbells","Mancuernas",false);
+        LinearLayout dumbbellPanel=vertical();
+        addInfo(dumbbellPanel,"Pesos de las mancuernas disponibles (kg), separados por comas");
+        input(dumbbellPanel,"dumbbell_weights","Ejemplo: 2, 4, 6",false);
+        out.addView(dumbbellPanel);
+        dumbbellPanel.setVisibility(dumbbells.isChecked()?View.VISIBLE:View.GONE);
+        dumbbells.setOnCheckedChangeListener((b,v)->{
+            put("dumbbells",v);dumbbellPanel.setVisibility(v?View.VISIBLE:View.GONE);
+        });
+        CheckBox gym=check(out,"gym","Gimnasio",false);
+        LinearLayout gymPanel=vertical();
+        addInfo(gymPanel,"Selecciona los equipos a los que tienes acceso.");
+        String[] equipment={"Poleas","Máquinas guiadas","Banco","Barras",
+                "Bicicleta estática","Máquina de remo","Elíptica"};
+        String[] keys={"polea","maquina","banco","barra","bicicleta","remo","eliptica"};
+        for(int i=0;i<equipment.length;i++)check(gymPanel,"gym_"+keys[i],equipment[i],false);
+        out.addView(gymPanel);
+        gymPanel.setVisibility(gym.isChecked()?View.VISIBLE:View.GONE);
+        gym.setOnCheckedChangeListener((b,v)->{
+            put("gym",v);gymPanel.setVisibility(v?View.VISIBLE:View.GONE);
+        });
+        addInfo(out,"Las preferencias se utilizarán al integrar el catálogo con el generador. No se prescriben cargas ni intensidades basadas en medidas corporales.");
+        return out;
+    }
+    private int iMode(RadioGroup group, RadioButton selected) {
+        for(int i=0;i<group.getChildCount();i++)if(group.getChildAt(i)==selected)return i;
+        return 0;
+    }
+    private int[] readWeek() {
+        int[] week={5,5,5,5,5,5,5};
+        String[] parts=get("week","5,5,5,5,5,5,5").split(",");
+        if(parts.length==7)for(int i=0;i<7;i++)try{
+            week[i]=Math.min(5,Math.max(0,Integer.parseInt(parts[i])));
+        }catch(NumberFormatException ignore){week[i]=5;}
+        return week;
+    }
+    private String formatWeek(int[] week) {
+        StringBuilder s=new StringBuilder();
+        for(int i=0;i<week.length;i++){
+            if(i>0)s.append(',');
+            s.append(week[i]);
+        }
+        return s.toString();
+    }
+
+    View step3() {
+        LinearLayout out=vertical();
+        addHeading(out,"01 — Tema del Sistema");
+        radios(out,"theme",new String[]{"dark","light"},
+                new String[]{"Tema oscuro","Tema claro"},"dark");
+        addHeading(out,"02 — Color de los bordes");
+        RadioGroup accentChoices=new RadioGroup(activity);
+        String[] colorNames={"Azul","Morado","Rosa","Verde","Rojo","Blanco"};
+        LinearLayout preview=vertical();
+        preview.setPadding(dp(12),dp(10),dp(12),dp(10));
+        TextView sample=text("✦ VISTA PREVIA DEL CONTORNO ✦",14,WHITE);
+        sample.setGravity(Gravity.CENTER);
+        preview.addView(sample);
+        Runnable updatePreview=()->{
+            int c=Color.parseColor(get("accent","#9A68F2"));
+            preview.setBackground(new NeonFrameDrawable(c,density));
+        };
+        for(int i=0;i<6;i++){
+            final String hex=ACCENTS[i];
+            RadioButton choice=new RadioButton(activity);
+            choice.setText("●  "+colorNames[i]);
+            choice.setTextColor(Color.parseColor(hex));
+            choice.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+            choice.setButtonTintList(ColorStateList.valueOf(Color.parseColor(hex)));
+            choice.setMinHeight(dp(45));
+            choice.setChecked(hex.equalsIgnoreCase(get("accent","#9A68F2")));
+            choice.setOnClickListener(v->{put("accent",hex);updatePreview.run();});
+            accentChoices.addView(choice);
+        }
+        out.addView(accentChoices);
+        updatePreview.run();
+        out.addView(preview,new LinearLayout.LayoutParams(-1,dp(65)));
+        addHeading(out,"03 — Acompañante del Sistema");
+        addInfo(out,"Cinco representantes gráficos del mismo motor de progreso. Las ilustraciones finales se añadirán posteriormente.");
+        radios(out,"companion",new String[]{"vigia","estratega","archivista","oraculo","centinela"},
+                new String[]{"Vigía","Estratega","Archivista","Oráculo","Centinela"},"vigia");
+        addHeading(out,"04 — Tarjeta del cazador");
+        addInfo(out,"Elige una silueta y un fondo; la credencial se mostrará posteriormente en Inicio.");
+        radios(out,"card_silhouette",new String[]{"caballero","errante","vigia","arconte","centinela"},
+                new String[]{"Caballero","Errante","Vigía","Arconte","Centinela"},"caballero");
+        addInfo(out,"Paisaje de la tarjeta");
+        radios(out,"card_background",new String[]{"ruinas","niebla","obsidiana","aurora","bosque"},
+                new String[]{"Ruinas arcanas","Niebla violeta","Obsidiana",
+                        "Aurora dorada","Bosque ancestral"},"niebla");
+        addInfo(out,"Toda la tipografía de Asterion es negrita por defecto; las ilustraciones oficiales de carga permanecen intactas.");
+        return out;
+    }
+
+    View step4() {
+        LinearLayout out=vertical();
+        addHeading(out,"01 — Verificación del registro");
+        addInfo(out,"Revisa tus respuestas; puedes volver a los pasos anteriores para modificarlas.");
+        TextView identity=text("IDENTIDAD DEL CAZADOR\n"
+                +"Nombre: "+get("name","Sin especificar")
+                +"\nEdad: "+get("age","")
+                +"\nEstatura (opcional): "+get("height","—")
+                +"\nPeso (opcional): "+get("weight","—")
+                +"\nGénero: "+get("gender","prefiero no decirlo"),13,WHITE);
+        identity.setPadding(dp(12),dp(13),dp(12),dp(13));
+        identity.setBackground(fieldBackground());
+        out.addView(identity);
+        TextView training=text("ENTRENAMIENTO\nExperiencia: "+get("experience","principiante")
+                +"\nObjetivo: "+get("goal","bienestar")
+                +"\nObjetivo libre: "+get("custom_goal","—")
+                +"\nModalidad: "+get("mode","misiones")
+                +"\nDescanso: "+get("rest_seconds","60")+" segundos"
+                +"\nSemana: "+readableWeek()
+                +"\nEquipamiento: "+equipmentSummary(),13,WHITE);
+        training.setPadding(dp(12),dp(13),dp(12),dp(13));
+        training.setBackground(fieldBackground());
+        LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.topMargin=dp(12);
+        out.addView(training,p);
+        TextView visual=text("PERSONALIZACIÓN\nTema: "+get("theme","dark")
+                +"\nBordes: "+get("accent","#9A68F2")
+                +"\nAcompañante: "+get("companion","vigia")
+                +"\nSilueta: "+get("card_silhouette","caballero")
+                +"\nFondo de tarjeta: "+get("card_background","niebla"),13,WHITE);
+        visual.setPadding(dp(12),dp(13),dp(12),dp(13));
+        visual.setBackground(fieldBackground());
+        LinearLayout.LayoutParams q=new LinearLayout.LayoutParams(-1,-2);q.topMargin=dp(12);
+        out.addView(visual,q);
+        addHeading(out,"02 — Confirmación final");
+        addInfo(out,"El perfil se guardará en almacenamiento privado. Podrás editar tus preferencias posteriormente; no se compartirá por internet.");
+        CheckBox confirm=new CheckBox(activity);
+        confirm.setText("He revisado mi información y deseo activar mi perfil de cazador.");
+        confirm.setTextColor(WHITE);
+        confirm.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        confirm.setButtonTintList(ColorStateList.valueOf(Color.rgb(172,148,245)));
+        confirm.setMinHeight(dp(64));
+        confirm.setChecked(false);
+        confirm.setOnCheckedChangeListener((b,yes)->confirmListener.accept(yes));
+        out.addView(confirm);
+        confirmListener.accept(false);
+        return out;
+    }
+
+    private String readableWeek() {
+        int[] values=readWeek();
+        StringBuilder b=new StringBuilder();
+        for(int i=0;i<7;i++) {
+            if(i>0)b.append("; ");
+            b.append(DAY_NAMES[i]).append(": ").append(CATS[values[i]]);
+        }
+        return b.toString();
+    }
+
+    private String equipmentSummary() {
+        StringBuilder b=new StringBuilder();
+        if(Boolean.parseBoolean(get("bodyweight","true")))b.append("Peso corporal; ");
+        if(Boolean.parseBoolean(get("dumbbells","false")))b.append("Mancuernas; ");
+        if(Boolean.parseBoolean(get("gym","false")))b.append("Gimnasio; ");
+        return b.length()==0?"Por definir":b.toString();
+    }
+}

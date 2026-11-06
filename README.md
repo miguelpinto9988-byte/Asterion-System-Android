@@ -26,6 +26,12 @@ Los iconos PNG son recursos reales e independientes, los marcos azules y violeta
 
 Todas las etiquetas, textos, titulos, opciones, botones y campos de entrada nativos deben usar negrita. El tema Android establece una regla compartida y los layouts actuales la aplican explicitamente; el CI ejecuta `tests/global_bold_contract.py` para detectar regresiones y futuras pantallas sin la regla. Los textos que forman parte de ilustraciones oficiales inmutables, como el icono y las pantallas de carga, no se alteran. Mas detalles: [politica tipografica](docs/identidad/TIPOGRAFIA_GLOBAL_NEGRITA.md).
 
+## Registro de cazador (4 etapas nativas)
+
+El registro local abre tras las pantallas de carga **solo si no existe un cazador registrado**. El paso 1 tiene campos reales de identidad, imagen de galería opcional, fondo artístico separado y contorno escalable; los siguientes tres pasos funcionan de forma nativa para recoger objetivos, calendario, equipamiento, apariencia y confirmación. El nombre y la configuración solo se consolidan al aceptar el **paso 4**, conservando los perfiles locales previos. No hay tutorial de introducción.
+
+Los iconos están centralizados en `AsterionRegistrationIcons` para reutilizarlos en toda la app sin duplicaciones. La iconografía de estilo A se aporta además en PNG maestros individuales de alta resolución; en la APK el avatar usa WebP y los otros siete símbolos se representan mediante vectoriales nativos provisionales. Véase [especificación técnica del registro](docs/identidad/REGISTRO_CAZADOR_PASO1_NATIVO.md).
+
 ## Motor modular de progreso (bloque independiente)
 
 Se creó el módulo **`:progress-engine`**, una biblioteca Java 17 sin Android ni SQLite, conectada por interfaces a los servicios actuales de `:core`. Su fachada `AsterionDomainEngine` coordina lectura del catálogo de actividades, planificación, preferencias y seguimiento. `ProgressPatternEngine` permite evaluar patrones intercambiables; `standard_v1` conserva el porcentaje actual y `RuleBasedProgressPattern` permite reutilizar el motor determinista de reglas de fase 06.
