@@ -1,12 +1,11 @@
 package pe.asterionsystem.app;
 
-import android.app.Activity;
+import androidx.activity.ComponentActivity;
+import androidx.activity.OnBackPressedCallback;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowInsets;
-import android.window.OnBackInvokedCallback;
-import android.window.OnBackInvokedDispatcher;
 import android.widget.FrameLayout;
 import pe.asterionsystem.app.application.ApplicationCoordinator;
 import pe.asterionsystem.app.data.AsterionDatabaseHelper;
@@ -44,7 +43,7 @@ import pe.asterionsystem.core.settings.AppPreferences;
 import pe.asterionsystem.core.settings.PreferencesService;
 
 /** Native Android shell with XML screens and private preferences; no reminders or auto-execution. */
-public final class MainActivity extends Activity {
+public final class MainActivity extends ComponentActivity {
     private static final String KEY_CATALOG_SELECTED_ID = "asterion.catalog.selected.id.v1";
 
     private AndroidLifecycleAdapter lifecycleAdapter;
@@ -58,8 +57,7 @@ public final class MainActivity extends Activity {
     private SettingsPresenter settingsPresenter;
     private EntityId selectedCatalogItem;
     private Subscription navigationSubscription;
-    private OnBackInvokedCallback systemBackCallback;
-    private boolean backCallbackRegistered;
+    private OnBackPressedCallback navigationBackCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,9 +107,14 @@ public final class MainActivity extends Activity {
                 selectedCatalogItem = new EntityId(rawId);
             }
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            systemBackCallback = () -> navigation.goBack();
-        }
+        // Backward-compatible dispatcher: enabled only while navigation has history.
+        // AndroidX delegates to system Back when the app is already on its root screen.
+        navigationBackCallback = new OnBackPressedCallback(false) {
+            @Override public void handleOnBackPressed() {
+                navigation.goBack();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, navigationBackCallback);
         navigationSubscription = events.subscribe(NavigationChangedEvent.class,
                 event -> renderNavigation());
         if (!navigation.restore(initialNavigation(savedInstanceState))) {
@@ -208,24 +211,11 @@ public final class MainActivity extends Activity {
         } else {
             selectedCatalogItem = null;
         }
-        updateSystemBackRegistration();
+        updateBackHandling();
     }
 
-    private void updateSystemBackRegistration() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return;
-        boolean needed = navigation.state().canGoBack();
-        if (needed && !backCallbackRegistered) {
-            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
-                    OnBackInvokedDispatcher.PRIORITY_DEFAULT, systemBackCallback);
-            backCallbackRegistered = true;
-        } else if (!needed && backCallbackRegistered) {
-            getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(systemBackCallback);
-            backCallbackRegistered = false;
-        }
-    }
-
-    @Override public void onBackPressed() {
-        if (!navigation.goBack()) super.onBackPressed();
+    private void updateBackHandling() {
+        navigationBackCallback.setEnabled(navigation.state().canGoBack());
     }
 
     @Override protected void onSaveInstanceState(Bundle output) {
@@ -260,10 +250,6 @@ public final class MainActivity extends Activity {
     }
 
     @Override protected void onDestroy() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && backCallbackRegistered) {
-            getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(systemBackCallback);
-            backCallbackRegistered = false;
-        }
         localStatusPresenter.close();
         progressPresenter.close();
         schedulePresenter.close();

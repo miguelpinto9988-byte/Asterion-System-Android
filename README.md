@@ -69,13 +69,13 @@ La integración incorpora **ilustraciones vectoriales originales** del Guardián
 
 ## Fase 16 — Primera compilación debug autorizada y diagnóstico inicial
 
-**La fase 16 cuenta ya con autorización expresa para la primera compilación APK `debug`, y para ejecutar las pruebas y lint de Gradle necesarios.** El **5 de noviembre de 2026** se inició [la primera ejecución manual de GitHub Actions](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42091749135): 58 pruebas JUnit, 57 correctas y una fallida. Se corrigió el caso de día vacío y hace falta repetir la ejecución para validar el arreglo. La versión `release` y la firma de distribución siguen excluidas.
+**La fase 16 cuenta ya con autorización expresa para la primera compilación APK `debug`, y para ejecutar las pruebas y lint de Gradle necesarios.** El **5 de noviembre de 2026** se inició [la primera ejecución manual de GitHub Actions](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42091749135): 58 pruebas JUnit, 57 correctas y una fallida. El fallo de día vacío se corrigió en fuente y la segunda ejecución superó las pruebas `:core:test`; la tercera ejecución (`42132119288`) llegó hasta `assembleDebug`, pero falló en `lintDebug` por la navegación Atrás obsoleta. La navegación ha sido migrada a AndroidX y está pendiente de una cuarta ejecución manual. La versión `release` y la firma de distribución siguen excluidas.
 
 - Se revisó AGP **8.13.2**, Gradle **8.13** en CI manual, JDK **17**, `minSdk 26` y `targetSdk/compileSdk 36`.
 - Se preparó un ajuste de áreas de seguridad Android API 35+ en `MainActivity` y `activity_main.xml` para compatibilidad con edge-to-edge, **todavía no probado en Android**.
 - Se añadió `tests/phase16_preflight_static.py`, que examina código, XML, manifiesto, privacidad y CI usando solamente Python. La verificación estática se superó en el primer workflow; Gradle se ejecutó, pero se detuvo en una prueba antes de generar una APK.
 - No hay Gradle Wrapper versionado; el workflow manual instala Gradle 8.13. Release no tiene firma de distribución configurada.
-- La variante `debug` está autorizada. El primer intento falló en una prueba JUnit ya corregida en fuente. Se necesita una nueva ejecución manual.
+- La variante `debug` está autorizada. El tercer intento completó Java, pruebas y `assembleDebug`, pero falló lint con 1 error y 58 advertencias. La corrección de navegación mediante AndroidX está preparada y necesita validación real.
 
 Documentación:
 - [Auditoría previa](docs/fase-16/16-01-auditoria-precompilacion.md)
@@ -83,11 +83,11 @@ Documentación:
 - [Empaquetado y permisos](docs/fase-16/16-03-empaquetado-y-permisos.md)
 - [Estados de las siete etapas](docs/fase-16/16-estado-y-trazabilidad.md)
 
-## Fase 16.4 — Primera ejecución fallida; corrección preparada
+## Fase 16.4 — Tres ejecuciones: corregida la navegación Atrás para lint
 
 Se autorizó compilar `debug` y ejecutar JUnit y lint de Gradle. El workflow `.github/workflows/android-ci.yml` continúa **solo manual**, con tareas `:core:test`, `:app:testDebugUnitTest`, `:app:lintDebug` y `:app:assembleDebug`, y validación posterior mediante `apksigner`, `aapt` y `sha256sum`.
 
-**Aún no existe una APK debug del código actual.** La primera ejecución falló en una prueba JUnit; la segunda superó `:core:test` desde caché y encontró un error de importación `R` al compilar Java Android. Este segundo error ya está corregido en fuente, pendiente de nueva ejecución manual. Consulta el [informe de errores y correcciones](docs/fase-16/16-04-resultado-y-bloqueos.md).
+**No existe todavía una APK validada y publicada como artefacto del código actual.** La tercera ejecución superó `:app:assembleDebug`, pero `:app:lintDebug` falló por la navegación Atrás. Se preparó una migración a `OnBackPressedDispatcher` de AndroidX y queda pendiente de una nueva ejecución manual. Consulta el [informe de errores y correcciones](docs/fase-16/16-04-resultado-y-bloqueos.md).
 
 ## Sin compilar APK
 

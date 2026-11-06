@@ -1,6 +1,6 @@
 # Fase 16.3 — Estrategia provisional de empaquetado y autorización
 
-**Actualización, 5 de noviembre de 2026:** el propietario autorizó expresamente una primera compilación **APK debug** con pruebas y lint Gradle. La autorización **no comprende** release ni firma de distribución. La primera ejecución de GitHub Actions se inició manualmente el 5 de noviembre de 2026, pero terminó con un error JUnit; la corrección está preparada y su ejecución pendiente.
+**Actualización, 5 de noviembre de 2026:** el propietario autorizó expresamente una primera compilación **APK debug** con pruebas y lint Gradle. La autorización **no comprende** release ni firma de distribución. La primera ejecución de GitHub Actions se inició manualmente el 5 de noviembre de 2026, pero terminó con un error JUnit; los tres intentos hasta la fecha detectaron errores sucesivos ya corregidos en fuente. El tercero ensambló la variante debug pero falló lint; la última corrección aún no ha sido ejecutada.
 
 ## Primera variante recomendada
 
@@ -23,7 +23,7 @@
 
 ## Barrera de autorización
 
-**Esa aprobación adicional ya se recibió para la variante `debug` y para pruebas/lint de Gradle.** El primer workflow fue iniciado manualmente por el propietario, pero falló en una prueba JUnit antes de crear una APK. El código corregido debe validarse mediante una nueva ejecución manual. La conexión disponible no permite iniciar por sí misma un evento `workflow_dispatch`. No se requiere volver a autorizar la variante debug.
+**Esa aprobación adicional ya se recibió para la variante `debug` y para pruebas/lint de Gradle.** El propietario inició tres ejecuciones manuales: la primera falló JUnit, la segunda falló Java y la tercera llegó a `assembleDebug` pero falló `lintDebug` por `GestureBackNavigation`. Se migró la navegación Atrás a `OnBackPressedDispatcher` de AndroidX. Esta corrección debe validarse mediante una nueva ejecución manual. La conexión disponible no permite iniciar por sí misma un evento `workflow_dispatch`. No se requiere volver a autorizar la variante debug.
 
 Ejemplo de mensaje futuro, **no autorizado por este documento**:
 
@@ -33,7 +33,7 @@ Para cualquier variante o fase futura sin autorización, **no ejecutar** comando
 
 ## Etapas restantes
 
-- **16.4 Compilación:** primer intento fallido en `:core:test` (57/58 correctas); corrección en fuente y repetición manual pendientes.
+- **16.4 Compilación:** tres intentos reales; último con `assembleDebug` correcto pero un error de lint. Migración AndroidX preparada para nueva ejecución manual.
 - **16.5 Validación de APK:** pendiente de que la ejecución genere una APK real.
 - **16.6 Entrega e instalación:** bloqueada, sin artefacto verificable.
 - **16.7 Cierre y publicación del paquete:** bloqueada hasta la aprobación y validación del artefacto. Publicar **solo documentación o cambios fuente** durante preparación no equivale a entregar APK.

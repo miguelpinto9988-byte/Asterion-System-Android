@@ -100,6 +100,27 @@ Se corrigieron únicamente `SchedulePlanner.listWithTitles`, su prueba JUnit y e
 
 **Estado:** corrección publicada como fuente, pero todavía pendiente de una nueva ejecución real de Gradle para demostrar que compila. Solo se autorizó APK debug; CI permanece exclusivamente manual.
 
+## Tercera ejecución manual: el ensamblado debug funciona, lint detiene la publicación
+
+- **Run ID:** [42132119288](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42132119288).
+- **Commit probado:** `ff67de3a9b1da704bbb6a0838451fd4b0c1c2001`.
+- **Resultado global:** `failure`.
+- **Resultados correctos:** verificadores estáticos fase 03/16, `:core:test` (caché), `:app:compileDebugJavaWithJavac`, `:app:testDebugUnitTest`, `:app:packageDebug` y `:app:assembleDebug`.
+- **Fallo preciso:** `:app:lintDebug` detectó **1 error y 58 advertencias**, con `GestureBackNavigation` en `MainActivity.java:227`. El método obsoleto `onBackPressed()` seguía sobrescrito, pese al callback de plataforma para Android 13+.
+- **Verificación de firma, metadatos y publicación ZIP:** omitidas por fallo de lint. La presencia de `:app:assembleDebug` en el log **no constituye una APK distribuible o comprobada**.
+
+### Corrección arquitectónica preparada
+
+Se eliminó el método `onBackPressed()` sobrescrito y el registro manual de `OnBackInvokedCallback`. La actividad pasa a heredar de `androidx.activity.ComponentActivity` con `OnBackPressedDispatcher` + `OnBackPressedCallback`, compatible con gestos de Android modernos y botón Atrás en versiones anteriores:
+
+- El callback se habilita **solo** si `navigation.state().canGoBack()`; al llegar a Inicio, el sistema gestiona el cierre normal de la actividad.
+- Los eventos internos siguen usando `navigation.goBack()`; el resto de las rutas, presentadores y SQLite v5 no cambian.
+- Se añadió dependencia fijada `androidx.activity:activity:1.11.0` (compilada con API 36), más `android.useAndroidX=true`.
+- Se añadió una prueba estática específica de regresión de navegación.
+- No se deshabilitó lint, no se incluyeron `lint.xml` de supresión ni cambios de versión `release`.
+
+**Esta migración debe verificarse con una nueva ejecución manual de Gradle.** Las advertencias de lint deben revisarse después de la compilación; no se han declarado resueltas.
+
 ## Procedimiento necesario para completar la compilación
 
 1. Abrir [GitHub Actions del repositorio](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/workflows/android-ci.yml).

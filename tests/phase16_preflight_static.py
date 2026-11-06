@@ -117,6 +117,21 @@ class PreflightNoBuild(unittest.TestCase):
                 self.assertRegex(source, r"(?m)^import pe\.asterionsystem\.app\.R;",
                                  f"Missing R import: {path.relative_to(ROOT)}")
 
+    def test_androidx_back_dispatcher_contract(self):
+        """Back navigation is handled through AndroidX rather than overriding onBackPressed."""
+        main = read(APP_JAVA / "pe/asterionsystem/app/MainActivity.java")
+        app = read(MODULES)
+        properties = read(ROOT / "gradle.properties")
+        self.assertIn("extends ComponentActivity", main)
+        self.assertIn("import androidx.activity.OnBackPressedCallback;", main)
+        self.assertIn("getOnBackPressedDispatcher().addCallback(this, navigationBackCallback);", main)
+        self.assertIn("navigationBackCallback.setEnabled(navigation.state().canGoBack());", main)
+        self.assertIn("navigation.goBack();", main)
+        self.assertNotIn("void onBackPressed(", main)
+        self.assertNotIn("OnBackInvokedCallback", main)
+        self.assertIn("android.useAndroidX=true", properties)
+        self.assertIn("implementation 'androidx.activity:activity:1.11.0'", app)
+
     def test_sdk36_edge_to_edge_safe_insets(self):
         main = read(APP_JAVA / "pe/asterionsystem/app/MainActivity.java")
         xml = read(APP / "res/layout/activity_main.xml")
