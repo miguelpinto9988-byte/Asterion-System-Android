@@ -26,6 +26,15 @@ android {
         debug {
             minifyEnabled false
         }
+        // Installable next to existing Asterion builds. Never overwrites
+        // profiles stored by an APK signed with a different debug key.
+        preview {
+            initWith debug
+            applicationIdSuffix '.preview'
+            versionNameSuffix '-preview'
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug']
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
