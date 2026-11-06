@@ -16,6 +16,12 @@ Las dos ilustraciones aprobadas se integran sin alteraciones de composición com
 
 La identidad original del ícono de lanzador queda sin cambios. Estas dos imágenes son permanentes y su modificación queda prohibida en futuras actualizaciones. Los SHA-256 de ambas imágenes, la selección horaria y el manifiesto están protegidos por `tests/branding_splash_lock.py` en GitHub Actions. [Política permanente de pantallas de carga](docs/identidad/PANTALLAS_CARGA_INMUTABLES.md).
 
+## Puerta de perfil: ventana del Sistema (nativa)
+
+Después de las dos pantallas de carga oficiales, Asterion consulta un perfil local privado. Si no existe, abre la ventana de dos opciones con el diseño aprobado: Crear nuevo perfil (registro local básico del nombre de cazador) y Restaurar perfil (mensaje honesto mientras no exista aún mecanismo de importación). Si ya existe un nombre guardado, entra directamente a Inicio tras la carga.
+
+Los iconos PNG son recursos reales e independientes, los marcos azules y violeta son gráficos nativos escalables con cambios en la pulsación y el fondo se mantiene por separado. Ver [especificación de la ventana](docs/identidad/VENTANA_PERFIL_APROBADA.md). El catálogo, las dos ilustraciones Full HD de carga y el icono permanente de la app no se modificaron.
+
 ## Motor modular de progreso (bloque independiente)
 
 Se creó el módulo **`:progress-engine`**, una biblioteca Java 17 sin Android ni SQLite, conectada por interfaces a los servicios actuales de `:core`. Su fachada `AsterionDomainEngine` coordina lectura del catálogo de actividades, planificación, preferencias y seguimiento. `ProgressPatternEngine` permite evaluar patrones intercambiables; `standard_v1` conserva el porcentaje actual y `RuleBasedProgressPattern` permite reutilizar el motor determinista de reglas de fase 06.

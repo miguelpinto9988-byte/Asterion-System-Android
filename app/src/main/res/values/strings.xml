@@ -149,4 +149,23 @@
     <string name="design_local_title">Estado del sistema local</string>
     <string name="design_local_description">Diagnóstico de almacenamiento y referencias SQLite, sin conexión.</string>
     <string name="design_footer_note">ASTERION · MODO LOCAL · DISEÑO ORIGINAL</string>
+    <!-- Ventana nativa de perfil (sin cuentas ni sincronización en nube) -->
+    <string name="profile_system_label">S I S T E M A</string>
+    <string name="profile_gate_title">¿Existe un perfil configurado?</string>
+    <string name="profile_gate_description">No se ha detectado un perfil de cazador en este dispositivo. Selecciona una opción.</string>
+    <string name="profile_create_action">Crear nuevo perfil</string>
+    <string name="profile_create_description">Establece tu identidad de cazador.</string>
+    <string name="profile_restore_action">Restaurar perfil</string>
+    <string name="profile_restore_description">Recupera un perfil guardado.</string>
+    <string name="profile_gate_footer">✧ SISTEMA DE CAZADOR ✧</string>
+    <string name="profile_restoration_unavailable_title">Restauración no disponible</string>
+    <string name="profile_restoration_unavailable_body">Todavía no existe un sistema de copias de perfil o sincronización. Para evitar perder datos, no se realizará ninguna restauración hasta definir y aprobar el formato de respaldo.</string>
+    <string name="profile_create_title">Identidad de cazador</string>
+    <string name="profile_create_intro">Registra un nombre para comenzar. La selección de objetivos, experiencia y habilidades se definirá en una fase posterior.</string>
+    <string name="profile_display_name_label">Nombre de cazador</string>
+    <string name="profile_display_name_hint">Escribe tu nombre de cazador</string>
+    <string name="profile_create_save">Guardar identidad y continuar</string>
+    <string name="profile_create_invalid">Introduce un nombre válido (máximo 40 caracteres).</string>
+    <string name="profile_create_save_error">No se pudo guardar el perfil local. Inténtalo nuevamente.</string>
+    <string name="profile_create_privacy">Tu identidad se guarda únicamente en este dispositivo. No se crea una cuenta en línea.</string>
 </resources>

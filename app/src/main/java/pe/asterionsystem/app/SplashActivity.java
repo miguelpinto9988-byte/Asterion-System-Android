@@ -65,7 +65,9 @@ public final class SplashActivity extends ComponentActivity {
         if (isFinishing() || isDestroyed()) {
             return;
         }
-        startActivity(new Intent(this, MainActivity.class));
+        Class<?> next = ProfileStore.hasProfile(this)
+                ? MainActivity.class : ProfileGateActivity.class;
+        startActivity(new Intent(this, next));
         finish();
     }
 
