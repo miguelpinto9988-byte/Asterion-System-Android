@@ -171,6 +171,7 @@ public final class ProfileCreateActivity extends ComponentActivity {
         if(step==1 && requestedStep!=1)saveStepOne(false);
         step=requestedStep;
         confirmed=false;
+        applyRegisteredScenery(step);
         firstStep.setVisibility(step==1?View.VISIBLE:View.GONE);
         dynamic.setVisibility(step==1?View.GONE:View.VISIBLE);
         dynamic.removeAllViews();
@@ -233,6 +234,7 @@ public final class ProfileCreateActivity extends ComponentActivity {
 
     private void showActivated() {
         step=5;
+        applyRegisteredScenery(5);
         firstStep.setVisibility(View.GONE);
         dynamic.setVisibility(View.VISIBLE);
         dynamic.removeAllViews();
@@ -253,6 +255,35 @@ public final class ProfileCreateActivity extends ComponentActivity {
         forward.setEnabled(true);
         forward.setAlpha(1f);
         scroll.post(()->scroll.smoothScrollTo(0,0));
+    }
+
+    /**
+     * Drawable resources are packaged at build time. On builds that predate
+     * the approved PNG/WebP uploads, the existing local graphics are used.
+     * This lookup never generates, downloads, tints or alters image files.
+     */
+    private int registeredDrawable(String name, int fallback) {
+        int id = getResources().getIdentifier(name, "drawable", getPackageName());
+        return id == 0 ? fallback : id;
+    }
+
+    private void applyRegisteredScenery(int shownStep) {
+        ImageView scenery = findViewById(R.id.profile_scenery);
+        int background = R.drawable.asterion_reg_background;
+        if (shownStep >= 2) {
+            String asset = shownStep == 2 ? "asterion_step2_background"
+                    : shownStep == 3 ? "asterion_step3_background"
+                    : "asterion_step4_background";
+            background = registeredDrawable(asset, background);
+        }
+        scenery.setImageResource(background);
+
+        ImageView hunter = findViewById(R.id.profile_hunter_art);
+        hunter.setImageResource(shownStep == 1 ? R.drawable.asterion_guardian
+                : registeredDrawable(
+                        "asterion_hunter_lateral", R.drawable.asterion_guardian));
+        hunter.setVisibility(shownStep == 4 || shownStep == 5
+                ? View.GONE : View.VISIBLE);
     }
 
     private int dp(int value){return Math.round(value*density);}

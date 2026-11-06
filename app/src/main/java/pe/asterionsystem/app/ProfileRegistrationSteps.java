@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -37,6 +39,9 @@ final class ProfileRegistrationSteps {
         "Tren superior", "Tren central", "Tren inferior", "Movilidad", "Cardio", "Descanso"
     };
     static final String[] CAT_GLYPHS = {"↟", "◈", "↡", "✧", "♥", "☾"};
+    static final String[] CAT_ASSETS = {
+        "upper", "core", "lower", "mobility", "cardio", "rest"
+    };
     static final String[] DAYS = {"L","M","M","J","V","S","D"};
     static final String[] DAY_NAMES = {"Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"};
     static final String[] ACCENTS = {"#258FE6","#9A68F2","#ED72B8","#34BC91","#E65260","#F2F5FF"};
@@ -91,7 +96,57 @@ final class ProfileRegistrationSteps {
         view.setGravity(Gravity.CENTER_VERTICAL);
         return view;
     }
+    // Single shared mapping for icon reuse across the approved registration.
+    // Once the companion WebP assets are uploaded, Android resolves their IDs;
+    // older APKs continue using the existing vector/compiled fallback icons.
+    private static final String[][] HEADING_ICONS = {
+        {},
+        {},
+        {"experience","goal","custom_goal","mode","calendar","equipment"},
+        {"theme","border","companion","hunter_card"},
+        {"review","confirmation"}
+    };
+    private static final int[][] HEADING_FALLBACKS = {
+        {},
+        {},
+        {R.drawable.asterion_ic_progress,R.drawable.asterion_ic_plan,
+         R.drawable.asterion_reg_name,R.drawable.asterion_ic_plan,
+         R.drawable.asterion_reg_age,R.drawable.asterion_ic_catalog},
+        {R.drawable.asterion_ic_settings,R.drawable.asterion_reg_photo,
+         R.drawable.asterion_reg_profile,R.drawable.asterion_reg_profile},
+        {R.drawable.asterion_ic_status,R.drawable.asterion_ic_status}
+    };
+    private int visualStep = 2;
+    private int sectionNumber = 0;
+
+    private int iconResource(String name, int fallback) {
+        int id = activity.getResources().getIdentifier(
+                "asterion_ic_" + name, "drawable", activity.getPackageName());
+        return id != 0 ? id : fallback;
+    }
+
     private void addHeading(LinearLayout parent, String heading) {
+        String[] names = HEADING_ICONS[visualStep];
+        int currentSection = sectionNumber++;
+        if (currentSection < names.length) {
+            LinearLayout header = row();
+            ImageView icon = new ImageView(activity);
+            icon.setImageResource(iconResource(
+                    names[currentSection], HEADING_FALLBACKS[visualStep][currentSection]));
+            icon.setContentDescription(null);
+            LinearLayout.LayoutParams iconParams =
+                    new LinearLayout.LayoutParams(dp(33), dp(33));
+            iconParams.rightMargin = dp(9);
+            header.addView(icon,iconParams);
+            header.addView(text(heading, 16, WHITE),
+                    new LinearLayout.LayoutParams(0, -2, 1));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2);
+            params.topMargin = dp(19);
+            params.bottomMargin = dp(8);
+            parent.addView(header,params);
+            return;
+        }
+
         TextView view = text(heading, 16, WHITE);
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(-1, -2);
         p.topMargin = dp(19);
@@ -200,6 +255,8 @@ final class ProfileRegistrationSteps {
     }
 
     View step2() {
+        visualStep = 2;
+        sectionNumber = 0;
         LinearLayout out=vertical();
         addHeading(out,"01 — Experiencia de entrenamiento");
         radios(out,"experience",new String[]{"principiante","intermedio","avanzado"},
@@ -255,7 +312,19 @@ final class ProfileRegistrationSteps {
             p.setMargins(dp(1),dp(1),dp(1),dp(1));
             week.addView(chip,p);
             Runnable refresh=()->{
-                chip.setText(DAYS[d]+"\n"+CAT_GLYPHS[index[d]]);
+                // The color AND icon advance together on every press. If the
+                // approved local WebP has not been uploaded, keep the glyph.
+                int symbolId = iconResource(CAT_ASSETS[index[d]], 0);
+                if (symbolId != 0) {
+                    Drawable symbol = activity.getDrawable(symbolId);
+                    symbol.setBounds(0, 0, dp(22), dp(22));
+                    chip.setCompoundDrawables(null, null, null, symbol);
+                    chip.setCompoundDrawablePadding(dp(4));
+                    chip.setText(DAYS[d]);
+                } else {
+                    chip.setCompoundDrawables(null, null, null, null);
+                    chip.setText(DAYS[d]+"\n"+CAT_GLYPHS[index[d]]);
+                }
                 GradientDrawable bg=new GradientDrawable();
                 bg.setColor(CAT_COLORS[index[d]]);
                 bg.setCornerRadius(dp(9));
@@ -324,12 +393,15 @@ final class ProfileRegistrationSteps {
     }
 
     View step3() {
+        visualStep = 3;
+        sectionNumber = 0;
         LinearLayout out=vertical();
         addHeading(out,"01 — Tema del Sistema");
         radios(out,"theme",new String[]{"dark","light"},
                 new String[]{"Tema oscuro","Tema claro"},"dark");
         addHeading(out,"02 — Color de los bordes");
         RadioGroup accentChoices=new RadioGroup(activity);
+        accentChoices.setOrientation(RadioGroup.VERTICAL);
         String[] colorNames={"Azul","Morado","Rosa","Verde","Rojo","Blanco"};
         LinearLayout preview=vertical();
         preview.setPadding(dp(12),dp(10),dp(12),dp(10));
@@ -343,13 +415,18 @@ final class ProfileRegistrationSteps {
         for(int i=0;i<6;i++){
             final String hex=ACCENTS[i];
             RadioButton choice=new RadioButton(activity);
+            choice.setId(View.generateViewId());
             choice.setText("●  "+colorNames[i]);
             choice.setTextColor(Color.parseColor(hex));
             choice.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
             choice.setButtonTintList(ColorStateList.valueOf(Color.parseColor(hex)));
             choice.setMinHeight(dp(45));
             choice.setChecked(hex.equalsIgnoreCase(get("accent","#9A68F2")));
-            choice.setOnClickListener(v->{put("accent",hex);updatePreview.run();});
+            choice.setOnClickListener(v->{
+                accentChoices.check(choice.getId());
+                put("accent",hex);
+                updatePreview.run();
+            });
             accentChoices.addView(choice);
         }
         out.addView(accentChoices);
@@ -361,17 +438,113 @@ final class ProfileRegistrationSteps {
                 new String[]{"Vigía","Estratega","Archivista","Oráculo","Centinela"},"vigia");
         addHeading(out,"04 — Tarjeta del cazador");
         addInfo(out,"Elige una silueta y un fondo; la credencial se mostrará posteriormente en Inicio.");
-        radios(out,"card_silhouette",new String[]{"caballero","errante","vigia","arconte","centinela"},
+        RadioGroup silhouettes = radios(out,"card_silhouette",
+                new String[]{"caballero","errante","vigia","arconte","centinela"},
                 new String[]{"Caballero","Errante","Vigía","Arconte","Centinela"},"caballero");
         addInfo(out,"Paisaje de la tarjeta");
-        radios(out,"card_background",new String[]{"ruinas","niebla","obsidiana","aurora","bosque"},
+        RadioGroup backgrounds = radios(out,"card_background",
+                new String[]{"ruinas","niebla","obsidiana","aurora","bosque"},
                 new String[]{"Ruinas arcanas","Niebla violeta","Obsidiana",
                         "Aurora dorada","Bosque ancestral"},"niebla");
+        addCardPreview(out, silhouettes, backgrounds);
         addInfo(out,"Toda la tipografía de Asterion es negrita por defecto; las ilustraciones oficiales de carga permanecen intactas.");
         return out;
     }
 
+    /**
+     * A real, responsive card. Background and silhouette are separately
+     * packaged drawable resources; selecting either changes the preview.
+     * Placeholder drawables remain until approved paintings are committed.
+     */
+    private void addCardPreview(LinearLayout parent, RadioGroup silhouettes,
+                                RadioGroup backgrounds) {
+        addInfo(parent, "Vista previa de la tarjeta del cazador");
+        FrameLayout card = new FrameLayout(activity);
+        LinearLayout.LayoutParams cardParams =
+                new LinearLayout.LayoutParams(-1,dp(210));
+        cardParams.bottomMargin = dp(12);
+        ImageView landscape = new ImageView(activity);
+        landscape.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        card.addView(landscape,new FrameLayout.LayoutParams(-1,-1));
+        View overlay = new View(activity);
+        overlay.setBackgroundColor(Color.argb(170,5,12,31));
+        card.addView(overlay,new FrameLayout.LayoutParams(-1,-1));
+        ImageView portrait = new ImageView(activity);
+        portrait.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        FrameLayout.LayoutParams portraitParams = new FrameLayout.LayoutParams(
+                dp(105), dp(170),Gravity.START|Gravity.BOTTOM);
+        portraitParams.leftMargin = dp(10);
+        card.addView(portrait,portraitParams);
+        TextView label = text("",14,WHITE);
+        label.setGravity(Gravity.CENTER_VERTICAL);
+        label.setPadding(dp(120),dp(12),dp(8),dp(12));
+        FrameLayout.LayoutParams captionParams =
+                new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM);
+        card.addView(label,captionParams);
+        Runnable update = () -> {
+            String scene = get("card_background","niebla");
+            int backgroundId = activity.getResources().getIdentifier(
+                    "asterion_card_background_" + scene,"drawable",
+                    activity.getPackageName());
+            landscape.setImageResource(backgroundId == 0
+                    ? R.drawable.asterion_reg_background : backgroundId);
+            String figure = get("card_silhouette","caballero");
+            int figureId = activity.getResources().getIdentifier(
+                    "asterion_card_silhouette_" + figure,"drawable",
+                    activity.getPackageName());
+            portrait.setImageResource(figureId == 0
+                    ? R.drawable.asterion_reg_profile : figureId);
+            label.setText("TARJETA DEL CAZADOR\n"
+                    + get("name","Cazador") + "\n"
+                    + figure.toUpperCase(java.util.Locale.ROOT));
+            int accent = Color.parseColor(get("accent","#9A68F2"));
+            card.setBackground(new NeonFrameDrawable(accent,density));
+        };
+        for (int i=0;i<silhouettes.getChildCount();i++) {
+            final RadioButton choice=(RadioButton)silhouettes.getChildAt(i);
+            final String[] ids={"caballero","errante","vigia","arconte","centinela"};
+            final String value=ids[i];
+            choice.setOnClickListener(v->{put("card_silhouette",value);update.run();});
+        }
+        for (int i=0;i<backgrounds.getChildCount();i++) {
+            final RadioButton choice=(RadioButton)backgrounds.getChildAt(i);
+            final String[] ids={"ruinas","niebla","obsidiana","aurora","bosque"};
+            final String value=ids[i];
+            choice.setOnClickListener(v->{put("card_background",value);update.run();});
+        }
+        update.run();
+        parent.addView(card,cardParams);
+    }
+
+    private void addExpandableReview(LinearLayout out, TextView details,
+                                     String title) {
+        LinearLayout section=vertical();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1,-2);
+        lp.topMargin=dp(10);
+        TextView header=text(title+"    ▾",14,WHITE);
+        header.setMinHeight(dp(60));
+        header.setPadding(dp(13),dp(11),dp(13),dp(11));
+        header.setBackground(new NeonFrameDrawable(
+                Color.rgb(120,172,255),density));
+        header.setClickable(true);
+        header.setFocusable(true);
+        header.setContentDescription("Mostrar u ocultar "+title);
+        details.setPadding(dp(13),dp(12),dp(13),dp(12));
+        details.setBackground(fieldBackground());
+        details.setVisibility(View.GONE);
+        section.addView(header);
+        section.addView(details);
+        header.setOnClickListener(v->{
+            boolean show=details.getVisibility()!=View.VISIBLE;
+            details.setVisibility(show?View.VISIBLE:View.GONE);
+            header.setText(title+(show?"    ▴":"    ▾"));
+        });
+        out.addView(section,lp);
+    }
+
     View step4() {
+        visualStep = 4;
+        sectionNumber = 0;
         LinearLayout out=vertical();
         addHeading(out,"01 — Verificación del registro");
         addInfo(out,"Revisa tus respuestas; puedes volver a los pasos anteriores para modificarlas.");
@@ -381,9 +554,7 @@ final class ProfileRegistrationSteps {
                 +"\nEstatura (opcional): "+get("height","—")
                 +"\nPeso (opcional): "+get("weight","—")
                 +"\nGénero: "+get("gender","prefiero no decirlo"),13,WHITE);
-        identity.setPadding(dp(12),dp(13),dp(12),dp(13));
-        identity.setBackground(fieldBackground());
-        out.addView(identity);
+        addExpandableReview(out,identity,"IDENTIDAD DEL CAZADOR");
         TextView training=text("ENTRENAMIENTO\nExperiencia: "+get("experience","principiante")
                 +"\nObjetivo: "+get("goal","bienestar")
                 +"\nObjetivo libre: "+get("custom_goal","—")
@@ -391,19 +562,13 @@ final class ProfileRegistrationSteps {
                 +"\nDescanso: "+get("rest_seconds","60")+" segundos"
                 +"\nSemana: "+readableWeek()
                 +"\nEquipamiento: "+equipmentSummary(),13,WHITE);
-        training.setPadding(dp(12),dp(13),dp(12),dp(13));
-        training.setBackground(fieldBackground());
-        LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.topMargin=dp(12);
-        out.addView(training,p);
+        addExpandableReview(out,training,"ENTRENAMIENTO");
         TextView visual=text("PERSONALIZACIÓN\nTema: "+get("theme","dark")
                 +"\nBordes: "+get("accent","#9A68F2")
                 +"\nAcompañante: "+get("companion","vigia")
                 +"\nSilueta: "+get("card_silhouette","caballero")
                 +"\nFondo de tarjeta: "+get("card_background","niebla"),13,WHITE);
-        visual.setPadding(dp(12),dp(13),dp(12),dp(13));
-        visual.setBackground(fieldBackground());
-        LinearLayout.LayoutParams q=new LinearLayout.LayoutParams(-1,-2);q.topMargin=dp(12);
-        out.addView(visual,q);
+        addExpandableReview(out,visual,"PERSONALIZACIÓN");
         addHeading(out,"02 — Confirmación final");
         addInfo(out,"El perfil se guardará en almacenamiento privado. Podrás editar tus preferencias posteriormente; no se compartirá por internet.");
         CheckBox confirm=new CheckBox(activity);

@@ -4,7 +4,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="#080F23">
     <!-- El paisaje es un recurso independiente: nunca contiene textos ni botones. -->
-    <ImageView android:layout_width="match_parent" android:layout_height="match_parent"
+    <ImageView android:id="@+id/profile_scenery" android:layout_width="match_parent" android:layout_height="match_parent"
         android:scaleType="centerCrop" android:src="@drawable/asterion_reg_background"
         android:contentDescription="@null" />
     <View android:layout_width="match_parent" android:layout_height="match_parent"
