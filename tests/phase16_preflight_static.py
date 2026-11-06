@@ -171,10 +171,11 @@ class PreflightNoBuild(unittest.TestCase):
         self.assertNotIn("DROP TABLE", db.upper())
         self.assertIn("Context.MODE_PRIVATE", pref)
 
-    def test_manual_workflow_and_secrets_excluded(self):
+    def test_approved_debug_ci_triggers_and_secrets_excluded(self):
         workflow = read(ROOT / ".github/workflows/android-ci.yml")
         self.assertRegex(workflow, r"(?m)^  workflow_dispatch:")
-        self.assertNotRegex(workflow, r"(?m)^  (push|pull_request|schedule):")
+        self.assertIn("  push:\n    branches:\n      - main\n", workflow)
+        self.assertNotRegex(workflow, r"(?m)^  (pull_request|schedule):")
         self.assertIn("gradle-version: '8.13'", workflow)
         ignores = read(ROOT / ".gitignore")
         for pattern in ("*.apk", "*.aab", "*.jks", "*.keystore", "local.properties"):

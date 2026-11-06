@@ -23,6 +23,8 @@
 
 ## Barrera de autorización
 
+**Actualización posterior:** el propietario autorizó expresamente la ejecución automática del workflow **solo por `push` en la rama `main`**, conservando el inicio manual, las pruebas y la variante `debug`. Esta autorización no abarca publicación `release` ni firma de distribución. La referencia histórica de abajo corresponde al estado anterior al cambio.
+
 **Esa aprobación adicional ya se recibió para la variante `debug` y para pruebas/lint de Gradle.** El propietario inició tres ejecuciones manuales: la primera falló JUnit, la segunda falló Java y la tercera llegó a `assembleDebug` pero falló `lintDebug` por `GestureBackNavigation`. Se migró la navegación Atrás a `OnBackPressedDispatcher` de AndroidX. Esta corrección debe validarse mediante una nueva ejecución manual. La conexión disponible no permite iniciar por sí misma un evento `workflow_dispatch`. No se requiere volver a autorizar la variante debug.
 
 Ejemplo de mensaje futuro, **no autorizado por este documento**:

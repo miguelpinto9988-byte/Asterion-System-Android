@@ -1,8 +1,12 @@
-name: Asterion Android — debug manual
+name: Asterion Android — debug CI
 
-# La compilación de APK no se inicia automáticamente.
-# Ejecutar únicamente mediante autorización expresa del propietario.
+# Aprobación del propietario: compilar y validar APK debug automáticamente
+# al publicar cambios en main. La ejecución manual también queda disponible.
+# No generar release, no configurar firma de distribución.
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:

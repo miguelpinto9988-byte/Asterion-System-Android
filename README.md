@@ -11,7 +11,7 @@ Se creó el módulo **`:progress-engine`**, una biblioteca Java 17 sin Android n
 La evaluación por patrones es **de solo lectura**; la creación de planes y el registro de resultados requieren llamadas explícitas. Los parámetros de futuros patrones están validados pero aún **no se guardan** en SQLite ni aparecen en las pantallas. La app Android continúa mostrando el progreso actual hasta que se apruebe la integración funcional de los nuevos patrones.
 
 - [Arquitectura, contratos y extensión futura](docs/motor-progreso/01-motor-modular.md)
-- Pruebas JVM: `gradle :progress-engine:test`, incorporadas al workflow manual de debug. **No ejecutadas para este módulo todavía.**
+- Pruebas JVM: `gradle :progress-engine:test`, incorporadas al workflow CI de debug para cada publicación en `main` (también disponible de forma manual). La ejecución del nuevo módulo debe verificarse en los registros de GitHub Actions.
 
 ## Arquitectura
 
@@ -83,7 +83,7 @@ La integración incorpora **ilustraciones vectoriales originales** del Guardián
 - Se revisó AGP **8.13.2**, Gradle **8.13** en CI manual, JDK **17**, `minSdk 26` y `targetSdk/compileSdk 36`.
 - Se preparó un ajuste de áreas de seguridad Android API 35+ en `MainActivity` y `activity_main.xml` para compatibilidad con edge-to-edge, **todavía no probado en Android**.
 - Se añadió `tests/phase16_preflight_static.py`, que examina código, XML, manifiesto, privacidad y CI usando solamente Python. La verificación estática se superó en el primer workflow; Gradle se ejecutó, pero se detuvo en una prueba antes de generar una APK.
-- No hay Gradle Wrapper versionado; el workflow manual instala Gradle 8.13. Release no tiene firma de distribución configurada.
+- No hay Gradle Wrapper versionado; el workflow CI instala Gradle 8.13. Release no tiene firma de distribución configurada.
 - La variante `debug` está autorizada. El tercer intento completó Java, pruebas y `assembleDebug`, pero falló lint con 1 error y 58 advertencias. La corrección de navegación mediante AndroidX está preparada y necesita validación real.
 
 Documentación:
@@ -94,13 +94,13 @@ Documentación:
 
 ## Fase 16.4 — Tres ejecuciones: corregida la navegación Atrás para lint
 
-Se autorizó compilar `debug` y ejecutar JUnit y lint de Gradle. El workflow `.github/workflows/android-ci.yml` continúa **solo manual**, con tareas `:core:test`, `:app:testDebugUnitTest`, `:app:lintDebug` y `:app:assembleDebug`, y validación posterior mediante `apksigner`, `aapt` y `sha256sum`.
+Se autorizó compilar `debug` y ejecutar JUnit y lint de Gradle. El workflow `.github/workflows/android-ci.yml` ejecuta automáticamente la variante **debug** en cada `push` a `main` (y admite `workflow_dispatch` manual), con tareas `:core:test`, `:app:testDebugUnitTest`, `:app:lintDebug` y `:app:assembleDebug`, y validación posterior mediante `apksigner`, `aapt` y `sha256sum`.
 
-**No existe todavía una APK validada y publicada como artefacto del código actual.** La tercera ejecución superó `:app:assembleDebug`, pero `:app:lintDebug` falló por la navegación Atrás. Se preparó una migración a `OnBackPressedDispatcher` de AndroidX y queda pendiente de una nueva ejecución manual. Consulta el [informe de errores y correcciones](docs/fase-16/16-04-resultado-y-bloqueos.md).
+La APK de la fase 16 superó pruebas, lint y validación en la [ejecución #42146520486](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42146520486), correspondiente a una versión anterior al nuevo módulo de progreso. El nuevo módulo se comprobará mediante CI automático después de publicar sus cambios. Consulta el [informe de errores y correcciones](docs/fase-16/16-04-resultado-y-bloqueos.md).
 
-## Sin compilar APK
+## Compilación CI: modo automático aprobado
 
-**No se compila ni genera APK sin autorización expresa.** `.github/workflows/android-ci.yml` conserva solamente `workflow_dispatch`. Las publicaciones en GitHub no activan trabajos automáticos de compilación.
+Por autorización expresa, cada `push` a `main` ejecuta las pruebas estáticas, JUnit de `:core` y `:progress-engine`, pruebas Android debug, `lintDebug`, `assembleDebug` y verificaciones del APK firmado de desarrollo. `workflow_dispatch` permanece disponible. **No se activa release, firma de distribución ni despliegue automático a dispositivos**. Los artefactos debug se conservan siete días.
 
 Las verificaciones de las fases 08 y 09 incluyen SQLite de escritorio y previsualizaciones HTML interactivas; las pruebas Java JUnit permanecen preparadas, **sin ejecutarse por Gradle**. Para fase 09 se ejecutaron 23 comprobaciones de interacción con Chromium y 8 pruebas de restricciones equivalentes del nuevo esquema SQLite. No equivalen a pruebas Android nativas. La compilación y ejecución Android siguen pendientes.
 

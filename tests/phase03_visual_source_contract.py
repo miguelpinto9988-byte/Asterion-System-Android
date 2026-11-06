@@ -86,7 +86,8 @@ class NativeVisualTest(unittest.TestCase):
         self.assertIn("DATABASE_VERSION = 5",helper)
         workflow=(ROOT/".github/workflows/android-ci.yml").read_text()
         self.assertRegex(workflow,r"(?m)^  workflow_dispatch:")
-        self.assertNotRegex(workflow,r"(?m)^  (push|pull_request|schedule):")
+        self.assertIn("  push:\n    branches:\n      - main\n", workflow)
+        self.assertNotRegex(workflow,r"(?m)^  (pull_request|schedule):")
 
 
 if __name__=="__main__":

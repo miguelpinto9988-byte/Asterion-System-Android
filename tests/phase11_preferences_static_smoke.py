@@ -73,10 +73,11 @@ class SettingsSourceTest(unittest.TestCase):
         self.assertFalse(list(APP.rglob("*.js")))
         self.assertNotIn("WebView", java("presentation/NavigationRenderer.java"))
 
-    def test_workflow_stays_dispatch_only(self):
+    def test_workflow_push_main_and_manual_only(self):
         source = (ROOT / ".github/workflows/android-ci.yml").read_text(encoding="utf-8")
         self.assertIn("  workflow_dispatch:", source)
-        self.assertNotRegex(source, r"(?m)^\s{2}(push|pull_request|schedule):")
+        self.assertIn("  push:\n    branches:\n      - main\n", source)
+        self.assertNotRegex(source, r"(?m)^\s{2}(pull_request|schedule):")
 
     def test_java_junit_source_exists(self):
         target = ROOT / "core/src/test/java/pe/asterionsystem/core/settings/PreferencesServiceTest.java"

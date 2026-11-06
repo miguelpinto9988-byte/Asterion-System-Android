@@ -104,10 +104,11 @@ class Phase14OfflineContractTest(unittest.TestCase):
         self.assertIn("Context.MODE_PRIVATE", source)
         self.assertIn("values.edit().clear().apply()", source)
 
-    def test_workflow_is_manual_only(self):
+    def test_workflow_push_main_and_manual_only(self):
         workflow = read(ROOT / ".github/workflows/android-ci.yml")
         self.assertRegex(workflow, r"(?m)^  workflow_dispatch:")
-        self.assertNotRegex(workflow, r"(?m)^  (push|pull_request|schedule):")
+        self.assertIn("  push:\n    branches:\n      - main\n", workflow)
+        self.assertNotRegex(workflow, r"(?m)^  (pull_request|schedule):")
 
 
 if __name__ == "__main__":

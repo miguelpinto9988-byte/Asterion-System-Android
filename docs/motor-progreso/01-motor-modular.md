@@ -1,6 +1,6 @@
 # Motor modular de planificación y progreso — Bloque independiente
 
-**Estado:** motor de dominio preparado en fuente, versión inicial **sin activar patrones nuevos en la interfaz**. Compilación y pruebas JVM del nuevo módulo todavía pendientes de una ejecución autorizada del workflow manual.
+**Estado:** motor de dominio preparado en fuente, versión inicial **sin activar patrones nuevos en la interfaz**. Compilación y pruebas JVM del nuevo módulo todavía pendientes de validación en el workflow CI de debug (automático por `push` a `main` o manual).
 
 ## Objetivo
 
@@ -81,13 +81,13 @@ Para otro patrón se implementa `ProgressPattern`, se incorpora a la lista del `
 3. Para evaluar una semana, el período empieza lunes y las entradas deben pertenecer a ese período.
 4. IDs de patrón y parámetros se validan; el motor rechaza duplicados, desconocidos y resultados porcentuales fuera de 0–100.
 5. Las operaciones de repositorio son síncronas y **deben llamarse desde un hilo de trabajo Android**; el motor no crea un executor propio ni oculta operaciones bloqueantes.
-6. Ningún cambio en SQLite v5, `SharedPreferences`, layout XML, navegación, firma, variante `release` ni disparadores automáticos de CI.
+6. Ningún cambio en SQLite v5, `SharedPreferences`, layout XML, navegación, firma, variante `release` ni distribución release; el CI debug automático por `push` a `main` fue autorizado posteriormente.
 
 ## Pruebas y validación pendiente
 
 Las nuevas pruebas JUnit de `:progress-engine` cubren: casos vacíos, estados pendientes, fórmula original, estrategia alternativa, evaluación de reglas de fase 06, ausencia de porcentaje, selección desconocida, IDs duplicados, parámetros inmutables, límites numéricos, restricciones semanales, delegación de catálogo y planificación, independencia de escritura y comandos explícitos.
 
-El workflow de GitHub Actions sigue en `workflow_dispatch` únicamente, y ahora ejecutará `:core:test :progress-engine:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug`. **Esta nueva versión del motor aún no se ha compilado ni probado en un dispositivo Android.**
+El workflow de GitHub Actions ejecuta automáticamente en cada `push` a `main`, y mantiene `workflow_dispatch` para ejecuciones manuales. Ejecutará `:core:test :progress-engine:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug`. **Esta nueva versión del motor aún no se ha compilado ni probado en un dispositivo Android.**
 
 ## Próximas ampliaciones posibles (sin activar)
 

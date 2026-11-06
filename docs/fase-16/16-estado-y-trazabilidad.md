@@ -14,7 +14,8 @@
 
 - Autorización actual: auditoría y compilación **exclusivamente `debug`**, `:core:test`, `:app:testDebugUnitTest`, `:app:lintDebug`, `:app:assembleDebug`, verificación del APK y documentación.
 - Tres ejecuciones manuales: primera falló una prueba de planificación; segunda falló un `import R`; tercera superó `assembleDebug` y falló `lintDebug` por `GestureBackNavigation`. Se migró el manejo de Atrás a AndroidX `OnBackPressedDispatcher`; **no se ha recompilado ni verificado una APK del commit migrado**.
-- No autorizado: construir `release`, configurar firma de distribución, activar triggers automáticos, publicar un paquete sin validarlo.
+- Autorizado posteriormente: disparador automático `push` exclusivamente sobre `main`, además de `workflow_dispatch`, para pruebas y APK `debug`.
+- No autorizado: construir `release`, configurar firma de distribución o publicar un paquete sin validarlo.
 - Se mantiene el repositorio Java y XML nativo, SQLite versión 5, SharedPreferences y el funcionamiento sin red.
 - Fases 10, 12 y 13 excluidas; fase 03 con diseño oscuro vectorial integrado, aún pendiente de validación en un dispositivo Android.
 

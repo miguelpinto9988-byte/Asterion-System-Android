@@ -90,7 +90,8 @@ class Phase15QualityTest(unittest.TestCase):
         self.assertNotIn("DROP TABLE", db.upper())
         workflow = read(".github/workflows/android-ci.yml")
         self.assertIn("  workflow_dispatch:", workflow)
-        self.assertNotRegex(workflow, r"(?m)^  (push|pull_request|schedule):")
+        self.assertIn("  push:\n    branches:\n      - main\n", workflow)
+        self.assertNotRegex(workflow, r"(?m)^  (pull_request|schedule):")
 
     def test_html_does_not_enter_android_sources(self):
         self.assertFalse(list(APP.rglob("*.html")))
