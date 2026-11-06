@@ -4,6 +4,8 @@
         android:allowBackup="false"
         android:usesCleartextTraffic="false"
         android:label="@string/app_name"
+        android:icon="@drawable/asterion_icon_oficial"
+        android:roundIcon="@drawable/asterion_icon_oficial"
         android:theme="@style/Theme.AsterionSystem">
         <activity
             android:name=".MainActivity"

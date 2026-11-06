@@ -4,6 +4,10 @@
 
 Proyecto Java nativo Android con vistas XML. El HTML se utiliza **solo como previsualización externa**. No se han incorporado HTML, JavaScript, CSS, WebView o Compose a las pantallas Android.
 
+## Identidad visual oficial — ícono permanente
+
+**Regla obligatoria del proyecto:** el ícono de caballero sombra aprobado por el propietario es la identidad visual definitiva de Asterion System. **No se permite reemplazarlo, rediseñarlo, recolorearlo ni alterarlo en actualizaciones futuras**, tanto de la app como de sus pantallas de carga y materiales vinculados. El archivo de lanzamiento oficial está en [`app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp`](app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp). Su integridad se verifica mediante `tests/branding_icon_lock.py` en GitHub Actions. Véase [la política de identidad visual permanente](docs/identidad/ICONO_OFICIAL_INMUTABLE.md).
+
 ## Motor modular de progreso (bloque independiente)
 
 Se creó el módulo **`:progress-engine`**, una biblioteca Java 17 sin Android ni SQLite, conectada por interfaces a los servicios actuales de `:core`. Su fachada `AsterionDomainEngine` coordina lectura del catálogo de actividades, planificación, preferencias y seguimiento. `ProgressPatternEngine` permite evaluar patrones intercambiables; `standard_v1` conserva el porcentaje actual y `RuleBasedProgressPattern` permite reutilizar el motor determinista de reglas de fase 06.
