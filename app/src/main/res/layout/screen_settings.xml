@@ -36,7 +36,8 @@
             android:gravity="center"
             android:text="@string/settings_description"
             android:textColor="@color/asterion_text_secondary"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -61,14 +62,16 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_text_normal"
-                android:textColor="@color/asterion_text" />
+                android:textColor="@color/asterion_text"
+                android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_text_large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_text_large"
-                android:textColor="@color/asterion_text" />
+                android:textColor="@color/asterion_text"
+                android:textStyle="bold" />
         </RadioGroup>
 
         <TextView
@@ -94,14 +97,16 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_density_normal"
-                android:textColor="@color/asterion_text" />
+                android:textColor="@color/asterion_text"
+                android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_density_compact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_density_compact"
-                android:textColor="@color/asterion_text" />
+                android:textColor="@color/asterion_text"
+                android:textStyle="bold" />
         </RadioGroup>
 
         <TextView
@@ -127,28 +132,32 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_start_home"
-                android:textColor="@color/asterion_text" />
+                android:textColor="@color/asterion_text"
+                android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_start_catalog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_start_catalog"
-                android:textColor="@color/asterion_text" />
+                android:textColor="@color/asterion_text"
+                android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_start_plan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_start_plan"
-                android:textColor="@color/asterion_text" />
+                android:textColor="@color/asterion_text"
+                android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_start_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_start_progress"
-                android:textColor="@color/asterion_text" />
+                android:textColor="@color/asterion_text"
+                android:textStyle="bold" />
         </RadioGroup>
 
         <TextView
@@ -157,20 +166,23 @@
             android:layout_marginTop="16dp"
             android:text="@string/settings_start_explanation"
             android:textColor="@color/asterion_text_secondary"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/settings_reset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/settings_reset" />
+            android:text="@string/settings_reset"
+            android:textStyle="bold" />
         <Button
             android:id="@+id/settings_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/settings_back" />
+            android:text="@string/settings_back"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -179,6 +191,7 @@
             android:gravity="center"
             android:text="@string/settings_privacy_note"
             android:textColor="@color/asterion_text_secondary"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

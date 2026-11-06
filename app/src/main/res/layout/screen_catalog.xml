@@ -32,7 +32,8 @@
         android:gravity="center"
         android:text="@string/catalog_demo_note"
         android:textColor="@color/asterion_text_secondary"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/catalog_search"
@@ -45,7 +46,8 @@
         android:inputType="text"
         android:maxLength="120"
         android:singleLine="true"
-        android:textColor="@color/asterion_text" />
+        android:textColor="@color/asterion_text"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/catalog_category_filter"
@@ -67,13 +69,15 @@
         android:layout_marginTop="8dp"
         android:text="@string/catalog_loading"
         android:textColor="@color/asterion_text_secondary"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/catalog_retry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/offline_retry_read" />
+        android:text="@string/offline_retry_read"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/catalog_results"
@@ -89,5 +93,6 @@
         android:id="@+id/catalog_back_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/catalog_back_to_home" />
+        android:text="@string/catalog_back_to_home"
+        android:textStyle="bold" />
 </LinearLayout>

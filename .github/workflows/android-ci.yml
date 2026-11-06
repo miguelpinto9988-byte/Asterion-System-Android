@@ -54,6 +54,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tests/branding_icon_lock.py
+          python3 tests/global_bold_contract.py
           python3 tests/branding_splash_lock.py
           python3 tests/profile_gate_contract.py
           python3 tests/phase16_preflight_static.py

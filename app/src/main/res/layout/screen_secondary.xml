@@ -33,12 +33,14 @@
         android:gravity="center"
         android:text="@string/navigation_secondary_description"
         android:textColor="@color/asterion_text_secondary"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/back_to_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="@string/navigation_back_to_home" />
+        android:text="@string/navigation_back_to_home"
+        android:textStyle="bold" />
 </LinearLayout>

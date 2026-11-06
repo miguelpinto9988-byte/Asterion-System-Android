@@ -40,7 +40,8 @@
                 android:text="@string/app_name"
                 android:textAllCaps="true"
                 android:textColor="#F5F7FF"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:textStyle="bold" />
             <LinearLayout
                 android:id="@+id/profile_gate_panel"
                 android:layout_width="match_parent"
@@ -58,7 +59,8 @@
                     android:letterSpacing="0.30"
                     android:text="@string/profile_system_label"
                     android:textColor="#84D1FF"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,7 +78,8 @@
                     android:gravity="center"
                     android:text="@string/profile_gate_description"
                     android:textColor="#CDD9F7"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
                 <View android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="16dp"
@@ -121,7 +124,8 @@
                             android:gravity="center"
                             android:text="@string/profile_create_description"
                             android:textColor="#D9D3F1"
-                            android:textSize="11sp" />
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/profile_gate_restore"
@@ -157,7 +161,8 @@
                             android:gravity="center"
                             android:text="@string/profile_restore_description"
                             android:textColor="#D2E7FF"
-                            android:textSize="11sp" />
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
                 <TextView
@@ -168,7 +173,8 @@
                     android:letterSpacing="0.12"
                     android:text="@string/profile_gate_footer"
                     android:textColor="#AAC8FA"
-                    android:textSize="9sp" />
+                    android:textSize="9sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

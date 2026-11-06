@@ -22,6 +22,10 @@ Después de las dos pantallas de carga oficiales, Asterion consulta un perfil lo
 
 Los iconos PNG son recursos reales e independientes, los marcos azules y violeta son gráficos nativos escalables con cambios en la pulsación y el fondo se mantiene por separado. Ver [especificación de la ventana](docs/identidad/VENTANA_PERFIL_APROBADA.md). El catálogo, las dos ilustraciones Full HD de carga y el icono permanente de la app no se modificaron.
 
+## Tipografia global: negrita
+
+Todas las etiquetas, textos, titulos, opciones, botones y campos de entrada nativos deben usar negrita. El tema Android establece una regla compartida y los layouts actuales la aplican explicitamente; el CI ejecuta `tests/global_bold_contract.py` para detectar regresiones y futuras pantallas sin la regla. Los textos que forman parte de ilustraciones oficiales inmutables, como el icono y las pantallas de carga, no se alteran. Mas detalles: [politica tipografica](docs/identidad/TIPOGRAFIA_GLOBAL_NEGRITA.md).
+
 ## Motor modular de progreso (bloque independiente)
 
 Se creó el módulo **`:progress-engine`**, una biblioteca Java 17 sin Android ni SQLite, conectada por interfaces a los servicios actuales de `:core`. Su fachada `AsterionDomainEngine` coordina lectura del catálogo de actividades, planificación, preferencias y seguimiento. `ProgressPatternEngine` permite evaluar patrones intercambiables; `standard_v1` conserva el porcentaje actual y `RuleBasedProgressPattern` permite reutilizar el motor determinista de reglas de fase 06.

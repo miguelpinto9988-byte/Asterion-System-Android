@@ -1,5 +1,6 @@
 package pe.asterionsystem.app.presentation;
 
+import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,15 @@ public final class NativePreferencesApplier {
     }
 
     private static void scale(View view, AppPreferences p) {
-        if (view instanceof TextView && p.textSize() == AppPreferences.TextSize.LARGE) {
+        if (view instanceof TextView) {
             TextView label = (TextView) view;
-            label.setTextSize(TypedValue.COMPLEX_UNIT_PX, label.getTextSize() * 1.18f);
+            // Preserve serif/sans of each component while enforcing global bold text.
+            Typeface base = label.getTypeface();
+            label.setTypeface(Typeface.create(
+                    base == null ? Typeface.DEFAULT : base, Typeface.BOLD));
+            if (p.textSize() == AppPreferences.TextSize.LARGE) {
+                label.setTextSize(TypedValue.COMPLEX_UNIT_PX, label.getTextSize() * 1.18f);
+            }
         }
         if (view instanceof ListView) {
             ListView list = (ListView) view;

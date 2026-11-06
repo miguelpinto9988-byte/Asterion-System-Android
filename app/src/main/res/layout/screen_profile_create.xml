@@ -40,7 +40,8 @@
                     android:layout_marginTop="12dp"
                     android:text="@string/profile_create_intro"
                     android:textColor="#D5E0FF"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,7 +49,8 @@
                     android:labelFor="@id/profile_name_input"
                     android:text="@string/profile_display_name_label"
                     android:textColor="#F3F0FF"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
                 <EditText
                     android:id="@+id/profile_name_input"
                     android:layout_width="match_parent"
@@ -60,20 +62,23 @@
                     android:singleLine="true"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#ACBAE0"
-                    android:minHeight="48dp" />
+                    android:minHeight="48dp"
+                    android:textStyle="bold" />
                 <Button
                     android:id="@+id/profile_create_submit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="@string/profile_create_save" />
+                    android:text="@string/profile_create_save"
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
                     android:text="@string/profile_create_privacy"
                     android:textColor="#C4D0ED"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

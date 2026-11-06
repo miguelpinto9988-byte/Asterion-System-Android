@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:textColor="@color/asterion_text_secondary"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/catalog_detail_category"
@@ -45,7 +46,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textColor="@color/asterion_text_secondary"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/catalog_detail_description"
@@ -55,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textColor="@color/asterion_text"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/catalog_detail_tags"
@@ -63,19 +66,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textColor="@color/asterion_text_secondary"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/catalog_detail_retry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/offline_retry_read" />
+            android:text="@string/offline_retry_read"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/catalog_detail_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/catalog_back_to_list" />
+            android:text="@string/catalog_back_to_list"
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

@@ -39,7 +39,8 @@
                     android:text="@string/design_header_tagline"
                     android:textColor="@color/asterion_accent"
                     android:textSize="11sp"
-                    android:letterSpacing="0.09" />
+                    android:letterSpacing="0.09"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
@@ -74,7 +75,8 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/design_hero_description"
                     android:textColor="@color/asterion_text_secondary"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -109,7 +111,8 @@
             android:layout_marginTop="3dp"
             android:text="@string/design_actions_caption"
             android:textColor="@color/asterion_text_secondary"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -129,7 +132,8 @@
                 android:gravity="center"
                 android:text="@string/design_nav_catalog"
                 android:textColor="@color/asterion_text"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textStyle="bold" />
             <Button
                 android:id="@+id/open_plan"
                 android:layout_width="0dp"
@@ -143,7 +147,8 @@
                 android:gravity="center"
                 android:text="@string/design_nav_plan"
                 android:textColor="@color/asterion_text"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -164,7 +169,8 @@
                 android:gravity="center"
                 android:text="@string/design_nav_progress"
                 android:textColor="@color/asterion_text"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textStyle="bold" />
             <Button
                 android:id="@+id/open_settings"
                 android:layout_width="0dp"
@@ -178,7 +184,8 @@
                 android:gravity="center"
                 android:text="@string/design_nav_settings"
                 android:textColor="@color/asterion_text"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -213,7 +220,8 @@
                     android:layout_marginTop="3dp"
                     android:text="@string/design_local_description"
                     android:textColor="@color/asterion_text_secondary"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
             <Button
                 android:id="@+id/open_local_status"
@@ -223,7 +231,8 @@
                 android:contentDescription="@string/local_status_open"
                 android:drawableTop="@drawable/asterion_ic_status"
                 android:gravity="center"
-                android:text="" />
+                android:text=""
+                android:textStyle="bold" />
         </LinearLayout>
 
         <Button
@@ -233,7 +242,8 @@
             android:layout_marginTop="14dp"
             android:background="@drawable/asterion_card_selector"
             android:text="@string/navigation_open_secondary"
-            android:textColor="@color/asterion_text_secondary" />
+            android:textColor="@color/asterion_text_secondary"
+            android:textStyle="bold" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -241,6 +251,7 @@
             android:gravity="center"
             android:text="@string/design_footer_note"
             android:textColor="@color/asterion_text_secondary"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>
