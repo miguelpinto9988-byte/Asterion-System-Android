@@ -13,6 +13,17 @@ La evaluación por patrones es **de solo lectura**; la creación de planes y el 
 - [Arquitectura, contratos y extensión futura](docs/motor-progreso/01-motor-modular.md)
 - Pruebas JVM: `gradle :progress-engine:test`, incorporadas al workflow CI de debug para cada publicación en `main` (también disponible de forma manual). La ejecución del nuevo módulo debe verificarse en los registros de GitHub Actions.
 
+## Catálogo de familias, tipos y variantes de ejercicios (v1)
+
+Se incorporó el inventario inicial de **39 familias, 80 tipos y 445 variantes de ejercicios**, clasificado por movimiento, región funcional, implementos, forma de ejecución y complejidad técnica L1–L5. El inventario está dentro de la aplicación como recursos UTF-8 versionados y puede leerse con `AssetExerciseCatalogRepository`, sin internet ni migración de SQLite v5.
+
+El índice `ExerciseCatalog` (Java puro, módulo `:progress-engine`) valida la jerarquía, los identificadores, la progresión de niveles y los campos; permite filtrar por región, material, modalidad y complejidad. Los niveles L4/L5 requieren orientación profesional y no son elegibles para sugerencias automáticas. **Los registros todavía no se muestran en el Catálogo visual ni pueden guardarse como planes usando los IDs del TSV**: ese enlace exige una etapa posterior que preserve las claves foráneas de SQLite.
+
+- [Estructura, criterios y fuentes consultadas](docs/catalogo-ejercicios/01-estructura.md)
+- [Inventario completo: las 445 variantes por familia y tipo](docs/catalogo-ejercicios/02-inventario-completo.md)
+- [Archivos de datos v1](progress-engine/src/main/resources/asterion_exercises/v1/)
+- Las comprobaciones se añadieron a JUnit y al preflight, pendiente de verificar mediante el CI automático.
+
 ## Arquitectura
 
 - `:core`: Java puro; dominio, eventos, estado, navegación, reglas, catálogo, planificación, seguimiento, preferencias y diagnósticos locales.

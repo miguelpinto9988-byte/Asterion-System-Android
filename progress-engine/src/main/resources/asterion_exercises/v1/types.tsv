@@ -1,0 +1,81 @@
+type_id	family_id	name
+sentadilla_bilateral	sentadillas	Sentadilla bilateral
+sentadilla_unilateral	sentadillas	Sentadilla unilateral
+sentadilla_lateral	sentadillas	Sentadilla lateral
+zancada_estatica	zancadas	Zancada estática
+zancada_dinamica	zancadas	Zancada dinámica
+zancada_lateral	zancadas	Zancada lateral
+peso_muerto	bisagra_cadera	Peso muerto
+peso_muerto_rumano	bisagra_cadera	Peso muerto rumano
+buenos_dias	bisagra_cadera	Buenos días
+puente_gluteo	puentes_cadera	Puente de glúteos
+hip_thrust	puentes_cadera	Elevación de cadera con apoyo
+step_up	subida_escalon	Subida al escalón
+step_down	subida_escalon	Descenso controlado
+elevacion_gemelos	pantorrillas	Elevación de talones
+dorsiflexion_tibial	pantorrillas	Elevación de puntas
+curl_femoral	flexion_rodilla	Curl femoral
+curl_deslizante	flexion_rodilla	Curl femoral deslizante
+abduccion	control_cadera	Abducción de cadera
+aduccion	control_cadera	Aducción de cadera
+caminata_banda	control_cadera	Caminata lateral con banda
+extension_cuadriceps	extension_rodilla	Extensión de cuádriceps
+flexiones	empuje_horizontal	Flexiones de brazos
+press_pecho	empuje_horizontal	Press de pecho
+fondos	empuje_horizontal	Fondos asistidos y paralelas
+press_hombros	empuje_vertical	Press de hombros
+flexion_pica	empuje_vertical	Flexiones en pica
+apertura_pecho	aperturas_pecho	Aperturas pectorales
+extension_triceps	extension_codo	Extensiones de tríceps
+press_cerrado	extension_codo	Press de agarre cerrado
+remo	traccion_horizontal	Remo de fuerza
+remo_invertido	traccion_horizontal	Remo invertido
+dominadas	traccion_vertical	Dominadas y asistencias
+jalon	traccion_vertical	Jalones verticales
+curl_biceps	flexion_codo	Curl de bíceps
+curl_martillo	flexion_codo	Curl de agarre neutro
+elevacion_lateral	elevaciones_hombro	Elevación lateral
+elevacion_frontal	elevaciones_hombro	Elevación frontal
+pajaros	elevaciones_hombro	Apertura posterior
+face_pull	escapulas	Tracción hacia la cara
+retraccion_escapular	escapulas	Retracción escapular
+rotacion_externa	rotacion_hombro	Rotación externa
+rotacion_interna	rotacion_hombro	Rotación interna
+superman	extension_espalda	Extensión en suelo
+extension_banco	extension_espalda	Extensión en banco
+plancha_frontal	core_antextension	Plancha frontal
+dead_bug	core_antextension	Control contralateral supino
+rueda_abdominal	core_antextension	Extensión abdominal controlada
+press_pallof	core_anti_rotacion	Press antirrotación
+plancha_lateral	core_anti_rotacion	Plancha lateral
+crunch	core_flexion	Encogimiento abdominal
+elevacion_rodillas	core_flexion	Elevación de rodillas
+rotacion_tronco	core_rotacion	Rotación de tronco controlada
+rotacion_polea	core_rotacion	Rotación con resistencia
+equilibrio_unipodal	equilibrio	Equilibrio sobre una pierna
+alcance_unipodal	equilibrio	Alcances con apoyo unilateral
+paseo_granjero	transportes	Paseo con cargas simétricas
+paseo_maleta	transportes	Paseo con carga asimétrica
+marcha	caminata	Marcha y caminata
+caminata_inclinada	caminata	Caminata con inclinación
+trote	carrera	Trote recreativo
+carrera_intervalos	carrera	Alternancia de marcha y carrera
+ciclo_estatico	bicicleta	Bicicleta estática
+ciclo_exterior	bicicleta	Bicicleta exterior
+remo_ergometro	remo_cardio	Remo en ergómetro
+eliptica_cardio	eliptica	Trabajo en elíptica
+step_cardio	escalon_aerobico	Paso aeróbico sobre escalón
+escalera_agilidad	coordinacion	Escalera de coordinación
+desplazamiento_lateral	coordinacion	Pasos laterales
+rotacion_cadera	movilidad_cadera	Rotaciones de cadera
+flexor_cadera	movilidad_cadera	Movilidad del flexor de cadera
+gato_vaca	movilidad_columna	Gato y vaca
+rotacion_toracica	movilidad_columna	Rotación torácica
+circulos_brazo	movilidad_hombro	Círculos de brazos
+deslizamiento_pared	movilidad_hombro	Deslizamientos en pared
+dorsiflexion_tobillo	movilidad_tobillo	Movilidad de dorsiflexión
+circulos_tobillo	movilidad_tobillo	Círculos de tobillo
+estiramiento_isquios	flexibilidad_piernas	Estiramiento de isquiotibiales
+estiramiento_cuadriceps	flexibilidad_piernas	Estiramiento de cuádriceps
+respiracion_diafragmatica	respiracion_postura	Respiración diafragmática
+control_postura	respiracion_postura	Control postural

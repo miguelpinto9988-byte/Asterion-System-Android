@@ -10,6 +10,10 @@ import pe.asterionsystem.core.catalog.CatalogItemKind;
 import pe.asterionsystem.core.catalog.CatalogQuery;
 import pe.asterionsystem.core.catalog.CatalogRepository;
 import pe.asterionsystem.core.domain.EntityId;
+import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
+import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
+import pe.asterionsystem.core.engine.exercises.ExerciseType;
+import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.planning.ScheduleListing;
 import pe.asterionsystem.core.planning.SchedulePlanner;
 import pe.asterionsystem.core.planning.ScheduledActivity;
@@ -31,10 +35,19 @@ public final class AsterionDomainEngine {
     private final ProgressRepository progressRepository;
     private final ProgressService tracking;
     private final ProgressPatternEngine patterns;
+    private final ExerciseCatalog exerciseTaxonomy;
 
     public AsterionDomainEngine(CatalogRepository catalog, SchedulePlanner planning,
                                PreferencesService settings, ProgressRepository progressRepository,
                                ProgressPatternEngine patterns) {
+        this(catalog, planning, settings, progressRepository, patterns, null);
+    }
+
+    /** Optional taxonomy injection maintains compatibility with existing callers. */
+    public AsterionDomainEngine(CatalogRepository catalog, SchedulePlanner planning,
+                               PreferencesService settings, ProgressRepository progressRepository,
+                               ProgressPatternEngine patterns, ExerciseCatalog exerciseTaxonomy) {
+        this.exerciseTaxonomy = exerciseTaxonomy;
         this.catalog = Objects.requireNonNull(catalog, "catalog");
         this.planning = Objects.requireNonNull(planning, "planning");
         this.settings = Objects.requireNonNull(settings, "settings");
@@ -48,6 +61,32 @@ public final class AsterionDomainEngine {
 
     public List<CatalogItem> exerciseCatalog(String query, EntityId categoryId, int limit, int offset) {
         return catalog.search(new CatalogQuery(query, categoryId, CatalogItemKind.ACTIVITY, limit, offset));
+    }
+
+    // Exercise taxonomy: read-only, versioned assets; separate from legacy SQLite IDs.
+    private ExerciseCatalog requireExerciseTaxonomy() {
+        if (exerciseTaxonomy == null) {
+            throw new IllegalStateException("El catálogo por familias no está conectado");
+        }
+        return exerciseTaxonomy;
+    }
+
+    public List<ExerciseFamily> exerciseFamilies() {
+        return requireExerciseTaxonomy().families();
+    }
+
+    public List<ExerciseType> exerciseTypes(String familyId) {
+        return requireExerciseTaxonomy().typesInFamily(familyId);
+    }
+
+    public List<ExerciseVariant> exerciseVariants(String typeId) {
+        return requireExerciseTaxonomy().variantsInType(typeId);
+    }
+
+    public List<ExerciseVariant> searchExerciseVariants(String query, String category,
+            String equipment, String execution, int maximumDifficulty, int limit, int offset) {
+        return requireExerciseTaxonomy().search(query, category, equipment,
+                execution, maximumDifficulty, limit, offset);
     }
 
     // Planning: preserve the existing conflict checks and SQLite transactional backstop.

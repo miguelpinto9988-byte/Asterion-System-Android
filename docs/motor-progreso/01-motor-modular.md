@@ -94,3 +94,11 @@ El workflow de GitHub Actions ejecuta automáticamente en cada `push` a `main`, 
 - **Perfil de patrones:** persistir el patrón seleccionado y sus parámetros en un contrato de datos versionado; permite conservar preferencias entre sesiones sin mezclar configuración visual y lógica.
 - **Motor de reglas por categorías:** proporcionar criterios específicos para clases de actividades, con validaciones de límites; permite distintos reportes sobre un mismo historial sin reescribir SQLite.
 - **Integración UI y pruebas de dispositivo:** usar la fachada en presentadores y seleccionar patrón desde una pantalla dedicada, con pruebas de navegación y accesibilidad; evita exponer funciones incompletas.
+
+## Extensión: catálogo taxonómico de ejercicios v1
+
+La fachada del motor acepta opcionalmente un `ExerciseCatalog` empaquetado, mediante un constructor sobrecargado que conserva la firma anterior. Expone `exerciseFamilies()`, `exerciseTypes(familyId)`, `exerciseVariants(typeId)` y `searchExerciseVariants(...)`. Esto conecta la clasificación en el plano de **consulta**, no escribe actividades ni modifica el progreso.
+
+El adaptador Android `AssetExerciseCatalogRepository` lee el inventario de `progress-engine/src/main/resources/asterion_exercises/v1/` como assets de solo lectura en un hilo de trabajo. El catálogo no sustituye el almacenamiento actual de actividades de `SQLiteCatalogRepository`; para vincular nuevas variantes a programaciones se necesita una integración futura respetuosa de las claves foráneas.
+
+Ver [estructura de las 39 familias y las 445 variantes](../catalogo-ejercicios/01-estructura.md) y el [inventario completo](../catalogo-ejercicios/02-inventario-completo.md).

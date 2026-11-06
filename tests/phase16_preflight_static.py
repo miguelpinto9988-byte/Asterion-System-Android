@@ -153,6 +153,50 @@ class PreflightNoBuild(unittest.TestCase):
             self.assertNotIn("SharedPreferences", content)
         self.assertFalse(list(module.rglob("*.xml")))
 
+    def test_versioned_exercise_catalog_taxonomy_and_asset_adapter(self):
+        """Exercise rows must be valid and accessible to Android without a SQL migration."""
+        root = ROOT / "progress-engine/src/main/resources/asterion_exercises/v1"
+        app_gradle = read(MODULES)
+        adapter = read(APP_JAVA / "pe/asterionsystem/app/data/AssetExerciseCatalogRepository.java")
+        self.assertIn("assets.srcDir '../progress-engine/src/main/resources'", app_gradle)
+        self.assertIn("ExerciseCatalogLoader.load(families, types, variants)", adapter)
+        self.assertIn("getAssets().open", adapter)
+        self.assertIn("Looper.getMainLooper()", adapter)
+
+        def read_rows(filename, fields):
+            text = read(root / filename).splitlines()
+            self.assertEqual(fields, text[0].split("\t"))
+            rows = [line.split("\t") for line in text[1:] if line and not line.startswith("#")]
+            self.assertTrue(all(len(row) == len(fields) for row in rows))
+            return rows
+
+        families = read_rows("families.tsv",
+                             ["family_id", "name", "category", "pattern"])
+        types = read_rows("types.tsv", ["type_id", "family_id", "name"])
+        variants = read_rows("variants.tsv",
+                             ["variant_id", "type_id", "name", "level",
+                              "equipment", "execution", "supervision"])
+        self.assertEqual((39, 80, 445), (len(families), len(types), len(variants)))
+        family_ids = {row[0] for row in families}
+        type_ids = {row[0] for row in types}
+        self.assertEqual(len(family_ids), len(families))
+        self.assertEqual(len(type_ids), len(types))
+        self.assertEqual(len({row[0] for row in variants}), len(variants))
+        self.assertTrue(all(row[1] in family_ids for row in types))
+        self.assertTrue(all(row[1] in type_ids for row in variants))
+        self.assertTrue(all(any(row[1] == family for row in types) for family in family_ids))
+        self.assertTrue(all(any(row[1] == kind for row in variants) for kind in type_ids))
+        previous = {}
+        for row in variants:
+            level = int(row[3])
+            self.assertIn(level, (1, 2, 3, 4, 5))
+            self.assertGreaterEqual(level, previous.get(row[1], 0))
+            previous[row[1]] = level
+            self.assertTrue(row[4] and row[5])
+            self.assertIn(row[6], ("0", "1"))
+            if level >= 4:
+                self.assertEqual("1", row[6], row[0])
+
     def test_sdk36_edge_to_edge_safe_insets(self):
         main = read(APP_JAVA / "pe/asterionsystem/app/MainActivity.java")
         xml = read(APP / "res/layout/activity_main.xml")

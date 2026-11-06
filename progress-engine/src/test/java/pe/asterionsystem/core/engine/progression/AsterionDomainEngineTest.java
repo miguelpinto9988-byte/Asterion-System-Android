@@ -117,6 +117,36 @@ public final class AsterionDomainEngineTest {
         assertEquals(1, fixture.tracking.clears);
     }
 
+    @Test public void taxonomyIsReadOnlyAndCanBeInjectedAlongsideLegacyCatalog() throws Exception {
+        pe.asterionsystem.core.engine.exercises.ExerciseCatalog taxonomy;
+        try (java.io.Reader families = new java.io.InputStreamReader(
+                     getClass().getResourceAsStream("/asterion_exercises/v1/families.tsv"),
+                     java.nio.charset.StandardCharsets.UTF_8);
+             java.io.Reader types = new java.io.InputStreamReader(
+                     getClass().getResourceAsStream("/asterion_exercises/v1/types.tsv"),
+                     java.nio.charset.StandardCharsets.UTF_8);
+             java.io.Reader variants = new java.io.InputStreamReader(
+                     getClass().getResourceAsStream("/asterion_exercises/v1/variants.tsv"),
+                     java.nio.charset.StandardCharsets.UTF_8)) {
+            taxonomy = pe.asterionsystem.core.engine.exercises.ExerciseCatalogLoader
+                    .load(families, types, variants);
+        }
+        Fixture fixture = new Fixture();
+        AsterionDomainEngine withTaxonomy = new AsterionDomainEngine(
+                fixture.catalog, new SchedulePlanner(fixture.plans, fixture.catalog),
+                new PreferencesService(fixture.settings), fixture.tracking,
+                ProgressPatternEngine.standard(), taxonomy);
+        assertEquals(39, withTaxonomy.exerciseFamilies().size());
+        assertEquals(3, withTaxonomy.exerciseTypes("sentadillas").size());
+        assertEquals(7, withTaxonomy.exerciseVariants("sentadilla_bilateral").size());
+        assertFalse(withTaxonomy.searchExerciseVariants(
+                "sentadilla", "piernas", "silla", null, 2, 50, 0).isEmpty());
+        assertEquals(0, fixture.tracking.saves);
+        assertEquals(0, fixture.tracking.clears);
+        assertEquals(0, fixture.settings.saves);
+        assertEquals(0, fixture.plans.insertCalls);
+    }
+
     @Test public void rejectsUnknownPatternBeforeStorageRead() {
         Fixture fixture = new Fixture();
         try {

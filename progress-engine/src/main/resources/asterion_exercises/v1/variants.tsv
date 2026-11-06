@@ -1,0 +1,446 @@
+variant_id	type_id	name	level	equipment	execution	supervision
+sentadilla_bilateral_v01	sentadilla_bilateral	Sentadilla a silla	1	silla	asistido	0
+sentadilla_bilateral_v02	sentadilla_bilateral	Sentadilla asistida en pared	1	pared	asistido	0
+sentadilla_bilateral_v03	sentadilla_bilateral	Sentadilla libre	2	sin_equipo	bilateral	0
+sentadilla_bilateral_v04	sentadilla_bilateral	Sentadilla con pausa	3	sin_equipo	controlado	0
+sentadilla_bilateral_v05	sentadilla_bilateral	Sentadilla goblet	3	mancuerna	carga_externa	0
+sentadilla_bilateral_v06	sentadilla_bilateral	Sentadilla frontal con mancuernas	4	mancuerna	carga_externa	1
+sentadilla_bilateral_v07	sentadilla_bilateral	Sentadilla frontal con barra	5	barra	carga_externa	1
+sentadilla_unilateral_v01	sentadilla_unilateral	Sentadilla dividida con apoyo	1	silla	asistido	0
+sentadilla_unilateral_v02	sentadilla_unilateral	Sentadilla dividida libre	2	sin_equipo	unilateral	0
+sentadilla_unilateral_v03	sentadilla_unilateral	Sentadilla búlgara asistida	3	banco	asistido	0
+sentadilla_unilateral_v04	sentadilla_unilateral	Sentadilla búlgara con mancuernas	4	banco+mancuerna	carga_externa	1
+sentadilla_unilateral_v05	sentadilla_unilateral	Sentadilla unilateral a caja alta	4	silla	unilateral	1
+sentadilla_unilateral_v06	sentadilla_unilateral	Sentadilla unilateral a caja baja	5	banco	unilateral	1
+sentadilla_lateral_v01	sentadilla_lateral	Traslado de peso lateral	1	sin_equipo	controlado	0
+sentadilla_lateral_v02	sentadilla_lateral	Sentadilla lateral parcial	2	sin_equipo	lateral	0
+sentadilla_lateral_v03	sentadilla_lateral	Sentadilla lateral completa	3	sin_equipo	lateral	0
+sentadilla_lateral_v04	sentadilla_lateral	Sentadilla lateral con mancuerna	4	mancuerna	carga_externa	1
+sentadilla_lateral_v05	sentadilla_lateral	Sentadilla cosaca asistida	4	silla	asistido	1
+sentadilla_lateral_v06	sentadilla_lateral	Sentadilla cosaca libre	5	sin_equipo	unilateral	1
+zancada_estatica_v01	zancada_estatica	Posición dividida con apoyo	1	silla	asistido	0
+zancada_estatica_v02	zancada_estatica	Zancada estática corta	2	sin_equipo	controlado	0
+zancada_estatica_v03	zancada_estatica	Zancada estática	2	sin_equipo	bilateral	0
+zancada_estatica_v04	zancada_estatica	Zancada estática con pausa	3	sin_equipo	controlado	0
+zancada_estatica_v05	zancada_estatica	Zancada estática con mancuernas	4	mancuerna	carga_externa	1
+zancada_estatica_v06	zancada_estatica	Zancada estática con barra	5	barra	carga_externa	1
+zancada_dinamica_v01	zancada_dinamica	Paso atrás con apoyo	1	silla	asistido	0
+zancada_dinamica_v02	zancada_dinamica	Zancada atrás	2	sin_equipo	alterno	0
+zancada_dinamica_v03	zancada_dinamica	Zancada adelante	3	sin_equipo	alterno	0
+zancada_dinamica_v04	zancada_dinamica	Zancada caminando	3	sin_equipo	dinamico	0
+zancada_dinamica_v05	zancada_dinamica	Zancada caminando con mancuernas	4	mancuerna	carga_externa	1
+zancada_dinamica_v06	zancada_dinamica	Zancada atrás desde escalón	5	escalon	unilateral	1
+zancada_lateral_v01	zancada_lateral	Paso lateral con flexión ligera	1	sin_equipo	lateral	0
+zancada_lateral_v02	zancada_lateral	Zancada lateral con apoyo	2	silla	asistido	0
+zancada_lateral_v03	zancada_lateral	Zancada lateral libre	3	sin_equipo	lateral	0
+zancada_lateral_v04	zancada_lateral	Zancada lateral alterna	3	sin_equipo	alterno	0
+zancada_lateral_v05	zancada_lateral	Zancada lateral con mancuerna	4	mancuerna	carga_externa	1
+peso_muerto_v01	peso_muerto	Bisagra con palo de referencia	1	palo	controlado	0
+peso_muerto_v02	peso_muerto	Peso muerto con kettlebell elevado	2	kettlebell+escalon	asistido	0
+peso_muerto_v03	peso_muerto	Peso muerto con mancuerna	3	mancuerna	carga_externa	0
+peso_muerto_v04	peso_muerto	Peso muerto sumo con kettlebell	3	kettlebell	carga_externa	0
+peso_muerto_v05	peso_muerto	Peso muerto con barra desde bloques	4	barra+escalon	carga_externa	1
+peso_muerto_v06	peso_muerto	Peso muerto convencional con barra	5	barra	carga_externa	1
+peso_muerto_rumano_v01	peso_muerto_rumano	Bisagra de cadera sin carga	1	sin_equipo	controlado	0
+peso_muerto_rumano_v02	peso_muerto_rumano	Bisagra con banda	2	banda	resistencia	0
+peso_muerto_rumano_v03	peso_muerto_rumano	Peso muerto rumano con mancuernas	3	mancuerna	carga_externa	0
+peso_muerto_rumano_v04	peso_muerto_rumano	Peso muerto rumano en apoyo unilateral	4	silla+mancuerna	asistido	1
+peso_muerto_rumano_v05	peso_muerto_rumano	Peso muerto rumano unilateral	4	mancuerna	unilateral	1
+peso_muerto_rumano_v06	peso_muerto_rumano	Peso muerto rumano con barra	5	barra	carga_externa	1
+buenos_dias_v01	buenos_dias	Buenos días sentado sin carga	1	silla	controlado	0
+buenos_dias_v02	buenos_dias	Buenos días de pie sin carga	2	sin_equipo	bilateral	0
+buenos_dias_v03	buenos_dias	Buenos días con banda	3	banda	resistencia	0
+buenos_dias_v04	buenos_dias	Buenos días con mancuerna al pecho	4	mancuerna	carga_externa	1
+buenos_dias_v05	buenos_dias	Buenos días con barra ligera	5	barra	carga_externa	1
+puente_gluteo_v01	puente_gluteo	Puente corto de glúteos	1	colchoneta	bilateral	0
+puente_gluteo_v02	puente_gluteo	Puente de glúteos básico	2	colchoneta	bilateral	0
+puente_gluteo_v03	puente_gluteo	Puente de glúteos con pausa	2	colchoneta	isometrico	0
+puente_gluteo_v04	puente_gluteo	Puente de glúteos con banda	3	banda+colchoneta	resistencia	0
+puente_gluteo_v05	puente_gluteo	Puente de glúteos alternando apoyo	4	colchoneta	alterno	1
+puente_gluteo_v06	puente_gluteo	Puente de glúteos unilateral	5	colchoneta	unilateral	1
+hip_thrust_v01	hip_thrust	Elevación de cadera en suelo	1	colchoneta	bilateral	0
+hip_thrust_v02	hip_thrust	Elevación de cadera en banco sin carga	2	banco	bilateral	0
+hip_thrust_v03	hip_thrust	Elevación de cadera con banda	3	banco+banda	resistencia	0
+hip_thrust_v04	hip_thrust	Elevación de cadera con mancuerna	3	banco+mancuerna	carga_externa	0
+hip_thrust_v05	hip_thrust	Elevación de cadera unilateral con banco	4	banco	unilateral	1
+hip_thrust_v06	hip_thrust	Elevación de cadera con barra	5	banco+barra	carga_externa	1
+step_up_v01	step_up	Subida a escalón bajo con apoyo	1	escalon+silla	asistido	0
+step_up_v02	step_up	Subida a escalón bajo	2	escalon	unilateral	0
+step_up_v03	step_up	Subida a escalón medio	3	escalon	unilateral	0
+step_up_v04	step_up	Subida a escalón con mancuerna	4	escalon+mancuerna	carga_externa	1
+step_up_v05	step_up	Subida lateral a escalón	4	escalon	lateral	1
+step_down_v01	step_down	Bajada de escalón bajo con apoyo	1	escalon+silla	asistido	0
+step_down_v02	step_down	Bajada de escalón bajo	2	escalon	controlado	0
+step_down_v03	step_down	Bajada lateral de escalón	3	escalon	lateral	0
+step_down_v04	step_down	Bajada de escalón con pausa	4	escalon	controlado	1
+step_down_v05	step_down	Bajada de escalón con mancuerna	5	escalon+mancuerna	carga_externa	1
+elevacion_gemelos_v01	elevacion_gemelos	Elevación de talones sentado	1	silla	bilateral	0
+elevacion_gemelos_v02	elevacion_gemelos	Elevación de talones de pie con apoyo	1	silla	asistido	0
+elevacion_gemelos_v03	elevacion_gemelos	Elevación de talones de pie	2	sin_equipo	bilateral	0
+elevacion_gemelos_v04	elevacion_gemelos	Elevación de talones sobre escalón	3	escalon	bilateral	0
+elevacion_gemelos_v05	elevacion_gemelos	Elevación de talón unilateral con apoyo	3	silla	asistido	0
+elevacion_gemelos_v06	elevacion_gemelos	Elevación de talón unilateral con mancuerna	4	mancuerna	carga_externa	1
+dorsiflexion_tibial_v01	dorsiflexion_tibial	Elevación de puntas sentado	1	silla	bilateral	0
+dorsiflexion_tibial_v02	dorsiflexion_tibial	Elevación de puntas de pie con apoyo	2	pared	asistido	0
+dorsiflexion_tibial_v03	dorsiflexion_tibial	Elevación de puntas de pie	2	sin_equipo	bilateral	0
+dorsiflexion_tibial_v04	dorsiflexion_tibial	Dorsiflexión con banda sentado	3	banda	resistencia	0
+dorsiflexion_tibial_v05	dorsiflexion_tibial	Elevación tibial con pausa	4	pared	isometrico	1
+curl_femoral_v01	curl_femoral	Curl femoral de pie sin carga	1	silla	asistido	0
+curl_femoral_v02	curl_femoral	Curl femoral con banda	2	banda	resistencia	0
+curl_femoral_v03	curl_femoral	Curl femoral tumbado con banda	3	colchoneta+banda	resistencia	0
+curl_femoral_v04	curl_femoral	Curl femoral sentado en máquina	3	maquina	maquina	1
+curl_femoral_v05	curl_femoral	Curl femoral tumbado en máquina	4	maquina	maquina	1
+curl_femoral_v06	curl_femoral	Curl femoral unilateral en máquina	5	maquina	unilateral	1
+curl_deslizante_v01	curl_deslizante	Deslizamiento parcial de talones	1	toalla+colchoneta	asistido	0
+curl_deslizante_v02	curl_deslizante	Curl de talones deslizante bilateral	2	toalla+colchoneta	bilateral	0
+curl_deslizante_v03	curl_deslizante	Curl de talones con pausa	3	toalla+colchoneta	controlado	0
+curl_deslizante_v04	curl_deslizante	Curl deslizante excéntrico bilateral	4	toalla+colchoneta	controlado	1
+curl_deslizante_v05	curl_deslizante	Curl deslizante unilateral asistido	5	toalla+colchoneta	unilateral	1
+abduccion_v01	abduccion	Abducción de cadera de pie con apoyo	1	silla	asistido	0
+abduccion_v02	abduccion	Abducción de cadera en decúbito lateral	2	colchoneta	unilateral	0
+abduccion_v03	abduccion	Abducción con banda sentado	2	banda+silla	resistencia	0
+abduccion_v04	abduccion	Abducción de cadera con banda de pie	3	banda	resistencia	0
+abduccion_v05	abduccion	Abducción de cadera en polea	4	polea	carga_externa	1
+abduccion_v06	abduccion	Abducción unilateral en máquina	4	maquina	maquina	1
+aduccion_v01	aduccion	Aducción de cadera sentado con pelota	1	pelota+silla	controlado	0
+aduccion_v02	aduccion	Aducción en decúbito lateral	2	colchoneta	unilateral	0
+aduccion_v03	aduccion	Aducción isométrica con pelota	2	pelota	isometrico	0
+aduccion_v04	aduccion	Aducción de cadera con banda	3	banda	resistencia	0
+aduccion_v05	aduccion	Aducción de cadera en polea	4	polea	carga_externa	1
+aduccion_v06	aduccion	Aducción de cadera en máquina	4	maquina	maquina	1
+caminata_banda_v01	caminata_banda	Paso lateral sin banda	1	sin_equipo	lateral	0
+caminata_banda_v02	caminata_banda	Paso lateral con minibanda ligera	2	banda	lateral	0
+caminata_banda_v03	caminata_banda	Caminata lateral con minibanda	3	banda	resistencia	0
+caminata_banda_v04	caminata_banda	Caminata diagonal con minibanda	4	banda	resistencia	1
+caminata_banda_v05	caminata_banda	Caminata lateral con banda y pausa	4	banda	controlado	1
+extension_cuadriceps_v01	extension_cuadriceps	Extensión de rodilla sentado sin carga	1	silla	unilateral	0
+extension_cuadriceps_v02	extension_cuadriceps	Extensión terminal de rodilla con banda	2	banda	resistencia	0
+extension_cuadriceps_v03	extension_cuadriceps	Extensión de cuádriceps en máquina	3	maquina	maquina	1
+extension_cuadriceps_v04	extension_cuadriceps	Extensión unilateral en máquina	4	maquina	unilateral	1
+extension_cuadriceps_v05	extension_cuadriceps	Extensión de cuádriceps con pausa en máquina	5	maquina	controlado	1
+flexiones_v01	flexiones	Flexión de pared	1	pared	asistido	0
+flexiones_v02	flexiones	Flexión inclinada sobre apoyo estable	1	banco	asistido	0
+flexiones_v03	flexiones	Flexión de rodillas	2	colchoneta	asistido	0
+flexiones_v04	flexiones	Flexión de brazos estándar	3	sin_equipo	bilateral	0
+flexiones_v05	flexiones	Flexión de agarre estrecho	3	sin_equipo	bilateral	0
+flexiones_v06	flexiones	Flexión con pies elevados	4	banco	bilateral	1
+flexiones_v07	flexiones	Flexión arqueada con apoyo alterno	5	sin_equipo	unilateral	1
+press_pecho_v01	press_pecho	Press de pecho con banda de pie	1	banda	resistencia	0
+press_pecho_v02	press_pecho	Press de pecho en máquina	2	maquina	maquina	1
+press_pecho_v03	press_pecho	Press de pecho en suelo con mancuernas	2	mancuerna+colchoneta	carga_externa	0
+press_pecho_v04	press_pecho	Press de pecho con mancuernas en banco	3	mancuerna+banco	carga_externa	0
+press_pecho_v05	press_pecho	Press inclinado de pecho con mancuernas	3	mancuerna+banco	carga_externa	0
+press_pecho_v06	press_pecho	Press de pecho con barra	4	barra+banco	carga_externa	1
+press_pecho_v07	press_pecho	Press unilateral con mancuerna	5	mancuerna+banco	unilateral	1
+fondos_v01	fondos	Extensión de tríceps en pared	1	pared	asistido	0
+fondos_v02	fondos	Fondo asistido en máquina	2	maquina	maquina	1
+fondos_v03	fondos	Fondo asistido con pies en apoyo	3	paralelas+silla	asistido	1
+fondos_v04	fondos	Fondo en paralelas con asistencia elástica	4	paralelas+banda	asistido	1
+fondos_v05	fondos	Fondo en paralelas libre	5	paralelas	bilateral	1
+press_hombros_v01	press_hombros	Empuje de hombros con banda ligera	1	banda	resistencia	0
+press_hombros_v02	press_hombros	Press de hombros sentado con mancuernas	2	mancuerna+silla	carga_externa	0
+press_hombros_v03	press_hombros	Press de hombros de pie con mancuernas	3	mancuerna	carga_externa	0
+press_hombros_v04	press_hombros	Press Arnold con mancuernas	3	mancuerna	rotacion	0
+press_hombros_v05	press_hombros	Press unilateral de hombro	4	mancuerna	unilateral	1
+press_hombros_v06	press_hombros	Press militar con barra	5	barra	carga_externa	1
+flexion_pica_v01	flexion_pica	Flexión inclinada para hombros en pared	1	pared	asistido	0
+flexion_pica_v02	flexion_pica	Flexión en pica con apoyo alto	2	banco	asistido	0
+flexion_pica_v03	flexion_pica	Flexión en pica con rodillas flexionadas	2	sin_equipo	bilateral	0
+flexion_pica_v04	flexion_pica	Flexión en pica estándar	3	sin_equipo	bilateral	0
+flexion_pica_v05	flexion_pica	Flexión en pica con pies elevados	4	banco	bilateral	1
+flexion_pica_v06	flexion_pica	Flexión en pica con pausa	5	banco	controlado	1
+apertura_pecho_v01	apertura_pecho	Apertura de pecho con banda ligera	1	banda	resistencia	0
+apertura_pecho_v02	apertura_pecho	Apertura de pecho en máquina	2	maquina	maquina	1
+apertura_pecho_v03	apertura_pecho	Apertura de pecho en suelo con mancuernas	2	mancuerna+colchoneta	carga_externa	0
+apertura_pecho_v04	apertura_pecho	Apertura con mancuernas en banco	3	mancuerna+banco	carga_externa	0
+apertura_pecho_v05	apertura_pecho	Apertura de pecho con poleas	4	polea	carga_externa	1
+apertura_pecho_v06	apertura_pecho	Apertura unilateral con polea	5	polea	unilateral	1
+extension_triceps_v01	extension_triceps	Extensión de tríceps con banda ligera	1	banda	resistencia	0
+extension_triceps_v02	extension_triceps	Extensión de tríceps sobre cabeza con banda	2	banda	resistencia	0
+extension_triceps_v03	extension_triceps	Extensión de tríceps en polea con cuerda	2	polea	maquina	1
+extension_triceps_v04	extension_triceps	Extensión de tríceps con mancuerna sentado	3	mancuerna+silla	carga_externa	0
+extension_triceps_v05	extension_triceps	Extensión unilateral de tríceps en polea	4	polea	unilateral	1
+extension_triceps_v06	extension_triceps	Extensión de tríceps sobre cabeza con mancuernas	4	mancuerna	carga_externa	1
+press_cerrado_v01	press_cerrado	Empuje corto con banda estrecha	1	banda	resistencia	0
+press_cerrado_v02	press_cerrado	Flexión de brazos con apoyo estrecho en pared	1	pared	asistido	0
+press_cerrado_v03	press_cerrado	Flexión inclinada de agarre estrecho	2	banco	asistido	0
+press_cerrado_v04	press_cerrado	Press cerrado con mancuernas en suelo	3	mancuerna+colchoneta	carga_externa	0
+press_cerrado_v05	press_cerrado	Press cerrado con mancuernas en banco	4	mancuerna+banco	carga_externa	1
+press_cerrado_v06	press_cerrado	Press de banca con agarre cerrado	5	barra+banco	carga_externa	1
+remo_v01	remo	Remo sentado con banda ligera	1	banda+silla	resistencia	0
+remo_v02	remo	Remo de pie con banda	1	banda	resistencia	0
+remo_v03	remo	Remo en máquina con apoyo de pecho	2	maquina	maquina	1
+remo_v04	remo	Remo con mancuerna apoyada	2	mancuerna+banco	asistido	0
+remo_v05	remo	Remo con dos mancuernas	3	mancuerna	carga_externa	0
+remo_v06	remo	Remo en polea sentado	3	polea	maquina	1
+remo_v07	remo	Remo unilateral en polea	4	polea	unilateral	1
+remo_v08	remo	Remo inclinado con barra	5	barra	carga_externa	1
+remo_invertido_v01	remo_invertido	Retracción escapular con anillas bajas	1	anillas	asistido	1
+remo_invertido_v02	remo_invertido	Remo inclinado con suspensión elevada	2	suspension	asistido	1
+remo_invertido_v03	remo_invertido	Remo invertido con rodillas flexionadas	3	barra_baja	bilateral	0
+remo_invertido_v04	remo_invertido	Remo invertido con piernas extendidas	4	barra_baja	bilateral	1
+remo_invertido_v05	remo_invertido	Remo invertido con pies elevados	5	barra_baja+banco	bilateral	1
+dominadas_v01	dominadas	Descenso escapular con banda	1	banda	controlado	0
+dominadas_v02	dominadas	Dominada asistida en máquina	2	maquina	asistido	1
+dominadas_v03	dominadas	Dominada con banda elástica asistida	3	barra_dominadas+banda	asistido	1
+dominadas_v04	dominadas	Dominada con agarre supino asistida	3	barra_dominadas+banda	asistido	1
+dominadas_v05	dominadas	Dominada de agarre prono	4	barra_dominadas	bilateral	1
+dominadas_v06	dominadas	Dominada de agarre supino	4	barra_dominadas	bilateral	1
+dominadas_v07	dominadas	Dominada con pausa controlada	5	barra_dominadas	controlado	1
+jalon_v01	jalon	Jalón de banda hacia pecho sentado	1	banda+silla	resistencia	0
+jalon_v02	jalon	Jalón vertical en máquina agarre neutro	2	maquina	maquina	1
+jalon_v03	jalon	Jalón vertical con polea agarre ancho	3	polea	maquina	1
+jalon_v04	jalon	Jalón vertical con polea agarre estrecho	3	polea	maquina	1
+jalon_v05	jalon	Jalón unilateral de polea alta	4	polea	unilateral	1
+jalon_v06	jalon	Jalón de brazos rectos con polea	4	polea	controlado	1
+curl_biceps_v01	curl_biceps	Curl de bíceps con banda ligera	1	banda	resistencia	0
+curl_biceps_v02	curl_biceps	Curl de bíceps sentado con mancuernas	2	mancuerna+silla	carga_externa	0
+curl_biceps_v03	curl_biceps	Curl de bíceps de pie alterno	2	mancuerna	alterno	0
+curl_biceps_v04	curl_biceps	Curl de bíceps bilateral con mancuernas	3	mancuerna	bilateral	0
+curl_biceps_v05	curl_biceps	Curl de bíceps en banco inclinado	4	mancuerna+banco	carga_externa	1
+curl_biceps_v06	curl_biceps	Curl de bíceps con barra	4	barra	carga_externa	1
+curl_martillo_v01	curl_martillo	Curl neutro con banda	1	banda	resistencia	0
+curl_martillo_v02	curl_martillo	Curl martillo sentado alterno	2	mancuerna+silla	alterno	0
+curl_martillo_v03	curl_martillo	Curl martillo de pie	2	mancuerna	bilateral	0
+curl_martillo_v04	curl_martillo	Curl martillo cruzado	3	mancuerna	alterno	0
+curl_martillo_v05	curl_martillo	Curl martillo en banco inclinado	4	mancuerna+banco	controlado	1
+curl_martillo_v06	curl_martillo	Curl martillo unilateral en polea	5	polea	unilateral	1
+elevacion_lateral_v01	elevacion_lateral	Separación lateral de brazos sin carga	1	sin_equipo	controlado	0
+elevacion_lateral_v02	elevacion_lateral	Elevación lateral con banda ligera	2	banda	resistencia	0
+elevacion_lateral_v03	elevacion_lateral	Elevación lateral con mancuernas	2	mancuerna	carga_externa	0
+elevacion_lateral_v04	elevacion_lateral	Elevación lateral sentado con mancuernas	3	mancuerna+silla	carga_externa	0
+elevacion_lateral_v05	elevacion_lateral	Elevación lateral unilateral con polea	4	polea	unilateral	1
+elevacion_lateral_v06	elevacion_lateral	Elevación lateral con pausa	4	mancuerna	isometrico	1
+elevacion_frontal_v01	elevacion_frontal	Elevación frontal sin carga	1	sin_equipo	controlado	0
+elevacion_frontal_v02	elevacion_frontal	Elevación frontal con banda	2	banda	resistencia	0
+elevacion_frontal_v03	elevacion_frontal	Elevación frontal alterna con mancuerna	2	mancuerna	alterno	0
+elevacion_frontal_v04	elevacion_frontal	Elevación frontal bilateral con mancuernas	3	mancuerna	bilateral	0
+elevacion_frontal_v05	elevacion_frontal	Elevación frontal con disco	4	disco	carga_externa	1
+elevacion_frontal_v06	elevacion_frontal	Elevación frontal con polea	4	polea	carga_externa	1
+pajaros_v01	pajaros	Apertura posterior de brazos sin carga	1	sin_equipo	controlado	0
+pajaros_v02	pajaros	Apertura posterior con banda	2	banda	resistencia	0
+pajaros_v03	pajaros	Apertura posterior en máquina	2	maquina	maquina	1
+pajaros_v04	pajaros	Apertura posterior con mancuernas sentado	3	mancuerna+silla	carga_externa	0
+pajaros_v05	pajaros	Apertura posterior en banco inclinado	4	mancuerna+banco	carga_externa	1
+face_pull_v01	face_pull	Retracción de banda a la altura de rostro	1	banda	controlado	0
+face_pull_v02	face_pull	Tracción a rostro con banda	2	banda	resistencia	0
+face_pull_v03	face_pull	Tracción a rostro con polea y cuerda	3	polea	maquina	1
+face_pull_v04	face_pull	Tracción a rostro con rotación externa	4	polea	rotacion	1
+face_pull_v05	face_pull	Tracción a rostro unilateral	5	polea	unilateral	1
+retraccion_escapular_v01	retraccion_escapular	Aproximación de escápulas sentado	1	silla	controlado	0
+retraccion_escapular_v02	retraccion_escapular	Retracción escapular contra pared	1	pared	controlado	0
+retraccion_escapular_v03	retraccion_escapular	Retracción escapular con banda	2	banda	resistencia	0
+retraccion_escapular_v04	retraccion_escapular	Retracción escapular en polea	3	polea	maquina	1
+retraccion_escapular_v05	retraccion_escapular	Retracción escapular en suspensión	4	suspension	isometrico	1
+rotacion_externa_v01	rotacion_externa	Rotación externa sin carga con apoyo	1	silla	controlado	0
+rotacion_externa_v02	rotacion_externa	Rotación externa con banda ligera	2	banda	resistencia	0
+rotacion_externa_v03	rotacion_externa	Rotación externa de lado con mancuerna	3	mancuerna+colchoneta	controlado	0
+rotacion_externa_v04	rotacion_externa	Rotación externa de hombro en polea	4	polea	resistencia	1
+rotacion_externa_v05	rotacion_externa	Rotación externa a 90 grados con banda	5	banda	controlado	1
+rotacion_interna_v01	rotacion_interna	Rotación interna sin carga	1	sin_equipo	controlado	0
+rotacion_interna_v02	rotacion_interna	Rotación interna con banda ligera	2	banda	resistencia	0
+rotacion_interna_v03	rotacion_interna	Rotación interna con banda de pie	2	banda	resistencia	0
+rotacion_interna_v04	rotacion_interna	Rotación interna en polea	3	polea	maquina	1
+rotacion_interna_v05	rotacion_interna	Rotación interna a 90 grados con polea	5	polea	controlado	1
+superman_v01	superman	Elevación alterna de brazos boca abajo	1	colchoneta	alterno	0
+superman_v02	superman	Elevación alterna de piernas boca abajo	1	colchoneta	alterno	0
+superman_v03	superman	Elevación contralateral en el suelo	2	colchoneta	alterno	0
+superman_v04	superman	Extensión de tronco corta	3	colchoneta	controlado	0
+superman_v05	superman	Extensión de tronco con pausa breve	4	colchoneta	isometrico	1
+extension_banco_v01	extension_banco	Extensión lumbar corta con apoyo	1	banco	asistido	0
+extension_banco_v02	extension_banco	Extensión de espalda con apoyo estable	2	banco	controlado	0
+extension_banco_v03	extension_banco	Extensión de espalda en banco inclinado	3	banco	controlado	0
+extension_banco_v04	extension_banco	Extensión de espalda con pausa	4	banco	isometrico	1
+extension_banco_v05	extension_banco	Extensión de espalda con carga ligera	5	banco+disco	carga_externa	1
+plancha_frontal_v01	plancha_frontal	Plancha de pared	1	pared	isometrico	0
+plancha_frontal_v02	plancha_frontal	Plancha inclinada apoyada en banco	1	banco	isometrico	0
+plancha_frontal_v03	plancha_frontal	Plancha de antebrazos con rodillas apoyadas	2	colchoneta	asistido	0
+plancha_frontal_v04	plancha_frontal	Plancha de antebrazos estándar	3	colchoneta	isometrico	0
+plancha_frontal_v05	plancha_frontal	Plancha alta con apoyo alterno de mano	4	colchoneta	alterno	1
+plancha_frontal_v06	plancha_frontal	Plancha frontal con brazo extendido	5	colchoneta	unilateral	1
+dead_bug_v01	dead_bug	Activación abdominal tumbado	1	colchoneta	controlado	0
+dead_bug_v02	dead_bug	Dead bug con brazos estacionarios	1	colchoneta	controlado	0
+dead_bug_v03	dead_bug	Dead bug con una pierna alterna	2	colchoneta	alterno	0
+dead_bug_v04	dead_bug	Dead bug contralateral	3	colchoneta	alterno	0
+dead_bug_v05	dead_bug	Dead bug con banda	4	banda+colchoneta	resistencia	1
+dead_bug_v06	dead_bug	Dead bug con extensión alterna pausada	5	colchoneta	controlado	1
+rueda_abdominal_v01	rueda_abdominal	Deslizamiento de brazos sobre pared	1	pared	asistido	0
+rueda_abdominal_v02	rueda_abdominal	Extensión corta con pelota de estabilidad	2	pelota	asistido	0
+rueda_abdominal_v03	rueda_abdominal	Deslizamiento de antebrazos con toalla	3	toalla+colchoneta	controlado	0
+rueda_abdominal_v04	rueda_abdominal	Rodamiento corto con rueda desde rodillas	4	rueda+colchoneta	controlado	1
+rueda_abdominal_v05	rueda_abdominal	Rodamiento de rueda con mayor recorrido y apoyo	5	rueda+colchoneta	controlado	1
+press_pallof_v01	press_pallof	Antirrotación sin resistencia en apoyo	1	silla	controlado	0
+press_pallof_v02	press_pallof	Sostén antirrotación con banda ligera	2	banda	isometrico	0
+press_pallof_v03	press_pallof	Press Pallof con banda de pie	2	banda	resistencia	0
+press_pallof_v04	press_pallof	Press Pallof con polea	3	polea	resistencia	1
+press_pallof_v05	press_pallof	Press Pallof de rodillas	4	banda+colchoneta	isometrico	1
+press_pallof_v06	press_pallof	Press Pallof en posición dividida	5	polea	equilibrio	1
+plancha_lateral_v01	plancha_lateral	Apoyo lateral contra pared	1	pared	asistido	0
+plancha_lateral_v02	plancha_lateral	Plancha lateral corta con rodillas	2	colchoneta	asistido	0
+plancha_lateral_v03	plancha_lateral	Plancha lateral de antebrazo	3	colchoneta	isometrico	0
+plancha_lateral_v04	plancha_lateral	Plancha lateral con elevación de cadera	3	colchoneta	dinamico	0
+plancha_lateral_v05	plancha_lateral	Plancha lateral con apoyo alterno	4	colchoneta	equilibrio	1
+plancha_lateral_v06	plancha_lateral	Plancha lateral con elevación de pierna	5	colchoneta	unilateral	1
+crunch_v01	crunch	Basculación pélvica tumbado	1	colchoneta	controlado	0
+crunch_v02	crunch	Crunch abdominal corto	2	colchoneta	controlado	0
+crunch_v03	crunch	Crunch abdominal con manos cruzadas	2	colchoneta	bilateral	0
+crunch_v04	crunch	Crunch abdominal con piernas apoyadas	3	silla+colchoneta	controlado	0
+crunch_v05	crunch	Crunch con balón de estabilidad	4	pelota	controlado	1
+crunch_v06	crunch	Crunch con polea de rodillas	5	polea+colchoneta	resistencia	1
+elevacion_rodillas_v01	elevacion_rodillas	Marcha de rodillas sentado	1	silla	alterno	0
+elevacion_rodillas_v02	elevacion_rodillas	Elevación alterna de rodillas tumbado	2	colchoneta	alterno	0
+elevacion_rodillas_v03	elevacion_rodillas	Elevación bilateral de rodillas tumbado	2	colchoneta	bilateral	0
+elevacion_rodillas_v04	elevacion_rodillas	Elevación de rodillas sentado en banco	3	banco	controlado	0
+elevacion_rodillas_v05	elevacion_rodillas	Elevación de rodillas en apoyo de antebrazos	4	maquina	controlado	1
+elevacion_rodillas_v06	elevacion_rodillas	Elevación de rodillas colgado con apoyo	5	barra_dominadas	controlado	1
+rotacion_tronco_v01	rotacion_tronco	Rotación suave de tronco sentado	1	silla	movilidad	0
+rotacion_tronco_v02	rotacion_tronco	Rotación torácica de pie sin carga	1	sin_equipo	rotacion	0
+rotacion_tronco_v03	rotacion_tronco	Rotación de tronco en colchoneta	2	colchoneta	controlado	0
+rotacion_tronco_v04	rotacion_tronco	Rotación de tronco con banda ligera	3	banda	resistencia	0
+rotacion_tronco_v05	rotacion_tronco	Rotación de tronco sentado con balón	4	pelota	rotacion	1
+rotacion_tronco_v06	rotacion_tronco	Rotación de tronco en posición dividida con banda	5	banda	equilibrio	1
+rotacion_polea_v01	rotacion_polea	Rotación corta con banda ligera	1	banda	controlado	0
+rotacion_polea_v02	rotacion_polea	Rotación horizontal con banda	2	banda	resistencia	0
+rotacion_polea_v03	rotacion_polea	Rotación horizontal en polea	3	polea	maquina	1
+rotacion_polea_v04	rotacion_polea	Rotación en polea con apoyo unilateral	4	polea	equilibrio	1
+rotacion_polea_v05	rotacion_polea	Rotación diagonal controlada en polea	5	polea	rotacion	1
+equilibrio_unipodal_v01	equilibrio_unipodal	Equilibrio con ambos pies y apoyo	1	silla	asistido	0
+equilibrio_unipodal_v02	equilibrio_unipodal	Equilibrio en apoyo tándem	1	sin_equipo	equilibrio	0
+equilibrio_unipodal_v03	equilibrio_unipodal	Equilibrio unilateral con apoyo de mano	2	silla	asistido	0
+equilibrio_unipodal_v04	equilibrio_unipodal	Equilibrio unilateral sin apoyo	3	sin_equipo	equilibrio	0
+equilibrio_unipodal_v05	equilibrio_unipodal	Equilibrio unilateral con giro suave de cabeza	4	sin_equipo	equilibrio	1
+equilibrio_unipodal_v06	equilibrio_unipodal	Equilibrio unilateral con alcance de brazos	5	sin_equipo	equilibrio	1
+alcance_unipodal_v01	alcance_unipodal	Alcance frontal con apoyo estable	1	silla	asistido	0
+alcance_unipodal_v02	alcance_unipodal	Alcance lateral con apoyo estable	2	silla	asistido	0
+alcance_unipodal_v03	alcance_unipodal	Alcance frontal en apoyo unilateral	3	sin_equipo	equilibrio	0
+alcance_unipodal_v04	alcance_unipodal	Alcance lateral en apoyo unilateral	4	sin_equipo	equilibrio	1
+alcance_unipodal_v05	alcance_unipodal	Alcance en tres direcciones con apoyo unilateral	5	sin_equipo	equilibrio	1
+paseo_granjero_v01	paseo_granjero	Caminata sin carga con postura neutra	1	sin_equipo	controlado	0
+paseo_granjero_v02	paseo_granjero	Transporte de dos cargas ligeras con apoyo adecuado	2	mancuerna	carga_externa	0
+paseo_granjero_v03	paseo_granjero	Paseo del granjero con mancuernas	3	mancuerna	bilateral	0
+paseo_granjero_v04	paseo_granjero	Paseo del granjero con kettlebells	4	kettlebell	bilateral	1
+paseo_granjero_v05	paseo_granjero	Transporte bilateral con cambio controlado de dirección	5	mancuerna	controlado	1
+paseo_maleta_v01	paseo_maleta	Sostén asimétrico con carga ligera	1	mancuerna	isometrico	0
+paseo_maleta_v02	paseo_maleta	Caminata corta con carga a un lado	2	mancuerna	unilateral	0
+paseo_maleta_v03	paseo_maleta	Paseo maleta con mancuerna	3	mancuerna	unilateral	0
+paseo_maleta_v04	paseo_maleta	Paseo maleta con kettlebell	4	kettlebell	unilateral	1
+paseo_maleta_v05	paseo_maleta	Paseo maleta con cambio de dirección controlado	5	kettlebell	equilibrio	1
+marcha_v01	marcha	Marcha en el sitio con apoyo	1	silla	asistido	0
+marcha_v02	marcha	Caminata cómoda en terreno plano	1	sin_equipo	aerobico	0
+marcha_v03	marcha	Marcha en cinta con barandillas	2	cinta	asistido	0
+marcha_v04	marcha	Caminata exterior con trayecto sencillo	2	sin_equipo	aerobico	0
+marcha_v05	marcha	Marcha con cambios suaves de dirección	3	sin_equipo	coordinacion	0
+marcha_v06	marcha	Caminata con variaciones controladas de ritmo	4	cinta	aerobico	1
+caminata_inclinada_v01	caminata_inclinada	Caminata plana en cinta	1	cinta	aerobico	0
+caminata_inclinada_v02	caminata_inclinada	Caminata con inclinación baja	2	cinta	aerobico	0
+caminata_inclinada_v03	caminata_inclinada	Caminata en pendiente suave al aire libre	2	sin_equipo	aerobico	0
+caminata_inclinada_v04	caminata_inclinada	Caminata inclinada con cambios suaves de pendiente	3	cinta	aerobico	0
+caminata_inclinada_v05	caminata_inclinada	Caminata en sendero de pendiente variable supervisada	4	sin_equipo	coordinacion	1
+trote_v01	trote	Marcha activa en pista plana	1	sin_equipo	aerobico	0
+trote_v02	trote	Alternancia suave marcha y trote	2	sin_equipo	aerobico	0
+trote_v03	trote	Trote cómodo en terreno plano	3	sin_equipo	aerobico	0
+trote_v04	trote	Trote con cambios suaves de dirección	3	sin_equipo	coordinacion	0
+trote_v05	trote	Trote en circuito técnico supervisado	4	sin_equipo	coordinacion	1
+carrera_intervalos_v01	carrera_intervalos	Caminata con pausas libres	1	sin_equipo	aerobico	0
+carrera_intervalos_v02	carrera_intervalos	Alternancia de caminata y marcha activa	2	sin_equipo	aerobico	0
+carrera_intervalos_v03	carrera_intervalos	Alternancia de caminata y trote fácil	2	sin_equipo	aerobico	0
+carrera_intervalos_v04	carrera_intervalos	Alternancia de trote y caminata en circuito	3	sin_equipo	aerobico	0
+carrera_intervalos_v05	carrera_intervalos	Cambios moderados de ritmo en circuito guiado	4	sin_equipo	coordinacion	1
+ciclo_estatico_v01	ciclo_estatico	Pedaleo sentado con bicicleta de respaldo	1	bicicleta_recumbente	asistido	0
+ciclo_estatico_v02	ciclo_estatico	Pedaleo cómodo en bicicleta estática	1	bicicleta_estatica	aerobico	0
+ciclo_estatico_v03	ciclo_estatico	Bicicleta estática con cambios suaves de cadencia	2	bicicleta_estatica	aerobico	0
+ciclo_estatico_v04	ciclo_estatico	Bicicleta estática con resistencia moderada controlada	3	bicicleta_estatica	aerobico	0
+ciclo_estatico_v05	ciclo_estatico	Bicicleta de ciclismo indoor con cambios guiados	4	bicicleta_estatica	coordinacion	1
+ciclo_exterior_v01	ciclo_exterior	Pedaleo en entorno cerrado y seguro	1	bicicleta	asistido	0
+ciclo_exterior_v02	ciclo_exterior	Ciclismo recreativo en terreno plano	2	bicicleta	aerobico	0
+ciclo_exterior_v03	ciclo_exterior	Ciclismo recreativo con curvas amplias	3	bicicleta	coordinacion	0
+ciclo_exterior_v04	ciclo_exterior	Ciclismo en trayecto con cambios suaves de terreno	4	bicicleta	coordinacion	1
+ciclo_exterior_v05	ciclo_exterior	Ciclismo en circuito técnico guiado	5	bicicleta	coordinacion	1
+remo_ergometro_v01	remo_ergometro	Técnica segmentada de remo sin resistencia	1	remo_ergometro	controlado	0
+remo_ergometro_v02	remo_ergometro	Remo ergómetro de ritmo suave	2	remo_ergometro	aerobico	0
+remo_ergometro_v03	remo_ergometro	Remo ergómetro con cadencia estable	3	remo_ergometro	aerobico	0
+remo_ergometro_v04	remo_ergometro	Remo ergómetro con cambios de cadencia guiados	4	remo_ergometro	coordinacion	1
+remo_ergometro_v05	remo_ergometro	Remo ergómetro con patrón técnico variado guiado	5	remo_ergometro	coordinacion	1
+eliptica_cardio_v01	eliptica_cardio	Elíptica con apoyo de manillares fijos	1	eliptica	asistido	0
+eliptica_cardio_v02	eliptica_cardio	Elíptica con paso uniforme	2	eliptica	aerobico	0
+eliptica_cardio_v03	eliptica_cardio	Elíptica con movimiento coordinado de brazos	3	eliptica	coordinacion	0
+eliptica_cardio_v04	eliptica_cardio	Elíptica con cambios suaves de resistencia	3	eliptica	aerobico	0
+eliptica_cardio_v05	eliptica_cardio	Elíptica con cambios guiados de cadencia	4	eliptica	coordinacion	1
+step_cardio_v01	step_cardio	Paso en suelo sin elevación	1	sin_equipo	aerobico	0
+step_cardio_v02	step_cardio	Paso alterno en escalón bajo	2	escalon	alterno	0
+step_cardio_v03	step_cardio	Paso lateral en escalón bajo	2	escalon	lateral	0
+step_cardio_v04	step_cardio	Secuencia de pasos básica en escalón	3	escalon	coordinacion	0
+step_cardio_v05	step_cardio	Secuencia de pasos combinada supervisada	4	escalon	coordinacion	1
+escalera_agilidad_v01	escalera_agilidad	Caminata entre marcas en suelo	1	marcas_suelo	coordinacion	0
+escalera_agilidad_v02	escalera_agilidad	Paso simple adelante en escalera plana	2	escalera_suelo	coordinacion	0
+escalera_agilidad_v03	escalera_agilidad	Paso lateral simple en escalera plana	2	escalera_suelo	lateral	0
+escalera_agilidad_v04	escalera_agilidad	Secuencia alterna en escalera plana	3	escalera_suelo	coordinacion	0
+escalera_agilidad_v05	escalera_agilidad	Secuencia de cambios de dirección guiados	4	escalera_suelo	coordinacion	1
+escalera_agilidad_v06	escalera_agilidad	Secuencia combinada de coordinación guiada	5	escalera_suelo	coordinacion	1
+desplazamiento_lateral_v01	desplazamiento_lateral	Paso lateral con apoyo de pared	1	pared	asistido	0
+desplazamiento_lateral_v02	desplazamiento_lateral	Paso lateral a ritmo cómodo	1	sin_equipo	lateral	0
+desplazamiento_lateral_v03	desplazamiento_lateral	Pasos laterales entre marcas	2	marcas_suelo	coordinacion	0
+desplazamiento_lateral_v04	desplazamiento_lateral	Desplazamiento lateral con cambios de dirección	3	marcas_suelo	coordinacion	0
+desplazamiento_lateral_v05	desplazamiento_lateral	Desplazamiento lateral con patrones combinados	4	marcas_suelo	coordinacion	1
+rotacion_cadera_v01	rotacion_cadera	Rotación de cadera sentado con apoyo	1	silla	movilidad	0
+rotacion_cadera_v02	rotacion_cadera	Rotación externa de cadera sentado	1	silla	movilidad	0
+rotacion_cadera_v03	rotacion_cadera	Rotación interna de cadera sentado	2	silla	movilidad	0
+rotacion_cadera_v04	rotacion_cadera	Transición 90/90 de cadera con apoyo	3	colchoneta	movilidad	0
+rotacion_cadera_v05	rotacion_cadera	Transición 90/90 sin apoyo de manos	4	colchoneta	controlado	1
+rotacion_cadera_v06	rotacion_cadera	Rotación de cadera en apoyo unilateral guiada	5	silla	equilibrio	1
+flexor_cadera_v01	flexor_cadera	Movilidad suave de cadera tumbado	1	colchoneta	movilidad	0
+flexor_cadera_v02	flexor_cadera	Flexión de cadera sentado	1	silla	movilidad	0
+flexor_cadera_v03	flexor_cadera	Movilidad de flexor de cadera de pie con apoyo	2	silla	asistido	0
+flexor_cadera_v04	flexor_cadera	Movilidad de flexor en posición dividida	3	colchoneta	movilidad	0
+flexor_cadera_v05	flexor_cadera	Movilidad de flexor con elevación controlada	4	colchoneta	controlado	1
+gato_vaca_v01	gato_vaca	Movilidad vertebral sentado	1	silla	movilidad	0
+gato_vaca_v02	gato_vaca	Gato y vaca sentado	1	silla	movilidad	0
+gato_vaca_v03	gato_vaca	Gato y vaca en cuadrupedia	2	colchoneta	movilidad	0
+gato_vaca_v04	gato_vaca	Gato y vaca segmentado	3	colchoneta	controlado	0
+gato_vaca_v05	gato_vaca	Movilidad segmentaria de columna guiada	4	colchoneta	coordinacion	1
+rotacion_toracica_v01	rotacion_toracica	Rotación torácica sentado con apoyo	1	silla	movilidad	0
+rotacion_toracica_v02	rotacion_toracica	Rotación torácica de pie	2	sin_equipo	movilidad	0
+rotacion_toracica_v03	rotacion_toracica	Rotación torácica tumbado de lado	2	colchoneta	movilidad	0
+rotacion_toracica_v04	rotacion_toracica	Rotación torácica en cuadrupedia	3	colchoneta	movilidad	0
+rotacion_toracica_v05	rotacion_toracica	Rotación torácica con banda ligera	4	banda	resistencia	1
+rotacion_toracica_v06	rotacion_toracica	Rotación torácica con control de equilibrio	5	colchoneta	coordinacion	1
+circulos_brazo_v01	circulos_brazo	Círculos pequeños de brazos sentado	1	silla	movilidad	0
+circulos_brazo_v02	circulos_brazo	Círculos de brazos de pie	1	sin_equipo	movilidad	0
+circulos_brazo_v03	circulos_brazo	Círculos alternos de brazos	2	sin_equipo	alterno	0
+circulos_brazo_v04	circulos_brazo	Círculos de brazos con cambio de dirección	3	sin_equipo	coordinacion	0
+circulos_brazo_v05	circulos_brazo	Círculos combinados de brazos y escápulas	4	sin_equipo	coordinacion	1
+deslizamiento_pared_v01	deslizamiento_pared	Deslizamiento corto de manos en pared	1	pared	asistido	0
+deslizamiento_pared_v02	deslizamiento_pared	Deslizamiento de brazos contra pared	2	pared	movilidad	0
+deslizamiento_pared_v03	deslizamiento_pared	Deslizamiento en pared con pausa	2	pared	controlado	0
+deslizamiento_pared_v04	deslizamiento_pared	Deslizamiento de antebrazos con banda ligera	3	pared+banda	resistencia	0
+deslizamiento_pared_v05	deslizamiento_pared	Deslizamiento de brazos con control escapular	4	pared	controlado	1
+dorsiflexion_tobillo_v01	dorsiflexion_tobillo	Dorsiflexión sentado sin carga	1	silla	movilidad	0
+dorsiflexion_tobillo_v02	dorsiflexion_tobillo	Dorsiflexión en pared con apoyo	2	pared	asistido	0
+dorsiflexion_tobillo_v03	dorsiflexion_tobillo	Dorsiflexión de tobillo de pie con apoyo	2	silla	movilidad	0
+dorsiflexion_tobillo_v04	dorsiflexion_tobillo	Movilidad de dorsiflexión en posición dividida	3	sin_equipo	movilidad	0
+dorsiflexion_tobillo_v05	dorsiflexion_tobillo	Dorsiflexión controlada con banda	4	banda	resistencia	1
+circulos_tobillo_v01	circulos_tobillo	Círculos de tobillo sentado	1	silla	movilidad	0
+circulos_tobillo_v02	circulos_tobillo	Círculos de tobillo con pierna apoyada	1	silla	movilidad	0
+circulos_tobillo_v03	circulos_tobillo	Alfabeto de tobillo sentado	2	silla	coordinacion	0
+circulos_tobillo_v04	circulos_tobillo	Círculos alternos de tobillo	3	silla	alterno	0
+circulos_tobillo_v05	circulos_tobillo	Movilidad de tobillo en equilibrio con apoyo	4	silla	equilibrio	1
+estiramiento_isquios_v01	estiramiento_isquios	Movilidad de pierna tumbado con rodilla flexionada	1	colchoneta	movilidad	0
+estiramiento_isquios_v02	estiramiento_isquios	Estiramiento suave de isquiotibiales sentado	1	silla	movilidad	0
+estiramiento_isquios_v03	estiramiento_isquios	Estiramiento de isquiotibiales con toalla	2	toalla+colchoneta	asistido	0
+estiramiento_isquios_v04	estiramiento_isquios	Movilidad de isquiotibiales de pie con apoyo	3	silla	movilidad	0
+estiramiento_isquios_v05	estiramiento_isquios	Movilidad dinámica de isquiotibiales guiada	4	sin_equipo	controlado	1
+estiramiento_cuadriceps_v01	estiramiento_cuadriceps	Movilidad de rodilla sentado	1	silla	movilidad	0
+estiramiento_cuadriceps_v02	estiramiento_cuadriceps	Estiramiento de cuádriceps de lado	2	colchoneta	movilidad	0
+estiramiento_cuadriceps_v03	estiramiento_cuadriceps	Estiramiento de cuádriceps de pie con apoyo	2	silla	asistido	0
+estiramiento_cuadriceps_v04	estiramiento_cuadriceps	Estiramiento de cuádriceps en banco con apoyo	3	banco	movilidad	0
+estiramiento_cuadriceps_v05	estiramiento_cuadriceps	Estiramiento unilateral de cuádriceps con equilibrio	4	sin_equipo	equilibrio	1
+respiracion_diafragmatica_v01	respiracion_diafragmatica	Respiración tranquila sentado	1	silla	controlado	0
+respiracion_diafragmatica_v02	respiracion_diafragmatica	Respiración diafragmática tumbado	1	colchoneta	controlado	0
+respiracion_diafragmatica_v03	respiracion_diafragmatica	Respiración nasal con atención al ritmo	2	sin_equipo	controlado	0
+respiracion_diafragmatica_v04	respiracion_diafragmatica	Respiración costal lateral guiada	3	colchoneta	controlado	0
+respiracion_diafragmatica_v05	respiracion_diafragmatica	Coordinación respiratoria con movilidad suave	4	colchoneta	coordinacion	1
+control_postura_v01	control_postura	Conciencia de postura sentado	1	silla	controlado	0
+control_postura_v02	control_postura	Alineación neutra de pie con pared	1	pared	controlado	0
+control_postura_v03	control_postura	Control postural con cambios de apoyo	2	sin_equipo	equilibrio	0
+control_postura_v04	control_postura	Control postural durante marcha suave	3	sin_equipo	coordinacion	0
+control_postura_v05	control_postura	Coordinación postural con carga liviana supervisada	4	mancuerna	coordinacion	1
