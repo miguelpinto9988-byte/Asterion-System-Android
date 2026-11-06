@@ -75,10 +75,17 @@ class PreflightNoBuild(unittest.TestCase):
         self.assertEqual("false", application.get(ANDROID + "usesCleartextTraffic"))
         self.assertEqual("@string/app_name", application.get(ANDROID + "label"))
         activity = application.find("activity")
-        self.assertEqual(".MainActivity", activity.get(ANDROID + "name"))
+        self.assertEqual(".SplashActivity", activity.get(ANDROID + "name"))
         self.assertEqual("true", activity.get(ANDROID + "exported"))
         actions = [node.get(ANDROID + "name") for node in activity.findall("./intent-filter/action")]
         self.assertIn("android.intent.action.MAIN", actions)
+        categories = [node.get(ANDROID + "name")
+                      for node in activity.findall("./intent-filter/category")]
+        self.assertIn("android.intent.category.LAUNCHER", categories)
+        main_activity = next((node for node in application.findall("activity")
+                              if node.get(ANDROID + "name") == ".MainActivity"), None)
+        self.assertIsNotNone(main_activity)
+        self.assertEqual("false", main_activity.get(ANDROID + "exported"))
         permissions = [node.get(ANDROID + "name") for node in root.findall("uses-permission")]
         self.assertNotIn("android.permission.INTERNET", permissions)
 

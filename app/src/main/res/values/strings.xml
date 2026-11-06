@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Asterion System</string>
+    <string name="splash_day_description">Asterion System. Pantalla de carga de la mañana, con un guardián oscuro frente a un cielo iluminado.</string>
+    <string name="splash_night_description">Asterion System. Pantalla de carga de la tarde y noche, con un guardián oscuro rodeado de sombras violetas.</string>
     <string name="bootstrap_caption">Fase 01 · Proyecto Android nativo</string>
     <string name="bootstrap_description">Estructura inicial en Java. Funcionalidades pendientes.</string>
     <string name="navigation_home_subtitle">Fase 14 · Funcionamiento local sin conexión</string>

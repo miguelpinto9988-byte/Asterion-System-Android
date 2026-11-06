@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/asterion_background">
+    <!-- fitCenter preserves every detail and the full lettering on any device. -->
+    <ImageView
+        android:id="@+id/splash_artwork"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/asterion_background"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/splash_day_description"
+        android:importantForAccessibility="yes" />
+</FrameLayout>
