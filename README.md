@@ -4,6 +4,15 @@
 
 Proyecto Java nativo Android con vistas XML. El HTML se utiliza **solo como previsualización externa**. No se han incorporado HTML, JavaScript, CSS, WebView o Compose a las pantallas Android.
 
+## Motor modular de progreso (bloque independiente)
+
+Se creó el módulo **`:progress-engine`**, una biblioteca Java 17 sin Android ni SQLite, conectada por interfaces a los servicios actuales de `:core`. Su fachada `AsterionDomainEngine` coordina lectura del catálogo de actividades, planificación, preferencias y seguimiento. `ProgressPatternEngine` permite evaluar patrones intercambiables; `standard_v1` conserva el porcentaje actual y `RuleBasedProgressPattern` permite reutilizar el motor determinista de reglas de fase 06.
+
+La evaluación por patrones es **de solo lectura**; la creación de planes y el registro de resultados requieren llamadas explícitas. Los parámetros de futuros patrones están validados pero aún **no se guardan** en SQLite ni aparecen en las pantallas. La app Android continúa mostrando el progreso actual hasta que se apruebe la integración funcional de los nuevos patrones.
+
+- [Arquitectura, contratos y extensión futura](docs/motor-progreso/01-motor-modular.md)
+- Pruebas JVM: `gradle :progress-engine:test`, incorporadas al workflow manual de debug. **No ejecutadas para este módulo todavía.**
+
 ## Arquitectura
 
 - `:core`: Java puro; dominio, eventos, estado, navegación, reglas, catálogo, planificación, seguimiento, preferencias y diagnósticos locales.

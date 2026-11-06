@@ -132,6 +132,27 @@ class PreflightNoBuild(unittest.TestCase):
         self.assertIn("android.useAndroidX=true", properties)
         self.assertIn("implementation 'androidx.activity:activity:1.11.0'", app)
 
+    def test_modular_progress_engine_is_pure_java(self):
+        module = ROOT / "progress-engine"
+        settings = read(ROOT / "settings.gradle")
+        app = read(MODULES)
+        library = read(module / "build.gradle")
+        workflow = read(ROOT / ".github/workflows/android-ci.yml")
+        self.assertIn("':progress-engine'", settings)
+        self.assertIn("implementation project(':progress-engine')", app)
+        self.assertIn("id 'java-library'", library)
+        self.assertIn("api project(':core')", library)
+        self.assertIn("JavaLanguageVersion.of(17)", library)
+        self.assertIn(":progress-engine:test", workflow)
+        sources = list((module / "src/main/java").rglob("*.java"))
+        self.assertGreaterEqual(len(sources), 8)
+        for source_file in sources:
+            content = read(source_file)
+            self.assertNotRegex(content, r"(?m)^\s*import (android|androidx)\.")
+            self.assertNotIn("SQLiteDatabase", content)
+            self.assertNotIn("SharedPreferences", content)
+        self.assertFalse(list(module.rglob("*.xml")))
+
     def test_sdk36_edge_to_edge_safe_insets(self):
         main = read(APP_JAVA / "pe/asterionsystem/app/MainActivity.java")
         xml = read(APP / "res/layout/activity_main.xml")
