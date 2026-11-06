@@ -25,7 +25,14 @@ class NativeVisualTest(unittest.TestCase):
                         for value in node.attrib.values():
                             if value.startswith("@drawable/"):
                                 name=value.split("/",1)[1]
-                                self.assertTrue((RES/"drawable"/(name+".xml")).is_file(), (path,name))
+                                candidates = [
+                                    RES/"drawable"/(name+".xml"),
+                                    *[RES/folder/(name+ext)
+                                      for folder in ("drawable", "drawable-nodpi")
+                                      for ext in (".png", ".webp", ".jpg", ".jpeg")],
+                                ]
+                                self.assertTrue(any(item.is_file() for item in candidates),
+                                                (path, name))
 
     def test_original_characters_and_icons(self):
         names=("asterion_guardian","asterion_shadow_sentinel","asterion_crest",
