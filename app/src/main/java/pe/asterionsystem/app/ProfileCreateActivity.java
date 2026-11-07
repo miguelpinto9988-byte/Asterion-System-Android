@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -29,6 +30,7 @@ import pe.asterionsystem.app.presentation.NeonFrameDrawable;
  */
 public final class ProfileCreateActivity extends ComponentActivity {
     private JSONObject draft;
+    private CanvaProfileStepOneView canvaStepOne;
     private int step = 1;
     private boolean confirmed = false;
     private EditText name;
@@ -56,6 +58,7 @@ public final class ProfileCreateActivity extends ComponentActivity {
                             uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     put("avatar_uri", uri.toString());
                     avatar.setImageURI(uri);
+                    if (canvaStepOne != null) canvaStepOne.showSelectedAvatar(uri);
                 } catch (SecurityException invalidGrant) {
                     Toast.makeText(this, "No se pudo conservar el acceso a la imagen.",
                             Toast.LENGTH_LONG).show();
@@ -99,6 +102,16 @@ public final class ProfileCreateActivity extends ComponentActivity {
         });
 
         loadStepOne();
+        canvaStepOne = new CanvaProfileStepOneView(this,
+                name, age, height, weight, gender,
+                this::next,
+                () -> pickImage.launch(new String[]{"image/*"}));
+        ((FrameLayout) findViewById(R.id.profile_wizard_root)).addView(
+                canvaStepOne, new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+        String savedPhoto = draft.optString("avatar_uri", "");
+        if (!savedPhoto.isEmpty()) canvaStepOne.showSelectedAvatar(Uri.parse(savedPhoto));
         showStep(state == null ? 1 : Math.max(1,Math.min(4,state.getInt("stage",1))));
     }
 
@@ -170,9 +183,11 @@ public final class ProfileCreateActivity extends ComponentActivity {
     private void showStep(int requestedStep) {
         if(step==1 && requestedStep!=1)saveStepOne(false);
         step=requestedStep;
+        if (canvaStepOne != null) canvaStepOne.setVisibility(
+                step == 1 ? View.VISIBLE : View.GONE);
         confirmed=false;
         applyRegisteredScenery(step);
-        firstStep.setVisibility(step==1?View.VISIBLE:View.GONE);
+        firstStep.setVisibility(step==1 && canvaStepOne==null?View.VISIBLE:View.GONE);
         dynamic.setVisibility(step==1?View.GONE:View.VISIBLE);
         dynamic.removeAllViews();
         back.setVisibility(step==1?View.GONE:View.VISIBLE);

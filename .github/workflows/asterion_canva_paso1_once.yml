@@ -1,0 +1,44 @@
+name: Importar ilustración Canva Paso 1 (una vez)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/asterion_canva_paso1_once.yml'
+permissions:
+  contents: write
+jobs:
+  importar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Descargar imagen aprobada de Canva
+        env:
+          CANVA_EXPORT_URL: 'https://export-download.canva.com/2b0feddb-3d52-4a63-930c-76b15d755389/0/0001-190798462030592117.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH4R7NKVBA%2F20261106%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261106T105619Z&X-Amz-Expires=54314&X-Amz-Signature=3ece4bb9ca509b2671b89ae56015fc4b3a23622a8e83619efec648895797d868&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Sat%2C%2007%20Nov%202026%2002%3A01%3A33%20GMT'
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARGET=app/src/main/res/drawable-nodpi/asterion_canva_paso1.png
+          mkdir -p "$(dirname "$TARGET")"
+          curl --fail --location --silent --show-error --retry 3 \
+            --connect-timeout 30 "$CANVA_EXPORT_URL" --output "$TARGET"
+          python3 - <<'PY'
+          from pathlib import Path
+          import struct
+          p=Path('app/src/main/res/drawable-nodpi/asterion_canva_paso1.png')
+          data=p.read_bytes()
+          assert data.startswith(b'\x89PNG\r\n\x1a\n'), 'La descarga no es un PNG.'
+          dims=struct.unpack('>II',data[16:24])
+          assert dims==(941,1672), f'Dimensiones inesperadas: {dims}'
+          print(f'PNG Canva validado: {dims[0]}x{dims[1]}, {len(data)} bytes')
+          PY
+      - name: Guardar recurso y retirar importador temporal
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/res/drawable-nodpi/asterion_canva_paso1.png
+          git rm -f .github/workflows/asterion_canva_paso1_once.yml
+          git commit -m 'assets: incorporar imagen Canva aprobada del paso 1'
+          git push origin HEAD:main
