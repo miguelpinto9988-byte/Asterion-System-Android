@@ -29,9 +29,23 @@ def main():
                 '"rondas","series"','(index[d]+1)%6',
                 'CAT_ASSETS[index[d]]'):
         expect(key,ui,'modo y calendario')
-    for key in ('"dark","light"','"Azul","Morado","Rosa","Verde","Rojo","Blanco"',
-                'addCardPreview(', 'accentChoices.check('):
-        expect(key,ui,'paso 3')
+    step3=(app/"java/pe/asterionsystem/app/CanvaProfileStepThreeView.java").read_text(encoding="utf-8")
+    expect("new CanvaProfileStepThreeView(activity,draft,persist)",ui,"conexión paso 3")
+    for key in ('"dark", "light"', '"Azul", "Morado", "Rosa", "Verde", "Rojo", "Blanco"',
+                '"igris", "beru", "tank", "tusk", "iron"',
+                '"sung_jinwoo", "cha_haein", "kim_dokja", "yoo_joonghyuk", "yoo_sangah"',
+                '"ruinas", "niebla", "obsidiana", "aurora", "bosque"',
+                'HorizontalScrollView', 'migrateLegacyOptions()', 'save.run()',
+                'cardLandscape', 'cardPortrait', 'cardName'):
+        expect(key,step3,'paso 3 Canva')
+    for section in ("01. TEMA DEL SISTEMA", "02. COLOR DE LOS BORDES",
+                    "03. ACOMPAÑANTE DEL SISTEMA", "04. TARJETA DEL CAZADOR"):
+        expect(section,step3,"secciones aprobadas")
+    for key in ('label(name,12,WHITE)', 'label(subtitle,13,MUTED)',
+                'setMinHeight(dp(52))', 'setMinHeight(dp(76))'):
+        expect(key,step3,"legibilidad táctil y tipográfica")
+    if 'http://' in step3 or 'https://' in step3:
+        raise AssertionError("El paso 3 no debe descargar recursos en ejecución.")
     for key in ('addExpandableReview(', '01 — Verificación',
                 '02 — Confirmación final'):
         expect(key,ui,'paso 4')
@@ -39,7 +53,7 @@ def main():
     expect('private int iconResource(',ui,'reutilización de recursos')
     if 'tutorial' in ui.lower() or 'introducción al sistema' in ui.lower():
         raise AssertionError('La introducción/tutorial fue descartada.')
-    print("OK: pasos 2, 3 y 4 con estructura, iconos, calendario y revisión.")
+    print("OK: pasos 2, 3 y 4; Paso 3 Canva nativo, opciones, vista previa y legibilidad.")
 if __name__=="__main__":
     try:main()
     except (AssertionError,OSError,ET.ParseError) as exc:
