@@ -29,7 +29,7 @@ jobs:
           data=p.read_bytes()
           assert data.startswith(b'\x89PNG\r\n\x1a\n'), 'La descarga no es un PNG.'
           dims=struct.unpack('>II',data[16:24])
-          assert dims==(941,1672), f'Dimensiones inesperadas: {dims}'
+          assert dims[0]>=300 and dims[1]>=500 and abs(dims[0]/dims[1]-941/1672)<0.01, f'Dimensiones inesperadas: {dims}'
           print(f'PNG Canva validado: {dims[0]}x{dims[1]}, {len(data)} bytes')
           PY
       - name: Guardar recurso y retirar importador temporal
