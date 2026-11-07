@@ -270,20 +270,20 @@ final class ProfileRegistrationSteps {
         addInfo(out,"Tu texto se conservará exactamente para las futuras preferencias del motor de progreso.");
         input(out,"custom_goal","Describe tu objetivo con tus propias palabras",true);
         addHeading(out,"04 — Modalidad del Sistema");
-        addInfo(out,"Descanso preferido entre series o rondas (puede ajustarse después).");
-        radios(out,"rest_seconds",new String[]{"30","60","90"},
-                new String[]{"30 segundos","60 segundos","90 segundos"},"60");
         LinearLayout missionExtra=vertical();
         LinearLayout routineExtra=vertical();
         RadioGroup mode = radios(out,"mode",new String[]{"misiones","rutinas"},
                 new String[]{"Misiones diarias","Rutinas"},"misiones");
         addInfo(missionExtra,"El número de misiones incluye actividades ligeras, aprendizaje y descansos; no significa entrenar varias veces al día.");
         spinner(missionExtra,"missions",new String[]{"1","2","3","4","5","6","7"},"3");
-        addInfo(routineExtra,"Tiempo disponible por sesión");
-        spinner(routineExtra,"minutes",new String[]{"10","15","20","30","45","60"},"30");
+        addInfo(routineExtra,"Descanso preferido de 30, 60 o 90 segundos.");
+        radios(routineExtra,"rest_seconds",new String[]{"30","60","90"},
+                new String[]{"30 segundos","60 segundos","90 segundos"},"60");
         addInfo(routineExtra,"¿Cómo prefieres seguir tu rutina?");
         radios(routineExtra,"sequence",new String[]{"rondas","series"},
                 new String[]{"Sesiones por rondas","Sesiones por series"},"rondas");
+        addInfo(routineExtra,"Tiempo disponible por sesión");
+        spinner(routineExtra,"minutes",new String[]{"10","15","20","30","45","60"},"30");
         out.addView(missionExtra);out.addView(routineExtra);
         Runnable showMode=()->{
             boolean missions=get("mode","misiones").equals("misiones");
