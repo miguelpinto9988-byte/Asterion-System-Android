@@ -72,6 +72,8 @@ final class CanvaProfileStepThreeView extends LinearLayout {
     private ImageView cardPortrait;
     private TextView cardName;
     private TextView borderExample;
+    private View cardShade;
+    private View cardBorder;
 
     CanvaProfileStepThreeView(Activity activity, JSONObject draft, Runnable save) {
         super(activity);
@@ -185,11 +187,11 @@ final class CanvaProfileStepThreeView extends LinearLayout {
         cardLandscape=new ImageView(activity);
         cardLandscape.setScaleType(ImageView.ScaleType.CENTER_CROP);
         hunterCard.addView(cardLandscape,new FrameLayout.LayoutParams(-1,-1));
-        View shade=new View(activity);
-        shade.setBackground(new GradientDrawable(
+        cardShade=new View(activity);
+        cardShade.setBackground(new GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT,
                 new int[]{0x2004091A,0xA9081432,0xEE07132B}));
-        hunterCard.addView(shade,new FrameLayout.LayoutParams(-1,-1));
+        hunterCard.addView(cardShade,new FrameLayout.LayoutParams(-1,-1));
         cardPortrait=new ImageView(activity);
         cardPortrait.setScaleType(ImageView.ScaleType.FIT_CENTER);
         FrameLayout.LayoutParams portraitParams=new FrameLayout.LayoutParams(
@@ -204,6 +206,8 @@ final class CanvaProfileStepThreeView extends LinearLayout {
                 -1,-1,Gravity.END);
         nameParams.leftMargin=dp(137);
         hunterCard.addView(cardName,nameParams);
+        cardBorder=new View(activity);
+        hunterCard.addView(cardBorder,new FrameLayout.LayoutParams(-1,-1));
         LinearLayout.LayoutParams cardParams=new LinearLayout.LayoutParams(-1,dp(176));
         cardParams.topMargin=dp(7);
         group.addView(hunterCard,cardParams);
@@ -343,7 +347,14 @@ final class CanvaProfileStepThreeView extends LinearLayout {
                 if(HUNTERS[i].equals(chosen))name=HUNTER_NAMES[i];
             }
             cardName.setText("✦\n"+name.toUpperCase(java.util.Locale.ROOT)+"\nCAZADOR");
-            hunterCard.setBackground(new NeonFrameDrawable(color,density));
+            boolean light=get("theme","dark").equals("light");
+            cardShade.setBackground(new GradientDrawable(
+                    GradientDrawable.Orientation.LEFT_RIGHT,
+                    light ? new int[]{0x080F253D,0x928396A9,0xD8D7E4F4}
+                          : new int[]{0x2004091A,0xA9081432,0xEE07132B}));
+            cardName.setTextColor(light?0xFF0A1B34:WHITE);
+            cardBorder.setBackground(panel(Color.TRANSPARENT,color,9,dp(2)));
+            hunterCard.setBackground(panel(0xFF071A34,color,9,dp(2)));
         }
     }
 
