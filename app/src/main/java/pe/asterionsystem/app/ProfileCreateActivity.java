@@ -31,6 +31,7 @@ import pe.asterionsystem.app.presentation.NeonFrameDrawable;
 public final class ProfileCreateActivity extends ComponentActivity {
     private JSONObject draft;
     private CanvaProfileStepOneView canvaStepOne;
+    private CanvaProfileStepTwoView canvaStepTwo;
     private int step = 1;
     private boolean confirmed = false;
     private EditText name;
@@ -110,6 +111,14 @@ public final class ProfileCreateActivity extends ComponentActivity {
                 canvaStepOne, new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
+        canvaStepTwo = new CanvaProfileStepTwoView(this, draft,
+                () -> ProfileRegistrationDraft.save(this,draft),
+                () -> showStep(1), this::next);
+        ((FrameLayout) findViewById(R.id.profile_wizard_root)).addView(
+                canvaStepTwo, new FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+        canvaStepTwo.setVisibility(View.GONE);
         String savedPhoto = draft.optString("avatar_uri", "");
         if (!savedPhoto.isEmpty()) canvaStepOne.showSelectedAvatar(Uri.parse(savedPhoto));
         showStep(state == null ? 1 : Math.max(1,Math.min(4,state.getInt("stage",1))));
@@ -185,6 +194,8 @@ public final class ProfileCreateActivity extends ComponentActivity {
         step=requestedStep;
         if (canvaStepOne != null) canvaStepOne.setVisibility(
                 step == 1 ? View.VISIBLE : View.GONE);
+        if (canvaStepTwo != null) canvaStepTwo.setVisibility(
+                step == 2 ? View.VISIBLE : View.GONE);
         confirmed=false;
         applyRegisteredScenery(step);
         firstStep.setVisibility(step==1 && canvaStepOne==null?View.VISIBLE:View.GONE);
@@ -208,7 +219,7 @@ public final class ProfileCreateActivity extends ComponentActivity {
             ProfileRegistrationSteps factory=new ProfileRegistrationSteps(
                     this,draft,()->ProfileRegistrationDraft.save(this,draft),
                     this::onConfirmationChanged);
-            if(step==2)dynamic.addView(factory.step2());
+            if(step==2 && canvaStepTwo==null)dynamic.addView(factory.step2());
             if(step==3)dynamic.addView(factory.step3());
             if(step==4)dynamic.addView(factory.step4());
         }
