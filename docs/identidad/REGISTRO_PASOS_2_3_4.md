@@ -15,16 +15,17 @@ nativos** que ya existen, su navegacion, los iconos contextuales y sus marcos.
    antes de incorporar los WebP se utiliza el glifo nativo.
 6. Equipamiento: corporal, mancuernas (pesos) y gimnasio (equipos).
 
-## Paso 3 — Personalizacion
+## Paso 3 — Personalizacion (Canva aprobado)
+- Diseño editable de referencia: https://www.canva.com/d/gMU31Bp6ag4VAXD
 - Tema claro u oscuro.
-- Los 6 colores aprobados: azul, morado, rosa, verde, rojo y blanco.
-  Las opciones son mutuamente excluyentes.
-- Cinco acompanantes que representan al mismo motor de progreso.
-- Tarjeta del cazador: silueta + fondo y vista previa interactiva.
-  El elemento elegido se representa con un drawable local cuando
-  exista; mientras tanto se utiliza el icono/escenario original
-  que ya compila en el proyecto.
-- Tipografia en negrita global segun la politica existente.
+- Los 6 colores: azul, morado, rosa, verde, rojo y blanco, mutuamente excluyentes.
+- Cinco sombras seleccionables: Igris, Beru, Tank, Tusk e Iron.
+- Tarjeta del cazador: Sung Jinwoo, Cha Hae-In, Kim Dokja, Yoo Joonghyuk y Yoo Sangah.
+- Cinco paisajes: Ruinas arcanas, Niebla violeta, Obsidiana, Aurora dorada
+  y Bosque ancestral. Vista previa horizontal actualizable (sin rango S).
+- Textos nativos de al menos 12 sp, encabezados mayores y filas desplazables.
+- Implementación: CanvaProfileStepThreeView.java; el paso 3 provisional se reemplaza.
+- Recursos binarios para importar y pruebas: véase CANVA_PASO3_PERSONALIZACION.md.
 
 ## Paso 4 — Activacion
 - Las tres secciones (identidad, entrenamiento, personalizacion)

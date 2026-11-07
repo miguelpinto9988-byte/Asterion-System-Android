@@ -392,128 +392,11 @@ final class ProfileRegistrationSteps {
         return s.toString();
     }
 
+    /** The Canva-approved Step 3 has independent, accessible native controls. */
     View step3() {
-        visualStep = 3;
-        sectionNumber = 0;
-        LinearLayout out=vertical();
-        addHeading(out,"01 — Tema del Sistema");
-        radios(out,"theme",new String[]{"dark","light"},
-                new String[]{"Tema oscuro","Tema claro"},"dark");
-        addHeading(out,"02 — Color de los bordes");
-        RadioGroup accentChoices=new RadioGroup(activity);
-        accentChoices.setOrientation(RadioGroup.VERTICAL);
-        String[] colorNames={"Azul","Morado","Rosa","Verde","Rojo","Blanco"};
-        LinearLayout preview=vertical();
-        preview.setPadding(dp(12),dp(10),dp(12),dp(10));
-        TextView sample=text("✦ VISTA PREVIA DEL CONTORNO ✦",14,WHITE);
-        sample.setGravity(Gravity.CENTER);
-        preview.addView(sample);
-        Runnable updatePreview=()->{
-            int c=Color.parseColor(get("accent","#9A68F2"));
-            preview.setBackground(new NeonFrameDrawable(c,density));
-        };
-        for(int i=0;i<6;i++){
-            final String hex=ACCENTS[i];
-            RadioButton choice=new RadioButton(activity);
-            choice.setId(View.generateViewId());
-            choice.setText("●  "+colorNames[i]);
-            choice.setTextColor(Color.parseColor(hex));
-            choice.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-            choice.setButtonTintList(ColorStateList.valueOf(Color.parseColor(hex)));
-            choice.setMinHeight(dp(45));
-            choice.setChecked(hex.equalsIgnoreCase(get("accent","#9A68F2")));
-            choice.setOnClickListener(v->{
-                accentChoices.check(choice.getId());
-                put("accent",hex);
-                updatePreview.run();
-            });
-            accentChoices.addView(choice);
-        }
-        out.addView(accentChoices);
-        updatePreview.run();
-        out.addView(preview,new LinearLayout.LayoutParams(-1,dp(65)));
-        addHeading(out,"03 — Acompañante del Sistema");
-        addInfo(out,"Cinco representantes gráficos del mismo motor de progreso. Las ilustraciones finales se añadirán posteriormente.");
-        radios(out,"companion",new String[]{"vigia","estratega","archivista","oraculo","centinela"},
-                new String[]{"Vigía","Estratega","Archivista","Oráculo","Centinela"},"vigia");
-        addHeading(out,"04 — Tarjeta del cazador");
-        addInfo(out,"Elige una silueta y un fondo; la credencial se mostrará posteriormente en Inicio.");
-        RadioGroup silhouettes = radios(out,"card_silhouette",
-                new String[]{"caballero","errante","vigia","arconte","centinela"},
-                new String[]{"Caballero","Errante","Vigía","Arconte","Centinela"},"caballero");
-        addInfo(out,"Paisaje de la tarjeta");
-        RadioGroup backgrounds = radios(out,"card_background",
-                new String[]{"ruinas","niebla","obsidiana","aurora","bosque"},
-                new String[]{"Ruinas arcanas","Niebla violeta","Obsidiana",
-                        "Aurora dorada","Bosque ancestral"},"niebla");
-        addCardPreview(out, silhouettes, backgrounds);
-        addInfo(out,"Toda la tipografía de Asterion es negrita por defecto; las ilustraciones oficiales de carga permanecen intactas.");
-        return out;
-    }
-
-    /**
-     * A real, responsive card. Background and silhouette are separately
-     * packaged drawable resources; selecting either changes the preview.
-     * Placeholder drawables remain until approved paintings are committed.
-     */
-    private void addCardPreview(LinearLayout parent, RadioGroup silhouettes,
-                                RadioGroup backgrounds) {
-        addInfo(parent, "Vista previa de la tarjeta del cazador");
-        FrameLayout card = new FrameLayout(activity);
-        LinearLayout.LayoutParams cardParams =
-                new LinearLayout.LayoutParams(-1,dp(210));
-        cardParams.bottomMargin = dp(12);
-        ImageView landscape = new ImageView(activity);
-        landscape.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        card.addView(landscape,new FrameLayout.LayoutParams(-1,-1));
-        View overlay = new View(activity);
-        overlay.setBackgroundColor(Color.argb(170,5,12,31));
-        card.addView(overlay,new FrameLayout.LayoutParams(-1,-1));
-        ImageView portrait = new ImageView(activity);
-        portrait.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        FrameLayout.LayoutParams portraitParams = new FrameLayout.LayoutParams(
-                dp(105), dp(170),Gravity.START|Gravity.BOTTOM);
-        portraitParams.leftMargin = dp(10);
-        card.addView(portrait,portraitParams);
-        TextView label = text("",14,WHITE);
-        label.setGravity(Gravity.CENTER_VERTICAL);
-        label.setPadding(dp(120),dp(12),dp(8),dp(12));
-        FrameLayout.LayoutParams captionParams =
-                new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM);
-        card.addView(label,captionParams);
-        Runnable update = () -> {
-            String scene = get("card_background","niebla");
-            int backgroundId = activity.getResources().getIdentifier(
-                    "asterion_card_background_" + scene,"drawable",
-                    activity.getPackageName());
-            landscape.setImageResource(backgroundId == 0
-                    ? R.drawable.asterion_reg_background : backgroundId);
-            String figure = get("card_silhouette","caballero");
-            int figureId = activity.getResources().getIdentifier(
-                    "asterion_card_silhouette_" + figure,"drawable",
-                    activity.getPackageName());
-            portrait.setImageResource(figureId == 0
-                    ? R.drawable.asterion_reg_profile : figureId);
-            label.setText("TARJETA DEL CAZADOR\n"
-                    + get("name","Cazador") + "\n"
-                    + figure.toUpperCase(java.util.Locale.ROOT));
-            int accent = Color.parseColor(get("accent","#9A68F2"));
-            card.setBackground(new NeonFrameDrawable(accent,density));
-        };
-        for (int i=0;i<silhouettes.getChildCount();i++) {
-            final RadioButton choice=(RadioButton)silhouettes.getChildAt(i);
-            final String[] ids={"caballero","errante","vigia","arconte","centinela"};
-            final String value=ids[i];
-            choice.setOnClickListener(v->{put("card_silhouette",value);update.run();});
-        }
-        for (int i=0;i<backgrounds.getChildCount();i++) {
-            final RadioButton choice=(RadioButton)backgrounds.getChildAt(i);
-            final String[] ids={"ruinas","niebla","obsidiana","aurora","bosque"};
-            final String value=ids[i];
-            choice.setOnClickListener(v->{put("card_background",value);update.run();});
-        }
-        update.run();
-        parent.addView(card,cardParams);
+        visualStep=3;
+        sectionNumber=0;
+        return new CanvaProfileStepThreeView(activity,draft,persist);
     }
 
     private void addExpandableReview(LinearLayout out, TextView details,
@@ -565,9 +448,9 @@ final class ProfileRegistrationSteps {
         addExpandableReview(out,training,"ENTRENAMIENTO");
         TextView visual=text("PERSONALIZACIÓN\nTema: "+get("theme","dark")
                 +"\nBordes: "+get("accent","#9A68F2")
-                +"\nAcompañante: "+get("companion","vigia")
-                +"\nSilueta: "+get("card_silhouette","caballero")
-                +"\nFondo de tarjeta: "+get("card_background","niebla"),13,WHITE);
+                +"\nAcompañante: "+get("companion","igris")
+                +"\nSilueta: "+get("card_silhouette","sung_jinwoo")
+                +"\nFondo de tarjeta: "+get("card_background","ruinas"),13,WHITE);
         addExpandableReview(out,visual,"PERSONALIZACIÓN");
         addHeading(out,"02 — Confirmación final");
         addInfo(out,"El perfil se guardará en almacenamiento privado. Podrás editar tus preferencias posteriormente; no se compartirá por internet.");
