@@ -31,7 +31,7 @@ def main():
         expect(key,ui,'modo y calendario')
     step3=(app/"java/pe/asterionsystem/app/CanvaProfileStepThreeView.java").read_text(encoding="utf-8")
     expect("new CanvaProfileStepThreeView(activity,draft,persist)",ui,"conexión paso 3")
-    for key in ('"dark", "light"', '"Azul", "Morado", "Rosa", "Verde", "Rojo", "Blanco"',
+    for key in ('addTheme(row,"dark"', 'addTheme(row,"light"', '"Azul", "Morado", "Rosa", "Verde", "Rojo", "Blanco"',
                 '"igris", "beru", "tank", "tusk", "iron"',
                 '"sung_jinwoo", "cha_haein", "kim_dokja", "yoo_joonghyuk", "yoo_sangah"',
                 '"ruinas", "niebla", "obsidiana", "aurora", "bosque"',
