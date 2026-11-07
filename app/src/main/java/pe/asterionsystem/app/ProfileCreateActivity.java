@@ -207,6 +207,21 @@ public final class ProfileCreateActivity extends ComponentActivity {
                 "PASO 3 DE 4 · PERSONALIZACIÓN",
                 "PASO 4 DE 4 · ACTIVACIÓN DEL SISTEMA"};
         heading.setText(titles[step]);
+        // Step 3 uses the approved gold-and-navy visual language. Preserve
+        // the independent artwork and behavior of steps 1, 2 and 4.
+        if (step == 3) {
+            panel.setBackground(new NeonFrameDrawable(Color.rgb(244, 186, 93),density));
+            heading.setTextColor(Color.rgb(255, 211, 145));
+            heading.setTypeface(Typeface.SERIF,Typeface.BOLD);
+            forward.setBackground(new NeonFrameDrawable(Color.rgb(255, 196, 102),density));
+            back.setBackground(new NeonFrameDrawable(Color.rgb(100, 170, 255),density));
+        } else {
+            panel.setBackground(new NeonFrameDrawable(Color.rgb(80,196,255),density));
+            heading.setTextColor(Color.WHITE);
+            heading.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+            forward.setBackground(new NeonFrameDrawable(Color.rgb(177,116,255),density));
+        }
+
         indicator.setText(step==1?"①  —  ②  —  ③  —  ④"
                 :step==2?"✓  —  ②  —  ③  —  ④"
                 :step==3?"✓  —  ✓  —  ③  —  ④"
@@ -305,9 +320,13 @@ public final class ProfileCreateActivity extends ComponentActivity {
         scenery.setImageResource(background);
 
         ImageView hunter = findViewById(R.id.profile_hunter_art);
-        hunter.setImageResource(shownStep == 1 ? R.drawable.asterion_guardian
-                : registeredDrawable(
-                        "asterion_hunter_lateral", R.drawable.asterion_guardian));
+        int hunterArt=shownStep == 3
+                ? registeredDrawable("asterion_step3_cha_haein",
+                        registeredDrawable("asterion_hunter_lateral",
+                                R.drawable.asterion_guardian))
+                : registeredDrawable("asterion_hunter_lateral",R.drawable.asterion_guardian);
+        hunter.setImageResource(shownStep == 1
+                ? R.drawable.asterion_guardian : hunterArt);
         hunter.setVisibility(shownStep == 4 || shownStep == 5
                 ? View.GONE : View.VISIBLE);
     }
