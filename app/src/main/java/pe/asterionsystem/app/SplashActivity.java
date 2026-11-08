@@ -13,6 +13,7 @@ import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -30,9 +31,13 @@ import java.io.InputStream;
 import java.util.Calendar;
 
 /**
- * Offline Asterion opening: local Media3 MP4 + local HTML/CSS layer,
- * falling back to the animated GIF or the original morning/night PNG.
- * Neither the player nor the HTML view requires internet access.
+ * Asterion startup: ONE visible artwork at a time.
+ *
+ * The old morning/night PNG is an emergency fallback, never a temporary poster
+ * while the celestial MP4 is preparing. Android 12+ draws its own brief, plain
+ * system launch background before this Activity; it has no branded splash art.
+ *
+ * Media is packaged in the APK. No network or JavaScript is used.
  */
 @OptIn(markerClass = UnstableApi.class)
 public final class SplashActivity extends ComponentActivity {
@@ -41,34 +46,35 @@ public final class SplashActivity extends ComponentActivity {
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable openApp = this::openMainActivity;
+
     private ImageView staticArtwork;
     private PlayerView videoView;
     private WebView htmlOverlay;
     private ExoPlayer videoPlayer;
     private AnimatedSplashView gifFallback;
     private boolean videoReady;
+    private boolean htmlInitialized;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // Android 16: wait until focus to query decor WindowInsetsController.
+        // Android 16: do not request decor WindowInsetsController until focus.
         setContentView(R.layout.activity_splash);
 
-        boolean morning = SplashTimeWindow.isMorning(
-                Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
         staticArtwork = findViewById(R.id.splash_artwork);
-        staticArtwork.setImageResource(morning
-                ? R.drawable.asterion_loading_manana
-                : R.drawable.asterion_loading_tarde_noche);
-        staticArtwork.setContentDescription(getString(morning
-                ? R.string.splash_day_description
-                : R.string.splash_night_description));
-
         videoView = findViewById(R.id.splash_video);
         htmlOverlay = findViewById(R.id.splash_web_overlay);
+
+        // The layout starts with a plain dark background; the approved MP4 is
+        // the only branded visual. Do not inflate the old PNG during buffering.
+        staticArtwork.setVisibility(View.INVISIBLE);
+        staticArtwork.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
         if (!initializeMp4()) {
-            initializeGifFallback();
+            if (!initializeGifFallback()) {
+                showOriginalFallback();
+            }
         }
     }
 
@@ -82,96 +88,142 @@ public final class SplashActivity extends ComponentActivity {
             return false;
         }
         try {
+            // Keep the decoding surface attached so the first frame can render,
+            // but do not display it until Media3 signals onRenderedFirstFrame().
+            videoView.setUseController(false);
+            videoView.setVisibility(View.VISIBLE);
+            videoView.setAlpha(0f);
+
             ExoPlayer player = new ExoPlayer.Builder(this).build();
             videoPlayer = player;
-            videoView.setUseController(false);
             videoView.setPlayer(player);
             player.setVolume(0f);
             player.setRepeatMode(Player.REPEAT_MODE_ONE);
             player.addListener(new Player.Listener() {
                 @Override
-                public void onPlaybackStateChanged(@Player.State int state) {
-                    if (state == Player.STATE_READY && !videoReady) {
-                        showVideoAndLocalHtml();
-                    }
+                public void onRenderedFirstFrame() {
+                    showVideoAndLocalHtml();
                 }
 
                 @Override
                 public void onPlayerError(PlaybackException error) {
-                    restoreStaticArtwork();
+                    // Never show a different illustration AFTER the video was
+                    // already visible; finish the splash instead.
+                    if (videoReady) {
+                        handler.removeCallbacks(openApp);
+                        handler.post(openApp);
+                    } else {
+                        handler.post(() -> {
+                            releaseVideoPlayer();
+                            if (!initializeGifFallback()) {
+                                showOriginalFallback();
+                            }
+                        });
+                    }
                 }
             });
-            // android.resource is supported by Media3's local data source.
+
             Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + resourceId);
             player.setMediaItem(MediaItem.fromUri(uri));
             player.prepare();
             return true;
         } catch (RuntimeException error) {
-            restoreStaticArtwork();
+            releaseVideoPlayer();
             return false;
         }
     }
 
     private void showVideoAndLocalHtml() {
-        if (isFinishing() || isDestroyed()) {
+        if (videoReady || isFinishing() || isDestroyed() || videoPlayer == null) {
             return;
         }
         videoReady = true;
-        videoView.setVisibility(View.VISIBLE);
+        // The first image frame is already decoded. Reveal just this artwork;
+        // the old static ImageView remains hidden for the entire normal launch.
+        videoView.setAlpha(1f);
         staticArtwork.setVisibility(View.INVISIBLE);
         staticArtwork.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        initializeHtmlOverlay();
+    }
 
-        // HTML is only a transparent decorative overlay; the actual HD
-        // video is decoded natively with Media3, not played by WebView.
+    private void initializeHtmlOverlay() {
+        if (htmlInitialized || htmlOverlay == null) {
+            return;
+        }
+        htmlInitialized = true;
+        // Keep WebView hidden until its transparent CSS has finished loading.
+        // This prevents the white/blank second-screen flash on slower phones.
+        htmlOverlay.setVisibility(View.GONE);
         htmlOverlay.setBackgroundColor(Color.TRANSPARENT);
+        htmlOverlay.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        htmlOverlay.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         htmlOverlay.getSettings().setJavaScriptEnabled(false);
         htmlOverlay.getSettings().setDomStorageEnabled(false);
         htmlOverlay.getSettings().setAllowContentAccess(false);
         htmlOverlay.getSettings().setAllowFileAccess(true);
         htmlOverlay.getSettings().setBlockNetworkLoads(true);
+        htmlOverlay.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if (videoReady && !isFinishing() && !isDestroyed()) {
+                    view.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         htmlOverlay.loadUrl("file:///android_asset/asterion/splash_overlay.html");
-        htmlOverlay.setVisibility(View.VISIBLE);
     }
 
-    private void restoreStaticArtwork() {
-        videoReady = false;
-        if (htmlOverlay != null) {
-            htmlOverlay.setVisibility(View.GONE);
-        }
+    private void releaseVideoPlayer() {
         if (videoView != null) {
+            videoView.setAlpha(0f);
             videoView.setVisibility(View.GONE);
             videoView.setPlayer(null);
         }
-        if (staticArtwork != null) {
-            staticArtwork.setVisibility(View.VISIBLE);
-            staticArtwork.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
-        }
         if (videoPlayer != null) {
-            videoPlayer.release();
+            ExoPlayer player = videoPlayer;
             videoPlayer = null;
+            player.release();
         }
     }
 
-    private void initializeGifFallback() {
-        // Backwards compatibility with the previous experimental GIF.
+    private boolean initializeGifFallback() {
+        // A legacy GIF is allowed as one *alternative* when no MP4 can play.
+        // On the Media3 build, the .mp4 resource will not decode as a GIF.
         int id = optionalRawResource();
         if (id == 0) {
-            return;
+            return false;
         }
         try (InputStream input = getResources().openRawResource(id)) {
             Movie gif = Movie.decodeStream(input);
             if (gif == null || gif.width() <= 0 || gif.height() <= 0) {
-                return;
+                return false;
             }
             gifFallback = new AnimatedSplashView(this, gif);
+            gifFallback.setContentDescription("Asterion System. Animación celestial.");
             FrameLayout root = findViewById(R.id.splash_container);
             root.addView(gifFallback, new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT));
             staticArtwork.setVisibility(View.INVISIBLE);
+            gifFallback.start();
+            return true;
         } catch (IOException | RuntimeException error) {
-            // On damaged/missing media show the original PNG without crashing.
+            return false;
         }
+    }
+
+    private void showOriginalFallback() {
+        // Only called if the celestial media is missing or cannot be decoded.
+        boolean morning = SplashTimeWindow.isMorning(
+                Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        staticArtwork.setImageResource(morning
+                ? R.drawable.asterion_loading_manana
+                : R.drawable.asterion_loading_tarde_noche);
+        staticArtwork.setContentDescription(getString(morning
+                ? R.string.splash_day_description
+                : R.string.splash_night_description));
+        staticArtwork.setVisibility(View.VISIBLE);
+        staticArtwork.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
     }
 
     @Override
@@ -227,15 +279,11 @@ public final class SplashActivity extends ComponentActivity {
         if (gifFallback != null) {
             gifFallback.stop();
         }
-        if (videoView != null) {
-            videoView.setPlayer(null);
-        }
-        if (videoPlayer != null) {
-            videoPlayer.release();
-            videoPlayer = null;
-        }
+        releaseVideoPlayer();
         if (htmlOverlay != null) {
-            ((FrameLayout) htmlOverlay.getParent()).removeView(htmlOverlay);
+            if (htmlOverlay.getParent() instanceof FrameLayout) {
+                ((FrameLayout) htmlOverlay.getParent()).removeView(htmlOverlay);
+            }
             htmlOverlay.destroy();
             htmlOverlay = null;
         }
