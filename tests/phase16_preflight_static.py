@@ -233,7 +233,11 @@ class PreflightNoBuild(unittest.TestCase):
             self.assertIn(pattern, ignores)
         for ext in (".apk", ".aab", ".jks", ".keystore"):
             self.assertFalse(list(ROOT.rglob("*" + ext)), f"Archivo no permitido: {ext}")
-        self.assertFalse(list(APP.rglob("*.html")))
+        self.assertEqual(
+            {APP / "assets/asterion/splash_overlay.html"},
+            set(APP.rglob("*.html")),
+            "La unica pagina HTML admitida es la capa local de la pantalla de carga"
+        )
         self.assertFalse(list(APP.rglob("*.js")))
 
 if __name__ == "__main__":
