@@ -87,7 +87,11 @@ class NativeVisualTest(unittest.TestCase):
         self.assertEqual("#76C7FF",colors["asterion_accent"])
 
     def test_offline_constraints_preserved(self):
-        self.assertFalse(list(APP.rglob("*.html")))
+        self.assertEqual(
+            {APP / "assets/asterion/splash_overlay.html"},
+            set(APP.rglob("*.html")),
+            "La unica pagina HTML admitida es la capa local de la pantalla de carga"
+        )
         self.assertFalse(list(APP.rglob("*.js")))
         helper=(APP/"java/pe/asterionsystem/app/data/AsterionDatabaseHelper.java").read_text()
         self.assertIn("DATABASE_VERSION = 5",helper)
