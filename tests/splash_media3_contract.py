@@ -33,7 +33,9 @@ def main():
         "R.drawable.asterion_loading_tarde_noche",
         "handler.postDelayed(openApp, DISPLAY_MILLIS)",
         "private static final long DISPLAY_MILLIS = 1600L",
-        "videoPlayer.release()",
+        "releaseVideoPlayer()",
+        "player.release()",
+        "onRenderedFirstFrame()",
         "videoPlayer.pause()",
     ):
         assert required in source, required
