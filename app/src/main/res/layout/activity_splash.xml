@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/splash_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/asterion_background">
-    <!-- fitCenter preserves every detail and the full lettering on any device. -->
+
+    <!-- Non-destructive fallback. The original morning/night resources remain available. -->
     <ImageView
         android:id="@+id/splash_artwork"
         android:layout_width="match_parent"
@@ -13,4 +15,24 @@
         android:scaleType="fitCenter"
         android:contentDescription="@string/splash_day_description"
         android:importantForAccessibility="yes" />
+
+    <!-- Native decoding. TextureView keeps the transparent HTML overlay above the film. -->
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/splash_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/asterion_background"
+        app:surface_type="texture_view"
+        app:resize_mode="fit"
+        app:use_controller="false" />
+
+    <!-- Local HTML/CSS-only decorative layer, with no JavaScript or internet. -->
+    <WebView
+        android:id="@+id/splash_web_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:importantForAccessibility="no"
+        android:background="@android:color/transparent" />
 </FrameLayout>
