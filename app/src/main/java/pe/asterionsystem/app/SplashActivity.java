@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
@@ -43,6 +44,7 @@ import java.util.Calendar;
 public final class SplashActivity extends ComponentActivity {
     private static final long DISPLAY_MILLIS = 1600L;
     private static final String CELESTIAL_RESOURCE = "asterion_splash_celestial";
+    private static final String TAG = "AsterionSplash";
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable openApp = this::openMainActivity;
@@ -138,6 +140,7 @@ public final class SplashActivity extends ComponentActivity {
             return;
         }
         videoReady = true;
+        Log.i(TAG, "VIDEO_FIRST_FRAME");
         // The first image frame is already decoded. Reveal just this artwork;
         // the old static ImageView remains hidden for the entire normal launch.
         videoView.setAlpha(1f);
@@ -224,6 +227,7 @@ public final class SplashActivity extends ComponentActivity {
                 : R.string.splash_night_description));
         staticArtwork.setVisibility(View.VISIBLE);
         staticArtwork.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+        Log.w(TAG, "FALLBACK_PNG");
     }
 
     @Override
