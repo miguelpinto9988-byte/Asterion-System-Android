@@ -1,14 +1,19 @@
-# GIF celestial opcional en la APK de prueba
+# Asterion System — animación celestial Full HD
 
-Este cambio prepara una **prueba separada**, solicitada por el propietario, sin alterar el icono ni las dos imágenes inmutables de mañana/tarde-noche.
+La restricción histórica de los recursos de marca se revocó el 8 de noviembre de 2026.
 
-- El archivo opcional debe añadirse en `app/src/main/res/raw/asterion_splash_celestial.gif`.
-- Únicamente la variante `:app:assemblePreview` utiliza el GIF. El paquete instalado es `pe.asterionsystem.app.preview`, independiente de la APK principal.
-- La vista `AnimatedSplashView` reproduce fotogramas con `android.graphics.Movie`, sin internet, conserva la proporción completa y pausa el repintado cuando la actividad se detiene.
-- Si el archivo aún no está presente o no puede leerse, ambas imágenes oficiales originales siguen disponibles como respaldo.
-- Se conserva la duración del arranque de 1,6 segundos y la navegación a perfil o pantalla principal.
-- La prueba no necesita dependencias externas y no modifica `tests/branding_splash_lock.py` ni la política `PANTALLAS_CARGA_INMUTABLES.md`.
+## Recursos preparados
+- GIF: 1080 × 1920, ocho fotogramas de 200 ms, 1,6 segundos por ciclo, aprox. 11,9 MB.
+- WebP animado: 1080 × 1920, aprox. 1,1 MB, mejora la relación entre detalle y tamaño.
+- PNG de referencia Full HD.
+- Imagen original proporcionada por el propietario: 864 × 1536.
 
-**Importante: falta adjuntar el recurso GIF binario a esta rama.** El parche completo con la animación se entrega aparte como `asterion_splash_preview_android_patch.zip`. Hasta que el GIF esté en `res/raw`, esta rama no mostrará una animación nueva. No fusionar esta propuesta hasta haber adjuntado el GIF, compilado la variante preview y comprobado el resultado.
+La animación **todavía no se ha subido al repositorio** como recurso binario. Para incluirla se debe copiar el archivo HD a app/src/main/res/raw/asterion_splash_celestial.gif. El ZIP entregado en ChatGPT contiene ese archivo y los cambios.
 
-Recurso preparado: GIF de 380 × 679 píxeles, 6 fotogramas, 180 ms cada uno, SHA-256 `2bde99997765d37b4c99f3e1f02ba2302f41251e1cefa32cf487647ae24a699f`.
+La vista nativa AnimatedSplashView es un reproductor local sin internet que respeta el encuadre y detiene la reproducción al pausar. SplashActivity puede mostrar la animación en la APK normal o de prueba cuando se empaquete el archivo, y conserva los PNG existentes como respaldo ante ausencia o error del GIF.
+
+## Antes de completar la integración
+- Subir el GIF binario a la rama de revisión.
+- Ejecutar compilación, lint, test unitarios y un ensayo en un teléfono o emulador.
+- Valorar WebP animado por la diferencia de peso antes de fusionar; Android API 26-27 necesita una ruta de compatibilidad distinta a AnimatedImageDrawable de API 28+.
+- No sustituir el icono mientras no se haya aprobado la ilustración nueva.
