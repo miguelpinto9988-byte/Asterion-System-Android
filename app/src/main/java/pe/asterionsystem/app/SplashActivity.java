@@ -1,6 +1,12 @@
 package pe.asterionsystem.app;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Movie;
+import android.view.View;
+import android.widget.FrameLayout;
+import java.io.IOException;
+import java.io.InputStream;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,9 +27,12 @@ import java.util.Calendar;
  */
 public final class SplashActivity extends ComponentActivity {
     private static final long DISPLAY_MILLIS = 1600L;
+    // The optional animation is packaged only when an asset is added to res/raw/.
+    private static final String PREVIEW_GIF_RESOURCE = "asterion_splash_celestial";
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable openApp = this::openMainActivity;
+    private AnimatedSplashView animatedArtwork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,41 @@ public final class SplashActivity extends ComponentActivity {
         artwork.setContentDescription(getString(morning
                 ? R.string.splash_day_description
                 : R.string.splash_night_description));
+
+        // Only the side-by-side APK can opt into the GIF. Existing builds keep
+        // the official morning/night art, unchanged and protected by CI.
+        if (getPackageName().endsWith(".preview")) {
+            addOptionalPreviewGif(artwork);
+        }
+    }
+
+    private void addOptionalPreviewGif(ImageView staticArtwork) {
+        // Dynamic lookup lets CI compile this branch before the preview-only
+        // GIF is uploaded under app/src/main/res/raw/.
+        int gifId = getResources().getIdentifier(
+                PREVIEW_GIF_RESOURCE, "raw", getPackageName());
+        if (gifId == 0) {
+            return;
+        }
+        try (InputStream input = getResources().openRawResource(gifId)) {
+            Movie movie = Movie.decodeStream(input);
+            if (movie == null || movie.width() <= 0 || movie.height() <= 0) {
+                return;
+            }
+            AnimatedSplashView view = new AnimatedSplashView(this, movie);
+            view.setContentDescription(
+                    "Asterion System. Animación celestial de carga del sistema.");
+            FrameLayout root = findViewById(R.id.splash_container);
+            root.addView(view, new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT));
+            staticArtwork.setVisibility(View.INVISIBLE);
+            staticArtwork.setImportantForAccessibility(
+                    View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+            animatedArtwork = view;
+        } catch (IOException | RuntimeException ignored) {
+            // Never block startup: the original approved PNG is the fallback.
+        }
     }
 
     @Override
@@ -61,6 +105,9 @@ public final class SplashActivity extends ComponentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (animatedArtwork != null) {
+            animatedArtwork.start();
+        }
         handler.removeCallbacks(openApp);
         handler.postDelayed(openApp, DISPLAY_MILLIS);
     }
@@ -68,6 +115,9 @@ public final class SplashActivity extends ComponentActivity {
     @Override
     protected void onPause() {
         handler.removeCallbacks(openApp);
+        if (animatedArtwork != null) {
+            animatedArtwork.stop();
+        }
         super.onPause();
     }
 
@@ -84,6 +134,9 @@ public final class SplashActivity extends ComponentActivity {
     @Override
     protected void onDestroy() {
         handler.removeCallbacks(openApp);
+        if (animatedArtwork != null) {
+            animatedArtwork.stop();
+        }
         super.onDestroy();
     }
 }
