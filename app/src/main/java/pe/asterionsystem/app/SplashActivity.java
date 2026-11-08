@@ -1,7 +1,6 @@
 package pe.asterionsystem.app;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Movie;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -21,14 +20,12 @@ import androidx.activity.ComponentActivity;
 import java.util.Calendar;
 
 /**
- * Dedicated, offline splash screen. Its artwork is immutable and selected by
- * the phone's local hour, independently of language, accounts or network.
- * The embedded progress bar is part of the fixed approved illustration.
+ * Offline splash screen with an optional animated GIF and local PNG fallback.
  */
 public final class SplashActivity extends ComponentActivity {
     private static final long DISPLAY_MILLIS = 1600L;
-    // The optional animation is packaged only when an asset is added to res/raw/.
-    private static final String PREVIEW_GIF_RESOURCE = "asterion_splash_celestial";
+    // Animated resource is optional until the new design has been packaged.
+    private static final String SPLASH_GIF_RESOURCE = "asterion_splash_celestial";
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Runnable openApp = this::openMainActivity;
@@ -52,18 +49,14 @@ public final class SplashActivity extends ComponentActivity {
                 ? R.string.splash_day_description
                 : R.string.splash_night_description));
 
-        // Only the side-by-side APK can opt into the GIF. Existing builds keep
-        // the official morning/night art, unchanged and protected by CI.
-        if (getPackageName().endsWith(".preview")) {
-            addOptionalPreviewGif(artwork);
-        }
+        // Apply the new GIF in both app variants when it is packaged.
+        addOptionalPreviewGif(artwork);
     }
 
     private void addOptionalPreviewGif(ImageView staticArtwork) {
-        // Dynamic lookup lets CI compile this branch before the preview-only
-        // GIF is uploaded under app/src/main/res/raw/.
+        // Dynamic lookup keeps the existing PNG screens as offline fallback.
         int gifId = getResources().getIdentifier(
-                PREVIEW_GIF_RESOURCE, "raw", getPackageName());
+                SPLASH_GIF_RESOURCE, "raw", getPackageName());
         if (gifId == 0) {
             return;
         }
@@ -84,7 +77,7 @@ public final class SplashActivity extends ComponentActivity {
                     View.IMPORTANT_FOR_ACCESSIBILITY_NO);
             animatedArtwork = view;
         } catch (IOException | RuntimeException ignored) {
-            // Never block startup: the original approved PNG is the fallback.
+            // Never block startup: existing PNG artwork remains the fallback.
         }
     }
 
