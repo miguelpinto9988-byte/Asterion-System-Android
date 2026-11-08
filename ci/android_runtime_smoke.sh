@@ -39,4 +39,15 @@ if ! grep -q "$PACKAGE" "$OUT/activities.txt"; then
   echo "ERROR: app is not foreground after splash. See activities.txt."
   exit 1
 fi
+# Verify that only the celestial MP4 appears during normal startup.
+# If the PNG was used, the old and new splash art may appear in sequence.
+if ! grep -q 'AsterionSplash.*VIDEO_FIRST_FRAME' "$OUT/logcat.txt"; then
+  echo "ERROR: el primer fotograma de Media3 nunca se renderizo."
+  exit 1
+fi
+if grep -q 'AsterionSplash.*FALLBACK_PNG' "$OUT/logcat.txt"; then
+  echo "ERROR: se ha mostrado la ilustracion PNG alternativa durante el inicio."
+  exit 1
+fi
+echo "PASS: un solo splash visual MP4; sin PNG alternativo."
 echo "PASS: splash, navigation and profile gate remain running."
