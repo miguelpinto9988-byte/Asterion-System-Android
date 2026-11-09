@@ -18,6 +18,7 @@
     </style>
     <style name="Theme.AsterionSplash" parent="Theme.AsterionSystem">
         <item name="android:windowFullscreen">true</item>
+        <!-- Navigation bars are hidden by SplashActivity while its video plays. -->
         <item name="android:windowBackground">@color/asterion_background</item>
     </style>
     <style name="Asterion.BoldTextView" parent="android:style/Widget.TextView">
