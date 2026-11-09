@@ -72,6 +72,7 @@ jobs:
           python3 tests/splash_window_insets_regression.py
           python3 tests/splash_media3_contract.py
           python3 tests/splash_single_screen_contract.py
+          python3 tests/splash_fullbleed_contract.py
           python3 tests/no_svg_artifact_contract.py
           python3 tests/phase16_preflight_static.py
           python3 tests/phase03_visual_source_contract.py
