@@ -61,6 +61,7 @@ public final class SplashActivity extends ComponentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        configureFullBleedWindow();
         // Android 16: do not request decor WindowInsetsController until focus.
         setContentView(R.layout.activity_splash);
 
@@ -230,6 +231,26 @@ public final class SplashActivity extends ComponentActivity {
         Log.w(TAG, "FALLBACK_PNG");
     }
 
+    /**
+     * Fit the splash across the complete display, including navigation areas.
+     * Media3's zoom mode handles aspect-ratio differences without black bands.
+     * Never request WindowInsetsController before the decor window has focus.
+     */
+    @SuppressWarnings("deprecation")
+    private void configureFullBleedWindow() {
+        if (Build.VERSION.SDK_INT >= 30) {
+            getWindow().setDecorFitsSystemWindows(false);
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -237,8 +258,13 @@ public final class SplashActivity extends ComponentActivity {
             WindowInsetsController controller =
                     getWindow().getDecorView().getWindowInsetsController();
             if (controller != null) {
-                controller.hide(WindowInsets.Type.navigationBars());
+                controller.setSystemBarsBehavior(
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                controller.hide(WindowInsets.Type.systemBars());
             }
+        } else if (hasFocus) {
+            // Android 8–10: keep both navigation and status bars hidden.
+            configureFullBleedWindow();
         }
     }
 
