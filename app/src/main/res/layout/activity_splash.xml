@@ -6,17 +6,17 @@
     android:layout_height="match_parent"
     android:background="@color/asterion_background">
 
-    <!-- Non-destructive fallback. The original morning/night resources remain available. -->
+    <!-- Emergency fallback: centerCrop fills the display rather than letterboxing. -->
     <ImageView
         android:id="@+id/splash_artwork"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/asterion_background"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         android:contentDescription="@string/splash_day_description"
         android:importantForAccessibility="yes" />
 
-    <!-- Native decoding. TextureView keeps the transparent HTML overlay above the film. -->
+    <!-- Full-bleed native MP4: zoom fills tall screens; sides may be cropped. TextureView permits HTML overlay. -->
     <androidx.media3.ui.PlayerView
         android:id="@+id/splash_video"
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
         android:visibility="gone"
         android:background="@color/asterion_background"
         app:surface_type="texture_view"
-        app:resize_mode="fit"
+        app:resize_mode="zoom"
         app:use_controller="false" />
 
     <!-- Local HTML/CSS-only decorative layer, with no JavaScript or internet. -->
