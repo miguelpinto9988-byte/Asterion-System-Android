@@ -1,218 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Minimal, fully native four-step registration. The two palette choices are
+     black and white; no coordinates painted over screenshot backgrounds. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/profile_wizard_root"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#080F23">
-    <!-- El paisaje es un recurso independiente: nunca contiene textos ni botones. -->
-    <ImageView android:id="@+id/profile_scenery" android:layout_width="match_parent" android:layout_height="match_parent"
-        android:scaleType="centerCrop" android:src="@drawable/asterion_reg_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <!-- Existing resource identifiers remain available for backward compatibility,
+         but illustrations do not cover the native registration form. -->
+    <ImageView
+        android:id="@+id/profile_scenery"
+        android:layout_width="1dp" android:layout_height="1dp"
+        android:visibility="gone"
+        android:src="@drawable/asterion_reg_background"
         android:contentDescription="@null" />
-    <View android:layout_width="match_parent" android:layout_height="match_parent"
-        android:background="#96040A1C" />
-    <!-- El cazador es una capa PNG/WebP con transparencia, separada del marco. -->
-    <ImageView android:id="@+id/profile_hunter_art"
-        android:layout_width="125dp" android:layout_height="match_parent"
-        android:layout_gravity="start|center_vertical"
-        android:adjustViewBounds="true" android:scaleType="fitCenter"
-        android:src="@drawable/asterion_guardian" android:contentDescription="@null" />
-    <ScrollView android:id="@+id/profile_wizard_scroll"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:fillViewport="true" android:clipToPadding="false">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="vertical" android:gravity="center_horizontal"
-            android:paddingStart="15dp" android:paddingEnd="15dp"
-            android:paddingTop="28dp" android:paddingBottom="30dp">
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="@string/app_name" android:textAllCaps="true"
-                android:fontFamily="serif" android:gravity="center"
-                android:letterSpacing="0.16" android:textSize="30sp"
-                android:textColor="#F8FAFF" android:textStyle="bold"/>
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="REGISTRO DEL CAZADOR" android:gravity="center"
-                android:layout_marginTop="8dp" android:letterSpacing="0.11"
-                android:textSize="16sp" android:textColor="#C7DCFA" android:textStyle="bold"/>
+    <ImageView
+        android:id="@+id/profile_hunter_art"
+        android:layout_width="1dp" android:layout_height="1dp"
+        android:visibility="gone"
+        android:src="@drawable/asterion_guardian"
+        android:contentDescription="@null" />
+
+    <ScrollView
+        android:id="@+id/profile_wizard_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp" android:paddingEnd="20dp"
+            android:paddingTop="28dp" android:paddingBottom="38dp">
+
+            <TextView android:id="@+id/profile_brand"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="ASTERION SYSTEM" android:textStyle="bold"
+                android:letterSpacing="0.08" android:textSize="21sp"
+                android:textColor="#111111" />
+
+            <TextView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" android:text="CREACIÓN DE PERFIL"
+                android:textColor="#555555" android:textSize="12sp" android:textStyle="bold" />
+
             <TextView android:id="@+id/profile_step_indicator"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="❖  ①  —  ②  —  ③  —  ④  ❖" android:gravity="center"
-                android:layout_marginTop="13dp" android:letterSpacing="0.04"
-                android:textSize="15sp" android:textColor="#C7B4FF" android:textStyle="bold"/>
+                android:layout_marginTop="20dp"
+                android:text="1 / 4" android:textSize="12sp"
+                android:textColor="#555555" android:textStyle="bold" />
+
             <TextView android:id="@+id/profile_step_heading"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="PASO 1 DE 4 · IDENTIDAD DEL CAZADOR"
-                android:gravity="center" android:layout_marginTop="18dp"
-                android:padding="7dp" android:letterSpacing="0.02"
-                android:textSize="19sp" android:textColor="#FFFFFF" android:textStyle="bold"/>
+                android:layout_marginTop="8dp"
+                android:text="Identidad del cazador"
+                android:textStyle="bold" android:textSize="22sp"
+                android:textColor="#111111"/>
+
             <LinearLayout android:id="@+id/profile_create_panel"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="14dp" android:padding="18dp"
-                android:orientation="vertical" android:gravity="center_horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:padding="16dp"
+                android:orientation="vertical">
 
                 <LinearLayout android:id="@+id/profile_first_step"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <TextView android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="DEFINE TU IDENTIDAD DENTRO DEL SISTEMA"
-                        android:gravity="center" android:textStyle="bold"
-                        android:textSize="11sp" android:textColor="#D9E8FF"
-                        android:layout_marginBottom="15dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Fotografía o avatar (opcional)"
+                        android:textStyle="bold" android:textSize="14sp"
+                        android:textColor="#111111"/>
                     <LinearLayout android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:gravity="center_vertical"
+                        android:layout_marginTop="8dp">
                         <ImageView android:id="@+id/profile_avatar_preview"
-                            android:layout_width="94dp" android:layout_height="94dp"
+                            android:layout_width="64dp" android:layout_height="64dp"
                             android:src="@drawable/asterion_reg_profile"
                             android:scaleType="centerCrop"
-                            android:contentDescription="Fotografía o avatar actual del cazador"/>
-                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:layout_weight="1" android:orientation="vertical"
-                            android:layout_marginStart="9dp">
-                            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                                android:text="FOTOGRAFÍA O AVATAR"
-                                android:textSize="14sp" android:textColor="#FFFFFF"
-                                android:textStyle="bold"/>
-                            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="Opcional · elige una foto o conserva el avatar."
-                                android:textSize="11sp" android:textColor="#CAD8F3"
-                                android:textStyle="bold"/>
-                            <LinearLayout android:id="@+id/profile_choose_image"
+                            android:contentDescription="Vista previa de fotografía o avatar"/>
+                        <Button android:id="@+id/profile_choose_image"
+                            android:layout_width="0dp" android:layout_weight="1"
+                            android:layout_height="48dp"
+                            android:minHeight="48dp"
+                            android:layout_marginStart="12dp"
+                            android:text="Seleccionar foto" android:textAllCaps="false"
+                            android:textSize="13sp" android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Nombre del cazador *" android:textStyle="bold"
+                        android:textColor="#111111" android:textSize="14sp"/>
+                    <EditText android:id="@+id/profile_name_input"
+                        android:layout_width="match_parent" android:layout_height="52dp"
+                        android:layout_marginTop="6dp" android:hint="Escribe tu nombre"
+                        android:maxLength="40" android:singleLine="true"
+                        android:inputType="textPersonName|textCapSentences" android:textSize="15sp" android:textStyle="bold" />
+
+                    <TextView android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Edad *" android:textStyle="bold"
+                        android:textColor="#111111" android:textSize="14sp"/>
+                    <EditText android:id="@+id/profile_age_input"
+                        android:layout_width="match_parent" android:layout_height="52dp"
+                        android:layout_marginTop="6dp" android:hint="Edad en años"
+                        android:maxLength="3" android:singleLine="true"
+                        android:inputType="number" android:textSize="15sp" android:textStyle="bold" />
+
+                    <LinearLayout android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp" android:orientation="horizontal">
+                        <LinearLayout android:layout_width="0dp" android:layout_weight="1"
+                            android:layout_height="wrap_content" android:orientation="vertical">
+                            <TextView android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Estatura (cm)" android:textStyle="bold"
+                                android:textColor="#111111" android:textSize="13sp"/>
+                            <EditText android:id="@+id/profile_height_input"
                                 android:layout_width="match_parent" android:layout_height="52dp"
-                                android:layout_marginTop="8dp" android:padding="5dp"
-                                android:gravity="center" android:orientation="horizontal"
-                                android:clickable="true" android:focusable="true"
-                                android:contentDescription="Elegir fotografía de perfil">
-                                <ImageView android:layout_width="27dp" android:layout_height="27dp"
-                                    android:src="@drawable/asterion_reg_photo" android:contentDescription="@null"/>
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                    android:layout_marginStart="6dp" android:text="SELECCIONAR"
-                                    android:textColor="#FFFFFF" android:textSize="12sp"
-                                    android:textStyle="bold"/>
-                            </LinearLayout>
+                                android:layout_marginTop="6dp" android:hint="Opcional"
+                                android:inputType="numberDecimal" android:singleLine="true"
+                                android:textSize="15sp" android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="0dp" android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp" android:orientation="vertical">
+                            <TextView android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Peso (kg)" android:textStyle="bold"
+                                android:textColor="#111111" android:textSize="13sp"/>
+                            <EditText android:id="@+id/profile_weight_input"
+                                android:layout_width="match_parent" android:layout_height="52dp"
+                                android:layout_marginTop="6dp" android:hint="Opcional"
+                                android:inputType="numberDecimal" android:singleLine="true"
+                                android:textSize="15sp" android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:gravity="center_vertical" android:layout_marginTop="18dp"
-                        android:orientation="horizontal">
-                        <ImageView android:layout_width="30dp" android:layout_height="30dp"
-                            android:src="@drawable/asterion_reg_name" android:contentDescription="@null"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp" android:text="NOMBRE DEL CAZADOR *"
-                            android:textColor="#FFFFFF" android:textStyle="bold"
-                            android:textSize="13sp"/>
-                    </LinearLayout>
-                    <EditText android:id="@+id/profile_name_input"
-                        android:layout_width="match_parent" android:layout_height="50dp"
-                        android:layout_marginTop="5dp" android:hint="Ingresa tu nombre"
-                        android:maxLength="40" android:singleLine="true"
-                        android:inputType="textPersonName|textCapSentences"
-                        android:textStyle="bold" android:textSize="15sp"
-                        android:textColor="#FFFFFF" android:textColorHint="#ACC0E2"
-                        android:paddingStart="12dp" android:background="@drawable/asterion_reg_field"/>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:orientation="horizontal" android:gravity="center_vertical"
-                        android:layout_marginTop="16dp">
-                        <ImageView android:layout_width="30dp" android:layout_height="30dp"
-                            android:src="@drawable/asterion_reg_age" android:contentDescription="@null"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp" android:text="EDAD *"
-                            android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="13sp"/>
-                    </LinearLayout>
-                    <EditText android:id="@+id/profile_age_input"
-                        android:layout_width="match_parent" android:layout_height="50dp"
-                        android:layout_marginTop="5dp" android:hint="Edad en años"
-                        android:maxLength="3" android:inputType="number"
-                        android:textStyle="bold" android:textSize="15sp"
-                        android:textColor="#FFFFFF" android:textColorHint="#ACC0E2"
-                        android:paddingStart="12dp" android:background="@drawable/asterion_reg_field"/>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:orientation="horizontal" android:gravity="center_vertical"
-                        android:layout_marginTop="16dp">
-                        <ImageView android:layout_width="30dp" android:layout_height="30dp"
-                            android:src="@drawable/asterion_reg_height" android:contentDescription="@null"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp" android:text="ESTATURA (OPCIONAL) · CM"
-                            android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="13sp"/>
-                    </LinearLayout>
-                    <EditText android:id="@+id/profile_height_input"
-                        android:layout_width="match_parent" android:layout_height="50dp"
-                        android:layout_marginTop="5dp" android:hint="Centímetros"
-                        android:maxLength="6" android:inputType="numberDecimal"
-                        android:textStyle="bold" android:textSize="15sp"
-                        android:textColor="#FFFFFF" android:textColorHint="#ACC0E2"
-                        android:paddingStart="12dp" android:background="@drawable/asterion_reg_field"/>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:orientation="horizontal" android:gravity="center_vertical"
-                        android:layout_marginTop="16dp">
-                        <ImageView android:layout_width="30dp" android:layout_height="30dp"
-                            android:src="@drawable/asterion_reg_weight" android:contentDescription="@null"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp" android:text="PESO (OPCIONAL) · KG"
-                            android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="13sp"/>
-                    </LinearLayout>
-                    <EditText android:id="@+id/profile_weight_input"
-                        android:layout_width="match_parent" android:layout_height="50dp"
-                        android:layout_marginTop="5dp" android:hint="Kilogramos"
-                        android:maxLength="6" android:inputType="numberDecimal"
-                        android:textStyle="bold" android:textSize="15sp"
-                        android:textColor="#FFFFFF" android:textColorHint="#ACC0E2"
-                        android:paddingStart="12dp" android:background="@drawable/asterion_reg_field"/>
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:orientation="horizontal" android:gravity="center_vertical"
-                        android:layout_marginTop="16dp">
-                        <ImageView android:layout_width="30dp" android:layout_height="30dp"
-                            android:src="@drawable/asterion_reg_gender" android:contentDescription="@null"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp" android:text="GÉNERO (OPCIONAL)"
-                            android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="13sp"/>
-                    </LinearLayout>
+
+                    <TextView android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="17dp"
+                        android:text="Género (opcional)" android:textStyle="bold"
+                        android:textColor="#111111" android:textSize="14sp"/>
                     <RadioGroup android:id="@+id/profile_gender_group"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:orientation="vertical" android:layout_marginTop="5dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp" android:orientation="vertical">
                         <RadioButton android:id="@+id/profile_gender_male"
-                            android:layout_width="match_parent" android:layout_height="48dp"
-                            android:checked="false" android:textStyle="bold"
-                            android:textColor="#F0F3FF" android:text="Masculino"/>
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="Masculino" android:textStyle="bold" />
                         <RadioButton android:id="@+id/profile_gender_female"
-                            android:layout_width="match_parent" android:layout_height="48dp"
-                            android:textStyle="bold" android:textColor="#F0F3FF"
-                            android:text="Femenino"/>
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="Femenino" android:textStyle="bold" />
                         <RadioButton android:id="@+id/profile_gender_unspecified"
-                            android:layout_width="match_parent" android:layout_height="48dp"
-                            android:checked="true" android:textStyle="bold"
-                            android:textColor="#F0F3FF"
-                            android:text="Prefiero no decirlo"/>
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="No especificado"
+                            android:checked="true" android:textStyle="bold" />
                     </RadioGroup>
                     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp" android:gravity="center"
-                        android:text="* Los campos marcados son obligatorios."
-                        android:textColor="#CDD9FA" android:textStyle="bold" android:textSize="11sp"/>
+                        android:layout_marginTop="6dp"
+                        android:text="* Campos obligatorios" android:textSize="12sp"
+                        android:textColor="#555555" android:textStyle="bold" />
                 </LinearLayout>
+
                 <LinearLayout android:id="@+id/profile_dynamic_step"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="vertical" android:visibility="gone"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"/>
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="19dp" android:orientation="horizontal"
-                android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
                 <Button android:id="@+id/profile_back"
-                    android:layout_width="110dp" android:layout_height="54dp"
-                    android:visibility="gone" android:text="Anterior"
-                    android:textStyle="bold" android:textColor="#FFFFFF"/>
+                    android:layout_width="96dp" android:layout_height="52dp"
+                    android:text="Atrás" android:textAllCaps="false"
+                    android:visibility="gone" android:textStyle="bold" />
                 <LinearLayout android:id="@+id/profile_create_submit"
-                    android:layout_width="0dp" android:layout_height="60dp"
-                    android:layout_weight="1" android:layout_marginStart="8dp"
+                    android:layout_width="0dp" android:layout_weight="1"
+                    android:layout_height="52dp"
                     android:orientation="horizontal" android:gravity="center"
                     android:clickable="true" android:focusable="true"
-                    android:contentDescription="Siguiente paso de registro">
+                    android:contentDescription="Continuar registro">
                     <TextView android:id="@+id/profile_forward_text"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="SIGUIENTE" android:textColor="#FFFFFF"
-                        android:textStyle="bold" android:textSize="19sp"/>
-                    <ImageView android:id="@+id/profile_forward_icon"
-                        android:layout_width="34dp" android:layout_height="34dp"
-                        android:layout_marginStart="9dp"
-                        android:src="@drawable/asterion_reg_next" android:contentDescription="@null"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SIGUIENTE"
+                        android:textStyle="bold" android:textSize="15sp"
+                        android:textColor="#0A0A0A"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

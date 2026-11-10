@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PACKAGE="pe.asterionsystem.app.preview"
-APK="build/smoke/app-preview.apk"
+PACKAGE="pe.asterionsystem.app"
+APK="build/smoke/app-debug.apk"
 OUT="build/runtime-diagnostics"
 mkdir -p "$OUT"
 test -s "$APK"
@@ -10,7 +10,7 @@ test -s "$APK"
 adb install -r "$APK"
 adb logcat -c
 
-echo "Starting Asterion preview on a real Android emulator..."
+echo "Starting Asterion main package on a real Android emulator..."
 adb shell am start -W -n "$PACKAGE/pe.asterionsystem.app.SplashActivity" |
   tee "$OUT/launch.txt"
 sleep 8
@@ -27,7 +27,7 @@ grep -E 'ResumedActivity|topResumedActivity|mResumedActivity|mCurrentFocus' "$OU
 echo "Java crash traces:"
 cat "$OUT/crash.txt"
 
-if grep -q 'FATAL EXCEPTION\|Process: pe.asterionsystem.app.preview' "$OUT/crash.txt"; then
+if grep -q 'FATAL EXCEPTION\|Process: pe.asterionsystem.app' "$OUT/crash.txt"; then
   echo "ERROR: app crashes on startup. See crash.txt."
   exit 1
 fi
