@@ -133,8 +133,12 @@ public final class MissionPlanner {
                     Collections.emptyList(), true,
                     "El calendario contiene solo descansos; no se propone desafío.");
         }
+        // Profile objective influences the order of eligible categories,
+        // never the numerical workload or technical difficulty.
+        List<String> ranked = new ArrayList<>(scheduledCategories);
+        ranked.sort(Comparator.comparingInt(category -> priority(profile.goal, category)));
         List<ExerciseVariant> pool = new ArrayList<>();
-        for (String category : scheduledCategories) {
+        for (String category : ranked) {
             pool.addAll(candidates(profile, category));
         }
         List<ExerciseVariant> chosen = takeDiverse(pool, 5, starts.toEpochDay() / 5L);
@@ -142,6 +146,16 @@ public final class MissionPlanner {
                 chosen.size() == 5
                 ? "Cinco opciones para un período de cinco días; requieren autorización explícita. No hay cuotas obligatorias."
                 : "Hay menos de cinco opciones compatibles; no se puede activar la misión.");
+    }
+
+    private int priority(String goal, String category) {
+        if ("movilidad".equals(goal) && "movilidad".equals(category)) return 0;
+        if ("resistencia".equals(goal) && "cardio".equals(category)) return 0;
+        if ("fuerza".equals(goal) &&
+                ("tren_superior".equals(category) || "piernas".equals(category))) return 0;
+        if ("bienestar".equals(goal) &&
+                ("movilidad".equals(category) || "cardio".equals(category))) return 0;
+        return 1;
     }
 
     private List<ExerciseVariant> candidates(Profile profile, String category) {
