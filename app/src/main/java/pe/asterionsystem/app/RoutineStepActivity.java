@@ -253,7 +253,8 @@ public final class RoutineStepActivity extends ComponentActivity {
             nextButton.setText("Finalizar sesión");
             nextButton.setOnClickListener(v->{
                 RoutineSessionStore.clear(this,token);
-                finish();
+                if("daily".equals(kind))askEffortAfterDailyMission();
+                else finish();
             });
             return;
         }
@@ -306,6 +307,38 @@ public final class RoutineStepActivity extends ComponentActivity {
             }
         };
         restTimer.start();
+    }
+
+    /** Open the existing voluntary 1–10 category RPE after completion. */
+    private void askEffortAfterDailyMission() {
+        if(category<0||category>4) {finish();return;}
+        String[] choices=new String[10];
+        for(int i=0;i<10;i++)choices[i]=(i+1)+" / 10";
+        final int[] selected={0};
+        final AlertDialog[] open={null};
+        AlertDialog dialog=new AlertDialog.Builder(this)
+                .setTitle("Valoración de la misión diaria")
+                .setMessage("¿Qué esfuerzo percibiste en esta categoría? "
+                        +"Puedes omitir la valoración.")
+                .setSingleChoiceItems(choices,-1,(d,index)->{
+                    selected[0]=index+1;
+                    if(open[0]!=null) {
+                        open[0].getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                    }
+                })
+                .setNegativeButton("Ahora no",(d,which)->finish())
+                .setPositiveButton("Guardar valoración",(d,which)->{
+                    if(selected[0]>=1 && selected[0]<=10)
+                        MissionTrackingStore.rateCategory(
+                                this,LocalDate.now(),category,selected[0]);
+                    finish();
+                })
+                .setOnCancelListener(d->finish())
+                .create();
+        open[0]=dialog;
+        dialog.setOnShowListener(d->dialog.getButton(
+                AlertDialog.BUTTON_POSITIVE).setEnabled(false));
+        dialog.show();
     }
 
     private void questionnaire() {
