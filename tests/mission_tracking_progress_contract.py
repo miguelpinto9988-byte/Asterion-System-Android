@@ -38,6 +38,11 @@ for text in ("day >=21 ?21", "day>=14 ?14", "day>=7 ?7",
     assert text in domain,text
 assert "highEffortCanSuggestReducingAtDayTwentyOne" in tests
 assert "lowEffortDoesNotTriggerAutomaticIncrease" in tests
+assert "EffortAdaptationPolicy.dailySuggestionCount(" in activity
+assert "today.minusDays(1)" in activity
+policy=(root/"progress-engine/src/main/java/pe/asterionsystem/core/engine/progression/EffortAdaptationPolicy.java").read_text(encoding="utf-8")
+for condition in ("review.averageEffort >= 8.0", "review.averageEffort >= 7.0", "return original"):
+    assert condition in policy, condition
 assert not any(s in activity for s in ("setRepetitions(", "repetitionTarget=150",
                                       "setTargetReps(", "mustIncreaseIntensity"))
 print("OK: biblioteca real en Inicio, feedback 1-10, progreso 7/14/21 y Monarca voluntaria.")
