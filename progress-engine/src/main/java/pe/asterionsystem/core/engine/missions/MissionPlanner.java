@@ -1,6 +1,11 @@
 package pe.asterionsystem.core.engine.missions;
 
 import java.time.LocalDate;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Random;
+import pe.asterionsystem.core.engine.exercises.ExerciseIntensity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,9 +45,15 @@ public final class MissionPlanner {
         public final List<Integer> weekly;
         public final Set<String> equipment;
         public final int dailyLimit;
+        public final String intensityPreference;
 
         public Profile(String experience, String goal, List<Integer> weekly,
                        Set<String> equipment, int dailyLimit) {
+            this(experience,goal,weekly,equipment,dailyLimit,"moderada");
+        }
+
+        public Profile(String experience, String goal, List<Integer> weekly,
+                       Set<String> equipment, int dailyLimit, String intensityPreference) {
             this.experience = experience == null ? "principiante" : experience;
             this.goal = goal == null ? "bienestar" : goal;
             if (weekly == null || weekly.size() != 7) {
@@ -57,7 +68,47 @@ public final class MissionPlanner {
             this.equipment = Collections.unmodifiableSet(
                     new HashSet<>(Objects.requireNonNull(equipment, "equipment")));
             this.dailyLimit = Math.max(1, Math.min(7, dailyLimit));
+            this.intensityPreference = "baja".equals(intensityPreference)
+                    ? "baja" : "moderada";
         }
+
+        /**
+         * Stable identity of mission-affecting preferences only.
+         * Cosmetic theme, user name and body measurements cannot reshuffle.
+         */
+        public String missionSignature() {
+            ArrayList<String> gear=new ArrayList<>(equipment);
+            Collections.sort(gear);
+            String canonical=experience+"|"+goal+"|"+weekly.toString()
+                    +"|"+String.join(",",gear)+"|"+dailyLimit
+                    +"|"+intensityPreference;
+            return digestHex(canonical);
+        }
+    }
+
+    private static byte[] digest(String input) {
+        try {
+            return MessageDigest.getInstance("SHA-256").digest(
+                    input.getBytes(StandardCharsets.UTF_8));
+        } catch(NoSuchAlgorithmException impossible) {
+            throw new IllegalStateException("SHA-256 unavailable", impossible);
+        }
+    }
+
+    private static String digestHex(String input) {
+        byte[] bytes=digest(input);
+        StringBuilder hex=new StringBuilder(64);
+        for(byte value:bytes)hex.append(String.format(java.util.Locale.ROOT,
+                "%02x", value & 0xff));
+        return hex.toString();
+    }
+
+    /** Stable pseudo-random choice for a particular local day and profile. */
+    private static long daySeed(Profile profile,LocalDate date) {
+        byte[] bytes=digest("asterion.daily.v2|"+date+"|"+profile.missionSignature());
+        long seed=0L;
+        for(int i=0;i<8;i++)seed=(seed<<8)|(bytes[i]&0xffL);
+        return seed;
     }
 
     public static final class Proposal {
@@ -116,7 +167,7 @@ public final class MissionPlanner {
         }
         String selectedCategory = WEEK_CATEGORIES[dayCategory];
         List<ExerciseVariant> matching = candidates(profile, selectedCategory);
-        List<ExerciseVariant> chosen = takeDiverse(matching, profile.dailyLimit, today.toEpochDay());
+        List<ExerciseVariant> chosen = takeDiverse(matching, profile.dailyLimit, daySeed(profile,today));
         return new Proposal(DAILY, today, today.plusDays(1), chosen, false,
                 chosen.isEmpty()
                 ? "No hay alternativas compatibles con el equipo y la categoría de este día."
@@ -208,7 +259,7 @@ public final class MissionPlanner {
             ranked.sort(Comparator.comparingInt(ExerciseVariant::difficulty)
                     .thenComparing(ExerciseVariant::id));
         } else {
-            ranked=takeDiverse(ranked,ranked.size(),today.toEpochDay());
+            ranked=takeDiverse(ranked,ranked.size(),daySeed(profile,today));
         }
         for(ExerciseVariant option:ranked) {
             if(chosen.size()==limit)break;
@@ -225,6 +276,36 @@ public final class MissionPlanner {
         return new Proposal(DAILY,today,today.plusDays(1),chosen,false,
                 decision.explanation+" Selección realizada por el motor a partir "
                 +"del perfil y el catálogo sin modificar las repeticiones.");
+    }
+
+    /**
+     * Rebuild today's visible proposal solely from a small list of catalog IDs.
+     * The app stores no exercise descriptions, targets, training plans or
+     * duplicate catalog rows. Its ephemeral pinned IDs expire at midnight or
+     * when any mission-affecting profile preference changes.
+     */
+    public Proposal restoreDaily(Profile profile,LocalDate today,List<String> ids) {
+        Objects.requireNonNull(profile,"profile");
+        Objects.requireNonNull(today,"today");
+        Objects.requireNonNull(ids,"ids");
+        int day=profile.weekly.get(today.getDayOfWeek().getValue()-1);
+        if(day==5 || ids.isEmpty() || ids.size()>profile.dailyLimit) {
+            throw new IllegalArgumentException("Selección diaria no compatible");
+        }
+        String category=WEEK_CATEGORIES[day];
+        List<ExerciseVariant> eligible=candidates(profile,category);
+        ArrayList<ExerciseVariant> restored=new ArrayList<>();
+        Set<String> unique=new HashSet<>();
+        for(String id:ids) {
+            if(!unique.add(id))throw new IllegalArgumentException("ID diario repetido");
+            ExerciseVariant entry=catalog.variant(id).orElse(null);
+            if(entry==null || !eligible.contains(entry)) {
+                throw new IllegalArgumentException("Variante diaria incompatible");
+            }
+            restored.add(entry);
+        }
+        return new Proposal(DAILY,today,today.plusDays(1),restored,false,
+                "Selección diaria estable reconstruida desde la Biblioteca.");
     }
 
     /** Five possible activities for five days, not five compulsory daily workouts. */
@@ -272,6 +353,8 @@ public final class MissionPlanner {
             if (!category.equals(categoryForType.get(variant.typeId()))) continue;
             if (!catalog.eligibleForAutomaticSuggestion(variant)
                     || variant.difficulty() > maxTechnicalLevel) continue;
+            if ("baja".equals(profile.intensityPreference)
+                    && catalog.intensity(variant.id())!=ExerciseIntensity.LOW) continue;
             if (!profile.equipment.containsAll(variant.equipment())) continue;
             result.add(variant);
         }
@@ -281,12 +364,16 @@ public final class MissionPlanner {
 
     private List<ExerciseVariant> takeDiverse(List<ExerciseVariant> pool, int count, long seed) {
         if (pool.isEmpty() || count <= 0) return Collections.emptyList();
-        int start = (int)Math.floorMod(seed, pool.size());
+        // Unlike a rotating list offset, seeded Fisher-Yates explores the
+        // full eligible catalog while yielding the SAME order on every reopen.
+        ArrayList<ExerciseVariant> shuffled=new ArrayList<>(pool);
+        Collections.shuffle(shuffled,new Random(seed));
+        int start=0;
         ArrayList<ExerciseVariant> selected = new ArrayList<>();
         Set<String> familyUsed = new HashSet<>();
         // First pass: distribute across families, avoiding duplicate movements.
         for (int i=0; i<pool.size() && selected.size()<count; i++) {
-            ExerciseVariant variant = pool.get((start + i) % pool.size());
+            ExerciseVariant variant = shuffled.get(i);
             String familyId = familyForType.get(variant.typeId());
             if (familyUsed.add(familyId)) selected.add(variant);
         }
@@ -294,7 +381,7 @@ public final class MissionPlanner {
         Set<String> typeUsed = new HashSet<>();
         for (ExerciseVariant picked : selected) typeUsed.add(picked.typeId());
         for (int i=0; i<pool.size() && selected.size()<count; i++) {
-            ExerciseVariant variant = pool.get((start + i) % pool.size());
+            ExerciseVariant variant = shuffled.get(i);
             if (typeUsed.add(variant.typeId())) selected.add(variant);
         }
         return selected;
