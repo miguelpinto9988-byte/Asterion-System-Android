@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -21,9 +22,17 @@ public final class ExerciseCatalog {
     private final Map<String, ExerciseFamily> byFamily;
     private final Map<String, ExerciseType> byType;
     private final Map<String, ExerciseVariant> byVariant;
+    private final Map<String, ExerciseIntensity> intensityById;
 
     ExerciseCatalog(List<ExerciseFamily> allFamilies, List<ExerciseType> allTypes,
                     List<ExerciseVariant> allVariants) {
+        this(allFamilies,allTypes,allVariants,Collections.emptyMap());
+    }
+
+    ExerciseCatalog(List<ExerciseFamily> allFamilies, List<ExerciseType> allTypes,
+                    List<ExerciseVariant> allVariants,
+                    Map<String, ExerciseIntensity> intensityOverrides) {
+        Objects.requireNonNull(intensityOverrides,"intensityOverrides");
         if (allFamilies.isEmpty() || allTypes.isEmpty() || allVariants.isEmpty()) {
             throw new IllegalArgumentException("El catálogo no puede estar vacío");
         }
@@ -73,6 +82,14 @@ public final class ExerciseCatalog {
             }
             if (!found) throw new IllegalArgumentException("Familia sin tipos: " + family.id());
         }
+        HashMap<String, ExerciseIntensity> tags=new HashMap<>();
+        for(Map.Entry<String, ExerciseIntensity> item:intensityOverrides.entrySet()) {
+            if(!byVariant.containsKey(item.getKey())) {
+                throw new IllegalArgumentException("Intensidad de variante inexistente: "+item.getKey());
+            }
+            tags.put(item.getKey(),Objects.requireNonNull(item.getValue(),"intensity"));
+        }
+        this.intensityById=Collections.unmodifiableMap(tags);
         this.families = Collections.unmodifiableList(new ArrayList<>(allFamilies));
         this.types = Collections.unmodifiableList(new ArrayList<>(allTypes));
         this.variants = Collections.unmodifiableList(new ArrayList<>(allVariants));
@@ -81,6 +98,22 @@ public final class ExerciseCatalog {
     public List<ExerciseFamily> families() { return families; }
     public List<ExerciseType> types() { return types; }
     public List<ExerciseVariant> variants() { return variants; }
+
+    /** Unlabelled older variants are preserved, not assigned speculative intensity. */
+    public ExerciseIntensity intensity(String variantId) {
+        return intensityById.getOrDefault(TaxonomyChecks.id(variantId),
+                ExerciseIntensity.UNCLASSIFIED);
+    }
+
+    /**
+     * New explicitly high or variable intensity records are informational,
+     * not automatically assigned to an unsupervised mission.
+     */
+    public boolean eligibleForAutomaticSuggestion(ExerciseVariant variant) {
+        if(!variant.eligibleForAutomaticSuggestion())return false;
+        ExerciseIntensity tag=intensity(variant.id());
+        return tag!=ExerciseIntensity.HIGH && tag!=ExerciseIntensity.VARIABLE;
+    }
     public Optional<ExerciseVariant> variant(String id) {
         return Optional.ofNullable(byVariant.get(TaxonomyChecks.id(id)));
     }
