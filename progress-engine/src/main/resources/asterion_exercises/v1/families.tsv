@@ -38,3 +38,13 @@ movilidad_hombro	Movilidad de hombro	movilidad	movilidad_hombro
 movilidad_tobillo	Movilidad de tobillo	movilidad	movilidad_tobillo
 flexibilidad_piernas	Flexibilidad de piernas	movilidad	flexibilidad
 respiracion_postura	Respiración y postura	movilidad	control_postural
+manos_agarre	Agarre y control de manos	tren_superior	agarre
+control_muneca_fuerza	Control activo de muñeca	tren_superior	control_muneca
+estabilidad_cuadrupedia	Estabilidad en cuadrupedia	tronco	estabilidad_cuadrupedia
+postura_tronco_sentado	Control del tronco sentado	tronco	estabilidad_sedente
+motricidad_pies	Control de los dedos del pie	piernas	motricidad_pie
+extension_cadera_pie	Extensión de cadera fuera de puente	piernas	extension_cadera_pie
+movilidad_cervical	Movilidad suave de cuello	movilidad	movilidad_cuello
+movilidad_dedos_manos	Movilidad de dedos y pulgar	movilidad	movilidad_dedos
+pasos_aerobicos_suaves	Pasos aeróbicos de bajo impacto	cardio	pasos_aerobicos
+danza_bajo_impacto	Danza recreativa de bajo impacto	cardio	danza_recreativa
