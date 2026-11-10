@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import pe.asterionsystem.app.data.AssetExerciseCatalogRepository;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
+import pe.asterionsystem.core.engine.exercises.ExerciseIntensity;
 import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
 import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
 import pe.asterionsystem.core.engine.exercises.ExerciseType;
@@ -431,7 +432,9 @@ public final class MissionsActivity extends ComponentActivity {
         title("Biblioteca de ejercicios");
         paragraph("Catálogo real local · "+catalog.families().size()+" familias · "
                 +catalog.types().size()+" tipos · "+catalog.variants().size()+" variantes.");
-        paragraph("Explora familias y variantes. Las de nivel técnico avanzado "
+        paragraph("Explora familias y variantes por intensidad orientativa: "
+                +"baja, moderada, alta, variable o sin clasificar. "
+                +"Las opciones de intensidad alta y nivel técnico avanzado "
                 +"son informativas y no forman parte de las propuestas automáticas.");
         Map<String,List<ExerciseFamily>> byGroup=new HashMap<>();
         for(ExerciseFamily item:catalog.families()) {
@@ -463,15 +466,44 @@ public final class MissionsActivity extends ComponentActivity {
     }
 
     private void showType(ExerciseType type, ExerciseFamily family) {
+        showTypeFiltered(type,family,null);
+    }
+
+    /**
+     * Descriptive intensity is separate from technical difficulty. Filtering
+     * high-intensity items does not activate them as daily mission candidates.
+     */
+    private void showTypeFiltered(ExerciseType type,ExerciseFamily family,
+                                  ExerciseIntensity intensityFilter) {
         content.removeAllViews();
         title(type.name());
+        paragraph("Intensidad orientativa: "+(intensityFilter==null
+                ?"Todas":intensityFilter.label())
+                +". Depende de la persona y de cómo se realice la actividad.");
+        action("Filtrar por intensidad",()->{
+            final String[] labels={"Todas","Baja","Moderada","Alta",
+                    "Variable","Sin clasificar"};
+            final ExerciseIntensity[] tags={null,ExerciseIntensity.LOW,
+                    ExerciseIntensity.MODERATE,ExerciseIntensity.HIGH,
+                    ExerciseIntensity.VARIABLE,ExerciseIntensity.UNCLASSIFIED};
+            new AlertDialog.Builder(this).setTitle("Intensidad orientativa")
+                    .setItems(labels,(dialog,which)->showTypeFiltered(
+                            type,family,tags[which])).show();
+        });
         List<ExerciseVariant> variants=new ArrayList<>(catalog.variantsInType(type.id()));
         variants.sort(Comparator.comparingInt(ExerciseVariant::difficulty));
+        int shown=0;
         for(ExerciseVariant v:variants) {
-            exerciseRow(v.name(),"Material: "+material(v)+" · Nivel técnico "
-                    +v.difficulty()
-                    +(v.supervisionRecommended()?" · Requiere orientación":""));
+            ExerciseIntensity tag=catalog.intensity(v.id());
+            if(intensityFilter!=null && tag!=intensityFilter)continue;
+            exerciseRow(v.name(),"Intensidad: "+tag.label()
+                    +" · Material: "+material(v)+" · Nivel técnico "+v.difficulty()
+                    +(v.supervisionRecommended()?" · Requiere orientación":"")
+                    +(tag==ExerciseIntensity.HIGH
+                        ?" · Solo información; no se asigna automáticamente":""));
+            shown++;
         }
+        if(shown==0)paragraph("No hay variantes de este tipo con el filtro elegido.");
         action("Volver a "+family.name(),()->showFamily(family));
         themeTree(content);
         scroll.post(()->scroll.scrollTo(0,0));
