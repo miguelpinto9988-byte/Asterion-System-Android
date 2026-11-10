@@ -74,3 +74,28 @@ pelota_deportiva_recreativa	Actividades recreativas con pelota	cardio	deporte_pe
 cuerda_saltar_recreativa	Saltos recreativos con cuerda	cardio	cuerda_salto
 deportes_raqueta_recreativos	Deportes recreativos de raqueta	cardio	raqueta
 recorridos_al_aire_libre	Recreación aeróbica al aire libre	cardio	recorrido_exterior
+elevacion_brazos_funcional	Elevaciones funcionales de brazos	tren_superior	elevacion_controlada
+alcances_pared_brazos	Alcances de brazos con pared	tren_superior	alcance_pared
+control_brazos_cruzados	Control de brazos cruzados	tren_superior	cruce_brazos
+apoyos_superiores_estables	Apoyos superiores estables	tren_superior	apoyo_superior
+destreza_manos_brazos	Destreza de manos y brazos	tren_superior	destreza_superior
+alineacion_tronco_suave	Alineación suave del tronco	tronco	alineacion_tronco
+alcances_tronco_asistidos	Alcances de tronco con apoyo	tronco	alcance_tronco
+coordinacion_tronco_pie	Coordinación del tronco al caminar en el sitio	tronco	coordinacion_tronco
+respiracion_movimiento_tronco	Respiración asociada a movimiento de tronco	tronco	respiracion_tronco
+control_pelvis_suelo	Control de pelvis en suelo	tronco	control_pelvis
+movilidad_rodilla_sentada	Control de rodilla sentado	piernas	control_rodilla
+pasos_cortos_funcionales	Pasos cortos funcionales	piernas	pasos_cortos
+tobillo_control_equilibrio	Control de tobillo y equilibrio	piernas	control_tobillo
+cadera_lateral_pie	Control lateral de cadera de pie	piernas	cadera_lateral_pie
+transiciones_silla_estable	Transiciones con silla estable	piernas	transicion_silla
+movilidad_hombros_sentada	Movilidad de hombros sentado	movilidad	movilidad_hombro_sentado
+movilidad_cadera_silla	Movilidad de cadera desde silla	movilidad	movilidad_cadera_silla
+movilidad_rodilla_suave	Movilidad funcional suave de rodilla	movilidad	movilidad_rodilla
+movilidad_pies_suelo	Movilidad de pies en apoyo	movilidad	movilidad_pies
+movilidad_toracica_silla	Movilidad de tórax con silla	movilidad	movilidad_torax_silla
+marcha_en_sitio_bajoimpacto	Marcha de bajo impacto en sitio	cardio	marcha_suave
+pasos_aerobicos_direcciones	Pasos aeróbicos en distintas direcciones	cardio	pasos_bajoimpacto
+ritmos_brazos_pasos	Ritmos suaves de brazos y pasos	cardio	ritmo_pasos
+cardio_desde_silla	Cardio recreativo desde silla	cardio	cardio_sentado
+juegos_pasos_recreativos	Juegos recreativos de pasos suaves	cardio	juego_pasos
