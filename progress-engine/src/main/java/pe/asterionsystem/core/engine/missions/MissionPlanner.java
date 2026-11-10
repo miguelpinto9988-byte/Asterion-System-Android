@@ -497,7 +497,9 @@ public final class MissionPlanner {
         ArrayList<ExerciseVariant> selected=new ArrayList<>();
         Set<String> chosenIds=new HashSet<>();
         addWithDiversity(lower,count-upperTarget,selected,chosenIds);
-        addWithDiversity(higher,upperTarget,selected,chosenIds);
+        // addWithDiversity receives an absolute target, not an increment.
+        addWithDiversity(higher,Math.min(count,selected.size()+upperTarget),
+                selected,chosenIds);
         addWithDiversity(lower,count,selected,chosenIds);
         addWithDiversity(higher,count,selected,chosenIds);
         addWithDiversity(fallback,count,selected,chosenIds);
