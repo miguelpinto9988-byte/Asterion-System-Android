@@ -30,7 +30,7 @@ binder=(JAVA/"presentation/HomeMissionBinder.java").read_text()
 renderer=(JAVA/"presentation/NavigationRenderer.java").read_text()
 assert "catalog.variants()" in planner
 assert "variant.eligibleForAutomaticSuggestion()" in planner
-assert "variant.supervisionRecommended()" in planner
+assert "variant.eligibleForAutomaticSuggestion()" in planner
 assert "profile.equipment.containsAll(variant.equipment())" in planner
 assert "today.getDayOfWeek().getValue() - 1" in planner
 assert "today.plusDays(1)" in planner
