@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import java.util.Set;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 
@@ -22,6 +23,8 @@ final class MissionTrackingStore {
     private static final String RATE="day_effort_";
     private static final String CATEGORY_RATE="category_effort_";
     private static final String MONARCH="monarch_done_";
+    private static final String CATEGORY_PLAN="category_plan_current_";
+    private static final String CATEGORY_PLAN_PREVIOUS="category_plan_previous_";
 
     private MissionTrackingStore() { }
 
@@ -105,6 +108,72 @@ final class MissionTrackingStore {
             if(rating!=0)return rating;
         }
         return 0;
+    }
+
+    /**
+     * Returns previously displayed exercise IDs from the same category only.
+     * Values from a different category can never leak into this decision.
+     * A current-day proposal is not treated as a previous session.
+     */
+    static List<String> previousCategoryVariants(Context context,int category,
+                                                  LocalDate today) {
+        if(category<0||category>4)throw new IllegalArgumentException("Categoría inválida");
+        SharedPreferences store=prefs(context);
+        String current=store.getString(CATEGORY_PLAN+category,"");
+        LocalDate currentDate=planDate(current);
+        if(currentDate!=null && currentDate.isBefore(today)) {
+            return decodePlan(current,today);
+        }
+        return decodePlan(store.getString(CATEGORY_PLAN_PREVIOUS+category,""),today);
+    }
+
+    /**
+     * Saves what the machine actually proposed, for reproducible contextual
+     * selections on subsequent occurrences of the same category. Does not
+     * modify workout completion, saved exercise targets or historical SQLite.
+     */
+    static void rememberCategoryProposal(Context context,int category,LocalDate today,
+                                         List<ExerciseVariant> proposed) {
+        if(category<0||category>4)throw new IllegalArgumentException("Categoría inválida");
+        if(today==null || proposed==null)throw new IllegalArgumentException("Datos requeridos");
+        StringBuilder record=new StringBuilder(today.toString()).append('|');
+        for(ExerciseVariant exercise:proposed) {
+            if(record.charAt(record.length()-1)!='|')record.append(',');
+            record.append(id(exercise.id()));
+        }
+        SharedPreferences sp=prefs(context);
+        String key=CATEGORY_PLAN+category;
+        String old=sp.getString(key,"");
+        LocalDate oldDay=planDate(old);
+        if(record.toString().equals(old))return;
+        SharedPreferences.Editor edit=sp.edit();
+        if(oldDay!=null && oldDay.isBefore(today)) {
+            edit.putString(CATEGORY_PLAN_PREVIOUS+category,old);
+        }
+        edit.putString(key,record.toString()).apply();
+    }
+
+    private static LocalDate planDate(String record) {
+        try {
+            int separator=record.indexOf('|');
+            return separator<0 ? null : LocalDate.parse(record.substring(0,separator));
+        } catch(RuntimeException invalid) {return null;}
+    }
+
+    private static List<String> decodePlan(String record,LocalDate today) {
+        LocalDate date=planDate(record);
+        if(date==null || !date.isBefore(today)
+                || date.isBefore(today.minusDays(21)))return Collections.emptyList();
+        int separator=record.indexOf('|');
+        String ids=record.substring(separator+1);
+        if(ids.isEmpty())return Collections.emptyList();
+        ArrayList<String> result=new ArrayList<>();
+        for(String candidate:ids.split(",")) {
+            if(candidate.matches("[A-Za-z0-9_-]{1,96}") && !result.contains(candidate)) {
+                result.add(candidate);
+            }
+        }
+        return Collections.unmodifiableList(result);
     }
 
     static LocalDate firstReport(Context context) {
