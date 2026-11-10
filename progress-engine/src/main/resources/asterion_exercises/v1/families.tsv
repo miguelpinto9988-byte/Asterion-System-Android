@@ -58,3 +58,8 @@ control_tronco_pie	Estabilidad de tronco de pie	tronco	estabilidad_bipeda
 rotacion_diagonal_tronco	Patrones diagonales del tronco	tronco	alcance_diagonal
 yoga_estabilidad_general	Posturas suaves de yoga y control postural	tronco	yoga_estabilidad
 apoyo_lateral_tronco	Apoyos laterales y control del costado	tronco	estabilidad_lateral
+isometrias_piernas	Isometrías de piernas y apoyos estables	piernas	isometria_inferior
+abductores_acostado	Control lateral de cadera acostado	piernas	cadera_lateral
+deslizamientos_rodilla	Movimiento de rodilla mediante deslizamiento	piernas	deslizamiento_rodilla
+pasos_direcciones	Pasos funcionales en distintas direcciones	piernas	desplazamientos_cortos
+saltos_recreativos	Saltos recreativos catalogados	piernas	salto_recreativo
