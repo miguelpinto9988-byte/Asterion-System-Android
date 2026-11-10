@@ -28,6 +28,7 @@ final class MonarchSessionStore {
     static final String PREVIEW="preview";
     static final String ACTIVE="active";
     static final String DECLINED="declined";
+    static final String REVIEW_REQUIRED="review_required";
 
     static final class Snapshot {
         final LocalDate previewStart;
@@ -53,51 +54,118 @@ final class MonarchSessionStore {
 
     static Snapshot current(Context context, LocalDate today, MissionPlanner planner,
                             MissionPlanner.Profile profile, ExerciseCatalog catalog) {
+        java.util.Objects.requireNonNull(today,"today");
+        java.util.Objects.requireNonNull(planner,"planner");
+        java.util.Objects.requireNonNull(profile,"profile");
+        java.util.Objects.requireNonNull(catalog,"catalog");
         SharedPreferences sp=preferences(context);
         LocalDate preview=parse(sp.getString(START,""));
         LocalDate accepted=parse(sp.getString(ACCEPTED,""));
         String status=sp.getString(STATUS,PREVIEW);
-        String signature=signature(profile);
-        boolean profileChanged=!signature.equals(sp.getString(PROFILE_SIGNATURE,""));
+        String profileSignature=signature(profile);
+        boolean profileChanged=!profileSignature.equals(
+                sp.getString(PROFILE_SIGNATURE,""));
         boolean expiredActive=ACTIVE.equals(status)
+                && (accepted==null || !today.isBefore(accepted.plusDays(5)));
+        boolean expiredReview=REVIEW_REQUIRED.equals(status)
                 && (accepted==null || !today.isBefore(accepted.plusDays(5)));
         boolean invalidPreview=preview==null || today.isBefore(preview)
                 || ChronoUnit.DAYS.between(preview,today)>=5;
-        if (expiredActive || profileChanged || (!ACTIVE.equals(status) && invalidPreview)) {
-            MissionPlanner.Proposal generated=planner.monarch(profile,today);
-            StringBuilder ids=new StringBuilder();
-            for (ExerciseVariant variant:generated.candidates()) {
-                if(ids.length()>0)ids.append(",");
-                ids.append(variant.id());
+        String raw=sp.getString(IDS,"");
+        List<String> stored=readIds(raw);
+        boolean invalidIds=raw!=null && !raw.isEmpty() && stored.isEmpty();
+        if(!invalidIds && preview!=null && !stored.isEmpty()) {
+            if(stored.size()==5) {
+                try { planner.restoreMonarch(profile,preview,stored); }
+                catch(IllegalArgumentException invalid) { invalidIds=true; }
+            } else {
+                // Less than five eligible candidates is a legitimate preview
+                // but cannot be accepted. Any catalog deletion invalidates it.
+                for(String id:stored) {
+                    if(catalog.variant(id).isEmpty())invalidIds=true;
+                }
             }
-            sp.edit().putString(PROFILE_SIGNATURE,signature)
+        }
+
+        // Never silently replace an accepted five-day mission. Freeze its
+        // execution if changed profile/equipment or catalog makes it unsafe.
+        if(ACTIVE.equals(status) && !expiredActive
+                && (profileChanged || invalidIds)) {
+            if(!sp.edit().putString(STATUS,REVIEW_REQUIRED).commit()) {
+                throw new IllegalStateException("No se pudo pausar Monarca");
+            }
+            status=REVIEW_REQUIRED;
+        }
+
+        if(expiredActive || expiredReview
+                || (!ACTIVE.equals(status) && !REVIEW_REQUIRED.equals(status)
+                    && (profileChanged || invalidPreview || invalidIds))) {
+            // Previous cycle is only an input to prefer fresh eligible IDs,
+            // never a second historical workout or automatically completed mark.
+            List<String> previous=profileChanged || invalidIds
+                    ?Collections.emptyList():stored;
+            MissionPlanner.Proposal generated=planner.monarch(profile,today,previous);
+            List<String> ids=new ArrayList<>();
+            for(ExerciseVariant variant:generated.candidates())ids.add(variant.id());
+            if(!sp.edit().putString(PROFILE_SIGNATURE,profileSignature)
                     .putString(START,today.toString())
-                    .putString(IDS,ids.toString())
+                    .putString(IDS,String.join(",",ids))
                     .putString(STATUS,PREVIEW)
-                    .remove(ACCEPTED).apply();
+                    .remove(ACCEPTED).commit()) {
+                throw new IllegalStateException("No se pudo guardar Monarca");
+            }
             preview=today;
             accepted=null;
             status=PREVIEW;
+            stored=ids;
+        }
+
+        if(REVIEW_REQUIRED.equals(status)) {
+            return new Snapshot(preview,accepted,status,Collections.emptyList());
         }
         List<ExerciseVariant> selected=new ArrayList<>();
-        for (String id:sp.getString(IDS,"").split(",")) {
-            if(id.isEmpty())continue;
-            catalog.variant(id).ifPresent(selected::add);
-        }
+        for(String id:stored)catalog.variant(id).ifPresent(selected::add);
         return new Snapshot(preview,accepted,status,selected);
     }
 
-    static boolean accept(Context context, LocalDate today, Snapshot reviewed) {
-        if(!reviewed.canAccept())return false;
+    static boolean accept(Context context, LocalDate today, Snapshot reviewed,
+                          MissionPlanner.Profile profile) {
+        if(reviewed==null || !reviewed.canAccept()
+                || reviewed.previewStart==null || profile==null
+                || today.isBefore(reviewed.previewStart)
+                || !today.isBefore(reviewed.previewStart.plusDays(5)))return false;
         SharedPreferences sp=preferences(context);
         if(!PREVIEW.equals(sp.getString(STATUS,PREVIEW)))return false;
+        if(!signature(profile).equals(sp.getString(PROFILE_SIGNATURE,"")))return false;
         if(!reviewed.previewStart.toString().equals(sp.getString(START,"")))return false;
+        List<String> reviewedIds=new ArrayList<>();
+        for(ExerciseVariant exercise:reviewed.exercises)reviewedIds.add(exercise.id());
         String stored=sp.getString(IDS,"");
-        if(stored.isEmpty()||stored.split(",").length!=5)return false;
-        // The caller shows a confirmation dialog that explicitly names
-        // all five choices before invoking this method.
+        if(!String.join(",",reviewedIds).equals(stored)
+                || readIds(stored).size()!=5)return false;
+        // The caller separately shows the exact five names for approval.
         return sp.edit().putString(STATUS,ACTIVE)
                 .putString(ACCEPTED,today.toString()).commit();
+    }
+
+    /** Explicitly discard only this suspended preview, not exercise history. */
+    static void restartAfterReview(Context context) {
+        SharedPreferences sp=preferences(context);
+        if(REVIEW_REQUIRED.equals(sp.getString(STATUS,""))) {
+            sp.edit().clear().commit();
+        }
+    }
+
+    private static List<String> readIds(String raw) {
+        if(raw==null || raw.isEmpty())return Collections.emptyList();
+        String[] values=raw.split(",",-1);
+        if(values.length>5)return Collections.emptyList();
+        java.util.LinkedHashSet<String> ids=new java.util.LinkedHashSet<>();
+        for(String id:values) {
+            if(!id.matches("[a-z][a-z0-9_]{1,63}") || !ids.add(id))
+                return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(new ArrayList<>(ids));
     }
 
     static void decline(Context context) {

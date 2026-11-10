@@ -34,7 +34,9 @@ assert "profile.equipment.containsAll(variant.equipment())" in planner
 assert "today.getDayOfWeek().getValue() - 1" in planner
 assert "today.plusDays(1)" in planner
 assert "starts.plusDays(5)" in planner
-assert "takeDiverse(pool, 5," in planner
+assert "takeDiverse(pool,pool.size()," in planner
+assert "monarchSeed(profile,starts)" in planner
+assert "restoreMonarch(" in planner
 assert "return new Proposal(MONARCH" in planner
 assert "requiresConsent" in planner
 assert not any(fragment in planner for fragment in (

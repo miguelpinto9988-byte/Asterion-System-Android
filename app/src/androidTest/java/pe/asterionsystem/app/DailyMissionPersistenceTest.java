@@ -156,4 +156,85 @@ public final class DailyMissionPersistenceTest {
                 DailyMissionStore.read(context,DAY.plusDays(1),
                         profile("fuerza"),library).isEmpty());
     }
+    @Test public void seedMonarchPreviewAndAccept() throws Exception {
+        Context ctx=context();
+        // The runner uses an ephemeral, clean emulator. Never erase a user's
+        // personal Monarca mission from a production device.
+        MonarchSessionStore.abandon(ctx);
+        ExerciseCatalog library=catalog();
+        MissionPlanner planner=new MissionPlanner(library);
+        MissionPlanner.Profile configured=profile("bienestar");
+        MonarchSessionStore.Snapshot preview=MonarchSessionStore.current(
+                ctx,DAY,planner,configured,library);
+        assertEquals(MonarchSessionStore.PREVIEW,preview.status);
+        assertTrue("Five safe candidates are available",preview.canAccept());
+        assertEquals(preview.exercises.size(),5);
+        List<String> initialIds=new ArrayList<>();
+        for(ExerciseVariant item:preview.exercises)initialIds.add(item.id());
+        MonarchSessionStore.Snapshot reopened=MonarchSessionStore.current(
+                ctx,DAY,planner,configured,library);
+        List<String> reread=new ArrayList<>();
+        for(ExerciseVariant item:reopened.exercises)reread.add(item.id());
+        assertEquals(initialIds,reread);
+        assertTrue(MonarchSessionStore.accept(ctx,DAY,preview,configured));
+        assertEquals(MonarchSessionStore.ACTIVE,MonarchSessionStore.current(
+                ctx,DAY,planner,configured,library).status);
+        assertFalse("Once active, cannot accept again",
+                MonarchSessionStore.accept(ctx,DAY,preview,configured));
+    }
+
+    @Test public void verifyMonarchAfterRestartAndProfileReview() throws Exception {
+        Context ctx=context();
+        ExerciseCatalog library=catalog();
+        MissionPlanner planner=new MissionPlanner(library);
+        MissionPlanner.Profile original=profile("bienestar");
+        MonarchSessionStore.Snapshot active=MonarchSessionStore.current(
+                ctx,DAY.plusDays(2),planner,original,library);
+        assertEquals("Acceptance and IDs must survive a process restart",
+                MonarchSessionStore.ACTIVE,active.status);
+        assertEquals(5,active.exercises.size());
+        List<String> initial=new ArrayList<>();
+        for(ExerciseVariant item:active.exercises)initial.add(item.id());
+        MonarchSessionStore.Snapshot repeated=MonarchSessionStore.current(
+                ctx,DAY.plusDays(3),planner,original,library);
+        List<String> repeatedIds=new ArrayList<>();
+        for(ExerciseVariant item:repeated.exercises)repeatedIds.add(item.id());
+        assertEquals(initial,repeatedIds);
+        assertEquals(DAY.plusDays(5),active.activeUntilExclusive());
+
+        MissionPlanner.Profile changed=profile("fuerza");
+        MonarchSessionStore.Snapshot paused=MonarchSessionStore.current(
+                ctx,DAY.plusDays(3),planner,changed,library);
+        assertEquals("Do not silently overwrite an accepted cycle",
+                MonarchSessionStore.REVIEW_REQUIRED,paused.status);
+        assertTrue("Pausing must disable the old suggested activities",
+                paused.exercises.isEmpty());
+        assertFalse("Changing profiles does not reauthorise the old cycle",
+                MonarchSessionStore.accept(ctx,DAY.plusDays(3),
+                        repeated,changed));
+        assertEquals(MonarchSessionStore.REVIEW_REQUIRED,
+                MonarchSessionStore.current(ctx,DAY.plusDays(3),
+                        planner,changed,library).status);
+
+        MonarchSessionStore.restartAfterReview(ctx);
+        MonarchSessionStore.Snapshot next=MonarchSessionStore.current(
+                ctx,DAY.plusDays(3),planner,changed,library);
+        assertEquals("New profile must require a fresh acceptance",
+                MonarchSessionStore.PREVIEW,next.status);
+        assertTrue(next.canAccept());
+        assertTrue(MonarchSessionStore.accept(ctx,DAY.plusDays(3),next,changed));
+        assertEquals(MonarchSessionStore.ACTIVE,MonarchSessionStore.current(
+                ctx,DAY.plusDays(4),planner,changed,library).status);
+
+        // A cycle expires five days from ACCEPTANCE, not preview creation.
+        MonarchSessionStore.Snapshot nextCycle=MonarchSessionStore.current(
+                ctx,DAY.plusDays(8),planner,changed,library);
+        assertEquals(MonarchSessionStore.PREVIEW,nextCycle.status);
+        assertEquals(DAY.plusDays(8),nextCycle.previewStart);
+        MonarchSessionStore.decline(ctx);
+        assertEquals(MonarchSessionStore.DECLINED,
+                MonarchSessionStore.current(ctx,DAY.plusDays(8),
+                        planner,changed,library).status);
+    }
+
 }
