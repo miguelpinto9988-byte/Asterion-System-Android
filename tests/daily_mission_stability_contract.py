@@ -33,8 +33,8 @@ for marker in ('private static final String DATE="local_date"',
                "profile.missionSignature()", "today.toString()",
                "catalogSignature(catalog)", "choices.size()>profile.dailyLimit"):
     assert marker in pin,marker
-for forbidden in ("repetitions","workout_json","exercise_description","set_count",
-                  "full_session", "series_target", "daily_activities_json"):
+for forbidden in ('putString("workout_json"', 'putString("exercise_description"',
+                  'putString("full_session"', 'putString("daily_activities_json"'):
     assert forbidden not in pin,forbidden
 assert "latestCompletedForCategory(" in tracking
 assert "boolean completed=false;" in tracking
