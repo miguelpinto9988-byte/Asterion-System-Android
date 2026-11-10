@@ -270,7 +270,7 @@ public final class MissionPlanner {
         int maxTechnicalLevel = "principiante".equals(profile.experience) ? 1 : 2;
         for (ExerciseVariant variant : catalog.variants()) {
             if (!category.equals(categoryForType.get(variant.typeId()))) continue;
-            if (!variant.eligibleForAutomaticSuggestion()
+            if (!catalog.eligibleForAutomaticSuggestion(variant)
                     || variant.difficulty() > maxTechnicalLevel) continue;
             if (!profile.equipment.containsAll(variant.equipment())) continue;
             result.add(variant);
