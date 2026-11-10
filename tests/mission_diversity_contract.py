@@ -15,7 +15,7 @@ with (LIB/"resources/asterion_exercises/v1/families.tsv").open(encoding="utf-8")
     families={row["family_id"] for row in csv.DictReader(f,delimiter="\t")}
 
 focus_ids=re.findall(r'Map\.entry\("([a-z0-9_]+)",new Focus\("',FOCUS)
-assert len(focus_ids)==100 and len(set(focus_ids))==75
+assert len(focus_ids)==100 and len(set(focus_ids))==100
 assert set(focus_ids)==families, "All family IDs must be classified"
 for marker in ("ExerciseMuscleFocus.forFamily(", "recentCompleted",
                "daily(Profile profile, LocalDate today,", "new Random(seed)",
