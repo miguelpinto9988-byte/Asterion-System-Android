@@ -1,6 +1,6 @@
 # Estructura de integración del catálogo de ejercicios v1
 
-**Nota de vigencia (2026-11-10):** este documento registra el diseño inicial del catálogo de 445 variantes. La versión operativa en `main` contiene **49 familias, 100 tipos y 505 variantes**, utiliza `ExerciseCategoryMapper` para las **cinco categorías del perfil**, y ya alimenta propuestas diarias y Monarca. Véase [la ampliación vigente](03-ampliacion-cinco-categorias.md). Los conteos y pendientes históricos de esta página se conservan como referencia de la primera etapa.
+**Nota de vigencia (2026-11-10):** este documento registra el diseño inicial del catálogo de 445 variantes. La versión operativa en `main` contiene **75 familias, 204 tipos y 817 variantes**, utiliza `ExerciseCategoryMapper` para las **cinco categorías del perfil**, y ya alimenta propuestas diarias y Monarca. Véase [la ampliación vigente](03-ampliacion-cinco-categorias.md). Los conteos y pendientes históricos de esta página se conservan como referencia de la primera etapa.
 
 ## Alcance inicial
 
