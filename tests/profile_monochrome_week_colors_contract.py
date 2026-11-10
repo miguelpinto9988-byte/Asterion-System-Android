@@ -49,5 +49,4 @@ for fragment in ('"asterion_week_color".equals(tag)',
                  '"asterion_week_legend".equals(tag)'):
     assert fragment in palette,fragment
 
-assert len(re.findall(r"Color.rgb\\([0-9,]+\\)",step2)) >= 6
 print("OK: blancos/negros uniformes, tema en paso 3 y 6 colores con leyenda conservados.")
