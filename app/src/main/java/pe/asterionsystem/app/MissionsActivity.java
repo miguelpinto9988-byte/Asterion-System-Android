@@ -32,6 +32,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.exercises.ExerciseMuscleFocus;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
+import pe.asterionsystem.core.engine.missions.MissionDifficultyMixPolicy;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
 import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
@@ -176,6 +177,14 @@ public final class MissionsActivity extends ComponentActivity {
                 ?null:WeeklyCategoryChallengePolicy.evaluate(
                     category,MissionTrackingStore.firstReport(this),today,
                     MissionTrackingStore.recentCategoryObservations(this,catalog,category,today));
+        // Phase starts at the first visit after selecting a new experience
+        // level. Only completed low-effort rated sessions in this category
+        // can move a phase after the initial seven calendar days.
+        boolean recentlyInterrupted=category!=CategoryEffortPolicy.REST
+                && SessionSafetyStore.recentInterruption(this,category,today,7);
+        MissionLevelProgressStore.Snapshot levelState=
+                MissionLevelProgressStore.observe(this,profile.experience,
+                        category,today,weekly,recentlyInterrupted);
         List<String> pinned=DailyMissionStore.read(this,today,profile,catalog);
         MissionPlanner.Proposal proposal=null;
         if(!pinned.isEmpty()) {
@@ -197,9 +206,8 @@ public final class MissionsActivity extends ComponentActivity {
             proposal=planner.daily(
                     dayProfile,today,decision,previousVariants,
                     weekly!=null && weekly.rotateEquivalentVariant()
-                            && !SessionSafetyStore.recentInterruption(
-                                    this,category,today,7),
-                    recentCompleted);
+                            && !recentlyInterrupted,
+                    recentCompleted,levelState.phase);
             if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
                 DailyMissionStore.write(this,today,profile,catalog,
                         proposal.candidates());
@@ -222,9 +230,21 @@ public final class MissionsActivity extends ComponentActivity {
             }
         }
         paragraph(dayProposal.explanation());
+        paragraph(MissionDifficultyMixPolicy.explanation(
+                profile.experience,levelState.phase));
         if(dayProposal.empty()) {
             paragraph("Sin propuestas de ejercicio para hoy. Se respeta el descanso.");
             return;
+        }
+        if(MissionDifficultyMixPolicy.mixed(profile.experience)) {
+            long higher=dayProposal.candidates().stream()
+                    .filter(variant->variant.difficulty()==3).count();
+            paragraph("Mezcla técnica de hoy: "
+                    +(dayProposal.candidates().size()-higher)
+                    +" variantes sencillas (1-2) y "+higher
+                    +" variantes intermedias (3). La proporción depende "
+                    +"del material y las alternativas compatibles; no "
+                    +"implica aumentar automáticamente el esfuerzo.");
         }
         Set<String> completed=MissionTrackingStore.completedToday(this,today);
         paragraph("Registradas: "+completed.stream().filter(
