@@ -68,3 +68,9 @@ movilidad_torax_pie	Movilidad torácica de pie	movilidad	movilidad_torax
 flexibilidad_cadera_suelo	Flexibilidad de cadera en el suelo	movilidad	estiramiento_cadera
 equilibrio_tandem	Equilibrio de talón y punta	movilidad	equilibrio_tandem
 yoga_movilidad_restaurativa	Yoga de movilidad y posturas restaurativas	movilidad	yoga_movilidad
+natacion_recreativa	Natación y actividades aeróbicas acuáticas	cardio	actividad_acuatica
+danza_recreativa_diversa	Bailes recreativos de diferentes estilos	cardio	danza
+pelota_deportiva_recreativa	Actividades recreativas con pelota	cardio	deporte_pelota
+cuerda_saltar_recreativa	Saltos recreativos con cuerda	cardio	cuerda_salto
+deportes_raqueta_recreativos	Deportes recreativos de raqueta	cardio	raqueta
+recorridos_al_aire_libre	Recreación aeróbica al aire libre	cardio	recorrido_exterior
