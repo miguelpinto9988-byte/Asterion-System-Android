@@ -41,6 +41,16 @@ public class AutonomousCategoryMissionTest {
                 StandardCharsets.UTF_8);
     }
 
+    @Test public void firstWeekLowEffortDoesNotForceAutomaticRotation() {
+        CategoryEffortPolicy.Decision low=CategoryEffortPolicy.evaluate(2,3,3);
+        MissionPlanner.Proposal first=planner.daily(profile,monday,low,
+                Collections.singletonList("sentadilla_bilateral_v01"),false);
+        assertEquals("sentadilla_bilateral_v01",first.candidates().get(0).id());
+        MissionPlanner.Proposal afterReview=planner.daily(profile,monday,low,
+                Collections.singletonList("sentadilla_bilateral_v01"),true);
+        assertEquals("sentadilla_bilateral_v02",afterReview.candidates().get(0).id());
+    }
+
     @Test public void lowEffortChangesVariantAutomaticallyWithinSameTypeAndLevel() {
         CategoryEffortPolicy.Decision low=CategoryEffortPolicy.evaluate(2,3,3);
         MissionPlanner.Proposal proposal=planner.daily(profile,monday,low,
