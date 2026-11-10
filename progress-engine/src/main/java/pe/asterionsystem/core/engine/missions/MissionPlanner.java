@@ -401,7 +401,7 @@ public final class MissionPlanner {
                 if(variant.difficulty()<=priorCap)pool.add(variant);
             }
         }
-        List<ExerciseVariant> ranked=takeDiverse(pool,pool.size(),
+        List<ExerciseVariant> shuffled=takeDiverse(pool,pool.size(),
                 monarchSeed(profile,starts),new HashSet<>(previousCycleIds));
         // Prefer different scheduled categories for five independent options.
         // The preceding cycle's IDs are already ranked last when alternatives
@@ -409,12 +409,12 @@ public final class MissionPlanner {
         List<ExerciseVariant> chosen=new ArrayList<>();
         Set<String> usedCategories=new HashSet<>();
         Set<String> usedIds=new HashSet<>();
-        for(ExerciseVariant variant:ranked) {
+        for(ExerciseVariant variant:shuffled) {
             if(chosen.size()==5)break;
             if(usedCategories.add(categoryForType.get(variant.typeId()))
                     && usedIds.add(variant.id()))chosen.add(variant);
         }
-        for(ExerciseVariant variant:ranked) {
+        for(ExerciseVariant variant:shuffled) {
             if(chosen.size()==5)break;
             if(usedIds.add(variant.id()))chosen.add(variant);
         }
