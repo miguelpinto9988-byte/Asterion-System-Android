@@ -389,7 +389,18 @@ final class ProfileRegistrationSteps {
         gym.setOnCheckedChangeListener((b,v)->{
             put("gym",v);gymPanel.setVisibility(v?View.VISIBLE:View.GONE);
         });
-        addInfo(out,"Las preferencias se utilizarán al integrar el catálogo con el generador. No se prescriben cargas ni intensidades basadas en medidas corporales.");
+        addHeading(out,"07 — Intensidad orientativa de las misiones");
+        addInfo(out,"Baja selecciona opciones etiquetadas como suaves. Moderada "
+                +"incluye también actividades moderadas y conserva las variantes "
+                +"anteriores sin etiquetar. No se asigna intensidad alta "
+                +"automáticamente.");
+        radios(out,"intensity",new String[]{"baja","moderada"},
+                new String[]{"Baja: movimientos suaves",
+                        "Moderada: mayor variedad compatible con mi perfil"},
+                "moderada");
+        addInfo(out,"La categoría y la intensidad elegidas determinan qué ejercicios "
+                +"puede proponer el motor. Cambiarlas genera una nueva selección "
+                +"para el mismo día; cambiar de pantalla no la modifica.");
         return out;
     }
     private int iMode(RadioGroup group, RadioButton selected) {
@@ -461,6 +472,7 @@ final class ProfileRegistrationSteps {
         addExpandableReview(out,identity,"IDENTIDAD DEL CAZADOR");
         TextView training=text("ENTRENAMIENTO\nExperiencia: "+get("experience","principiante")
                 +"\nObjetivo: "+get("goal","bienestar")
+                +"\nIntensidad: "+get("intensity","moderada")
                 +"\nObjetivo libre: "+get("custom_goal","—")
                 +"\nModalidad: "+get("mode","misiones")
                 +"\nDescanso: "+get("rest_seconds","60")+" segundos"
