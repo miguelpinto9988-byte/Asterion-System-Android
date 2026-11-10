@@ -564,3 +564,63 @@ bote_pelota_controlado_v03	bote_pelota_controlado	Bote de pelota con cambio senc
 alcance_brazos_coordinado_v01	alcance_brazos_coordinado	Alcance simultáneo de manos al frente sentado	1	silla	coordinacion	0
 alcance_brazos_coordinado_v02	alcance_brazos_coordinado	Alcance alterno de brazos arriba sin carga	2	sin_equipo	coordinacion	0
 alcance_brazos_coordinado_v03	alcance_brazos_coordinado	Alcance cruzado de brazos al frente en pie	3	sin_equipo	coordinacion	0
+toque_talon_supino_v01	toque_talon_supino	Deslizamiento alterno de talones con rodillas flexionadas	1	colchoneta	controlado	0
+toque_talon_supino_v02	toque_talon_supino	Toques de talón en suelo con abdomen estable	2	colchoneta	controlado	0
+toque_talon_supino_v03	toque_talon_supino	Toques alternos de talón con brazos elevados sin carga	3	colchoneta	controlado	0
+basculacion_pelvis_v01	basculacion_pelvis	Basculación suave de pelvis boca arriba	1	colchoneta	controlado	0
+basculacion_pelvis_v02	basculacion_pelvis	Basculación pélvica con respiración acompasada	2	colchoneta	controlado	0
+basculacion_pelvis_v03	basculacion_pelvis	Basculación pélvica alterna con extensión de una pierna	3	colchoneta	controlado	0
+control_rodillas_supino_v01	control_rodillas_supino	Apertura leve de una rodilla tumbado	1	colchoneta	controlado	0
+control_rodillas_supino_v02	control_rodillas_supino	Apertura alterna de rodillas con tronco estable	2	colchoneta	controlado	0
+control_rodillas_supino_v03	control_rodillas_supino	Apertura de rodillas con banda suave tumbado	3	colchoneta+banda	controlado	0
+contraccion_abdominal_suave_v01	contraccion_abdominal_suave	Activación abdominal con respiración en suelo	1	colchoneta	controlado	0
+contraccion_abdominal_suave_v02	contraccion_abdominal_suave	Activación abdominal con manos en costillas	2	colchoneta	controlado	0
+contraccion_abdominal_suave_v03	contraccion_abdominal_suave	Activación abdominal mientras alternan los brazos en suelo	3	colchoneta	controlado	0
+alineacion_bipeda_v01	alineacion_bipeda	Alineación de columna de pie junto a pared	1	pared	controlado	0
+alineacion_bipeda_v02	alineacion_bipeda	Alineación de tronco con brazos relajados de pie	2	sin_equipo	controlado	0
+alineacion_bipeda_v03	alineacion_bipeda	Alineación de tronco con elevación alterna de brazos	3	sin_equipo	controlado	0
+transferencia_peso_tronco_v01	transferencia_peso_tronco	Traslado de peso entre pies con apoyo cercano	1	pared	controlado	0
+transferencia_peso_tronco_v02	transferencia_peso_tronco	Traslado lateral de peso sin material	2	sin_equipo	controlado	0
+transferencia_peso_tronco_v03	transferencia_peso_tronco	Traslado alternado de peso con brazos al frente	3	sin_equipo	controlado	0
+alcance_frontal_bipedo_v01	alcance_frontal_bipedo	Alcance frontal corto de pie frente a pared	1	pared	controlado	0
+alcance_frontal_bipedo_v02	alcance_frontal_bipedo	Alcance frontal de brazos de pie sin apoyo	2	sin_equipo	controlado	0
+alcance_frontal_bipedo_v03	alcance_frontal_bipedo	Alcance frontal alternado con banda suave	3	banda	controlado	0
+cambio_base_apoyo_v01	cambio_base_apoyo	Separar y juntar pies con tronco alineado	1	sin_equipo	controlado	0
+cambio_base_apoyo_v02	cambio_base_apoyo	Alternar pies delante y detrás sin desplazamiento	2	sin_equipo	controlado	0
+cambio_base_apoyo_v03	cambio_base_apoyo	Cambiar base de apoyo con alcance lateral de mano	3	sin_equipo	controlado	0
+alcance_diagonal_sentado_v01	alcance_diagonal_sentado	Alcance diagonal corto sentado en silla	1	silla	rotacion	0
+alcance_diagonal_sentado_v02	alcance_diagonal_sentado	Alcance cruzado con una mano sentado	2	silla	rotacion	0
+alcance_diagonal_sentado_v03	alcance_diagonal_sentado	Alcance alterno hacia diagonal alta sentado	3	silla	rotacion	0
+alcance_diagonal_pie_v01	alcance_diagonal_pie	Alcance diagonal hacia el frente sin carga	1	sin_equipo	rotacion	0
+alcance_diagonal_pie_v02	alcance_diagonal_pie	Alcance diagonal de pie con apoyo en pared	2	pared	rotacion	0
+alcance_diagonal_pie_v03	alcance_diagonal_pie	Alcance diagonal alterno con pelota blanda	3	pelota	rotacion	0
+rotacion_controlada_banda_v01	rotacion_controlada_banda	Giro suave de tronco de pie sin carga	1	sin_equipo	rotacion	0
+rotacion_controlada_banda_v02	rotacion_controlada_banda	Rotación corta de tronco con banda suave	2	banda	rotacion	0
+rotacion_controlada_banda_v03	rotacion_controlada_banda	Rotación alterna de tronco con banda en postura estable	3	banda	rotacion	0
+diagonales_brazos_tronco_v01	diagonales_brazos_tronco	Diagonales de brazos sentado sin resistencia	1	silla	rotacion	0
+diagonales_brazos_tronco_v02	diagonales_brazos_tronco	Diagonales suaves de ambos brazos de pie	2	sin_equipo	rotacion	0
+diagonales_brazos_tronco_v03	diagonales_brazos_tronco	Diagonales alternas de brazos con banda suave	3	banda	rotacion	0
+postura_montana_v01	postura_montana	Postura de montaña con apoyo en pared	1	pared	isometrico	0
+postura_montana_v02	postura_montana	Postura de montaña de pie sin apoyo	2	sin_equipo	isometrico	0
+postura_montana_v03	postura_montana	Postura de montaña con brazos elevados cómodamente	3	sin_equipo	isometrico	0
+postura_guerrero_suave_v01	postura_guerrero_suave	Postura de guerrero con manos en pared	1	pared	isometrico	0
+postura_guerrero_suave_v02	postura_guerrero_suave	Postura de guerrero con base amplia sin carga	2	sin_equipo	isometrico	0
+postura_guerrero_suave_v03	postura_guerrero_suave	Transición suave entre posturas de guerrero con apoyo	3	pared	isometrico	0
+postura_silla_asistida_v01	postura_silla_asistida	Postura de silla con respaldo como apoyo	1	silla	isometrico	0
+postura_silla_asistida_v02	postura_silla_asistida	Postura de silla parcial sin carga	2	sin_equipo	isometrico	0
+postura_silla_asistida_v03	postura_silla_asistida	Postura de silla con apoyo en pared	3	pared	isometrico	0
+postura_estrella_v01	postura_estrella	Postura de estrella sentado con brazos abiertos	1	silla	isometrico	0
+postura_estrella_v02	postura_estrella	Postura de estrella de pie sin carga	2	sin_equipo	isometrico	0
+postura_estrella_v03	postura_estrella	Postura de estrella con alcances suaves laterales	3	sin_equipo	isometrico	0
+alcance_lateral_suelo_v01	alcance_lateral_suelo	Alcance lateral corto acostado de lado	1	colchoneta	controlado	0
+alcance_lateral_suelo_v02	alcance_lateral_suelo	Alcance lateral de brazo con piernas dobladas	2	colchoneta	controlado	0
+alcance_lateral_suelo_v03	alcance_lateral_suelo	Alcance lateral alterno con brazos extendidos	3	colchoneta	controlado	0
+control_costal_lateral_v01	control_costal_lateral	Respiración lateral con mano sobre costillas	1	colchoneta	controlado	0
+control_costal_lateral_v02	control_costal_lateral	Respiración costal lateral con brazo elevado	2	colchoneta	controlado	0
+control_costal_lateral_v03	control_costal_lateral	Respiración costal alternando ambos costados	3	colchoneta	controlado	0
+apoyo_antebrazo_lateral_v01	apoyo_antebrazo_lateral	Apoyo lateral sentado con antebrazo en banco	1	banco	controlado	0
+apoyo_antebrazo_lateral_v02	apoyo_antebrazo_lateral	Apoyo lateral corto con rodillas dobladas en suelo	2	colchoneta	controlado	0
+apoyo_antebrazo_lateral_v03	apoyo_antebrazo_lateral	Control lateral de tronco con antebrazo apoyado en suelo	3	colchoneta	controlado	0
+transferencia_pelota_lateral_v01	transferencia_pelota_lateral	Cambio de pelota de mano a mano sentado	1	pelota+silla	controlado	0
+transferencia_pelota_lateral_v02	transferencia_pelota_lateral	Cambio lateral de pelota de pie sin giro profundo	2	pelota	controlado	0
+transferencia_pelota_lateral_v03	transferencia_pelota_lateral	Transferencia diagonal de pelota blanda con tronco estable	3	pelota	controlado	0
