@@ -199,7 +199,8 @@ public final class MissionsActivity extends ComponentActivity {
                         proposal.candidates());
             }
         }
-        paragraph("Fecha: "+proposal.start()
+        final MissionPlanner.Proposal dayProposal=proposal;
+        paragraph("Fecha: "+dayProposal.start()
                 +". Esta selección permanece igual durante el día, incluso "
                 +"si cierras la aplicación o cambias de panel. Se renueva "
                 +"mañana o al modificar la configuración del perfil.");
@@ -214,22 +215,22 @@ public final class MissionsActivity extends ComponentActivity {
                         +"del catálogo. No se añadieron repeticiones ni series.");
             }
         }
-        paragraph(proposal.explanation());
-        if(proposal.empty()) {
+        paragraph(dayProposal.explanation());
+        if(dayProposal.empty()) {
             paragraph("Sin propuestas de ejercicio para hoy. Se respeta el descanso.");
             return;
         }
         Set<String> completed=MissionTrackingStore.completedToday(this,today);
         paragraph("Registradas: "+completed.stream().filter(
-                id->proposal.candidates().stream().anyMatch(v->v.id().equals(id)))
-                .count()+" de "+proposal.candidates().size()
+                id->dayProposal.candidates().stream().anyMatch(v->v.id().equals(id)))
+                .count()+" de "+dayProposal.candidates().size()
                 +". Puedes parar cuando lo necesites.");
         int index=1;
-        for(ExerciseVariant entry:proposal.candidates()) {
-            dailyExerciseRow(index++,entry,today,category,proposal);
+        for(ExerciseVariant entry:dayProposal.candidates()) {
+            dailyExerciseRow(index++,entry,today,category,dayProposal);
         }
         action("Rutinas paso a paso",()->openRoutine(
-                SECTION_DAILY,today,category,proposal.candidates()));
+                SECTION_DAILY,today,category,dayProposal.candidates()));
         int rating=MissionTrackingStore.ratingForCategory(this,today,category);
         if(rating!=0) paragraph("Valoración de esfuerzo guardada: "+rating+" / 10.");
         action(rating==0?"Finalizar la actividad y valorar esfuerzo"
