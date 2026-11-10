@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Asterion System · Centro de acompañamiento · Concepto</title>
+<meta name="description" content="Prototipo interactivo de la futura pantalla principal y administración adaptativa de Asterion System.">
+<style>
+:root{font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#e9ebed;color:#161616}
+button,select{font:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+#app{--bg:#fff;--panel:#fff;--text:#111;--muted:#616161;--line:#d8d8d8;--soft:#f6f6f6;--accent:#161616;--accentText:#fff;background:var(--bg);color:var(--text);min-height:100vh;transition:background .18s,color .18s}
+#app.dark{--bg:#090909;--panel:#090909;--text:#f7f7f7;--muted:#b4b4b4;--line:#3b3b3b;--soft:#171717;--accent:#f9f9f9;--accentText:#080808;color-scheme:dark}
+.layout{max-width:1160px;margin:auto;display:grid;grid-template-columns:228px 1fr;min-height:100vh}
+.sidebar{border-right:1px solid var(--line);padding:27px 16px;display:flex;flex-direction:column;gap:12px;position:sticky;top:0;height:100vh}
+.brand{font-size:18px;font-weight:850;letter-spacing:-.4px;margin:0}.kicker{font-size:10px;color:var(--muted);letter-spacing:1.5px;font-weight:750;text-transform:uppercase}
+.logo{display:flex;gap:10px;align-items:center;margin-bottom:12px}.logoIcon{width:38px;height:38px;border:1px solid var(--text);border-radius:10px;display:grid;place-items:center;font-size:20px}
+.navTitle{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:1.5px;margin:18px 10px 3px}
+.nav{border:1px solid transparent;background:transparent;color:var(--text);border-radius:10px;padding:12px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:10px;text-align:left;width:100%}.nav svg{width:18px;height:18px}.nav.active{background:var(--soft);border-color:var(--line)}.nav:hover{border-color:var(--line)}
+.sidebarBottom{margin-top:auto;border-top:1px solid var(--line);padding-top:16px;display:grid;gap:9px}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:99px;padding:6px 9px;font-size:11px;color:var(--muted);font-weight:700}
+.dot{width:7px;height:7px;border-radius:50%;background:#23a66b}
+.themeRow{display:flex;gap:7px}.themeBtn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:8px;flex:1;padding:9px 8px;font-size:12px;font-weight:700}.themeBtn.active{background:var(--accent);color:var(--accentText)}
+main{min-width:0;padding:33px 33px 55px}
+.topbar{display:flex;align-items:center;gap:16px;justify-content:space-between}
+h1{margin:6px 0 6px;font-size:30px;letter-spacing:-1px;line-height:1.15}h2{margin:0;font-size:17px;letter-spacing:-.3px}h3{margin:0;font-size:13px}
+.sub{color:var(--muted);font-size:13px;line-height:1.6;margin:0}
+.small{font-size:11px;color:var(--muted);line-height:1.5}
+.tag{font-size:10px;font-weight:800;letter-spacing:.6px;color:var(--muted);text-transform:uppercase}
+.previewBadge{border:1px dashed var(--line);border-radius:100px;padding:8px 12px;font-size:11px;color:var(--muted);font-weight:750;white-space:nowrap}
+.tabs{display:flex;gap:8px;margin-top:22px;margin-bottom:20px;overflow:auto;padding-bottom:3px}
+.tab{white-space:nowrap;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:10px 17px;border-radius:100px;font-size:12px;font-weight:750}.tab.active{background:var(--accent);color:var(--accentText)}
+.panel{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:20px;margin-bottom:15px}
+.panelHeader{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:15px}
+.twin{display:grid;grid-template-columns:1.35fr 1fr;gap:15px}
+.choiceGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:16px 0 13px}
+.choice{border:1px solid var(--line);background:var(--soft);color:var(--text);border-radius:10px;min-height:52px;font-size:12px;font-weight:750;padding:12px;display:flex;justify-content:space-between;align-items:center;text-align:left;gap:8px}.choice[aria-pressed="true"]{border:2px solid var(--text);background:var(--panel);padding:11px}.choice[aria-pressed="true"]:after{content:'✓';font-size:16px}
+.selectRow{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:13px}.selectRow label{font-size:12px;font-weight:750}.selectRow select{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:9px;padding:9px}
+.advice{border:1px solid var(--line);background:var(--soft);border-radius:12px;padding:16px}
+.adviceCode{display:inline-block;padding:6px 8px;border:1px solid var(--line);border-radius:7px;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.7px;margin-bottom:12px}
+.advice p{margin:7px 0;font-size:13px;line-height:1.65}.reason{font-weight:780}.next{color:var(--muted)}
+.reasonRows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}.reasonRow{background:var(--soft);border:1px solid var(--line);border-radius:11px;padding:13px}.metric{font-size:21px;font-weight:830;margin:6px 0}.label{font-size:11px;color:var(--muted)}
+.btn{padding:12px 16px;border:1px solid var(--line);border-radius:9px;background:var(--panel);color:var(--text);font-size:12px;font-weight:800}.btn.primary{background:var(--accent);color:var(--accentText);border-color:var(--accent)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:15px 0 12px}
+.day{border:1px solid var(--line);border-radius:11px;background:var(--panel);color:var(--text);padding:11px 2px 9px;text-align:center;min-height:67px}.day strong{display:block;font-size:13px}.day span{display:block;font-size:10px;margin-top:10px;color:var(--muted)}.day i{display:block;width:9px;height:9px;border-radius:50%;margin:6px auto 0}
+.legend{display:flex;flex-wrap:wrap;gap:9px 13px}.legend span{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.list{display:grid;gap:10px}.listRow{padding:14px;border:1px solid var(--line);border-radius:11px;display:flex;justify-content:space-between;gap:12px;align-items:center}.listRow strong{display:block;font-size:13px;margin-bottom:3px}.listRow p{margin:0;font-size:11px;color:var(--muted)}
+.article{padding:18px;border:1px solid var(--line);border-radius:14px}.article h3{margin:0 0 8px;font-size:14px}.article p{font-size:12px;color:var(--muted);line-height:1.65;margin:0}
+.contentPage{display:none}.contentPage.active{display:block}
+.routeBox{display:flex;gap:12px;align-items:center;padding:14px;background:var(--soft);border-radius:11px;border:1px solid var(--line)}.routeCount{height:34px;width:34px;display:grid;place-items:center;border-radius:9px;background:var(--accent);color:var(--accentText);font-size:13px;font-weight:800;flex-shrink:0}
+.footerNote{text-align:center;font-size:11px;color:var(--muted);line-height:1.6;margin:20px 0}
+@media(max-width:900px){.layout{grid-template-columns:74px 1fr}.sidebar{padding:18px 11px}.sidebar .navText,.sidebar .brand,.sidebar .kicker,.sidebar .navTitle,.sidebarBottom .small,.sidebarBottom .pill{display:none}.sidebar .logo{justify-content:center}.nav{justify-content:center;padding:12px}.nav svg{flex:none}.themeRow{flex-direction:column}.themeBtn{font-size:10px;padding:9px 3px}main{padding:25px 18px 50px}}
+@media(max-width:670px){.layout{display:block}.sidebar{height:auto;position:static;border-right:0;border-bottom:1px solid var(--line);padding:12px 15px;display:flex;flex-direction:row;align-items:center;flex-wrap:wrap}.logo{margin:0 auto 0 0}.sidebar .brand{display:block;font-size:15px}.sidebar .kicker{display:block;font-size:9px}.navTitle,.sidebarBottom{display:none}.nav{width:auto;padding:8px 10px}.nav .navText{display:none}.sidebar .nav svg{width:19px}.sidebar .nav.active{border-color:var(--line)}main{padding:22px 16px 35px}.twin{grid-template-columns:1fr}h1{font-size:27px}.week{gap:4px}.day{min-height:61px}.panel{padding:16px}.topbar{align-items:start}.previewBadge{font-size:9px;padding:6px 8px}}
+@media(max-width:390px){.week{grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.day{padding:9px 1px}.day strong{font-size:11px}.day span{font-size:9px}.choice{font-size:11px;padding:10px}.previewBadge{display:none}}
+@media(prefers-reduced-motion:reduce){#app{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="layout">
+<aside class="sidebar">
+<div class="logo"><div class="logoIcon" aria-hidden="true">✦</div><div><p class="brand">ASTERION</p><span class="kicker">CENTRO DEL SISTEMA</span></div></div>
+<div class="navTitle">Navegación</div>
+<button class="nav active" data-page="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/></svg><span class="navText">Inicio</span></button>
+<button class="nav" data-page="learn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Z"/><path d="M12 6v14"/></svg><span class="navText">Conocimiento</span></button>
+<button class="nav" data-page="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="navText">Seguimiento</span></button>
+<button class="nav" data-page="future"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 6h14M5 12h14M5 18h14"/><circle cx="8" cy="6" r="2" fill="var(--bg)"/><circle cx="16" cy="12" r="2" fill="var(--bg)"/><circle cx="11" cy="18" r="2" fill="var(--bg)"/></svg><span class="navText">Evolución</span></button>
+<div class="sidebarBottom"><span class="pill"><i class="dot"></i> Datos simulados · sin conexión</span><div class="small">Tema del registro</div><div class="themeRow"><button class="themeBtn active" data-theme="light">Blanco</button><button class="themeBtn" data-theme="dark">Negro</button></div><div class="small">Sin enviar información a servidores.</div></div>
+</aside>
+<main>
+<div class="topbar"><div><div class="kicker">PANTALLA PRINCIPAL · CONCEPTO</div><h1 id="pageTitle">Tu centro Asterion</h1><p class="sub" id="pageSubtitle">Un lugar para entender tu plan, registrar cómo vas y decidir ajustes.</p></div><span class="previewBadge">PROTOTIPO · NO ES IA EN LA APK</span></div>
+<div class="tabs"><button class="tab active" data-tab="today">Hoy</button><button class="tab" data-tab="learn">Conocimiento</button><button class="tab" data-tab="history">Seguimiento</button><button class="tab" data-tab="future">Evolución</button></div>
+<section class="contentPage active" data-content="today">
+<div class="twin">
+<div class="panel"><div class="panelHeader"><div><div class="tag">01 · Acompañamiento</div><h2 style="margin-top:5px">¿Cómo te encuentras hoy?</h2></div><span class="pill">Respuesta temporal</span></div>
+<p class="sub">Tu respuesta cambia la recomendación mostrada, nunca la planificación guardada.</p>
+<div class="choiceGrid" id="checkins"><button class="choice" data-checkin="ok" aria-pressed="false">Me siento bien</button><button class="choice" data-checkin="low" aria-pressed="false">Energía baja</button><button class="choice" data-checkin="rest" aria-pressed="false">Prefiero descansar</button><button class="choice" data-checkin="discomfort" aria-pressed="false">Tengo molestias</button></div>
+<div class="selectRow"><label for="minutes">Tiempo disponible</label><select id="minutes"><option value="0">No disponible</option><option value="10">10 minutos</option><option value="20" selected>20 minutos</option><option value="30">30 minutos</option><option value="45">45 minutos</option></select></div></div>
+<div class="panel"><div class="panelHeader"><div><div class="tag">02 · Decisión explicada</div><h2 style="margin-top:5px">Sugerencia del Sistema</h2></div></div>
+<div class="advice"><span class="adviceCode" id="decisionCode">NECESITA CONTEXTO</span><p class="reason" id="reason">El Sistema todavía no sabe cómo te sientes.</p><p class="next" id="next">Responde solo si quieres recibir una sugerencia. No se modificarán tus ejercicios.</p></div>
+<div class="actions"><button class="btn" id="reset">Borrar respuesta</button><button class="btn primary" id="goPlan">Abrir mi plan</button></div>
+<p class="small" style="margin-top:14px">Las recomendaciones son orientativas y deben ser aceptadas por la persona antes de cambiar su calendario.</p></div></div>
+<div class="twin">
+<div class="panel"><div class="panelHeader"><div><div class="tag">03 · Monitoreo</div><h2 style="margin-top:5px">Mi semana</h2></div><span class="pill">Ejemplo de datos</span></div>
+<div class="reasonRows"><div class="reasonRow"><div class="label">Actividades previstas</div><div class="metric" id="mScheduled">5</div></div><div class="reasonRow"><div class="label">Realizadas / omitidas</div><div class="metric" id="mResults">2 / 1</div></div></div>
+<div class="week" id="week"></div><div class="legend" id="legend"></div><p class="small" style="margin-top:10px">Estas seis categorías y sus colores son los mismos que en tu registro: cinco actividades y descanso.</p>
+<div class="actions"><button class="btn" id="goProgress">Ver seguimiento</button><button class="btn" id="changeScenario">Simular otra semana</button></div></div>
+<div class="panel"><div class="panelHeader"><div><div class="tag">04 · Comprensión y aprendizaje</div><h2 style="margin-top:5px">Conocer antes de ejecutar</h2></div></div>
+<div class="list"><div class="listRow"><div><strong>Explicaciones claras</strong><p>Qué se plantea, qué datos se usaron y qué no sabemos.</p></div><span>›</span></div><div class="listRow"><div><strong>Alternativas reversibles</strong><p>Reducir, descansar o reorganizar: solo con tu aprobación.</p></div><span>›</span></div><div class="listRow"><div><strong>Historial verificable</strong><p>Plan, actividades y resultados guardados localmente.</p></div><span>›</span></div></div><div class="actions"><button class="btn primary" id="goLearn">Ver biblioteca de aprendizaje</button></div></div></div>
+</section>
+<section class="contentPage" data-content="learn"><div class="panel"><div class="tag">05 · Lectura, comprensión y retención</div><h2 style="margin:8px 0">Biblioteca de ejercicios explicados</h2><p class="sub">Una futura capa de conocimiento relacionará cada variante del catálogo con explicaciones breves, limitaciones y respuestas a preguntas frecuentes. No debe generar instrucciones desconocidas ni inventar técnicas.</p>
+<div class="list" style="margin-top:18px"><div class="article"><h3>Leer</h3><p>Descripción sencilla de la actividad, objetivo, material necesario y alternativas.</p></div><div class="article"><h3>Comprender</h3><p>Explicar por qué se sugiere una opción y permitir consultar dudas usando contenido revisado.</p></div><div class="article"><h3>Recordar</h3><p>Guardar únicamente preferencias autorizadas y cambios aceptados, con posibilidad de revisar o borrar.</p></div><div class="article"><h3>Actualizar</h3><p>Versionar los contenidos y distinguir los datos confirmados de las estimaciones del sistema.</p></div></div></div></section>
+<section class="contentPage" data-content="history"><div class="panel"><div class="tag">06 · Seguimiento y regulación</div><h2 style="margin:8px 0">Evidencia antes de ajustar</h2><p class="sub">El progreso no equivale a una puntuación corporal. Los días pendientes no se consideran fallos y saltarse una sesión no provoca castigos ni un aumento de intensidad.</p>
+<div class="reasonRows"><div class="reasonRow"><div class="label">Actividades realizadas</div><div class="metric" id="historyCompleted">2</div></div><div class="reasonRow"><div class="label">Por revisar</div><div class="metric" id="historyPending">2</div></div></div>
+<p class="small" style="margin-top:15px">En producción, estos datos deben proceder de SQLite de la APK y tener fecha de actualización. Aquí son simulados.</p></div>
+<div class="panel"><h2>Registro de decisiones</h2><div class="list" style="margin-top:12px"><div class="listRow"><div><strong>Motivo</strong><p id="historyReason">Sin sugerencia seleccionada</p></div></div><div class="listRow"><div><strong>Acción ejecutada</strong><p>Ninguna. La maqueta no modifica ningún calendario.</p></div></div><div class="listRow"><div><strong>Privacidad</strong><p>Las respuestas temporales se pierden al cerrar este prototipo.</p></div></div></div></div></section>
+<section class="contentPage" data-content="future"><div class="panel"><div class="tag">07 · Arquitectura evolutiva</div><h2 style="margin:8px 0">De un motor seguro a un asistente más avanzado</h2><p class="sub">Estas son fases de desarrollo propuestas, no funciones que ya estén implementadas.</p>
+<div class="list" style="margin-top:18px"><div class="routeBox"><div class="routeCount">1</div><div><h3>Motor local explicable</h3><p class="small">Reglas deterministas, datos SQLite, decisiones que nunca cambian el plan automáticamente.</p></div></div><div class="routeBox"><div class="routeCount">2</div><div><h3>Memoria con permiso y controles</h3><p class="small">Preferencias persistentes, historial de cambios con versiones, borrar y exportar datos.</p></div></div><div class="routeBox"><div class="routeCount">3</div><div><h3>Conocimiento de ejercicios verificado</h3><p class="small">Instrucciones curadas y búsqueda por categorías, variantes y material disponible.</p></div></div><div class="routeBox"><div class="routeCount">4</div><div><h3>IA opcional conectada</h3><p class="small">Lenguaje natural con controles de acceso, privacidad, seguridad, evaluación y alternativa sin conexión.</p></div></div><div class="routeBox"><div class="routeCount">5</div><div><h3>Aprendizaje supervisado de preferencias</h3><p class="small">Ajustes graduales reversibles, pruebas reales, trazabilidad, control explícito del usuario.</p></div></div></div></div></section>
+<p class="footerNote">Asterion System · Demo visual independiente · Todas las decisiones y estadísticas son ilustrativas · Sin conexión ni escritura de datos.</p>
+</main></div></div>
+<script>
+(()=>{
+const app=document.getElementById('app');const $=id=>document.getElementById(id);
+const checkins={ok:'FEEL_OK',low:'LOW_ENERGY',rest:'REST_PREFERRED',discomfort:'DISCOMFORT'};
+const categories=[{id:'superior',name:'Tren superior',color:'#2088b7'},{id:'central',name:'Tren central',color:'#8456ca'},{id:'inferior',name:'Tren inferior',color:'#d39437'},{id:'movilidad',name:'Movilidad',color:'#258d70'},{id:'cardio',name:'Cardio',color:'#b95172'},{id:'descanso',name:'Descanso',color:'#64748b'}];
+const weeks=[[0,1,2,3,4,5,5],[5,0,5,1,5,4,5],[5,5,5,5,5,5,5]];
+const counts=[{planned:5,completed:2,skipped:1,pending:2},{planned:3,completed:0,skipped:2,pending:1},{planned:0,completed:0,skipped:0,pending:0}];
+let state={page:'today',theme:'light',checkin:null,minutes:20,scenario:0};
+function suggestion(){const s=counts[state.scenario];let code='NEEDS_CHECK_IN',why='Todavía no has indicado cómo te encuentras.',action='Puedes escoger una opción para ver una recomendación. No se cambia el plan.';
+ if(state.checkin==='discomfort'){code='DISCOMFORT_REPORTED';why='Se indicaron molestias. Es preferible detener la actividad y comprobar cómo te encuentras.';action='Descansa. Si las molestias persisten o son importantes, consulta a un profesional o a un adulto de confianza.'}
+ else if(state.checkin==='rest'){code='REST_REQUESTED';why='Elegiste descansar. Los descansos forman parte de una planificación flexible.';action='Revisa o reprograma la actividad cuando te venga bien.'}
+ else if(state.checkin==='low'){code='LOW_ENERGY';why='Hoy indicaste poca energía. No es necesario forzar el plan.';action='Puedes optar por algo suave, reducir la actividad o descansar.'}
+ else if(state.checkin===null){}
+ else if(s.planned===0){code='NO_PLANNED_ACTIVITY';why='No hay actividades previstas en esta semana de ejemplo.';action='Consulta el calendario para decidir si deseas planificar alguna.'}
+ else if(state.minutes===0){code='NO_AVAILABLE_TIME';why='No hay tiempo disponible indicado para hoy.';action='Puedes mantener el plan para otro día, sin penalización.'}
+ else if(state.minutes<20){code='LIMITED_TIME';why='Hay poco tiempo disponible. El horario puede adaptarse.';action='Si quieres, revisa una alternativa más breve; no se aplica automáticamente.'}
+ else if(s.skipped>s.completed&&s.skipped>=2){code='SCHEDULE_MISMATCH';why='Varias actividades no se realizaron. Quizá convenga revisar su distribución.';action='Puedes cambiar días o actividades, sin sanciones ni aumentos automáticos.'}
+ else{code='PLAN_STABLE';why='No hay motivo para intensificar la actividad por haber completado sesiones.';action='Puedes consultar el plan y decidir cómo continuar a tu ritmo.'}
+ $('decisionCode').textContent=code.replaceAll('_',' ');$('reason').textContent=why;$('next').textContent=action;$('historyReason').textContent=why;}
+function renderWeek(){const w=weeks[state.scenario];$('week').replaceChildren();w.forEach((i,d)=>{const cat=categories[i];const b=document.createElement('button');b.className='day';b.type='button';b.title=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'][d]+': '+cat.name;b.setAttribute('aria-label',b.title);b.innerHTML='<strong>'+['L','M','X','J','V','S','D'][d]+'</strong><i style="background:'+cat.color+'"></i><span>'+cat.name.split(' ')[0]+'</span>';b.addEventListener('click',()=>{w[d]=(w[d]+1)%categories.length;renderWeek();});$('week').append(b)});$('legend').replaceChildren();categories.forEach(c=>{const e=document.createElement('span');e.innerHTML='<i style="background:'+c.color+'"></i>'+c.name;$('legend').append(e)});const stats=counts[state.scenario];$('mScheduled').textContent=stats.planned;$('mResults').textContent=stats.completed+' / '+stats.skipped;$('historyCompleted').textContent=stats.completed;$('historyPending').textContent=stats.pending;}
+function activate(page){state.page=page;document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===page));document.querySelectorAll('[data-content]').forEach(p=>p.classList.toggle('active',p.dataset.content===page));const copy={today:['Tu centro Asterion','Un lugar para entender tu plan, registrar cómo vas y decidir ajustes.'],learn:['Conocimiento del Sistema','Leer, comprender y consultar antes de actuar.'],history:['Seguimiento responsable','Información verificable y explicaciones de los ajustes.'],future:['Evolución del motor','Una arquitectura modular preparada para ampliar funciones.']};$('pageTitle').textContent=copy[page][0];$('pageSubtitle').textContent=copy[page][1];window.scrollTo(0,0)}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.page)));document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));
+document.querySelectorAll('[data-theme]').forEach(b=>b.addEventListener('click',()=>{state.theme=b.dataset.theme;app.classList.toggle('dark',state.theme==='dark');document.querySelectorAll('[data-theme]').forEach(x=>x.classList.toggle('active',x.dataset.theme===state.theme))}));
+document.querySelectorAll('[data-checkin]').forEach(b=>b.addEventListener('click',()=>{state.checkin=b.dataset.checkin;document.querySelectorAll('[data-checkin]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.checkin===state.checkin)));suggestion()}));
+$('minutes').addEventListener('change',e=>{state.minutes=Number(e.target.value);suggestion()});$('reset').addEventListener('click',()=>{state.checkin=null;document.querySelectorAll('[data-checkin]').forEach(b=>b.setAttribute('aria-pressed','false'));suggestion()});
+$('changeScenario').addEventListener('click',()=>{state.scenario=(state.scenario+1)%3;renderWeek();suggestion()});$('goLearn').addEventListener('click',()=>activate('learn'));$('goProgress').addEventListener('click',()=>activate('history'));$('goPlan').addEventListener('click',()=>{activate('future')});
+renderWeek();suggestion();})();
+</script>
+</body></html>
