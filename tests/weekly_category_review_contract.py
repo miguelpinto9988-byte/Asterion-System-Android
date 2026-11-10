@@ -14,7 +14,7 @@ for bit in ("ChronoUnit.DAYS.between(firstRecordedDay,today)",
             "if(!observation.activityCompleted)continue"):
     assert bit in weekly,bit
 assert "WeeklyCategoryChallengePolicy.evaluate(" in activity
-assert "MissionTrackingStore.recentCategoryObservations(this,category,today)" in activity
+assert "MissionTrackingStore.recentCategoryObservations(this,catalog,category,today)" in activity
 assert "weekly!=null && weekly.rotateEquivalentVariant()" in activity
 assert "boolean enableEquivalentRotation" in planner
 assert "if(enableEquivalentRotation" in planner
