@@ -1,5 +1,7 @@
 # Pantalla de inicio aprobada y distribución del catálogo de ejercicios
 
+**Nota de actualización (2026-11-10):** esta página es la especificación histórica del primer diseño, anterior a la integración Android. La versión actual de `main` ya incluye la Biblioteca nativa y propuestas de misiones conectadas al catálogo con **505 variantes y cinco categorías de entrenamiento**. Para el inventario y el mapeo en producción, consultar [ampliación vigente](../catalogo-ejercicios/03-ampliacion-cinco-categorias.md). Las frases de “pendiente” en esta página describen su fecha original y no la implementación actual.
+
 Estado: estructura de diseño aprobada el 9 de noviembre de 2026. La pantalla Java/XML de producción todavía necesita adaptar el orden de módulos y vincular los nuevos destinos. Los prototipos HTML no son la APK.
 
 ## Orden fijo de la pantalla principal
