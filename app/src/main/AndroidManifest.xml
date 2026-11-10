@@ -26,6 +26,9 @@
             android:exported="false"
             android:theme="@style/Theme.AsterionSystem" />
         <activity
+            android:name=".RoutineStepActivity"
+            android:exported="false" />
+        <activity
             android:name=".MissionsActivity"
             android:exported="false" />
         <activity
