@@ -368,6 +368,10 @@ final class ProfileRegistrationSteps {
 
         addHeading(out,"06 — Equipamiento disponible");
         check(out,"bodyweight","Peso corporal / sin equipo",true);
+        // Optional common supports; never assume the user has these items.
+        check(out,"mat","Colchoneta o superficie acolchada estable",false);
+        check(out,"wall","Pared o apoyo vertical firme",false);
+        check(out,"chair","Silla estable",false);
         CheckBox dumbbells=check(out,"dumbbells","Mancuernas",false);
         LinearLayout dumbbellPanel=vertical();
         addInfo(dumbbellPanel,"Pesos de las mancuernas disponibles (kg), separados por comas");

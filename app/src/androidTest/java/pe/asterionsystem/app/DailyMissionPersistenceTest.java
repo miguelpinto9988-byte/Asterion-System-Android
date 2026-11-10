@@ -17,6 +17,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalogLoader;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
+import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
 
 /**
  * Real Android SharedPreferences persistence smoke. CI runs seedPin and
@@ -63,6 +64,10 @@ public final class DailyMissionPersistenceTest {
     @Test public void seedPin() throws Exception {
         Context context=context();
         DailyMissionStore.clear(context); // fresh CI emulator only
+        context.getSharedPreferences("asterion_mission_level_progress_v1",
+                Context.MODE_PRIVATE).edit().clear().commit();
+        assertEquals(0,MissionLevelProgressStore.observe(
+                context,"intermedio",0,DAY,null,false).phase);
         ExerciseCatalog library=catalog();
         assertEquals(817,library.variants().size());
         MissionPlanner.Profile profile=profile("bienestar");
@@ -86,6 +91,9 @@ public final class DailyMissionPersistenceTest {
         assertFalse(expected.isEmpty());
         assertEquals("Pin should survive process shutdown/restart",expected,
                 DailyMissionStore.read(context,DAY,profile,library));
+        assertEquals("Experience phase should survive process restart",0,
+                MissionLevelProgressStore.observe(
+                        context,"intermedio",0,DAY,null,false).phase);
         assertTrue(MissionTrackingStore.recentCompletedForCategory(
                 context,library,0,DAY).contains(expected.get(0)));
         assertTrue("Completed exercise from upper body must not appear in legs",
@@ -96,6 +104,47 @@ public final class DailyMissionPersistenceTest {
                         context,library,0,DAY);
         assertEquals(1,observed.activeDays);
         assertEquals(1,observed.uniqueVariants);
+        WeeklyCategoryChallengePolicy.Review easilyCompleted=
+                WeeklyCategoryChallengePolicy.evaluate(0,DAY,DAY.plusDays(7),
+                        List.of(
+                                new WeeklyCategoryChallengePolicy.Observation(
+                                        DAY.plusDays(2),0,2,true),
+                                new WeeklyCategoryChallengePolicy.Observation(
+                                        DAY.plusDays(4),0,3,true)));
+        assertEquals(WeeklyCategoryChallengePolicy.Status.OFFER_EQUIVALENT_VARIETY,
+                easilyCompleted.status);
+        assertEquals("First week must stay mostly basic",0,
+                MissionLevelProgressStore.observe(
+                        context,"intermedio",0,DAY.plusDays(6),
+                        easilyCompleted,false).phase);
+        assertEquals("Interrupted training cannot progress",0,
+                MissionLevelProgressStore.observe(
+                        context,"intermedio",0,DAY.plusDays(7),
+                        easilyCompleted,true).phase);
+        assertEquals("Another category cannot inherit an easy review",0,
+                MissionLevelProgressStore.observe(
+                        context,"intermedio",1,DAY.plusDays(7),
+                        easilyCompleted,false).phase);
+        assertEquals(1,MissionLevelProgressStore.observe(
+                context,"intermedio",0,DAY.plusDays(8),
+                easilyCompleted,false).phase);
+        assertEquals("Repeated app opens must not promote again",1,
+                MissionLevelProgressStore.observe(
+                        context,"intermedio",0,DAY.plusDays(8),
+                        easilyCompleted,false).phase);
+        WeeklyCategoryChallengePolicy.Review nextEasyWeek=
+                WeeklyCategoryChallengePolicy.evaluate(0,DAY,DAY.plusDays(15),
+                        List.of(
+                                new WeeklyCategoryChallengePolicy.Observation(
+                                        DAY.plusDays(10),0,2,true),
+                                new WeeklyCategoryChallengePolicy.Observation(
+                                        DAY.plusDays(12),0,2,true)));
+        assertEquals(2,MissionLevelProgressStore.observe(
+                context,"intermedio",0,DAY.plusDays(15),
+                nextEasyWeek,false).phase);
+        assertEquals(0,MissionLevelProgressStore.observe(
+                context,"avanzado",0,DAY.plusDays(16),
+                nextEasyWeek,false).phase); // changing experience resets phase
         assertEquals("Next local day invalidates yesterday's pin",List.of(),
                 DailyMissionStore.read(context,DAY.plusDays(1),profile,library));
         List<ExerciseVariant> tomorrow=new MissionPlanner(library).daily(
