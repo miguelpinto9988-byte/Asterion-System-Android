@@ -19,6 +19,7 @@ import java.util.Set;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
 import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
+import pe.asterionsystem.core.engine.exercises.ExerciseMuscleFocus;
 import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
@@ -214,10 +215,26 @@ public final class MissionPlanner {
                           CategoryEffortPolicy.Decision decision,
                           List<String> previousVariantIds,
                           boolean enableEquivalentRotation) {
+        return daily(profile,today,decision,previousVariantIds,
+                enableEquivalentRotation,Collections.emptyList());
+    }
+
+    /**
+     * Prefer variants not completed during the previous 14 days in this
+     * category, but reuse eligible prior variants when alternatives run out.
+     * Previously displayed (unpinned) proposals do not become progress.
+     */
+    public Proposal daily(Profile profile, LocalDate today,
+                          CategoryEffortPolicy.Decision decision,
+                          List<String> previousVariantIds,
+                          boolean enableEquivalentRotation,
+                          List<String> recentCompletedIds) {
         Objects.requireNonNull(profile, "profile");
         Objects.requireNonNull(today, "today");
         Objects.requireNonNull(decision, "decision");
         Objects.requireNonNull(previousVariantIds, "previousVariantIds");
+        Objects.requireNonNull(recentCompletedIds, "recentCompletedIds");
+        Set<String> recentCompleted=new HashSet<>(recentCompletedIds);
         int category=profile.weekly.get(today.getDayOfWeek().getValue()-1);
         if(category!=decision.category) {
             throw new IllegalArgumentException("La valoración no corresponde a la categoría del día");
@@ -256,6 +273,7 @@ public final class MissionPlanner {
                     if(option.typeId().equals(prior.typeId())
                             && option.difficulty()==prior.difficulty()
                             && !option.id().equals(prior.id())
+                            && !recentCompleted.contains(option.id())
                             && !usedTypes.contains(option.typeId())) {
                         selected=option;
                         break;
@@ -263,6 +281,7 @@ public final class MissionPlanner {
                 }
             }
             if(selected==null && eligible.contains(prior)
+                    && !recentCompleted.contains(prior.id())
                     && !usedTypes.contains(prior.typeId())) {
                 selected=prior;
             }
@@ -270,10 +289,13 @@ public final class MissionPlanner {
         }
         List<ExerciseVariant> ranked=new ArrayList<>(eligible);
         if(decision.preferSimplerTechnique) {
-            ranked.sort(Comparator.comparingInt(ExerciseVariant::difficulty)
+            ranked.sort(Comparator
+                    .comparingInt((ExerciseVariant v)->recentCompleted.contains(v.id())?1:0)
+                    .thenComparingInt(ExerciseVariant::difficulty)
                     .thenComparing(ExerciseVariant::id));
         } else {
-            ranked=takeDiverse(ranked,ranked.size(),daySeed(profile,today));
+            ranked=takeDiverse(ranked,ranked.size(),daySeed(profile,today),
+                    recentCompleted);
         }
         for(ExerciseVariant option:ranked) {
             if(chosen.size()==limit)break;
@@ -376,27 +398,57 @@ public final class MissionPlanner {
         return result;
     }
 
-    private List<ExerciseVariant> takeDiverse(List<ExerciseVariant> pool, int count, long seed) {
-        if (pool.isEmpty() || count <= 0) return Collections.emptyList();
-        // Unlike a rotating list offset, seeded Fisher-Yates explores the
-        // full eligible catalog while yielding the SAME order on every reopen.
+    private List<ExerciseVariant> takeDiverse(List<ExerciseVariant> pool,
+                                              int count,long seed) {
+        return takeDiverse(pool,count,seed,Collections.emptySet());
+    }
+
+    private List<ExerciseVariant> takeDiverse(List<ExerciseVariant> pool,
+                                              int count,long seed,
+                                              Set<String> recentlyCompleted) {
+        if(pool.isEmpty() || count<=0)return Collections.emptyList();
+        Objects.requireNonNull(recentlyCompleted,"recentlyCompleted");
+        // Seeded full-catalog shuffle is reproducible for one date/profile.
         ArrayList<ExerciseVariant> shuffled=new ArrayList<>(pool);
         Collections.shuffle(shuffled,new Random(seed));
-        int start=0;
-        ArrayList<ExerciseVariant> selected = new ArrayList<>();
-        Set<String> familyUsed = new HashSet<>();
-        // First pass: distribute across families, avoiding duplicate movements.
-        for (int i=0; i<pool.size() && selected.size()<count; i++) {
-            ExerciseVariant variant = shuffled.get(i);
-            String familyId = familyForType.get(variant.typeId());
-            if (familyUsed.add(familyId)) selected.add(variant);
-        }
-        // Fallback: different exercise types, still with safe technical eligibility.
-        Set<String> typeUsed = new HashSet<>();
-        for (ExerciseVariant picked : selected) typeUsed.add(picked.typeId());
-        for (int i=0; i<pool.size() && selected.size()<count; i++) {
-            ExerciseVariant variant = shuffled.get(i);
-            if (typeUsed.add(variant.typeId())) selected.add(variant);
+        ArrayList<ExerciseVariant> selected=new ArrayList<>();
+        Set<String> usedIds=new HashSet<>();
+        // First prefer exercises not completed recently. Only afterwards reuse
+        // previously completed safe options when the eligible pool is small.
+        for(boolean useRecent:new boolean[]{false,true}) {
+            Set<String> usedFocus=new HashSet<>();
+            for(ExerciseVariant v:selected)usedFocus.add(
+                    ExerciseMuscleFocus.forFamily(familyForType.get(v.typeId())).key());
+            for(ExerciseVariant v:shuffled) {
+                if(selected.size()>=count)break;
+                if(recentlyCompleted.contains(v.id())!=useRecent)continue;
+                String focus=ExerciseMuscleFocus.forFamily(
+                        familyForType.get(v.typeId())).key();
+                if(usedFocus.add(focus) && usedIds.add(v.id()))selected.add(v);
+            }
+            Set<String> usedFamilies=new HashSet<>();
+            for(ExerciseVariant v:selected)usedFamilies.add(familyForType.get(v.typeId()));
+            for(ExerciseVariant v:shuffled) {
+                if(selected.size()>=count)break;
+                if(recentlyCompleted.contains(v.id())!=useRecent)continue;
+                if(usedFamilies.add(familyForType.get(v.typeId()))
+                        && usedIds.add(v.id()))selected.add(v);
+            }
+            Set<String> usedTypes=new HashSet<>();
+            for(ExerciseVariant v:selected)usedTypes.add(v.typeId());
+            for(ExerciseVariant v:shuffled) {
+                if(selected.size()>=count)break;
+                if(recentlyCompleted.contains(v.id())!=useRecent)continue;
+                if(usedTypes.add(v.typeId()) && usedIds.add(v.id()))selected.add(v);
+            }
+            // With few distinct families/types the eligible variants must
+            // remain usable; never force a duplicate or a non-eligible exercise.
+            for(ExerciseVariant v:shuffled) {
+                if(selected.size()>=count)break;
+                if(recentlyCompleted.contains(v.id())==useRecent
+                        && usedIds.add(v.id()))selected.add(v);
+            }
+            if(selected.size()>=count)break;
         }
         return selected;
     }
