@@ -184,6 +184,13 @@ class PreflightNoBuild(unittest.TestCase):
                              ["variant_id", "type_id", "name", "level",
                               "equipment", "execution", "supervision"])
         self.assertEqual((75, 204, 817), (len(families), len(types), len(variants)))
+        intensity = read_rows("intensity.tsv", ["variant_id", "intensity"])
+        self.assertEqual(312, len(intensity))
+        self.assertEqual(len({row[0] for row in intensity}), len(intensity))
+        self.assertTrue(all(row[1] in ("baja", "moderada", "alta", "variable")
+                            for row in intensity))
+        self.assertTrue({row[0] for row in intensity}.issubset(
+            {row[0] for row in variants}))
         family_ids = {row[0] for row in families}
         type_ids = {row[0] for row in types}
         self.assertEqual(len(family_ids), len(families))
