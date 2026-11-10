@@ -1,5 +1,7 @@
 # Catálogo completo de ejercicios Asterion — v1.0.0
 
+**Archivo histórico, v1.0.0:** esta lista corresponde a las 445 variantes originales. El inventario operativo de `main` contiene **505 variantes**; las 60 incorporadas posteriormente están en los TSV y documentadas en [la ampliación por cinco categorías](03-ampliacion-cinco-categorias.md). Este archivo no debe utilizarse como recuento vigente.
+
 **Inventario:** 39 familias · 80 tipos · 445 variantes. Este archivo se genera conceptualmente a partir de los tres TSV versionados en `progress-engine/src/main/resources/asterion_exercises/v1/`. Las denominaciones y clasificaciones son originales de Asterion; las bibliotecas públicas de ejercicios se consultaron como referencias generales, sin reproducir sus instrucciones, imágenes o vídeos.
 
 **Lectura:** `L1` iniciación · `L2` básico · `L3` intermedio · `L4` avanzado · `L5` alta complejidad. Estas etiquetas describen la coordinación, el apoyo y la técnica de la variante, **no la capacidad de una persona**. Un nivel superior no es una meta ni una recomendación de entrenamiento. `Orientación` indica que se recomienda supervisión cualificada; las variantes L4–L5 nunca entran en sugerencias automáticas.
