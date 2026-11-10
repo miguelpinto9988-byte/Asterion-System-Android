@@ -28,7 +28,7 @@ def main():
                      '"missions"', '"dumbbells"'):
         expect(fragment,helper)
     step3=(JAVA/"SimpleProfileStepThreeView.java").read_text()
-    for fragment in ('"dark","light"', '"theme"', '"accent"', '"companion"',
+    for fragment in ('"light","dark"', '"theme"', '"accent"', '"companion"',
                      '"card_silhouette"', '"card_background"',
                      '"igris","beru","tank","tusk","iron"',
                      '"ruinas","niebla","obsidiana","aurora","bosque"',
