@@ -96,8 +96,11 @@ public final class ProfileCreateActivity extends ComponentActivity {
         });
 
         loadStepOne();
-        int stage=state==null?1:Math.max(1,Math.min(4,state.getInt("stage",1)));
-        showStep(stage);
+        int stage=state==null?1:Math.max(1,Math.min(5,state.getInt("stage",1)));
+        // After activation, restore the success screen instead of reopening
+        // an unconfirmed final form if Android recreates this Activity.
+        if(stage==5 && ProfileStore.hasProfile(this))showActivated();
+        else showStep(Math.min(4,stage));
     }
 
     private void applyTheme() {
@@ -260,7 +263,7 @@ public final class ProfileCreateActivity extends ComponentActivity {
 
     @Override protected void onSaveInstanceState(Bundle saved) {
         if(step==1)saveStepOne(false);
-        saved.putInt("stage",Math.min(4,step));
+        saved.putInt("stage",step);
         super.onSaveInstanceState(saved);
     }
 }

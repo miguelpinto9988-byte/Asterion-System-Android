@@ -1,6 +1,8 @@
 # Asterion System — Android nativo Java
 
-**Estado:** implementadas fases 00, 01, 02, 04, 05, 06, 07, 08, 09, 11, 14 y **15 (optimización, seguridad y accesibilidad)**. La fase 03 de diseño definitivo sigue pendiente.
+**Estado operativo (10 de noviembre de 2026):** aplicación Android Java/XML con registro nativo de cuatro pasos, biblioteca local de **75 familias / 204 tipos / 817 variantes**, misiones diarias estables, progreso por categoría y Monarca opcional. La variante debug de `main` superó compilación, pruebas y arranque en emulador Android 16; **no existe una release de distribución validada**. Los apartados de fases anteriores conservan parte del historial técnico.
+
+**Consolidación en revisión:** [estado e integración de PR pendientes](docs/consolidacion/ESTADO_2026-11-10.md) y [especificación MagicPath](docs/consolidacion/MAGICPATH_HANDOFF.md). No se fusionan automáticamente los PR #2 y #3.
 
 Proyecto Java nativo Android con vistas XML. El HTML se utiliza **solo como previsualización externa**. No se han incorporado HTML, JavaScript, CSS, WebView o Compose a las pantallas Android.
 
@@ -41,9 +43,11 @@ La evaluación por patrones es **de solo lectura**; la creación de planes y el 
 - [Arquitectura, contratos y extensión futura](docs/motor-progreso/01-motor-modular.md)
 - Pruebas JVM: `gradle :progress-engine:test`, incorporadas al workflow CI de debug para cada publicación en `main` (también disponible de forma manual). La ejecución del nuevo módulo debe verificarse en los registros de GitHub Actions.
 
-## Catálogo de familias, tipos y variantes de ejercicios (v1)
+## Catálogo de familias, tipos y variantes de ejercicios (v1, histórico)
 
-Se incorporó el inventario inicial de **39 familias, 80 tipos y 445 variantes de ejercicios**, clasificado por movimiento, región funcional, implementos, forma de ejecución y complejidad técnica L1–L5. El inventario está dentro de la aplicación como recursos UTF-8 versionados y puede leerse con `AssetExerciseCatalogRepository`, sin internet ni migración de SQLite v5.
+**Inventario operativo vigente: 75 familias, 204 tipos y 817 variantes**, con 312 etiquetas explícitas de intensidad; véase [ampliación y criterios](docs/catalogo-ejercicios/04-biblioteca-diversa-intensidad.md).
+
+En una fase inicial se incorporó el inventario de **39 familias, 80 tipos y 445 variantes de ejercicios**, clasificado por movimiento, región funcional, implementos, forma de ejecución y complejidad técnica L1–L5. El inventario está dentro de la aplicación como recursos UTF-8 versionados y puede leerse con `AssetExerciseCatalogRepository`, sin internet ni migración de SQLite v5.
 
 El índice `ExerciseCatalog` (Java puro, módulo `:progress-engine`) valida la jerarquía, los identificadores, la progresión de niveles y los campos; permite filtrar por región, material, modalidad y complejidad. Los niveles L4/L5 requieren orientación profesional y no son elegibles para sugerencias automáticas. **Los registros todavía no se muestran en el Catálogo visual ni pueden guardarse como planes usando los IDs del TSV**: ese enlace exige una etapa posterior que preserve las claves foráneas de SQLite.
 
@@ -108,14 +112,16 @@ Pruebas **sin Android** efectuadas: previsualización HTML externa con 36 verifi
 
 Se incorporó al código fuente una primera versión del sistema visual oscuro de Asterion System, basado en la previsualización revisada: paleta azul-violeta, fondos degradados, botones de estados accesibles, tipografía serif para encabezados y controles táctiles de 48dp. Se conservaron todas las rutas y funcionalidades Java/XML existentes.
 
-La integración incorpora **ilustraciones vectoriales originales** del Guardián de Asterion y un centinela de sombras, así como un emblema y cinco iconos nativos. No se usan personajes oficiales ni fuentes de terceros. El resultado sigue **pendiente de compilación y validación visual en Android real**.
+La integración incorpora **ilustraciones vectoriales originales** del Guardián de Asterion y un centinela de sombras, así como un emblema y cinco iconos nativos. No se usan personajes oficiales ni fuentes de terceros. La integración visual tiene compilación debug y prueba de arranque en emulador Android 16 superadas; **la validación visual y funcional completa en dispositivo físico sigue pendiente**.
 
 - [Identidad y alcance](docs/fase-03/03-identidad-visual.md)
 - [Verificaciones y pendientes](docs/fase-03/03-validacion-y-pendientes.md)
 - [Prueba estática sin Android](tests/phase03_visual_source_contract.py)
 - [Integración vectorial y componentes](docs/fase-03/03-integracion-vectorial.md)
 
-## Fase 16 — Primera compilación debug autorizada y diagnóstico inicial
+## Fase 16 — Histórico de la primera compilación debug (5 de noviembre de 2026)
+
+Los fallos y tareas descritos en esta sección corresponden a la primera serie de pruebas; para el estado más reciente consulte el encabezado operativo y [GitHub Actions #42820271474](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42820271474).
 
 **La fase 16 cuenta ya con autorización expresa para la primera compilación APK `debug`, y para ejecutar las pruebas y lint de Gradle necesarios.** El **5 de noviembre de 2026** se inició [la primera ejecución manual de GitHub Actions](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42091749135): 58 pruebas JUnit, 57 correctas y una fallida. El fallo de día vacío se corrigió en fuente y la segunda ejecución superó las pruebas `:core:test`; la tercera ejecución (`42132119288`) llegó hasta `assembleDebug`, pero falló en `lintDebug` por la navegación Atrás obsoleta. La navegación ha sido migrada a AndroidX y está pendiente de una cuarta ejecución manual. La versión `release` y la firma de distribución siguen excluidas.
 
@@ -139,7 +145,7 @@ La APK de la fase 16 superó pruebas, lint y validación en la [ejecución #4214
 
 ## Compilación CI: modo automático aprobado
 
-Por autorización expresa, cada `push` a `main` ejecuta las pruebas estáticas, JUnit de `:core` y `:progress-engine`, pruebas Android debug, `lintDebug`, `assembleDebug` y verificaciones del APK firmado de desarrollo. `workflow_dispatch` permanece disponible. **No se activa release, firma de distribución ni despliegue automático a dispositivos**. Los artefactos debug se conservan siete días.
+Por autorización expresa, cada `push` a `main` y cada PR dirigido a `main` ejecuta las pruebas estáticas, JUnit de `:core` y `:progress-engine`, pruebas Android debug, `lintDebug`, `assembleDebug` y verificaciones del APK firmado de desarrollo. Los PR se revisan antes de fusionar. `workflow_dispatch` permanece disponible. **No se activa release, firma de distribución ni despliegue automático a dispositivos**. Los artefactos debug se conservan siete días.
 
 Las verificaciones de las fases 08 y 09 incluyen SQLite de escritorio y previsualizaciones HTML interactivas; las pruebas Java JUnit permanecen preparadas, **sin ejecutarse por Gradle**. Para fase 09 se ejecutaron 23 comprobaciones de interacción con Chromium y 8 pruebas de restricciones equivalentes del nuevo esquema SQLite. No equivalen a pruebas Android nativas. La compilación y ejecución Android siguen pendientes.
 
@@ -178,6 +184,6 @@ Para comprobar archivos y referencias sin generar APK: `python3 tests/phase11_pr
 
 ## Fases
 
-La fase 03 incorpora el diseño oscuro vectorial publicado. Las fases 14 y 15 están publicadas. La primera compilación `debug` de fase 16 está **autorizada, con un intento fallido y una corrección pendiente de nueva prueba**; la firma de distribución y la versión `release` no están autorizadas. Las fases 10, 12 y 13 permanecen excluidas.
+La fase 03 incorpora diseño vectorial publicado; las fases 14 y 15 permanecen implementadas. La fase 16 tiene **compilación debug, lint y arranque en emulador Android 16 correctos al 10 de noviembre de 2026**. Quedan pendientes la prueba funcional completa en dispositivo, la decisión sobre Media3 (PR #2), la reconciliación del registro antiguo (PR #3) y la aprobación visual; no se autoriza ninguna `release` ni firma de distribución. Las fases 10, 12 y 13 continúan excluidas.
 
 El repositorio es público pero no se ha seleccionado licencia de reutilización; no incorporar contraseñas, certificados o datos sensibles.

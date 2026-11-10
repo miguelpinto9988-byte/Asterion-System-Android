@@ -76,6 +76,7 @@ jobs:
           python3 tests/daily_mission_stability_contract.py
           python3 tests/mission_diversity_contract.py
           python3 tests/mission_level_mix_contract.py
+          python3 tests/consolidation_baseline_contract.py
           python3 tests/phase16_preflight_static.py
           python3 tests/phase03_visual_source_contract.py
 
