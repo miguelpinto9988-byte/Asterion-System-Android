@@ -33,7 +33,7 @@ public final class MonarchRandomnessTest {
             InputStreamReader v=reader(root+"variants.tsv");
             InputStreamReader i=reader(root+"intensity.tsv")) {
             catalog=ExerciseCatalogLoader.load(f,t,v,i);
-            assertEquals(817,catalog.variants().size());
+            assertEquals(917,catalog.variants().size());
             planner=new MissionPlanner(catalog);
         }
     }
