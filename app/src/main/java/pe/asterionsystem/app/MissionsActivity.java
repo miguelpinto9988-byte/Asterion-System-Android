@@ -30,6 +30,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
+import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
 
 /**
  * Real read-only catalog + daily proposals + five-day opt-in Monarca preview.
@@ -138,8 +139,13 @@ public final class MissionsActivity extends ComponentActivity {
         List<String> previousVariants=category==CategoryEffortPolicy.REST
                 ?java.util.Collections.emptyList()
                 :MissionTrackingStore.previousCategoryVariants(this,category,today);
+        WeeklyCategoryChallengePolicy.Review weekly=category==CategoryEffortPolicy.REST
+                ?null:WeeklyCategoryChallengePolicy.evaluate(
+                    category,MissionTrackingStore.firstReport(this),today,
+                    MissionTrackingStore.recentCategoryObservations(this,category,today));
         MissionPlanner.Proposal proposal=planner.daily(
-                dayProfile,today,decision,previousVariants);
+                dayProfile,today,decision,previousVariants,
+                weekly!=null && weekly.rotateEquivalentVariant());
         if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
             MissionTrackingStore.rememberCategoryProposal(
                     this,category,today,proposal.candidates());
@@ -148,10 +154,12 @@ public final class MissionsActivity extends ComponentActivity {
         if(category!=CategoryEffortPolicy.REST) {
             paragraph("Categoría: "+CategoryEffortPolicy.CATEGORY_NAMES[category]
                     +". "+decision.explanation);
-            if(decision.guidance==CategoryEffortPolicy.Guidance.REVIEW_OPTIONAL) {
-                paragraph("Asterion seleccionó las variantes automáticamente. "
-                        +"Si no existe una alternativa del mismo tipo y nivel técnico, "
-                        +"mantiene la opción compatible anterior.");
+            if(weekly!=null) {
+                paragraph("Revisión automática semanal: "+weekly.explanation);
+            }
+            if(weekly!=null && weekly.rotateEquivalentVariant()) {
+                paragraph("El motor buscó automáticamente una alternativa equivalente "
+                        +"del catálogo. No se añadieron repeticiones ni series.");
             }
         }
         paragraph(proposal.explanation());
