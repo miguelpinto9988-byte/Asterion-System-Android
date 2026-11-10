@@ -79,3 +79,23 @@ estiramiento_isquios	flexibilidad_piernas	Estiramiento de isquiotibiales
 estiramiento_cuadriceps	flexibilidad_piernas	Estiramiento de cuádriceps
 respiracion_diafragmatica	respiracion_postura	Respiración diafragmática
 control_postura	respiracion_postura	Control postural
+prension_suave	manos_agarre	Prensión suave
+separacion_dedos_mano	manos_agarre	Separación de dedos
+flexion_muneca_activa	control_muneca_fuerza	Flexión activa de muñeca
+extension_muneca_activa	control_muneca_fuerza	Extensión activa de muñeca
+extension_contralateral_cuadrupedia	estabilidad_cuadrupedia	Extensión contralateral en cuadrupedia
+apoyo_cuadrupedia	estabilidad_cuadrupedia	Control en cuatro apoyos
+alineacion_tronco_sentado	postura_tronco_sentado	Alineación del tronco sentado
+alcances_tronco_sentado	postura_tronco_sentado	Alcances sentado con tronco estable
+separacion_dedos_pies	motricidad_pies	Apertura y separación de dedos del pie
+recogida_toalla_pies	motricidad_pies	Prensión de objetos ligeros con dedos del pie
+extension_cadera_bipeda	extension_cadera_pie	Extensión de cadera de pie
+extension_cadera_cuadrupedia	extension_cadera_pie	Extensión de cadera en cuatro apoyos
+rotacion_cervical_suave	movilidad_cervical	Rotación cervical suave
+inclinacion_cervical_suave	movilidad_cervical	Inclinación cervical suave
+oposicion_pulgar	movilidad_dedos_manos	Oposición del pulgar
+flexoextension_dedos	movilidad_dedos_manos	Flexión y extensión suave de dedos
+talones_alternos	pasos_aerobicos_suaves	Toques alternados de talón al frente
+elevaciones_rodillas_cardio	pasos_aerobicos_suaves	Elevación alterna de rodillas en el sitio
+pasos_danza_basicos	danza_bajo_impacto	Pasos básicos de baile
+desplazamiento_ritmico_lateral	danza_bajo_impacto	Desplazamiento rítmico lateral
