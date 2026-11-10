@@ -94,7 +94,9 @@ class NativeVisualTest(unittest.TestCase):
         workflow=(ROOT/".github/workflows/android-ci.yml").read_text()
         self.assertRegex(workflow,r"(?m)^  workflow_dispatch:")
         self.assertIn("  push:\n    branches:\n      - main\n", workflow)
-        self.assertNotRegex(workflow,r"(?m)^  (pull_request|schedule):")
+        self.assertIn("  pull_request:\n    branches:\n      - main\n", workflow)
+        self.assertNotRegex(workflow,r"(?m)^  (schedule|pull_request_target):")
+        self.assertIn("permissions:\n  contents: read\n", workflow)
 
 
 if __name__=="__main__":
