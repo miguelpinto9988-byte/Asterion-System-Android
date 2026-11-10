@@ -23,6 +23,7 @@ final class MonarchSessionStore {
     private static final String IDS="preview_variant_ids";
     private static final String STATUS="state";
     private static final String ACCEPTED="accepted_date";
+    private static final String PROFILE_SIGNATURE="profile_signature";
 
     static final String PREVIEW="preview";
     static final String ACTIVE="active";
@@ -56,18 +57,21 @@ final class MonarchSessionStore {
         LocalDate preview=parse(sp.getString(START,""));
         LocalDate accepted=parse(sp.getString(ACCEPTED,""));
         String status=sp.getString(STATUS,PREVIEW);
+        String signature=signature(profile);
+        boolean profileChanged=!signature.equals(sp.getString(PROFILE_SIGNATURE,""));
         boolean expiredActive=ACTIVE.equals(status)
                 && (accepted==null || !today.isBefore(accepted.plusDays(5)));
         boolean invalidPreview=preview==null || today.isBefore(preview)
                 || ChronoUnit.DAYS.between(preview,today)>=5;
-        if (expiredActive || (!ACTIVE.equals(status) && invalidPreview)) {
+        if (expiredActive || profileChanged || (!ACTIVE.equals(status) && invalidPreview)) {
             MissionPlanner.Proposal generated=planner.monarch(profile,today);
             StringBuilder ids=new StringBuilder();
             for (ExerciseVariant variant:generated.candidates()) {
                 if(ids.length()>0)ids.append(",");
                 ids.append(variant.id());
             }
-            sp.edit().putString(START,today.toString())
+            sp.edit().putString(PROFILE_SIGNATURE,signature)
+                    .putString(START,today.toString())
                     .putString(IDS,ids.toString())
                     .putString(STATUS,PREVIEW)
                     .remove(ACCEPTED).apply();
@@ -105,6 +109,11 @@ final class MonarchSessionStore {
 
     static void abandon(Context context) {
         preferences(context).edit().clear().apply();
+    }
+
+    private static String signature(MissionPlanner.Profile profile) {
+        return profile.experience+"|"+profile.goal+"|"+profile.weekly
+                +"|"+new java.util.TreeSet<>(profile.equipment);
     }
 
     private static SharedPreferences preferences(Context context) {
