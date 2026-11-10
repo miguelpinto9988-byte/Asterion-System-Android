@@ -37,17 +37,27 @@ final class SessionSafetyStore {
 
     static void report(Context c,int category,LocalDate date,
                        SessionInterruptionPolicy.Assessment result) {
-        checkCategory(category);
         if(date==null||result==null)throw new IllegalArgumentException("Datos requeridos");
+        if(category<0 || category>4) {
+            if(category!=-1 ||
+                    (result.action!=SessionInterruptionPolicy.Action.GLOBAL_PAUSE_AND_SEEK_MEDICAL_CARE
+                    && result.action!=SessionInterruptionPolicy.Action.STOP_ONLY)) {
+                throw new IllegalArgumentException("Categoría inválida");
+            }
+        }
         SharedPreferences.Editor edit=prefs(c).edit();
         switch(result.action) {
             case GLOBAL_PAUSE_AND_SEEK_MEDICAL_CARE:
-                edit.putBoolean(GLOBAL,true).putString(GLOBAL_REASON,result.explanation)
-                        .putString(NEXT_PREFIX+category,date.toString())
-                        .remove(APPLIED_PREFIX+category);
+                edit.putBoolean(GLOBAL,true).putString(GLOBAL_REASON,result.explanation);
+                if(category>=0) {
+                    edit.putString(NEXT_PREFIX+category,date.toString())
+                            .remove(APPLIED_PREFIX+category);
+                }
                 break;
             case CATEGORY_PAUSE_UNTIL_REVIEW:
-                edit.putBoolean(PAUSE_PREFIX+category,true);
+                edit.putBoolean(PAUSE_PREFIX+category,true)
+                        .putString(NEXT_PREFIX+category,date.toString())
+                        .remove(APPLIED_PREFIX+category);
                 break;
             case CATEGORY_LIGHTER_NEXT_SESSION:
                 edit.putString(NEXT_PREFIX+category,date.toString())
