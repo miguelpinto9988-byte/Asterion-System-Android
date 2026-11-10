@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -15,6 +17,12 @@ public final class ExerciseCatalogLoader {
     private ExerciseCatalogLoader() { }
 
     public static ExerciseCatalog load(Reader families, Reader types, Reader variants) throws IOException {
+        return load(families,types,variants,null);
+    }
+
+    /** Optional fourth TSV keeps all historical seven-column variant assets compatible. */
+    public static ExerciseCatalog load(Reader families, Reader types, Reader variants,
+                                       Reader intensity) throws IOException {
         List<ExerciseFamily> parsedFamilies = new ArrayList<>();
         for (String[] row : rows(families, 4, "family_id\\tname\\tcategory\\tpattern", 120)) {
             parsedFamilies.add(new ExerciseFamily(row[0], row[1], row[2], row[3]));
@@ -35,7 +43,15 @@ public final class ExerciseCatalogLoader {
             parsedVariants.add(new ExerciseVariant(
                     row[0], row[1], row[2], level, row[4], row[5], row[6].equals("1")));
         }
-        return new ExerciseCatalog(parsedFamilies, parsedTypes, parsedVariants);
+        Map<String,ExerciseIntensity> tags=new HashMap<>();
+        if(intensity!=null) {
+            for(String[] row:rows(intensity,2,"variant_id\\tintensity",4000)) {
+                if(tags.putIfAbsent(row[0],ExerciseIntensity.parse(row[1]))!=null) {
+                    throw new IllegalArgumentException("Intensidad duplicada: "+row[0]);
+                }
+            }
+        }
+        return new ExerciseCatalog(parsedFamilies, parsedTypes, parsedVariants,tags);
     }
 
     private static List<String[]> rows(Reader input, int columns, String header, int max)
