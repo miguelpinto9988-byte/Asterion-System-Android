@@ -52,4 +52,4 @@ assert '"week"' in adapter and '"missions"' in adapter
 assert '"gym_"' in adapter
 assert 'HomeMissionBinder.bind(activity,screen,openProgress)' in renderer
 assert '"monarch"' in binder and '"daily"' in binder and '"library"' in binder
-print("OK: motor conectado a 445 variantes, renovación diaria, Monarca 5 días opt-in y control manual.")
+print("OK: motor conectado a 505 variantes, renovación diaria, Monarca 5 días opt-in y control manual.")
