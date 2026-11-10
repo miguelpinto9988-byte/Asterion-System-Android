@@ -159,3 +159,23 @@ salto_pies_juntos	saltos_recreativos	Salto con ambos pies
 salto_lateral_sencillo	saltos_recreativos	Salto lateral recreativo
 saltos_abre_cierra	saltos_recreativos	Saltos de apertura y cierre
 saltos_alternos_recreativos	saltos_recreativos	Saltos alternos recreativos
+estiramiento_flexores_muneca	flexibilidad_antebrazos	Estiramiento de flexores de muñeca
+estiramiento_extensores_muneca	flexibilidad_antebrazos	Estiramiento de extensores de muñeca
+movilidad_pulgar	flexibilidad_antebrazos	Movilidad del pulgar y base de la mano
+circulos_muneca	flexibilidad_antebrazos	Círculos articulares de muñeca
+apertura_pectoral_pie	movilidad_torax_pie	Apertura pectoral de pie
+rotacion_torax_pared	movilidad_torax_pie	Rotación torácica con apoyo
+deslizamiento_costal_pie	movilidad_torax_pie	Deslizamiento costal lateral
+extensiones_torax_sentado	movilidad_torax_pie	Extensión torácica sentada
+estiramiento_mariposa	flexibilidad_cadera_suelo	Apertura de caderas sentado en mariposa
+rodillas_costado_supino	flexibilidad_cadera_suelo	Rodillas al costado acostado
+flexor_cadera_apoyo	flexibilidad_cadera_suelo	Movilidad del flexor de cadera con soporte
+rotacion_cadera_tumbado	flexibilidad_cadera_suelo	Rotación de cadera tumbado
+apoyo_semi_tandem	equilibrio_tandem	Apoyo semitándem
+marcha_tandem_corta	equilibrio_tandem	Marcha en línea talón-punta
+balanceo_peso_tandem	equilibrio_tandem	Balanceo de peso en postura alineada
+alcance_equilibrio_tandem	equilibrio_tandem	Alcances con equilibrio semialineado
+postura_nino_apoyada	yoga_movilidad_restaurativa	Postura de niño con apoyo
+postura_cobra_suave	yoga_movilidad_restaurativa	Extensión suave en postura de cobra
+postura_mariposa_restaurativa	yoga_movilidad_restaurativa	Mariposa restaurativa tumbado
+postura_triangulo_apoyo	yoga_movilidad_restaurativa	Postura de triángulo con soporte
