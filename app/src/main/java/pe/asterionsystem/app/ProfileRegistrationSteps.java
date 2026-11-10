@@ -231,8 +231,25 @@ final class ProfileRegistrationSteps {
     }
     private Spinner spinner(LinearLayout parent, String key,String[] choices,String defaultValue) {
         Spinner control = new Spinner(activity);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                activity, android.R.layout.simple_spinner_dropdown_item, choices);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                activity, android.R.layout.simple_spinner_dropdown_item, choices) {
+            @Override public View getView(int position, View convert, ViewGroup parent) {
+                TextView item = (TextView)super.getView(position,convert,parent);
+                boolean light = "light".equals(get("theme","light"));
+                item.setTextColor(ProfileWizardTheme.foreground(light));
+                item.setBackgroundColor(ProfileWizardTheme.background(light));
+                item.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                return item;
+            }
+            @Override public View getDropDownView(int position, View convert, ViewGroup parent) {
+                TextView item = (TextView)super.getDropDownView(position,convert,parent);
+                boolean light = "light".equals(get("theme","light"));
+                item.setTextColor(ProfileWizardTheme.foreground(light));
+                item.setBackgroundColor(ProfileWizardTheme.background(light));
+                item.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                return item;
+            }
+        };
         control.setAdapter(adapter);
         control.setBackground(fieldBackground());
         control.setPadding(dp(7),0,dp(7),0);
@@ -241,7 +258,8 @@ final class ProfileRegistrationSteps {
         control.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             @Override public void onItemSelected(AdapterView<?> p, View v,int i,long id){
                 if(v instanceof TextView){
-                    ((TextView)v).setTextColor(WHITE);
+                    ((TextView)v).setTextColor(ProfileWizardTheme.foreground(
+                            "light".equals(get("theme","light"))));
                     ((TextView)v).setTypeface(Typeface.DEFAULT,Typeface.BOLD);
                 }
                 put(key,choices[i]);
@@ -306,6 +324,7 @@ final class ProfileRegistrationSteps {
         for(int day=0;day<7;day++){
             final int d=day;
             TextView chip=text("",13,WHITE);
+            chip.setTag("asterion_week_color");
             chip.setGravity(Gravity.CENTER);
             chip.setMinHeight(dp(72));
             LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(0,dp(72),1);
@@ -341,6 +360,8 @@ final class ProfileRegistrationSteps {
         out.addView(week);
         for(int k=0;k<6;k++){
             TextView legend=text(CAT_GLYPHS[k]+"  "+CATS[k],12,CAT_COLORS[k]);
+            legend.setTag("asterion_week_legend");
+            legend.setContentDescription("Leyenda: " + CATS[k] + ", color de categoría");
             legend.setPadding(dp(2),dp(4),0,dp(4));
             out.addView(legend);
         }
@@ -446,7 +467,7 @@ final class ProfileRegistrationSteps {
                 +"\nSemana: "+readableWeek()
                 +"\nEquipamiento: "+equipmentSummary(),13,WHITE);
         addExpandableReview(out,training,"ENTRENAMIENTO");
-        TextView visual=text("PERSONALIZACIÓN\nTema: "+get("theme","dark")
+        TextView visual=text("PERSONALIZACIÓN\nTema: "+get("theme","light")
                 +"\nBordes: "+get("accent","#9A68F2")
                 +"\nAcompañante: "+get("companion","igris")
                 +"\nSilueta: "+get("card_silhouette","sung_jinwoo")
