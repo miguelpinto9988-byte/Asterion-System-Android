@@ -182,7 +182,9 @@ public final class MissionPlanner {
         }
         String selectedCategory = WEEK_CATEGORIES[dayCategory];
         List<ExerciseVariant> matching = candidates(profile, selectedCategory);
-        List<ExerciseVariant> chosen = takeDiverse(matching, profile.dailyLimit, daySeed(profile,today));
+        List<ExerciseVariant> chosen = takeLevelMix(matching, profile.dailyLimit,
+                daySeed(profile,today),Collections.emptySet(),profile.experience,0,
+                Collections.emptyList());
         return new Proposal(DAILY, today, today.plusDays(1), chosen, false,
                 chosen.isEmpty()
                 ? "No hay alternativas compatibles con el equipo y la categoría de este día."
@@ -216,7 +218,7 @@ public final class MissionPlanner {
                           List<String> previousVariantIds,
                           boolean enableEquivalentRotation) {
         return daily(profile,today,decision,previousVariantIds,
-                enableEquivalentRotation,Collections.emptyList());
+                enableEquivalentRotation,Collections.emptyList(),0);
     }
 
     /**
@@ -229,6 +231,16 @@ public final class MissionPlanner {
                           List<String> previousVariantIds,
                           boolean enableEquivalentRotation,
                           List<String> recentCompletedIds) {
+        return daily(profile,today,decision,previousVariantIds,
+                enableEquivalentRotation,recentCompletedIds,0);
+    }
+
+    /** Experience-specific mix phase is derived from completed category evidence. */
+    public Proposal daily(Profile profile, LocalDate today,
+                          CategoryEffortPolicy.Decision decision,
+                          List<String> previousVariantIds,
+                          boolean enableEquivalentRotation,
+                          List<String> recentCompletedIds,int mixPhase) {
         Objects.requireNonNull(profile, "profile");
         Objects.requireNonNull(today, "today");
         Objects.requireNonNull(decision, "decision");
@@ -257,6 +269,18 @@ public final class MissionPlanner {
             return new Proposal(DAILY,today,today.plusDays(1),
                     Collections.emptyList(),false,
                     "No hay opciones compatibles seguras para la categoría actual.");
+        }
+        if(MissionDifficultyMixPolicy.mixed(profile.experience)
+                && !decision.preferSimplerTechnique) {
+            List<ExerciseVariant> preferred=preferredFromRecentSession(
+                    eligible,previousVariantIds,decision,
+                    enableEquivalentRotation,recentCompleted);
+            List<ExerciseVariant> mixed=takeLevelMix(eligible,limit,
+                    daySeed(profile,today),recentCompleted,profile.experience,
+                    mixPhase,preferred);
+            return new Proposal(DAILY,today,today.plusDays(1),mixed,false,
+                    decision.explanation+" "+MissionDifficultyMixPolicy.explanation(
+                            profile.experience,mixPhase));
         }
         List<ExerciseVariant> chosen=new ArrayList<>();
         Set<String> usedTypes=new HashSet<>();
@@ -363,7 +387,12 @@ public final class MissionPlanner {
         ranked.sort(Comparator.comparingInt(category -> priority(profile.goal, category)));
         List<ExerciseVariant> pool = new ArrayList<>();
         for (String category : ranked) {
-            pool.addAll(candidates(profile, category));
+            // Preserve the established Monarca candidate cap independently
+            // of the daily experience-mix stages and consent policy.
+            int priorCap="principiante".equals(profile.experience)?1:2;
+            for(ExerciseVariant variant:candidates(profile,category)) {
+                if(variant.difficulty()<=priorCap)pool.add(variant);
+            }
         }
         List<ExerciseVariant> chosen = takeDiverse(pool, 5, starts.toEpochDay() / 5L);
         return new Proposal(MONARCH, starts, starts.plusDays(5), chosen, true,
@@ -384,7 +413,7 @@ public final class MissionPlanner {
 
     private List<ExerciseVariant> candidates(Profile profile, String category) {
         List<ExerciseVariant> result = new ArrayList<>();
-        int maxTechnicalLevel = "principiante".equals(profile.experience) ? 1 : 2;
+        int maxTechnicalLevel = MissionDifficultyMixPolicy.maxTechnicalLevel(profile.experience);
         for (ExerciseVariant variant : catalog.variants()) {
             if (!category.equals(categoryForType.get(variant.typeId()))) continue;
             if (!catalog.eligibleForAutomaticSuggestion(variant)
@@ -396,6 +425,108 @@ public final class MissionPlanner {
         }
         result.sort(Comparator.comparing(ExerciseVariant::id));
         return result;
+    }
+
+    private List<ExerciseVariant> preferredFromRecentSession(
+            List<ExerciseVariant> eligible,List<String> previousVariantIds,
+            CategoryEffortPolicy.Decision decision,boolean enableRotation,
+            Set<String> recentCompleted) {
+        ArrayList<ExerciseVariant> preferred=new ArrayList<>();
+        Set<String> ids=new HashSet<>();
+        for(String oldId:previousVariantIds) {
+            ExerciseVariant previous=catalog.variant(oldId).orElse(null);
+            if(previous==null)continue;
+            ExerciseVariant selected=null;
+            if(enableRotation
+                    && decision.guidance==CategoryEffortPolicy.Guidance.REVIEW_OPTIONAL) {
+                for(ExerciseVariant option:eligible) {
+                    if(option.typeId().equals(previous.typeId())
+                            && option.difficulty()==previous.difficulty()
+                            && !option.id().equals(previous.id())
+                            && !recentCompleted.contains(option.id())) {
+                        selected=option;
+                        break;
+                    }
+                }
+            }
+            if(selected==null && eligible.contains(previous)
+                    && !recentCompleted.contains(previous.id())) {
+                selected=previous;
+            }
+            if(selected!=null && ids.add(selected.id()))preferred.add(selected);
+        }
+        return preferred;
+    }
+
+    /**
+     * Constrained, deterministic draw. Split the compatible pool into easy
+     * technical levels (1-2) and non-supervised level 3. A completed weekly
+     * review adjusts only the SHARE of eligible choices, never their volume,
+     * physical intensity or the safety eligibility filters.
+     */
+    private List<ExerciseVariant> takeLevelMix(List<ExerciseVariant> eligible,
+            int count,long seed,Set<String> recentCompleted,
+            String experience,int mixPhase,List<ExerciseVariant> preferred) {
+        if(eligible.isEmpty() || count<=0)return Collections.emptyList();
+        if(!MissionDifficultyMixPolicy.mixed(experience)) {
+            return takeDiverse(eligible,count,seed,recentCompleted);
+        }
+        List<ExerciseVariant> shuffled=takeDiverse(eligible,eligible.size(),
+                seed,recentCompleted);
+        ArrayList<ExerciseVariant> ranked=new ArrayList<>();
+        Set<String> seen=new HashSet<>();
+        for(ExerciseVariant candidate:preferred) {
+            if(eligible.contains(candidate) && seen.add(candidate.id()))ranked.add(candidate);
+        }
+        for(ExerciseVariant candidate:shuffled) {
+            if(seen.add(candidate.id()))ranked.add(candidate);
+        }
+        ArrayList<ExerciseVariant> lower=new ArrayList<>();
+        ArrayList<ExerciseVariant> higher=new ArrayList<>();
+        ArrayList<ExerciseVariant> fallback=new ArrayList<>();
+        for(ExerciseVariant v:ranked) {
+            if(v.difficulty()==3)higher.add(v);
+            else if(v.difficulty()==2)lower.add(v);
+            else fallback.add(v);
+        }
+        // Advanced level emphasizes intermediate (2) + harder (3);
+        // if level-2 choices are scarce, safe level-1 remains a fallback.
+        if(!"avanzado".equals(experience))lower.addAll(fallback);
+        int upperTarget=MissionDifficultyMixPolicy.higherTarget(
+                experience,mixPhase,count);
+        ArrayList<ExerciseVariant> selected=new ArrayList<>();
+        Set<String> chosenIds=new HashSet<>();
+        addWithDiversity(lower,count-upperTarget,selected,chosenIds);
+        addWithDiversity(higher,upperTarget,selected,chosenIds);
+        addWithDiversity(lower,count,selected,chosenIds);
+        addWithDiversity(higher,count,selected,chosenIds);
+        addWithDiversity(fallback,count,selected,chosenIds);
+        return selected;
+    }
+
+    private void addWithDiversity(List<ExerciseVariant> options,int target,
+            List<ExerciseVariant> selected,Set<String> chosenIds) {
+        if(selected.size()>=target)return;
+        Set<String> usedFamilies=new HashSet<>();
+        Set<String> usedTypes=new HashSet<>();
+        for(ExerciseVariant chosen:selected) {
+            usedFamilies.add(familyForType.get(chosen.typeId()));
+            usedTypes.add(chosen.typeId());
+        }
+        for(int pass=0;pass<3 && selected.size()<target;pass++) {
+            for(ExerciseVariant v:options) {
+                if(selected.size()>=target)break;
+                if(chosenIds.contains(v.id()))continue;
+                if(pass==0 && usedFamilies.contains(familyForType.get(v.typeId())))
+                    continue;
+                if(pass==1 && usedTypes.contains(v.typeId()))continue;
+                if(chosenIds.add(v.id())) {
+                    selected.add(v);
+                    usedFamilies.add(familyForType.get(v.typeId()));
+                    usedTypes.add(v.typeId());
+                }
+            }
+        }
     }
 
     private List<ExerciseVariant> takeDiverse(List<ExerciseVariant> pool,
