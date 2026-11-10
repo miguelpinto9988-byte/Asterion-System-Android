@@ -504,3 +504,63 @@ pasos_danza_basicos_v03	pasos_danza_basicos	Secuencia sencilla de pasos de baile
 desplazamiento_ritmico_lateral_v01	desplazamiento_ritmico_lateral	Paso lateral rítmico sin salto	1	sin_equipo	aerobico	0
 desplazamiento_ritmico_lateral_v02	desplazamiento_ritmico_lateral	Paso lateral rítmico corto con apoyo	1	pared	asistido	0
 desplazamiento_ritmico_lateral_v03	desplazamiento_ritmico_lateral	Pasos laterales alternos con movimiento suave de brazos	2	sin_equipo	coordinacion	0
+empuje_escapular_pared_v01	empuje_escapular_pared	Empuje escapular suave de pie en pared	1	pared	controlado	0
+empuje_escapular_pared_v02	empuje_escapular_pared	Empuje escapular alterno en pared	2	pared	controlado	0
+empuje_escapular_pared_v03	empuje_escapular_pared	Empuje escapular con pausa y banda	3	banda	controlado	0
+alcance_serrato_supino_v01	alcance_serrato_supino	Alcance vertical de brazos boca arriba	1	sin_equipo	controlado	0
+alcance_serrato_supino_v02	alcance_serrato_supino	Alcance alternado con mancuerna ligera boca arriba	2	mancuerna	controlado	0
+alcance_serrato_supino_v03	alcance_serrato_supino	Alcance simultáneo de brazos con banda boca arriba	3	banda	controlado	0
+deslizamiento_antebrazos_v01	deslizamiento_antebrazos	Deslizamiento corto de antebrazos en pared	1	pared	controlado	0
+deslizamiento_antebrazos_v02	deslizamiento_antebrazos	Deslizamiento alterno de antebrazo en pared	2	pared	controlado	0
+deslizamiento_antebrazos_v03	deslizamiento_antebrazos	Deslizamiento de antebrazos con banda suave	3	pared+banda	controlado	0
+abrazo_escapular_v01	abrazo_escapular	Abrazo de brazos al frente sin carga	1	sin_equipo	controlado	0
+abrazo_escapular_v02	abrazo_escapular	Abrazo de brazos al frente con banda suave	2	banda	controlado	0
+abrazo_escapular_v03	abrazo_escapular	Abrazo escapular alterno con control	3	sin_equipo	controlado	0
+press_suelo_unilateral_v01	press_suelo_unilateral	Press unilateral sin carga acostado	1	sin_equipo	resistencia	0
+press_suelo_unilateral_v02	press_suelo_unilateral	Press unilateral con mancuerna en suelo	2	mancuerna	resistencia	0
+press_suelo_unilateral_v03	press_suelo_unilateral	Press unilateral alterno con mancuernas en suelo	3	mancuerna	resistencia	0
+press_neutro_mancuernas_v01	press_neutro_mancuernas	Gesto de press con palmas enfrentadas sin carga	1	sin_equipo	resistencia	0
+press_neutro_mancuernas_v02	press_neutro_mancuernas	Press de pecho con agarre neutro en banco	2	mancuerna+banco	resistencia	0
+press_neutro_mancuernas_v03	press_neutro_mancuernas	Press alternado de agarre neutro con mancuernas	3	mancuerna+banco	resistencia	0
+press_banda_pie_v01	press_banda_pie	Empuje de brazos sin banda de pie	1	sin_equipo	resistencia	0
+press_banda_pie_v02	press_banda_pie	Press de pecho bilateral con banda de pie	2	banda	resistencia	0
+press_banda_pie_v03	press_banda_pie	Press de pecho alterno con banda de pie	3	banda	resistencia	0
+press_maquina_horizontal_v01	press_maquina_horizontal	Movimiento de press sentado sin carga	1	silla	resistencia	0
+press_maquina_horizontal_v02	press_maquina_horizontal	Press de pecho en máquina con recorrido corto	2	maquina	resistencia	0
+press_maquina_horizontal_v03	press_maquina_horizontal	Press de pecho en máquina con agarre neutro	3	maquina	resistencia	0
+remo_banda_sentado_v01	remo_banda_sentado	Tracción suave de brazos sentado sin material	1	silla	resistencia	0
+remo_banda_sentado_v02	remo_banda_sentado	Remo bilateral con banda sentado	2	banda+silla	resistencia	0
+remo_banda_sentado_v03	remo_banda_sentado	Remo alterno con banda sentado	3	banda+silla	resistencia	0
+remo_banco_unilateral_v01	remo_banco_unilateral	Gesto de remo unilateral con brazo apoyado	1	banco	resistencia	0
+remo_banco_unilateral_v02	remo_banco_unilateral	Remo unilateral con mancuerna y apoyo en banco	2	mancuerna+banco	resistencia	0
+remo_banco_unilateral_v03	remo_banco_unilateral	Remo unilateral con pausa y mancuerna	3	mancuerna+banco	resistencia	0
+remo_polea_baja_v01	remo_polea_baja	Retracción suave de brazos sentado sin resistencia	1	silla	resistencia	0
+remo_polea_baja_v02	remo_polea_baja	Remo sentado en polea baja con agarre neutro	2	polea	resistencia	0
+remo_polea_baja_v03	remo_polea_baja	Remo alternado en polea baja controlada	3	polea	resistencia	0
+remo_banda_pecho_v01	remo_banda_pecho	Retracción de brazos abiertos sin material	1	sin_equipo	resistencia	0
+remo_banda_pecho_v02	remo_banda_pecho	Remo a pecho con banda elástica	2	banda	resistencia	0
+remo_banda_pecho_v03	remo_banda_pecho	Remo de banda con agarre abierto	3	banda	resistencia	0
+pronacion_antebrazo_v01	pronacion_antebrazo	Pronación suave del antebrazo sentado	1	silla	controlado	0
+pronacion_antebrazo_v02	pronacion_antebrazo	Pronación del antebrazo con codo apoyado	2	silla	controlado	0
+pronacion_antebrazo_v03	pronacion_antebrazo	Pronación del antebrazo con mancuerna ligera	3	mancuerna	controlado	0
+supinacion_antebrazo_v01	supinacion_antebrazo	Supinación suave de la palma sin carga	1	sin_equipo	controlado	0
+supinacion_antebrazo_v02	supinacion_antebrazo	Supinación alterna con codo apoyado	2	silla	controlado	0
+supinacion_antebrazo_v03	supinacion_antebrazo	Supinación con mancuerna ligera y apoyo	3	mancuerna+silla	controlado	0
+desviacion_radial_muneca_v01	desviacion_radial_muneca	Acercar la mano al lado del pulgar sin carga	1	sin_equipo	controlado	0
+desviacion_radial_muneca_v02	desviacion_radial_muneca	Desviación radial con antebrazo apoyado	2	silla	controlado	0
+desviacion_radial_muneca_v03	desviacion_radial_muneca	Desviación radial con mancuerna ligera	3	mancuerna	controlado	0
+desviacion_cubital_muneca_v01	desviacion_cubital_muneca	Mover la muñeca al lado del meñique sin carga	1	sin_equipo	controlado	0
+desviacion_cubital_muneca_v02	desviacion_cubital_muneca	Desviación cubital sentado con apoyo	2	silla	controlado	0
+desviacion_cubital_muneca_v03	desviacion_cubital_muneca	Desviación cubital suave con banda	3	banda	controlado	0
+pase_pelota_pecho_v01	pase_pelota_pecho	Pase corto de pelota blanda sentado	1	pelota+silla	coordinacion	0
+pase_pelota_pecho_v02	pase_pelota_pecho	Pase suave de pelota blanda de pie	2	pelota	coordinacion	0
+pase_pelota_pecho_v03	pase_pelota_pecho	Pase alternado de pelota blanda con compañero	3	pelota	coordinacion	0
+pase_pelota_lateral_v01	pase_pelota_lateral	Transferencia lateral de pelota entre manos	1	pelota	coordinacion	0
+pase_pelota_lateral_v02	pase_pelota_lateral	Pase lateral corto de pelota sentado	2	pelota+silla	coordinacion	0
+pase_pelota_lateral_v03	pase_pelota_lateral	Pase lateral de pelota blanda de pie	3	pelota	coordinacion	0
+bote_pelota_controlado_v01	bote_pelota_controlado	Bote suave de pelota con una mano sentado	1	pelota+silla	coordinacion	0
+bote_pelota_controlado_v02	bote_pelota_controlado	Bote alterno de pelota en el sitio	2	pelota	coordinacion	0
+bote_pelota_controlado_v03	bote_pelota_controlado	Bote de pelota con cambio sencillo de mano	3	pelota	coordinacion	0
+alcance_brazos_coordinado_v01	alcance_brazos_coordinado	Alcance simultáneo de manos al frente sentado	1	silla	coordinacion	0
+alcance_brazos_coordinado_v02	alcance_brazos_coordinado	Alcance alterno de brazos arriba sin carga	2	sin_equipo	coordinacion	0
+alcance_brazos_coordinado_v03	alcance_brazos_coordinado	Alcance cruzado de brazos al frente en pie	3	sin_equipo	coordinacion	0
