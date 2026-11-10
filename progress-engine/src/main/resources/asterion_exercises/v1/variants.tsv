@@ -744,3 +744,75 @@ postura_mariposa_restaurativa_v03	postura_mariposa_restaurativa	Mariposa tumbado
 postura_triangulo_apoyo_v01	postura_triangulo_apoyo	Inclinación lateral corta de pie junto a pared	1	pared	movilidad	0
 postura_triangulo_apoyo_v02	postura_triangulo_apoyo	Triángulo parcial con mano apoyada en silla	2	silla	movilidad	0
 postura_triangulo_apoyo_v03	postura_triangulo_apoyo	Triángulo suave de pie con brazos abiertos sin carga	3	sin_equipo	movilidad	0
+marcha_acuatica_v01	marcha_acuatica	Marcha suave en piscina con supervisión acuática	1	piscina	aerobico	0
+marcha_acuatica_v02	marcha_acuatica	Marcha recreativa en agua poco profunda	2	piscina	aerobico	0
+marcha_acuatica_v03	marcha_acuatica	Marcha acuática continua a ritmo variable	3	piscina	aerobico	0
+nado_espalda_recreativo_v01	nado_espalda_recreativo	Nado suave de espalda en piscina vigilada	1	piscina	aerobico	0
+nado_espalda_recreativo_v02	nado_espalda_recreativo	Nado recreativo de espalda a ritmo uniforme	2	piscina	aerobico	0
+nado_espalda_recreativo_v03	nado_espalda_recreativo	Nado de espalda deportivo a ritmo intenso	4	piscina	aerobico	1
+nado_crol_recreativo_v01	nado_crol_recreativo	Desplazamiento acuático suave estilo libre supervisado	1	piscina	aerobico	0
+nado_crol_recreativo_v02	nado_crol_recreativo	Nado de crol recreativo a ritmo cómodo	2	piscina	aerobico	0
+nado_crol_recreativo_v03	nado_crol_recreativo	Nado de crol deportivo vigoroso	4	piscina	aerobico	1
+aerobicos_agua_v01	aerobicos_agua	Movimientos alternos de brazos dentro del agua	1	piscina	aerobico	0
+aerobicos_agua_v02	aerobicos_agua	Aeróbicos acuáticos de bajo impacto en grupo	2	piscina	aerobico	0
+aerobicos_agua_v03	aerobicos_agua	Aeróbicos acuáticos continuos a ritmo rápido	4	piscina	aerobico	1
+baile_cumbia_recreativo_v01	baile_cumbia_recreativo	Pasos suaves de cumbia en el lugar	1	sin_equipo	aerobico	0
+baile_cumbia_recreativo_v02	baile_cumbia_recreativo	Baile de cumbia recreativo a ritmo cómodo	2	sin_equipo	aerobico	0
+baile_cumbia_recreativo_v03	baile_cumbia_recreativo	Coreografía recreativa de cumbia a ritmo vigoroso	4	sin_equipo	aerobico	1
+baile_salsa_recreativo_v01	baile_salsa_recreativo	Marcación básica suave de salsa sin saltos	1	sin_equipo	aerobico	0
+baile_salsa_recreativo_v02	baile_salsa_recreativo	Baile de salsa recreativo a ritmo regular	2	sin_equipo	aerobico	0
+baile_salsa_recreativo_v03	baile_salsa_recreativo	Secuencia de salsa aeróbica de ritmo alto	4	sin_equipo	aerobico	1
+baile_merengue_recreativo_v01	baile_merengue_recreativo	Pasos lentos de merengue en el sitio	1	sin_equipo	aerobico	0
+baile_merengue_recreativo_v02	baile_merengue_recreativo	Baile recreativo de merengue sin saltos	2	sin_equipo	aerobico	0
+baile_merengue_recreativo_v03	baile_merengue_recreativo	Baile de merengue continuo a ritmo vigoroso	4	sin_equipo	aerobico	1
+baile_linea_recreativo_v01	baile_linea_recreativo	Pasos sencillos de danza en línea a ritmo lento	1	sin_equipo	aerobico	0
+baile_linea_recreativo_v02	baile_linea_recreativo	Danza en línea recreativa con cambios suaves	2	sin_equipo	aerobico	0
+baile_linea_recreativo_v03	baile_linea_recreativo	Danza en línea aeróbica con secuencias rápidas	4	sin_equipo	aerobico	1
+baloncesto_tiros_v01	baloncesto_tiros	Lanzamientos suaves de balón a canasta cercana	1	balon	coordinacion	0
+baloncesto_tiros_v02	baloncesto_tiros	Tiros recreativos a canasta desde posición estable	2	balon	coordinacion	0
+baloncesto_tiros_v03	baloncesto_tiros	Secuencia recreativa de tiros y desplazamientos en cancha	3	balon	coordinacion	0
+futbol_control_balon_v01	futbol_control_balon	Control de balón de fútbol con pie en el sitio	1	balon	coordinacion	0
+futbol_control_balon_v02	futbol_control_balon	Conducción recreativa suave del balón en terreno plano	2	balon	coordinacion	0
+futbol_control_balon_v03	futbol_control_balon	Conducción de balón alternando direcciones en cancha	3	balon	coordinacion	0
+voleibol_pases_v01	voleibol_pases	Toques suaves de balón de voleibol con compañero	1	balon	coordinacion	0
+voleibol_pases_v02	voleibol_pases	Pases recreativos de antebrazos en voleibol	2	balon	coordinacion	0
+voleibol_pases_v03	voleibol_pases	Juego recreativo de pases y desplazamientos de voleibol	3	balon	coordinacion	0
+balonmano_pases_v01	balonmano_pases	Transferencia de balón de mano a mano sin carrera	1	balon	coordinacion	0
+balonmano_pases_v02	balonmano_pases	Pases suaves de balonmano con compañero	2	balon	coordinacion	0
+balonmano_pases_v03	balonmano_pases	Juego de pases de balonmano con desplazamiento libre	3	balon	coordinacion	0
+cuerda_giro_sin_salto_v01	cuerda_giro_sin_salto	Balanceo suave de cuerda sin despegar los pies	1	cuerda_salto	aerobico	0
+cuerda_giro_sin_salto_v02	cuerda_giro_sin_salto	Giros de cuerda recreativos con marcha en el sitio	2	cuerda_salto	aerobico	0
+cuerda_giro_sin_salto_v03	cuerda_giro_sin_salto	Coordinación de cuerda con alternancia de pies sin salto	3	cuerda_salto	aerobico	0
+cuerda_salto_basico_v01	cuerda_salto_basico	Paso sobre cuerda inmóvil sin salto	1	cuerda_salto	aerobico	0
+cuerda_salto_basico_v02	cuerda_salto_basico	Salto recreativo corto de cuerda con ambos pies	3	cuerda_salto	aerobico	0
+cuerda_salto_basico_v03	cuerda_salto_basico	Saltos continuos de cuerda a ritmo vigoroso	4	cuerda_salto	aerobico	1
+cuerda_paso_alterno_v01	cuerda_paso_alterno	Paso alterno sobre cuerda apoyada en el suelo	1	cuerda_salto	aerobico	0
+cuerda_paso_alterno_v02	cuerda_paso_alterno	Salto alterno recreativo de cuerda a ritmo cómodo	3	cuerda_salto	aerobico	0
+cuerda_paso_alterno_v03	cuerda_paso_alterno	Salto alterno de cuerda a ritmo alto	4	cuerda_salto	aerobico	1
+cuerda_salto_lateral_v01	cuerda_salto_lateral	Paso lateral sobre cuerda colocada en el suelo	1	cuerda_salto	aerobico	0
+cuerda_salto_lateral_v02	cuerda_salto_lateral	Salto lateral recreativo de cuerda a ritmo pausado	3	cuerda_salto	aerobico	0
+cuerda_salto_lateral_v03	cuerda_salto_lateral	Salto lateral de cuerda a ritmo vigoroso	4	cuerda_salto	aerobico	1
+tenis_mesa_recreativo_v01	tenis_mesa_recreativo	Golpes suaves de tenis de mesa de pie	1	raqueta+pelota	aerobico	0
+tenis_mesa_recreativo_v02	tenis_mesa_recreativo	Juego recreativo de tenis de mesa con desplazamiento ligero	2	raqueta+pelota	aerobico	0
+tenis_mesa_recreativo_v03	tenis_mesa_recreativo	Intercambios rápidos de tenis de mesa en juego deportivo	3	raqueta+pelota	aerobico	0
+badminton_recreativo_v01	badminton_recreativo	Golpes suaves de bádminton desde posición estable	1	raqueta	aerobico	0
+badminton_recreativo_v02	badminton_recreativo	Intercambio recreativo de bádminton sin saltos	2	raqueta	aerobico	0
+badminton_recreativo_v03	badminton_recreativo	Partido recreativo de bádminton con desplazamientos libres	3	raqueta	aerobico	0
+tenis_peloteo_v01	tenis_peloteo	Golpes sencillos de tenis con pelota blanda	1	raqueta+pelota	aerobico	0
+tenis_peloteo_v02	tenis_peloteo	Peloteo recreativo de tenis en cancha	2	raqueta+pelota	aerobico	0
+tenis_peloteo_v03	tenis_peloteo	Intercambio rápido de tenis en juego deportivo	4	raqueta+pelota	aerobico	1
+padel_recreativo_v01	padel_recreativo	Golpes suaves de pádel con postura estable	1	raqueta+pelota	aerobico	0
+padel_recreativo_v02	padel_recreativo	Peloteo recreativo de pádel con compañero	2	raqueta+pelota	aerobico	0
+padel_recreativo_v03	padel_recreativo	Intercambio intenso de pádel en juego deportivo	4	raqueta+pelota	aerobico	1
+senderismo_recreativo_v01	senderismo_recreativo	Paseo suave por sendero llano accesible	1	sin_equipo	aerobico	0
+senderismo_recreativo_v02	senderismo_recreativo	Senderismo recreativo en sendero señalizado fácil	2	sin_equipo	aerobico	0
+senderismo_recreativo_v03	senderismo_recreativo	Caminata sostenida por sendero con pendiente moderada	3	sin_equipo	aerobico	0
+caminata_nordica_v01	caminata_nordica	Caminata lenta con bastones en terreno llano	1	bastones	aerobico	0
+caminata_nordica_v02	caminata_nordica	Caminata nórdica recreativa con bastones	2	bastones	aerobico	0
+caminata_nordica_v03	caminata_nordica	Caminata nórdica a ritmo sostenido	3	bastones	aerobico	0
+caminar_terreno_arena_v01	caminar_terreno_arena	Paseo corto sobre arena compacta	1	sin_equipo	aerobico	0
+caminar_terreno_arena_v02	caminar_terreno_arena	Caminata recreativa por playa de arena firme	2	sin_equipo	aerobico	0
+caminar_terreno_arena_v03	caminar_terreno_arena	Caminata sostenida sobre arena de resistencia variable	3	sin_equipo	aerobico	0
+juegos_movimiento_recreativo_v01	juegos_movimiento_recreativo	Juego suave de seguir trayectorias caminando	1	sin_equipo	aerobico	0
+juegos_movimiento_recreativo_v02	juegos_movimiento_recreativo	Juego recreativo de desplazamientos en campo plano	2	sin_equipo	aerobico	0
+juegos_movimiento_recreativo_v03	juegos_movimiento_recreativo	Juego activo de persecución recreativa de ritmo vigoroso	4	sin_equipo	aerobico	1
