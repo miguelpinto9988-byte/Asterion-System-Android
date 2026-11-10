@@ -43,7 +43,8 @@ final class MissionProfileAdapter {
         return new MissionPlanner.Profile(
                 profile.optString("experience","principiante"),
                 profile.optString("goal","bienestar"),
-                week, equipment, dailyCount);
+                week, equipment, dailyCount,
+                profile.optString("intensity","moderada"));
     }
 
     private static boolean isEnabled(JSONObject source, String key, boolean fallback) {
