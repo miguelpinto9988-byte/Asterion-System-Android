@@ -17,8 +17,8 @@ for fragment in (
     "chosen, false",
 ):
     assert fragment in engine,fragment
-assert "MissionTrackingStore.previousCategoryVariants(this,category,today)" in screen
-assert "MissionTrackingStore.rememberCategoryProposal(" in screen
+assert "MissionTrackingStore.latestCompletedForCategory(" in screen
+assert "DailyMissionStore.write(this,today,profile,catalog," in screen
 assert "planner.daily(" in screen
 assert "Explorar variantes de esta categoría" not in screen
 assert "requestEffort(today,category)" in screen
