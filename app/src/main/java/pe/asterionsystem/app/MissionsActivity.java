@@ -1,12 +1,14 @@
 package pe.asterionsystem.app;
 
 import android.app.AlertDialog;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import pe.asterionsystem.app.data.AssetExerciseCatalogRepository;
@@ -25,6 +28,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
 import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
+import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 
 /**
  * Real read-only catalog + daily proposals + five-day opt-in Monarca preview.
@@ -35,6 +39,7 @@ public final class MissionsActivity extends ComponentActivity {
     private static final String SECTION_MONARCH="monarch";
     private static final String SECTION_DAILY="daily";
     private static final String SECTION_LIBRARY="library";
+    private static final String SECTION_PROGRESS="progress";
 
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private String section=SECTION_DAILY;
@@ -55,7 +60,8 @@ public final class MissionsActivity extends ComponentActivity {
         density=getResources().getDisplayMetrics().density;
         light="light".equals(ProfileStore.getRegistration(this).optString("theme","light"));
         section=getIntent().getStringExtra("section");
-        if(!SECTION_LIBRARY.equals(section)&&!SECTION_MONARCH.equals(section)) {
+        if(!SECTION_LIBRARY.equals(section)&&!SECTION_MONARCH.equals(section)
+                && !SECTION_PROGRESS.equals(section)) {
             section=SECTION_DAILY;
         }
 
@@ -106,28 +112,83 @@ public final class MissionsActivity extends ComponentActivity {
         if(SECTION_DAILY.equals(section))daily();
         if(SECTION_MONARCH.equals(section))monarch();
         if(SECTION_LIBRARY.equals(section))library();
+        if(SECTION_PROGRESS.equals(section))progress();
         themeTree(content);
         scroll.post(()->scroll.scrollTo(0,0));
     }
 
     private void daily() {
         title("Misiones diarias");
-        MissionPlanner.Proposal proposal=planner.daily(profile,LocalDate.now());
-        paragraph("Fecha: "+proposal.start()+". Se renueva según la fecha local.");
+        LocalDate today=LocalDate.now();
+        MissionPlanner.Proposal proposal=planner.daily(profile,today);
+        paragraph("Fecha: "+proposal.start()+". Se renueva según el calendario local.");
         paragraph(proposal.explanation());
         if(proposal.empty()) {
-            paragraph("No hay tareas propuestas para este día. "
-                    +"El descanso y los datos incompletos se respetan.");
-        } else {
-            int index=1;
-            for(ExerciseVariant entry:proposal.candidates()) {
-                exerciseRow(index+++". "+entry.name(),
-                        "Material: "+material(entry)+" · Nivel técnico "+entry.difficulty());
-            }
+            paragraph("Sin propuestas de ejercicio para hoy. Se respeta el descanso.");
+            return;
         }
-        paragraph("Estas son propuestas del catálogo. No se imponen "
-                +"repeticiones, cargas o penalizaciones; "
-                +"el registro de realización se mantiene en el módulo Seguimiento.");
+        Set<String> completed=MissionTrackingStore.completedToday(this,today);
+        paragraph("Registradas: "+completed.stream().filter(
+                id->proposal.candidates().stream().anyMatch(v->v.id().equals(id)))
+                .count()+" de "+proposal.candidates().size()
+                +". Puedes parar cuando lo necesites.");
+        int index=1;
+        for(ExerciseVariant entry:proposal.candidates()) {
+            dailyExerciseRow(index++,entry,today,proposal);
+        }
+        int rating=MissionTrackingStore.rating(this,today);
+        if(rating!=0) paragraph("Valoración de esfuerzo guardada: "+rating+" / 10.");
+        action(rating==0?"Finalizar la actividad y valorar esfuerzo"
+                :"Revisar valoración de esfuerzo",()->requestEffort(today));
+        paragraph("La valoración es voluntaria. No aumenta automáticamente "
+                +"el volumen de ejercicio ni añade penalizaciones.");
+    }
+
+    private void dailyExerciseRow(int index,ExerciseVariant entry,LocalDate day,
+                                  MissionPlanner.Proposal proposal) {
+        exerciseRow(index+". "+entry.name(),
+                "Material: "+material(entry)+" · Complejidad técnica "+entry.difficulty());
+        CheckBox done=new CheckBox(this);
+        done.setText("Actividad realizada (opcional)");
+        done.setTextSize(14);
+        done.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        done.setTextColor(light?Color.BLACK:Color.WHITE);
+        done.setButtonTintList(ColorStateList.valueOf(light?Color.BLACK:Color.WHITE));
+        done.setMinHeight(dp(48));
+        done.setChecked(MissionTrackingStore.completedToday(this,day).contains(entry.id()));
+        done.setOnCheckedChangeListener((button,checked)->{
+            MissionTrackingStore.setDailyCompleted(this,day,entry.id(),checked);
+            if(checked && MissionTrackingStore.rating(this,day)==0) {
+                Set<String> all=MissionTrackingStore.completedToday(this,day);
+                boolean finished=!proposal.empty();
+                for(ExerciseVariant item:proposal.candidates()) {
+                    if(!all.contains(item.id()))finished=false;
+                }
+                if(finished)requestEffort(day);
+            }
+        });
+        content.addView(done,new LinearLayout.LayoutParams(-1,-2));
+    }
+
+    private void requestEffort(LocalDate day) {
+        String[] values=new String[10];
+        for(int i=0;i<10;i++) values[i]=String.valueOf(i+1);
+        final int[] selected={MissionTrackingStore.rating(this,day)};
+        AlertDialog.Builder builder=new AlertDialog.Builder(this)
+                .setTitle("¿Qué esfuerzo percibiste?")
+                .setMessage("Valora de 1 (muy ligero) a 10 (muy exigente). "
+                        +"Puedes descansar y no completar todas las actividades.")
+                .setSingleChoiceItems(values,selected[0]-1,(dialog,which)->selected[0]=which+1)
+                .setNegativeButton("Ahora no",null)
+                .setPositiveButton("Guardar valoración",(dialog,which)->{
+                    if(selected[0]>=1 && selected[0]<=10) {
+                        MissionTrackingStore.rate(this,day,selected[0]);
+                        show(SECTION_DAILY);
+                    } else {
+                        loading.setText("Elige un número entre 1 y 10 si deseas registrar tu esfuerzo.");
+                    }
+                });
+        builder.show();
     }
 
     private void monarch() {
@@ -164,6 +225,19 @@ public final class MissionsActivity extends ComponentActivity {
             });
         }
         if(MonarchSessionStore.ACTIVE.equals(snapshot.status)) {
+            LocalDate accepted=snapshot.acceptedDate;
+            Set<String> recorded=MissionTrackingStore.monarchCompleted(this,accepted);
+            long done=snapshot.exercises.stream().filter(v->recorded.contains(v.id())).count();
+            paragraph("Participaciones registradas: "+done+" de "+snapshot.exercises.size()
+                    +". Se acumulan durante los cinco días; no se exige un número de repeticiones.");
+            for(ExerciseVariant exercise:snapshot.exercises) {
+                if(!recorded.contains(exercise.id())) {
+                    action("Registrar participación: "+exercise.name(),()->{
+                        MissionTrackingStore.markMonarch(this,accepted,exercise.id());
+                        show(SECTION_MONARCH);
+                    });
+                }
+            }
             action("Abandonar sin penalización",()->new AlertDialog.Builder(this)
                     .setTitle("Finalizar misión Monarca")
                     .setMessage("Puedes abandonar cuando quieras sin penalizaciones. "
@@ -195,6 +269,44 @@ public final class MissionsActivity extends ComponentActivity {
                     if(!accepted)loading.setText("La propuesta cambió; vuelve a revisarla.");
                     show(SECTION_MONARCH);
                 }).show();
+    }
+
+    private void progress() {
+        title("Progreso y evolución");
+        paragraph("Valoraciones voluntarias de las misiones diarias; "
+                +"no se utiliza el peso o la apariencia para determinar el avance.");
+        LocalDate today=LocalDate.now();
+        LocalDate first=MissionTrackingStore.firstReport(this);
+        EffortReviewEngine.Review review=EffortReviewEngine.review(
+                first,today,MissionTrackingStore.ratings(this,today));
+        if(review.dayInCycle==0) {
+            paragraph("Todavía no hay valoraciones de esfuerzo. "
+                    +"Al terminar una misión diaria puedes registrar tu percepción de 1 a 10.");
+        } else {
+            paragraph("Día "+review.dayInCycle+" de 21 del ciclo de observación.");
+            paragraph("Revisiones previstas: días 7, 14 y 21. "
+                    +(review.checkpoint>0?"Última revisión alcanzada: día "+review.checkpoint+"."
+                    :"Próxima revisión: día 7."));
+            if(review.observationCount>0) {
+                paragraph("Registros recientes: "+review.observationCount
+                        +" · Esfuerzo medio: "
+                        +String.format(java.util.Locale.getDefault(),"%.1f",review.averageEffort)
+                        +" / 10.");
+            }
+            paragraph(review.recommendation);
+        }
+        paragraph("No se sube automáticamente la intensidad, "
+                +"ni siquiera el día 21. Puedes ajustar el plan manualmente o descansar.");
+        action("Ir a misiones diarias",()->show(SECTION_DAILY));
+        action("Borrar estas valoraciones y marcas",()->new AlertDialog.Builder(this)
+                .setTitle("Borrar seguimiento de misiones")
+                .setMessage("Se eliminarán valoraciones y actividades marcadas de este módulo. "
+                        +"No se alteran los registros históricos del sistema.")
+                .setNegativeButton("Cancelar",null)
+                .setPositiveButton("Borrar",(dialog,which)->{
+                    MissionTrackingStore.clear(this);
+                    show(SECTION_PROGRESS);
+                }).show());
     }
 
     private void library() {
