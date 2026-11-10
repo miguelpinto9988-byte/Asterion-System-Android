@@ -29,7 +29,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
-import pe.asterionsystem.core.engine.progression.EffortAdaptationPolicy;
+import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
 
 /**
  * Real read-only catalog + daily proposals + five-day opt-in Monarca preview.
@@ -121,22 +121,28 @@ public final class MissionsActivity extends ComponentActivity {
     private void daily() {
         title("Misiones diarias");
         LocalDate today=LocalDate.now();
-        // Only feedback from PRIOR days may affect the next suggestion.
-        // This avoids changing today's proposal immediately after a new rating.
-        LocalDate previous=today.minusDays(1);
-        EffortReviewEngine.Review last=EffortReviewEngine.review(
-                MissionTrackingStore.firstReport(this),previous,
-                MissionTrackingStore.ratings(this,previous));
-        int suggested=EffortAdaptationPolicy.dailySuggestionCount(profile.dailyLimit,last);
-        MissionPlanner.Profile dayProfile=suggested<profile.dailyLimit
-                ?new MissionPlanner.Profile(profile.experience,profile.goal,
-                    profile.weekly,profile.equipment,suggested)
+        // The last rating belongs ONLY to the training category scheduled
+        // for today. A lower-body report never changes upper-body suggestions.
+        int category=profile.weekly.get(today.getDayOfWeek().getValue()-1);
+        int previousRating=category==CategoryEffortPolicy.REST ? 0
+                :MissionTrackingStore.latestCategoryRating(this,category,today);
+        CategoryEffortPolicy.Decision decision=CategoryEffortPolicy.evaluate(
+                category,previousRating,profile.dailyLimit);
+        MissionPlanner.Profile dayProfile=decision.preferSimplerTechnique
+                ||decision.suggestedActivities<profile.dailyLimit
+                ?new MissionPlanner.Profile(
+                    decision.preferSimplerTechnique?"principiante":profile.experience,
+                    profile.goal,profile.weekly,profile.equipment,
+                    Math.max(1,decision.suggestedActivities))
                 :profile;
         MissionPlanner.Proposal proposal=planner.daily(dayProfile,today);
         paragraph("Fecha: "+proposal.start()+". Se renueva según el calendario local.");
-        if(suggested<profile.dailyLimit) {
-            paragraph("Hoy se sugieren menos actividades por valoraciones de esfuerzo "
-                    +"anteriores. Puedes descansar o revisar el plan sin penalización.");
+        if(category!=CategoryEffortPolicy.REST) {
+            paragraph("Categoría: "+CategoryEffortPolicy.CATEGORY_NAMES[category]
+                    +". "+decision.explanation);
+            if(decision.guidance==CategoryEffortPolicy.Guidance.REVIEW_OPTIONAL) {
+                action("Explorar variantes de esta categoría",()->show(SECTION_LIBRARY));
+            }
         }
         paragraph(proposal.explanation());
         if(proposal.empty()) {
@@ -150,18 +156,18 @@ public final class MissionsActivity extends ComponentActivity {
                 +". Puedes parar cuando lo necesites.");
         int index=1;
         for(ExerciseVariant entry:proposal.candidates()) {
-            dailyExerciseRow(index++,entry,today,proposal);
+            dailyExerciseRow(index++,entry,today,category,proposal);
         }
-        int rating=MissionTrackingStore.rating(this,today);
+        int rating=MissionTrackingStore.ratingForCategory(this,today,category);
         if(rating!=0) paragraph("Valoración de esfuerzo guardada: "+rating+" / 10.");
         action(rating==0?"Finalizar la actividad y valorar esfuerzo"
-                :"Revisar valoración de esfuerzo",()->requestEffort(today));
+                :"Revisar valoración de esfuerzo",()->requestEffort(today,category));
         paragraph("La valoración es voluntaria. No aumenta automáticamente "
                 +"el volumen de ejercicio ni añade penalizaciones.");
     }
 
     private void dailyExerciseRow(int index,ExerciseVariant entry,LocalDate day,
-                                  MissionPlanner.Proposal proposal) {
+                                  int category,MissionPlanner.Proposal proposal) {
         exerciseRow(index+". "+entry.name(),
                 "Material: "+material(entry)+" · Complejidad técnica "+entry.difficulty());
         CheckBox done=new CheckBox(this);
@@ -174,31 +180,31 @@ public final class MissionsActivity extends ComponentActivity {
         done.setChecked(MissionTrackingStore.completedToday(this,day).contains(entry.id()));
         done.setOnCheckedChangeListener((button,checked)->{
             MissionTrackingStore.setDailyCompleted(this,day,entry.id(),checked);
-            if(checked && MissionTrackingStore.rating(this,day)==0) {
+            if(checked && MissionTrackingStore.ratingForCategory(this,day,category)==0) {
                 Set<String> all=MissionTrackingStore.completedToday(this,day);
                 boolean finished=!proposal.empty();
                 for(ExerciseVariant item:proposal.candidates()) {
                     if(!all.contains(item.id()))finished=false;
                 }
-                if(finished)requestEffort(day);
+                if(finished)requestEffort(day,category);
             }
         });
         content.addView(done,new LinearLayout.LayoutParams(-1,-2));
     }
 
-    private void requestEffort(LocalDate day) {
+    private void requestEffort(LocalDate day,int category) {
         String[] values=new String[10];
         for(int i=0;i<10;i++) values[i]=String.valueOf(i+1);
-        final int[] selected={MissionTrackingStore.rating(this,day)};
+        final int[] selected={MissionTrackingStore.ratingForCategory(this,day,category)};
         AlertDialog.Builder builder=new AlertDialog.Builder(this)
-                .setTitle("¿Qué esfuerzo percibiste?")
+                .setTitle("Esfuerzo: "+CategoryEffortPolicy.CATEGORY_NAMES[category])
                 .setMessage("Valora de 1 (muy ligero) a 10 (muy exigente). "
-                        +"Puedes descansar y no completar todas las actividades.")
+                        +"Solo afectará a esta categoría. Puedes descansar o detenerte.")
                 .setSingleChoiceItems(values,selected[0]-1,(dialog,which)->selected[0]=which+1)
                 .setNegativeButton("Ahora no",null)
                 .setPositiveButton("Guardar valoración",(dialog,which)->{
                     if(selected[0]>=1 && selected[0]<=10) {
-                        MissionTrackingStore.rate(this,day,selected[0]);
+                        MissionTrackingStore.rateCategory(this,day,category,selected[0]);
                         show(SECTION_DAILY);
                     } else {
                         loading.setText("Elige un número entre 1 y 10 si deseas registrar tu esfuerzo.");
@@ -310,6 +316,16 @@ public final class MissionsActivity extends ComponentActivity {
                         +" / 10.");
             }
             paragraph(review.recommendation);
+        }
+        paragraph("Seguimiento independiente por categoría:");
+        for(int category=0;category<5;category++) {
+            int latest=MissionTrackingStore.latestCategoryRating(
+                    this,category,today.plusDays(1));
+            CategoryEffortPolicy.Decision state=CategoryEffortPolicy.evaluate(
+                    category,latest,profile.dailyLimit);
+            paragraph(CategoryEffortPolicy.CATEGORY_NAMES[category]+": "
+                    +(latest==0?"Sin valoración":latest+" / 10")
+                    +" · "+state.explanation);
         }
         paragraph("No se sube automáticamente la intensidad, "
                 +"ni siquiera el día 21. Puedes ajustar el plan manualmente o descansar.");
