@@ -368,10 +368,17 @@ public final class MissionPlanner {
                 "Selección diaria estable reconstruida desde la Biblioteca.");
     }
 
-    /** Five possible activities for five days, not five compulsory daily workouts. */
+    /** Five optional proposals for five days, never mandatory workouts. */
     public Proposal monarch(Profile profile, LocalDate starts) {
+        return monarch(profile,starts,Collections.emptyList());
+    }
+
+    /** Deterministic variation across five-day proposals, preferring new IDs. */
+    public Proposal monarch(Profile profile, LocalDate starts,
+                            List<String> previousCycleIds) {
         Objects.requireNonNull(profile, "profile");
         Objects.requireNonNull(starts, "starts");
+        Objects.requireNonNull(previousCycleIds,"previousCycleIds");
         Set<String> scheduledCategories = new LinkedHashSet<>();
         for (int index : profile.weekly) {
             if (index != 5) scheduledCategories.add(WEEK_CATEGORIES[index]);
@@ -394,11 +401,72 @@ public final class MissionPlanner {
                 if(variant.difficulty()<=priorCap)pool.add(variant);
             }
         }
-        List<ExerciseVariant> chosen = takeDiverse(pool, 5, starts.toEpochDay() / 5L);
+        List<ExerciseVariant> ranked=takeDiverse(pool,pool.size(),
+                monarchSeed(profile,starts),new HashSet<>(previousCycleIds));
+        // Prefer different scheduled categories for five independent options.
+        // The preceding cycle's IDs are already ranked last when alternatives
+        // remain; no intensity, technical cap or equipment filter is bypassed.
+        List<ExerciseVariant> chosen=new ArrayList<>();
+        Set<String> usedCategories=new HashSet<>();
+        Set<String> usedIds=new HashSet<>();
+        for(ExerciseVariant variant:ranked) {
+            if(chosen.size()==5)break;
+            if(usedCategories.add(categoryForType.get(variant.typeId()))
+                    && usedIds.add(variant.id()))chosen.add(variant);
+        }
+        for(ExerciseVariant variant:ranked) {
+            if(chosen.size()==5)break;
+            if(usedIds.add(variant.id()))chosen.add(variant);
+        }
         return new Proposal(MONARCH, starts, starts.plusDays(5), chosen, true,
                 chosen.size() == 5
                 ? "Cinco opciones para un período de cinco días; requieren autorización explícita. No hay cuotas obligatorias."
                 : "Hay menos de cinco opciones compatibles; no se puede activar la misión.");
+    }
+
+    /** Independent seeded draw: different cycles and profiles vary predictably. */
+    private static long monarchSeed(Profile profile,LocalDate starts) {
+        byte[] bytes=digest("asterion.monarch.v3|"+starts+"|"
+                +profile.missionSignature());
+        long seed=0L;
+        for(int i=0;i<8;i++)seed=(seed<<8)|(bytes[i]&0xffL);
+        return seed;
+    }
+
+    /**
+     * Rehydrate only the five candidates previously shown and accepted.
+     * A corrupt or incompatible snapshot must not become an active mission.
+     */
+    public Proposal restoreMonarch(Profile profile,LocalDate start,
+                                   List<String> ids) {
+        Objects.requireNonNull(profile,"profile");
+        Objects.requireNonNull(start,"start");
+        Objects.requireNonNull(ids,"ids");
+        if(ids.size()!=5)throw new IllegalArgumentException(
+                "Monarca requiere cinco candidatos");
+        Set<String> allowedCategories=new HashSet<>();
+        for(int cat:profile.weekly)if(cat!=5)
+            allowedCategories.add(WEEK_CATEGORIES[cat]);
+        int cap="principiante".equals(profile.experience)?1:2;
+        Set<String> seen=new HashSet<>();
+        List<ExerciseVariant> result=new ArrayList<>();
+        for(String id:ids) {
+            if(!seen.add(id))throw new IllegalArgumentException(
+                    "Monarca contiene un ID repetido");
+            ExerciseVariant v=catalog.variant(id).orElse(null);
+            if(v==null || v.difficulty()>cap
+                    || !allowedCategories.contains(categoryForType.get(v.typeId()))
+                    || !catalog.eligibleForAutomaticSuggestion(v)
+                    || !profile.equipment.containsAll(v.equipment())
+                    || ("baja".equals(profile.intensityPreference)
+                        && catalog.intensity(v.id())!=ExerciseIntensity.LOW)) {
+                throw new IllegalArgumentException(
+                        "Monarca contiene una variante incompatible");
+            }
+            result.add(v);
+        }
+        return new Proposal(MONARCH,start,start.plusDays(5),result,true,
+                "Selección Monarca previamente revisada y estable.");
     }
 
     private int priority(String goal, String category) {
