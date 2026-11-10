@@ -38,11 +38,19 @@ for text in ("day >=21 ?21", "day>=14 ?14", "day>=7 ?7",
     assert text in domain,text
 assert "highEffortCanSuggestReducingAtDayTwentyOne" in tests
 assert "lowEffortDoesNotTriggerAutomaticIncrease" in tests
-assert "EffortAdaptationPolicy.dailySuggestionCount(" in activity
-assert "today.minusDays(1)" in activity
-policy=(root/"progress-engine/src/main/java/pe/asterionsystem/core/engine/progression/EffortAdaptationPolicy.java").read_text(encoding="utf-8")
-for condition in ("review.averageEffort >= 8.0", "review.averageEffort >= 7.0", "return original"):
+assert "CategoryEffortPolicy.evaluate(" in activity
+assert "MissionTrackingStore.latestCategoryRating(this,category,today)" in activity
+assert "MissionTrackingStore.rateCategory(this,day,category,selected[0])" in activity
+assert "MissionTrackingStore.ratingForCategory(this,day,category)" in activity
+assert "int category=profile.weekly.get(today.getDayOfWeek().getValue()-1)" in activity
+assert "EffortAdaptationPolicy.dailySuggestionCount(" not in activity
+policy=(root/"progress-engine/src/main/java/pe/asterionsystem/core/engine/progression/CategoryEffortPolicy.java").read_text(encoding="utf-8")
+for condition in ("lastEffort<=3", "lastEffort<=6", "lastEffort>=9",
+                  "REVIEW_OPTIONAL", "MAINTAIN", "EASIER",
+                  "no se aumentan repeticiones"):
     assert condition in policy, condition
+assert '"category_effort_"' in tracking
+assert "latestCategoryRating(Context context,int category,LocalDate before)" in tracking
 assert not any(s in activity for s in ("setRepetitions(", "repetitionTarget=150",
                                       "setTargetReps(", "mustIncreaseIntensity"))
 print("OK: biblioteca real en Inicio, feedback 1-10, progreso 7/14/21 y Monarca voluntaria.")
