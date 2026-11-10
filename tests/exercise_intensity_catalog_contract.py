@@ -24,7 +24,7 @@ variants=load("variants.tsv",["variant_id","type_id","name","level",
                               "equipment","execution","supervision"])
 tags=load("intensity.tsv",["variant_id","intensity"])
 
-assert (len(families),len(types),len(variants),len(tags))==(75,204,817,312)
+assert (len(families),len(types),len(variants),len(tags))==(100,254,917,412)
 ids=[v["variant_id"] for v in variants]
 assert len(set(ids))==len(ids)
 assert len(set(f["family_id"] for f in families))==len(families)
@@ -33,11 +33,11 @@ assert len(set(t["variant_id"] for t in tags))==len(tags)
 assert all(t["variant_id"] in ids for t in tags)
 assert all(t["intensity"] in ("baja","moderada","alta","variable") for t in tags)
 assert Counter(t["intensity"] for t in tags)=={
-    "baja":173,"moderada":87,"variable":35,"alta":17
+    "baja":233,"moderada":127,"variable":35,"alta":17
 }
 norm=lambda s:"".join(c for c in unicodedata.normalize("NFD",s.casefold())
                     if not unicodedata.combining(c))
-assert len(set(map(norm,(v["name"] for v in variants))))==817
+assert len(set(map(norm,(v["name"] for v in variants))))==917
 
 family_lookup={f["family_id"]:f for f in families}
 type_lookup={t["type_id"]:t for t in types}
@@ -56,7 +56,7 @@ for vid,intensity in tagged_ids.items():
 map_cat={"coordinacion":"movilidad","integrado":"tronco"}
 categories=Counter(map_cat.get(f["category"],f["category"]) for f in families)
 assert categories=={
-    "tren_superior":17,"tronco":13,"piernas":16,"movilidad":15,"cardio":14
+    "tren_superior":22,"tronco":18,"piernas":21,"movilidad":20,"cardio":19
 }
 assert "descanso" not in categories
 
@@ -74,4 +74,4 @@ assert "catalog.intensity(v.id())" in android
 assert "showTypeFiltered" in android and '"Filtrar por intensidad"' in android
 assert ids[:505] and tagged_ids.get("sentadilla_bilateral_v01") is None
 assert "marcha_v01" in ids and "sentadilla_bilateral_v01" in ids
-print("OK: 75 familias, 204 tipos, 817 variantes (312 con intensidad) y sin selección automática de alta intensidad.")
+print("OK: 100 familias, 254 tipos, 917 variantes (412 con intensidad) y sin selección automática de alta intensidad.")
