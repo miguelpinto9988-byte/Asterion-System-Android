@@ -330,7 +330,7 @@ public final class RoutineStepActivity extends ComponentActivity {
                 .setPositiveButton("Guardar valoración",(d,which)->{
                     if(selected[0]>=1 && selected[0]<=10)
                         MissionTrackingStore.rateCategory(
-                                this,LocalDate.now(),category,selected[0]);
+                                this,planDate,category,selected[0]);
                     finish();
                 })
                 .setOnCancelListener(d->finish())
