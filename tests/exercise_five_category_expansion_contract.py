@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate append-only 505-variant catalog and five profile training groups."""
+"""Validate append-only 817-variant catalog and five profile training groups."""
 from collections import Counter
 import csv
 from pathlib import Path
@@ -20,10 +20,10 @@ families=records("families.tsv",["family_id","name","category","pattern"])
 types=records("types.tsv",["type_id","family_id","name"])
 variants=records("variants.tsv",["variant_id","type_id","name",
                                  "level","equipment","execution","supervision"])
-assert (len(families),len(types),len(variants))==(49,100,505)
-assert len({f["family_id"] for f in families})==49
-assert len({t["type_id"] for t in types})==100
-assert len({v["variant_id"] for v in variants})==505
+assert (len(families),len(types),len(variants))==(75,204,817)
+assert len({f["family_id"] for f in families})==75
+assert len({t["type_id"] for t in types})==204
+assert len({v["variant_id"] for v in variants})==817
 assert len({v["name"].lower() for v in variants})==505,"Duplicate exercise labels"
 category={
     "tren_superior":"tren_superior",
@@ -34,7 +34,7 @@ category={
     "coordinacion":"movilidad",
     "integrado":"tronco",
 }
-expected={"tren_superior":12,"tronco":8,"piernas":11,"movilidad":10,"cardio":8}
+expected={"tren_superior":17,"tronco":13,"piernas":16,"movilidad":15,"cardio":14}
 assert Counter(category[f["category"]] for f in families)==expected
 family_id={f["family_id"] for f in families}
 type_family={t["type_id"]:t["family_id"] for t in types}
@@ -64,4 +64,4 @@ assert "ExerciseCategoryMapper.displayName(i)" in activity
 assert "for(int i=0;i<5;i++)" in activity
 assert "ExerciseCategoryMapper.weeklyIndex(taxonomyCode)" in guided
 assert "AssetExerciseCatalogRepository(this).load()" in activity
-print("OK: 49 familias, 100 tipos, 505 variantes y exactamente 5 categorías operativas.")
+print("OK: 75 familias, 204 tipos, 817 variantes y exactamente 5 categorías operativas.")
