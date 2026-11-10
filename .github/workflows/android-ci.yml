@@ -75,6 +75,7 @@ jobs:
           python3 tests/routine_step_safety_contract.py
           python3 tests/exercise_five_category_expansion_contract.py
           python3 tests/exercise_intensity_catalog_contract.py
+          python3 tests/exercise_category_hierarchy_contract.py
           python3 tests/daily_mission_stability_contract.py
           python3 tests/mission_diversity_contract.py
           python3 tests/mission_level_mix_contract.py
