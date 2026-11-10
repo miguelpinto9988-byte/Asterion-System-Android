@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import pe.asterionsystem.app.data.AssetExerciseCatalogRepository;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
+import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
 import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
 import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
@@ -434,17 +435,15 @@ public final class MissionsActivity extends ComponentActivity {
                 +"son informativas y no forman parte de las propuestas automáticas.");
         Map<String,List<ExerciseFamily>> byGroup=new HashMap<>();
         for(ExerciseFamily item:catalog.families()) {
-            byGroup.computeIfAbsent(item.category(),ignored->new ArrayList<>()).add(item);
+            String primary=ExerciseCategoryMapper.primaryCategory(item.category());
+            byGroup.computeIfAbsent(primary,ignored->new ArrayList<>()).add(item);
         }
-        String[] keys={"piernas","tren_superior","tronco","coordinacion",
-                "integrado","cardio","movilidad"};
-        String[] names={"Piernas y cadera","Tren superior","Tronco y estabilidad",
-                "Equilibrio y coordinación","Trabajo integrado","Cardio",
-                "Movilidad, respiración y postura"};
-        for(int i=0;i<keys.length;i++) {
-            List<ExerciseFamily> families=byGroup.get(keys[i]);
+        for(int i=0;i<5;i++) {
+            String code=ExerciseCategoryMapper.weeklyCode(i);
+            List<ExerciseFamily> families=byGroup.get(code);
             if(families==null)continue;
-            paragraph(names[i]+" · "+families.size()+" familias");
+            paragraph(ExerciseCategoryMapper.displayName(i)+" · "
+                    +families.size()+" familias");
             for(ExerciseFamily family:families) {
                 action(family.name(),()->showFamily(family));
             }
