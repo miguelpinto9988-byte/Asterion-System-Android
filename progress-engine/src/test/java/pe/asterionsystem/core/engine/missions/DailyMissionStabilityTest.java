@@ -298,4 +298,35 @@ public class DailyMissionStabilityTest {
         assertTrue(catalog.eligibleForAutomaticSuggestion(standard));
     }
 
+    @Test public void everySupportedMissionCountKeepsCandidatesUniqueAndUnsupervised() {
+        for(String experience:List.of("principiante","intermedio","avanzado")) {
+            for(int count=1;count<=7;count++) {
+                MissionPlanner.Profile p=levelProfile(experience,count);
+                CategoryEffortPolicy.Decision assessment=
+                        CategoryEffortPolicy.evaluate(0,0,count);
+                for(int phase=0;phase<3;phase++) {
+                    MissionPlanner.Proposal proposal=planner.daily(p,monday,
+                            assessment,List.of(),false,List.of(),phase);
+                    assertTrue(proposal.candidates().size()<=count);
+                    assertEquals(proposal.candidates().size(),
+                            new HashSet<>(ids(proposal)).size());
+                    for(ExerciseVariant v:proposal.candidates()) {
+                        assertTrue(v.difficulty()<=3);
+                        assertFalse(v.supervisionRecommended());
+                        assertTrue(catalog.eligibleForAutomaticSuggestion(v));
+                    }
+                }
+            }
+        }
+    }
+
+    @Test public void monarchDoesNotAdoptUnreviewedLevelMix() {
+        MissionPlanner.Profile advanced=levelProfile("avanzado",3);
+        MissionPlanner.Proposal monarca=planner.monarch(advanced,monday);
+        for(ExerciseVariant variant:monarca.candidates()) {
+            assertTrue(variant.difficulty()<=2);
+            assertTrue(catalog.eligibleForAutomaticSuggestion(variant));
+        }
+    }
+
 }
