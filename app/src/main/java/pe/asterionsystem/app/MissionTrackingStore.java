@@ -10,6 +10,7 @@ import java.util.List;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import java.util.Set;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
+import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
 
 /**
  * Locally retained voluntary activity check-offs and 1–10 effort ratings.
@@ -108,6 +109,26 @@ final class MissionTrackingStore {
             if(rating!=0)return rating;
         }
         return 0;
+    }
+
+    /**
+     * Seven-day completed-session observations, tagged with their original
+     * category. A rating without a logged activity is not evidence that a
+     * workout was completed.
+     */
+    static List<WeeklyCategoryChallengePolicy.Observation> recentCategoryObservations(
+            Context context,int category,LocalDate today) {
+        if(today==null)throw new IllegalArgumentException("Fecha requerida");
+        ArrayList<WeeklyCategoryChallengePolicy.Observation> observations=new ArrayList<>();
+        for(int days=1;days<=7;days++) {
+            LocalDate prior=today.minusDays(days);
+            int effort=ratingForCategory(context,prior,category);
+            if(effort==0)continue;
+            boolean completed=!completedToday(context,prior).isEmpty();
+            observations.add(new WeeklyCategoryChallengePolicy.Observation(
+                    prior,category,effort,completed));
+        }
+        return Collections.unmodifiableList(observations);
     }
 
     /**
