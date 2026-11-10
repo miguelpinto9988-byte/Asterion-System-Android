@@ -58,7 +58,7 @@ planner=(JAVA/"missions/MissionPlanner.java").read_text(encoding="utf-8")
 activity=(APP/"MissionsActivity.java").read_text(encoding="utf-8")
 guided=(APP/"RoutineStepActivity.java").read_text(encoding="utf-8")
 assert '"coordinacion"' in mapper and '"integrado"' in mapper
-assert "ExerciseCategoryMapper.primaryCategory(" in planner
+assert "catalog.categoryIndex().categoryForType(type.id())" in planner
 assert "ExerciseCategoryMapper.weeklyCode(i)" in activity
 assert "ExerciseCategoryMapper.displayName(i)" in activity
 assert "for(int i=0;i<5;i++)" in activity
