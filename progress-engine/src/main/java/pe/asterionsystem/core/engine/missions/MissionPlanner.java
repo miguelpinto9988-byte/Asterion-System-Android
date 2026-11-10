@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
+import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
 import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
 import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
@@ -97,7 +98,8 @@ public final class MissionPlanner {
         for (ExerciseFamily family : catalog.families()) families.put(family.id(), family);
         for (ExerciseType type : catalog.types()) {
             familyForType.put(type.id(), type.familyId());
-            categoryForType.put(type.id(), families.get(type.familyId()).category());
+            categoryForType.put(type.id(), ExerciseCategoryMapper.primaryCategory(
+                    families.get(type.familyId()).category()));
         }
     }
 
