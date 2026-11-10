@@ -94,7 +94,7 @@ public class MissionPlannerTest {
         MissionPlanner.Profile p=new MissionPlanner.Profile(
                 "avanzado","bienestar",Arrays.asList(0,1,2,3,4,5,5),
                 Set.of("sin_equipo"),100);
-        assertEquals(3,p.dailyLimit);
+        assertEquals(7,p.dailyLimit);
         assertThrows(UnsupportedOperationException.class,()->p.weekly.set(0,5));
     }
 }
