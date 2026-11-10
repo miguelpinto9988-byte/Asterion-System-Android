@@ -83,14 +83,16 @@ public final class WeeklyCategoryChallengePolicy {
         ArrayList<LocalDate> counted=new ArrayList<>();
         for(Observation observation:observations) {
             if(observation==null || observation.category!=category ||
-                    !observation.activityCompleted ||
                     observation.date.isBefore(since) ||
                     !observation.date.isBefore(today) ||
                     counted.contains(observation.date))continue;
             counted.add(observation.date);
+            // A hard or unfinished session is always relevant to recovery.
+            // Only completed activities qualify as "repeatedly easy".
+            if(observation.effort>=7)high++;
+            if(!observation.activityCompleted)continue;
             completed++;
             if(observation.effort<=3)low++;
-            if(observation.effort>=7)high++;
         }
         if(high>0) {
             return new Review(Status.RECOVERY_PRIORITY,category,completed,low,high,elapsed,
