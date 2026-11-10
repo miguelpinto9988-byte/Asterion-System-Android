@@ -15,6 +15,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
 import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
+import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
 
 /**
  * Deterministic mission proposals built exclusively from the versioned
@@ -118,6 +119,97 @@ public final class MissionPlanner {
                 chosen.isEmpty()
                 ? "No hay alternativas compatibles con el equipo y la categoría de este día."
                 : "Propuesta del día según tu calendario, equipamiento y catálogo local.");
+    }
+
+    /**
+     * Autonomous category-aware mission selection. Only the category scheduled
+     * for today can affect this proposal. A low RPE rotates technically
+     * equivalent variants within the SAME movement type, never to a harder
+     * difficulty or a higher repetition target. Medium RPE preserves the
+     * previous candidates if still compatible. High RPE reduces suggestions
+     * and caps technical complexity.
+     *
+     * previousVariantIds are the actually displayed candidates from the
+     * preceding session of this category, not another category or the day
+     * before by default.
+     */
+    public Proposal daily(Profile profile, LocalDate today,
+                          CategoryEffortPolicy.Decision decision,
+                          List<String> previousVariantIds) {
+        Objects.requireNonNull(profile, "profile");
+        Objects.requireNonNull(today, "today");
+        Objects.requireNonNull(decision, "decision");
+        Objects.requireNonNull(previousVariantIds, "previousVariantIds");
+        int category=profile.weekly.get(today.getDayOfWeek().getValue()-1);
+        if(category!=decision.category) {
+            throw new IllegalArgumentException("La valoración no corresponde a la categoría del día");
+        }
+        if(category==CategoryEffortPolicy.REST) {
+            return daily(profile,today);
+        }
+        int limit=Math.min(profile.dailyLimit,Math.max(0,decision.suggestedActivities));
+        if(limit==0) {
+            return new Proposal(DAILY,today,today.plusDays(1),
+                    Collections.emptyList(),false,
+                    "La categoría está en pausa. Se respeta el descanso.");
+        }
+        String categoryName=WEEK_CATEGORIES[category];
+        List<ExerciseVariant> eligible=candidates(profile,categoryName);
+        if(decision.preferSimplerTechnique) {
+            eligible.removeIf(v->v.difficulty()>1);
+        }
+        if(eligible.isEmpty()) {
+            return new Proposal(DAILY,today,today.plusDays(1),
+                    Collections.emptyList(),false,
+                    "No hay opciones compatibles seguras para la categoría actual.");
+        }
+        List<ExerciseVariant> chosen=new ArrayList<>();
+        Set<String> usedTypes=new HashSet<>();
+        for(String priorId:previousVariantIds) {
+            if(chosen.size()==limit)break;
+            ExerciseVariant prior=catalog.variant(priorId).orElse(null);
+            if(prior==null)continue;
+            ExerciseVariant selected=null;
+            if(decision.guidance==CategoryEffortPolicy.Guidance.REVIEW_OPTIONAL) {
+                // Equal technical level and identical movement type only.
+                for(ExerciseVariant option:eligible) {
+                    if(option.typeId().equals(prior.typeId())
+                            && option.difficulty()==prior.difficulty()
+                            && !option.id().equals(prior.id())
+                            && !usedTypes.contains(option.typeId())) {
+                        selected=option;
+                        break;
+                    }
+                }
+            }
+            if(selected==null && eligible.contains(prior)
+                    && !usedTypes.contains(prior.typeId())) {
+                selected=prior;
+            }
+            if(selected!=null && usedTypes.add(selected.typeId()))chosen.add(selected);
+        }
+        List<ExerciseVariant> ranked=new ArrayList<>(eligible);
+        if(decision.preferSimplerTechnique) {
+            ranked.sort(Comparator.comparingInt(ExerciseVariant::difficulty)
+                    .thenComparing(ExerciseVariant::id));
+        } else {
+            ranked=takeDiverse(ranked,ranked.size(),today.toEpochDay());
+        }
+        for(ExerciseVariant option:ranked) {
+            if(chosen.size()==limit)break;
+            if(usedTypes.add(option.typeId()))chosen.add(option);
+        }
+        // If the catalog has fewer distinct types than the requested count,
+        // allow a distinct variant, never a duplicated candidate.
+        Set<String> usedIds=new HashSet<>();
+        for(ExerciseVariant item:chosen)usedIds.add(item.id());
+        for(ExerciseVariant option:ranked) {
+            if(chosen.size()==limit)break;
+            if(usedIds.add(option.id()))chosen.add(option);
+        }
+        return new Proposal(DAILY,today,today.plusDays(1),chosen,false,
+                decision.explanation+" Selección realizada por el motor a partir "
+                +"del perfil y el catálogo sin modificar las repeticiones.");
     }
 
     /** Five possible activities for five days, not five compulsory daily workouts. */
