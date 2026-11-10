@@ -30,6 +30,9 @@ final class MissionProfileAdapter {
         }
         Set<String> equipment = new HashSet<>();
         if (isEnabled(profile, "bodyweight", true)) equipment.add("sin_equipo");
+        if (isEnabled(profile, "mat", false)) equipment.add("colchoneta");
+        if (isEnabled(profile, "wall", false)) equipment.add("pared");
+        if (isEnabled(profile, "chair", false)) equipment.add("silla");
         if (isEnabled(profile, "dumbbells", false)) equipment.add("mancuerna");
         if (isEnabled(profile, "gym", false)) {
             String[] keys = {"polea","maquina","banco","barra","bicicleta","remo","eliptica"};
