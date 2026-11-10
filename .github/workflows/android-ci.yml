@@ -83,42 +83,13 @@ jobs:
       - name: Confirmar que la APK no contiene archivos SVG
         run: python3 tests/no_svg_artifact_contract.py --apk app/build/outputs/apk/debug/app-debug.apk
 
-      - name: Publicar APK de depuración como artefacto CI
+      - name: Publicar APK del paquete principal como artefacto CI
         uses: actions/upload-artifact@v4
         with:
           name: asterion-fase16-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
-
-      # The ordinary debug APK may have a new ephemeral signing certificate
-      # for each CI run. Build a side-by-side variant instead of requiring
-      # the user to uninstall Asterion and lose their local profile.
-      - name: Compilar APK de prueba instalable sin reemplazar la anterior
-        run: gradle --no-daemon --stacktrace :app:assemblePreview
-
-      - name: Verificar identidad y firma de la APK de prueba
-        run: |
-          set -euo pipefail
-          APK=app/build/outputs/apk/preview/app-preview.apk
-          test -s "$APK"
-          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$APK"
-          BADGING="$("$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK")"
-          printf '%s\n' "$BADGING" | grep -F "package: name='pe.asterionsystem.app.preview' versionCode='1' versionName='0.1.0-preview'"
-          printf '%s\n' "$BADGING" | grep -F "sdkVersion:'26'"
-          ls -lh "$APK"
-          sha256sum "$APK"
-
-      - name: Confirmar que la APK de prueba tampoco contiene SVG
-        run: python3 tests/no_svg_artifact_contract.py --apk app/build/outputs/apk/preview/app-preview.apk
-
-      - name: Publicar APK de prueba independiente como artefacto CI
-        uses: actions/upload-artifact@v4
-        with:
-          name: asterion-preview-instalable-apk
-          path: app/build/outputs/apk/preview/app-preview.apk
-          if-no-files-found: error
-          retention-days: 14
 
   emulator-smoke:
     name: Probar arranque real en emulador Android 16
@@ -135,10 +106,10 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Descargar APK que se entrega al usuario
+      - name: Descargar APK principal compilada
         uses: actions/download-artifact@v4
         with:
-          name: asterion-preview-instalable-apk
+          name: asterion-fase16-debug-apk
           path: build/smoke
 
       - name: Habilitar aceleración KVM
