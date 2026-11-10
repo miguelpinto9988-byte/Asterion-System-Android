@@ -1,7 +1,7 @@
 package pe.asterionsystem.core.engine.progression;
 
 /**
- * Independent per-category adjustment suggestions for the NEXT occurrence of
+ * Independent automatic per-category adjustments for the NEXT occurrence of
  * that same weekly training category. The policy never changes stored calendar
  * days, repetition targets, weights or exercise counts upward.
  */
@@ -43,8 +43,8 @@ public final class CategoryEffortPolicy {
 
     /**
      * Rating 0 means no category-specific observation. Reports from another
-     * body region MUST NOT be passed here. A low effort report prompts a
-     * conversation, not an automatic workload increase.
+     * body region MUST NOT be passed here. Low effort can trigger a suitable
+     * same-level variant swap, NOT an automatic workload increase.
      */
     public static Decision evaluate(int category, int lastEffort, int configuredActivities) {
         if (category < UPPER || category > REST) {
@@ -66,8 +66,8 @@ public final class CategoryEffortPolicy {
         if(lastEffort<=3) {
             return new Decision(category,lastEffort,Guidance.REVIEW_OPTIONAL,baseline,false,
                     "En "+categoryName+" declaraste poco esfuerzo ("+lastEffort+
-                    "/10). Puedes revisar una variante diferente si lo deseas; "
-                    +"no se aumentan repeticiones ni intensidad automáticamente.");
+                    "/10). El motor buscará automáticamente una variante del mismo tipo y nivel técnico, "
+                    +"si existe; no se aumentan repeticiones ni intensidad.");
         }
         if(lastEffort<=6) {
             return new Decision(category,lastEffort,Guidance.MAINTAIN,baseline,false,
