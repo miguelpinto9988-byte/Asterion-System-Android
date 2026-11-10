@@ -139,3 +139,23 @@ alcance_lateral_suelo	apoyo_lateral_tronco	Alcance lateral desde el suelo
 control_costal_lateral	apoyo_lateral_tronco	Control costal acostado de lado
 apoyo_antebrazo_lateral	apoyo_lateral_tronco	Control lateral con apoyo del antebrazo
 transferencia_pelota_lateral	apoyo_lateral_tronco	Transferencia lateral de pelota con tronco estable
+sentadilla_isometrica_pared	isometrias_piernas	Sentadilla isométrica en pared
+presion_talones_sentado	isometrias_piernas	Presión de talones sentado
+apoyo_escalonado_estatico	isometrias_piernas	Apoyo escalonado estático
+talones_estaticos	isometrias_piernas	Elevación de talones sostenida
+clam_cadera	abductores_acostado	Apertura de rodilla tumbado de lado
+elevacion_lateral_pierna_suelo	abductores_acostado	Elevación lateral de pierna acostado
+circulos_cadera_acostado	abductores_acostado	Círculos de pierna de lado
+aduccion_pierna_inferior	abductores_acostado	Aducción de pierna inferior de lado
+talon_deslizante_sentado	deslizamientos_rodilla	Deslizamiento de talón sentado
+talon_deslizante_supino	deslizamientos_rodilla	Deslizamiento de talón boca arriba
+extension_rodilla_sin_carga	deslizamientos_rodilla	Extensión corta de rodilla sin carga
+flexion_rodilla_bipeda	deslizamientos_rodilla	Flexión suave de rodilla de pie
+pasos_atras_controlados	pasos_direcciones	Pasos cortos hacia atrás
+pasos_diagonales_suelo	pasos_direcciones	Pasos diagonales en el suelo
+pasos_cruzados_lentos	pasos_direcciones	Pasos cruzados lentos
+pasos_en_v	pasos_direcciones	Desplazamiento de pies en V
+salto_pies_juntos	saltos_recreativos	Salto con ambos pies
+salto_lateral_sencillo	saltos_recreativos	Salto lateral recreativo
+saltos_abre_cierra	saltos_recreativos	Saltos de apertura y cierre
+saltos_alternos_recreativos	saltos_recreativos	Saltos alternos recreativos
