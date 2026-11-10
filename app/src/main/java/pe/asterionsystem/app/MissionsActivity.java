@@ -30,6 +30,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
 import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
 import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
+import pe.asterionsystem.core.engine.exercises.ExerciseMuscleFocus;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
@@ -189,11 +190,16 @@ public final class MissionsActivity extends ComponentActivity {
                     ?java.util.Collections.emptyList()
                     :MissionTrackingStore.latestCompletedForCategory(
                             this,catalog,category,today);
+            List<String> recentCompleted=category==CategoryEffortPolicy.REST
+                    ?java.util.Collections.emptyList()
+                    :MissionTrackingStore.recentCompletedForCategory(
+                            this,catalog,category,today);
             proposal=planner.daily(
                     dayProfile,today,decision,previousVariants,
                     weekly!=null && weekly.rotateEquivalentVariant()
                             && !SessionSafetyStore.recentInterruption(
-                                    this,category,today,7));
+                                    this,category,today,7),
+                    recentCompleted);
             if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
                 DailyMissionStore.write(this,today,profile,catalog,
                         proposal.candidates());
@@ -242,7 +248,9 @@ public final class MissionsActivity extends ComponentActivity {
     private void dailyExerciseRow(int index,ExerciseVariant entry,LocalDate day,
                                   int category,MissionPlanner.Proposal proposal) {
         exerciseRow(index+". "+entry.name(),
-                "Material: "+material(entry)+" · Complejidad técnica "+entry.difficulty());
+                "Foco orientativo: "+ExerciseMuscleFocus.forVariant(catalog,entry).description()
+                +" · Material: "+material(entry)
+                +" · Complejidad técnica "+entry.difficulty());
         CheckBox done=new CheckBox(this);
         done.setText("Actividad realizada (opcional)");
         done.setTextSize(14);
@@ -441,6 +449,14 @@ public final class MissionsActivity extends ComponentActivity {
             paragraph(CategoryEffortPolicy.CATEGORY_NAMES[category]+": "
                     +(latest==0?"Sin valoración":latest+" / 10")
                     +" · "+state.explanation);
+            MissionTrackingStore.DiversitySummary diversity=
+                    MissionTrackingStore.recentDiversityForCategory(
+                            this,catalog,category,today);
+            paragraph("Variedad observada (14 días): "
+                    +diversity.uniqueVariants+" variantes distintas, "
+                    +diversity.focusGroups+" focos funcionales, "
+                    +diversity.activeDays+" días registrados. "
+                    +"Solo cuenta actividades marcadas como realizadas.");
         }
         paragraph("No se sube automáticamente la intensidad, "
                 +"ni siquiera el día 21. Puedes ajustar el plan manualmente o descansar.");
