@@ -444,3 +444,63 @@ control_postura_v02	control_postura	Alineación neutra de pie con pared	1	pared	
 control_postura_v03	control_postura	Control postural con cambios de apoyo	2	sin_equipo	equilibrio	0
 control_postura_v04	control_postura	Control postural durante marcha suave	3	sin_equipo	coordinacion	0
 control_postura_v05	control_postura	Coordinación postural con carga liviana supervisada	4	mancuerna	coordinacion	1
+prension_suave_v01	prension_suave	Cerrar la mano suavemente sin objeto	1	sin_equipo	controlado	0
+prension_suave_v02	prension_suave	Prensión de toalla doblada	1	toalla	controlado	0
+prension_suave_v03	prension_suave	Presión suave de pelota blanda	2	pelota	resistencia	0
+separacion_dedos_mano_v01	separacion_dedos_mano	Abrir los dedos lentamente	1	sin_equipo	controlado	0
+separacion_dedos_mano_v02	separacion_dedos_mano	Separar dedos con mano apoyada	1	sin_equipo	controlado	0
+separacion_dedos_mano_v03	separacion_dedos_mano	Separación de dedos con banda suave	2	banda	resistencia	0
+flexion_muneca_activa_v01	flexion_muneca_activa	Flexión de muñeca sin carga	1	sin_equipo	controlado	0
+flexion_muneca_activa_v02	flexion_muneca_activa	Flexión de muñeca con antebrazo apoyado	1	silla	asistido	0
+flexion_muneca_activa_v03	flexion_muneca_activa	Flexión de muñeca con mancuerna ligera	2	mancuerna	resistencia	0
+extension_muneca_activa_v01	extension_muneca_activa	Extensión de muñeca sin carga	1	sin_equipo	controlado	0
+extension_muneca_activa_v02	extension_muneca_activa	Extensión de muñeca con antebrazo apoyado	1	silla	asistido	0
+extension_muneca_activa_v03	extension_muneca_activa	Extensión de muñeca con mancuerna ligera	2	mancuerna	resistencia	0
+extension_contralateral_cuadrupedia_v01	extension_contralateral_cuadrupedia	Alcance alterno de brazo en cuadrupedia	1	sin_equipo	alterno	0
+extension_contralateral_cuadrupedia_v02	extension_contralateral_cuadrupedia	Extensión alterna de pierna en cuadrupedia	2	sin_equipo	alterno	0
+extension_contralateral_cuadrupedia_v03	extension_contralateral_cuadrupedia	Perro pájaro contralateral en colchoneta	2	colchoneta	coordinacion	0
+apoyo_cuadrupedia_v01	apoyo_cuadrupedia	Cuadrupedia estática con espalda neutra	1	sin_equipo	isometrico	0
+apoyo_cuadrupedia_v02	apoyo_cuadrupedia	Transferencia suave de peso en cuatro apoyos	1	sin_equipo	controlado	0
+apoyo_cuadrupedia_v03	apoyo_cuadrupedia	Balanceo corto adelante y atrás en cuadrupedia	2	sin_equipo	dinamico	0
+alineacion_tronco_sentado_v01	alineacion_tronco_sentado	Alineación de tronco sentado en el suelo	1	sin_equipo	isometrico	0
+alineacion_tronco_sentado_v02	alineacion_tronco_sentado	Alineación del tronco sobre silla estable	1	silla	isometrico	0
+alineacion_tronco_sentado_v03	alineacion_tronco_sentado	Alineación de tronco con brazos extendidos	2	sin_equipo	controlado	0
+alcances_tronco_sentado_v01	alcances_tronco_sentado	Alcance frontal sentado en suelo	1	sin_equipo	controlado	0
+alcances_tronco_sentado_v02	alcances_tronco_sentado	Alcance frontal sentado en silla	1	silla	controlado	0
+alcances_tronco_sentado_v03	alcances_tronco_sentado	Alcance lateral sentado con control	2	sin_equipo	lateral	0
+separacion_dedos_pies_v01	separacion_dedos_pies	Apertura suave de dedos de ambos pies	1	sin_equipo	controlado	0
+separacion_dedos_pies_v02	separacion_dedos_pies	Separación alterna de dedos del pie	1	sin_equipo	alterno	0
+separacion_dedos_pies_v03	separacion_dedos_pies	Separación controlada de dedos con pie apoyado	2	sin_equipo	controlado	0
+recogida_toalla_pies_v01	recogida_toalla_pies	Flexión suave de dedos del pie sin objeto	1	sin_equipo	controlado	0
+recogida_toalla_pies_v02	recogida_toalla_pies	Arrugar una toalla ligera con los dedos del pie	1	toalla	controlado	0
+recogida_toalla_pies_v03	recogida_toalla_pies	Extender una toalla con los dedos del pie	2	toalla	controlado	0
+extension_cadera_bipeda_v01	extension_cadera_bipeda	Extensión corta de cadera de pie sin carga	1	sin_equipo	controlado	0
+extension_cadera_bipeda_v02	extension_cadera_bipeda	Extensión de cadera de pie con apoyo en pared	1	pared	asistido	0
+extension_cadera_bipeda_v03	extension_cadera_bipeda	Extensión alternada de cadera con pausa	2	sin_equipo	alterno	0
+extension_cadera_cuadrupedia_v01	extension_cadera_cuadrupedia	Extensión corta de pierna desde cuadrupedia	1	sin_equipo	controlado	0
+extension_cadera_cuadrupedia_v02	extension_cadera_cuadrupedia	Extensión alterna de cadera en cuadrupedia	2	sin_equipo	alterno	0
+extension_cadera_cuadrupedia_v03	extension_cadera_cuadrupedia	Extensión de cadera en cuadrupedia sobre colchoneta	2	colchoneta	controlado	0
+rotacion_cervical_suave_v01	rotacion_cervical_suave	Giro de cabeza sentado sin forzar	1	silla	movilidad	0
+rotacion_cervical_suave_v02	rotacion_cervical_suave	Giro de cabeza de pie dentro de rango cómodo	1	sin_equipo	movilidad	0
+rotacion_cervical_suave_v03	rotacion_cervical_suave	Rotación cervical lenta con pausa cómoda	2	sin_equipo	controlado	0
+inclinacion_cervical_suave_v01	inclinacion_cervical_suave	Inclinación lateral suave de cabeza	1	sin_equipo	movilidad	0
+inclinacion_cervical_suave_v02	inclinacion_cervical_suave	Inclinación lateral sentado sin tensión	1	silla	movilidad	0
+inclinacion_cervical_suave_v03	inclinacion_cervical_suave	Inclinación lateral alterna con hombros relajados	2	sin_equipo	controlado	0
+oposicion_pulgar_v01	oposicion_pulgar	Tocar con pulgar la punta de cada dedo	1	sin_equipo	movilidad	0
+oposicion_pulgar_v02	oposicion_pulgar	Oposición alterna del pulgar con mano relajada	1	sin_equipo	alterno	0
+oposicion_pulgar_v03	oposicion_pulgar	Secuencia lenta pulgar a dedos en ambas manos	2	sin_equipo	coordinacion	0
+flexoextension_dedos_v01	flexoextension_dedos	Extender los dedos con mano relajada	1	sin_equipo	movilidad	0
+flexoextension_dedos_v02	flexoextension_dedos	Flexionar y abrir dedos con control	1	sin_equipo	controlado	0
+flexoextension_dedos_v03	flexoextension_dedos	Secuencia de cierre y apertura de dedos	2	sin_equipo	coordinacion	0
+talones_alternos_v01	talones_alternos	Toques de talón adelante sin salto	1	sin_equipo	aerobico	0
+talones_alternos_v02	talones_alternos	Toques de talón con apoyo en pared	1	pared	asistido	0
+talones_alternos_v03	talones_alternos	Toques alternos de talón con brazos suaves	2	sin_equipo	coordinacion	0
+elevaciones_rodillas_cardio_v01	elevaciones_rodillas_cardio	Elevación suave alterna de rodillas	1	sin_equipo	aerobico	0
+elevaciones_rodillas_cardio_v02	elevaciones_rodillas_cardio	Elevación de rodillas con apoyo en silla estable	1	silla	asistido	0
+elevaciones_rodillas_cardio_v03	elevaciones_rodillas_cardio	Elevación alterna de rodilla con brazos coordinados	2	sin_equipo	coordinacion	0
+pasos_danza_basicos_v01	pasos_danza_basicos	Pasos suaves de baile en el sitio	1	sin_equipo	aerobico	0
+pasos_danza_basicos_v02	pasos_danza_basicos	Dos pasos de baile con pausa opcional	1	sin_equipo	coordinacion	0
+pasos_danza_basicos_v03	pasos_danza_basicos	Secuencia sencilla de pasos de baile	2	sin_equipo	coordinacion	0
+desplazamiento_ritmico_lateral_v01	desplazamiento_ritmico_lateral	Paso lateral rítmico sin salto	1	sin_equipo	aerobico	0
+desplazamiento_ritmico_lateral_v02	desplazamiento_ritmico_lateral	Paso lateral rítmico corto con apoyo	1	pared	asistido	0
+desplazamiento_ritmico_lateral_v03	desplazamiento_ritmico_lateral	Pasos laterales alternos con movimiento suave de brazos	2	sin_equipo	coordinacion	0
