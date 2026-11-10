@@ -46,6 +46,9 @@ final class DailyMissionStore {
         if(!today.toString().equals(p.getString(DATE,""))
                 || !profile.missionSignature().equals(p.getString(SIGNATURE,""))
                 || !catalogSignature(catalog).equals(p.getString(CATALOG,""))) {
+            // Drop yesterday's (or the former profile's) tiny pin on first
+            // read; it is not retained as a historical generated mission.
+            p.edit().clear().apply();
             return Collections.emptyList();
         }
         String raw=p.getString(IDS,"");
