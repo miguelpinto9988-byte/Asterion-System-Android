@@ -54,7 +54,7 @@ public final class MissionPlanner {
             this.weekly = Collections.unmodifiableList(new ArrayList<>(weekly));
             this.equipment = Collections.unmodifiableSet(
                     new HashSet<>(Objects.requireNonNull(equipment, "equipment")));
-            this.dailyLimit = Math.max(1, Math.min(3, dailyLimit));
+            this.dailyLimit = Math.max(1, Math.min(7, dailyLimit));
         }
     }
 
