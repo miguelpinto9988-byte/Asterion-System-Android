@@ -183,7 +183,7 @@ class PreflightNoBuild(unittest.TestCase):
         variants = read_rows("variants.tsv",
                              ["variant_id", "type_id", "name", "level",
                               "equipment", "execution", "supervision"])
-        self.assertEqual((39, 80, 445), (len(families), len(types), len(variants)))
+        self.assertEqual((49, 100, 505), (len(families), len(types), len(variants)))
         family_ids = {row[0] for row in families}
         type_ids = {row[0] for row in types}
         self.assertEqual(len(family_ids), len(families))
