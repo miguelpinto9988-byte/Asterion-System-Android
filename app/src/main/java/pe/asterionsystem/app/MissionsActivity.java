@@ -166,7 +166,9 @@ public final class MissionsActivity extends ComponentActivity {
                     MissionTrackingStore.recentCategoryObservations(this,category,today));
         MissionPlanner.Proposal proposal=planner.daily(
                 dayProfile,today,decision,previousVariants,
-                weekly!=null && weekly.rotateEquivalentVariant());
+                weekly!=null && weekly.rotateEquivalentVariant()
+                        && !SessionSafetyStore.recentInterruption(
+                                this,category,today,7));
         if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
             MissionTrackingStore.rememberCategoryProposal(
                     this,category,today,proposal.candidates());
