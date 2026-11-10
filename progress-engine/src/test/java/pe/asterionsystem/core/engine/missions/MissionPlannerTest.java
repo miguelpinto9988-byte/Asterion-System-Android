@@ -24,7 +24,7 @@ public class MissionPlannerTest {
              InputStreamReader t=reader(root+"types.tsv");
              InputStreamReader v=reader(root+"variants.tsv")) {
             ExerciseCatalog catalog=ExerciseCatalogLoader.load(f,t,v);
-            assertEquals(817,catalog.variants().size());
+            assertEquals(917,catalog.variants().size());
             planner=new MissionPlanner(catalog);
         }
     }
