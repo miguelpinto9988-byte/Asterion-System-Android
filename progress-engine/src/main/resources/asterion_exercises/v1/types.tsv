@@ -119,3 +119,23 @@ pase_pelota_pecho	coordinacion_brazos_pelota	Pase suave de pelota desde el pecho
 pase_pelota_lateral	coordinacion_brazos_pelota	Pase lateral de pelota blanda
 bote_pelota_controlado	coordinacion_brazos_pelota	Bote suave de pelota
 alcance_brazos_coordinado	coordinacion_brazos_pelota	Alcances coordinados de ambos brazos
+toque_talon_supino	pilates_suelo_inicial	Toques alternos de talón boca arriba
+basculacion_pelvis	pilates_suelo_inicial	Basculaciones pélvicas en suelo
+control_rodillas_supino	pilates_suelo_inicial	Control de rodillas boca arriba
+contraccion_abdominal_suave	pilates_suelo_inicial	Activación suave del abdomen
+alineacion_bipeda	control_tronco_pie	Alineación de tronco en bipedestación
+transferencia_peso_tronco	control_tronco_pie	Transferencia de peso con tronco estable
+alcance_frontal_bipedo	control_tronco_pie	Alcances frontales con abdomen estable
+cambio_base_apoyo	control_tronco_pie	Cambios de base de apoyo sin carga
+alcance_diagonal_sentado	rotacion_diagonal_tronco	Alcance diagonal sentado
+alcance_diagonal_pie	rotacion_diagonal_tronco	Alcance diagonal de pie
+rotacion_controlada_banda	rotacion_diagonal_tronco	Rotación de tronco con banda
+diagonales_brazos_tronco	rotacion_diagonal_tronco	Diagonales de brazos y tronco
+postura_montana	yoga_estabilidad_general	Postura de la montaña
+postura_guerrero_suave	yoga_estabilidad_general	Postura de guerrero con apoyo
+postura_silla_asistida	yoga_estabilidad_general	Postura de silla asistida
+postura_estrella	yoga_estabilidad_general	Postura de estrella estable
+alcance_lateral_suelo	apoyo_lateral_tronco	Alcance lateral desde el suelo
+control_costal_lateral	apoyo_lateral_tronco	Control costal acostado de lado
+apoyo_antebrazo_lateral	apoyo_lateral_tronco	Control lateral con apoyo del antebrazo
+transferencia_pelota_lateral	apoyo_lateral_tronco	Transferencia lateral de pelota con tronco estable
