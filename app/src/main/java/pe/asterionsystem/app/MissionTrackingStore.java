@@ -123,14 +123,22 @@ final class MissionTrackingStore {
      * workout was completed.
      */
     static List<WeeklyCategoryChallengePolicy.Observation> recentCategoryObservations(
-            Context context,int category,LocalDate today) {
-        if(today==null)throw new IllegalArgumentException("Fecha requerida");
+            Context context,ExerciseCatalog catalog,int category,LocalDate today) {
+        if(catalog==null || today==null || category<0 || category>4)
+            throw new IllegalArgumentException("Datos de categoría requeridos");
+        Map<String,Integer> exerciseCategory=variantCategories(catalog);
         ArrayList<WeeklyCategoryChallengePolicy.Observation> observations=new ArrayList<>();
         for(int days=1;days<=7;days++) {
             LocalDate prior=today.minusDays(days);
             int effort=ratingForCategory(context,prior,category);
             if(effort==0)continue;
-            boolean completed=!completedToday(context,prior).isEmpty();
+            boolean completed=false;
+            for(String id:completedToday(context,prior)) {
+                if(exerciseCategory.getOrDefault(id,-1)==category) {
+                    completed=true;
+                    break;
+                }
+            }
             observations.add(new WeeklyCategoryChallengePolicy.Observation(
                     prior,category,effort,completed));
         }
@@ -147,6 +155,22 @@ final class MissionTrackingStore {
                                                     int category,LocalDate today) {
         if(catalog==null || today==null || category<0 || category>4)
             throw new IllegalArgumentException("Parámetros de historial inválidos");
+        Map<String,Integer> byVariant=variantCategories(catalog);
+        for(int days=1;days<=21;days++) {
+            LocalDate prior=today.minusDays(days);
+            ArrayList<String> hits=new ArrayList<>();
+            for(String id:completedToday(context,prior)) {
+                if(byVariant.getOrDefault(id,-1)==category)hits.add(id);
+            }
+            if(!hits.isEmpty()) {
+                Collections.sort(hits);
+                return Collections.unmodifiableList(hits);
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    private static Map<String,Integer> variantCategories(ExerciseCatalog catalog) {
         Map<String,Integer> familyCategories=new HashMap<>();
         for(ExerciseFamily family:catalog.families()) {
             familyCategories.put(family.id(),
@@ -157,22 +181,12 @@ final class MissionTrackingStore {
             typeCategories.put(type.id(),
                     familyCategories.getOrDefault(type.familyId(),-1));
         }
-        for(int days=1;days<=21;days++) {
-            LocalDate prior=today.minusDays(days);
-            ArrayList<String> hits=new ArrayList<>();
-            for(String id:completedToday(context,prior)) {
-                ExerciseVariant variant=catalog.variant(id).orElse(null);
-                if(variant!=null && typeCategories.getOrDefault(
-                        variant.typeId(),-1)==category) {
-                    hits.add(id);
-                }
-            }
-            if(!hits.isEmpty()) {
-                Collections.sort(hits);
-                return Collections.unmodifiableList(hits);
-            }
+        Map<String,Integer> byVariant=new HashMap<>();
+        for(ExerciseVariant variant:catalog.variants()) {
+            byVariant.put(variant.id(),
+                    typeCategories.getOrDefault(variant.typeId(),-1));
         }
-        return Collections.emptyList();
+        return byVariant;
     }
 
     /** Removes obsolete cached full daily proposals, preserves effort/completion. */
