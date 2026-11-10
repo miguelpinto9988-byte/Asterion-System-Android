@@ -233,7 +233,9 @@ class PreflightNoBuild(unittest.TestCase):
         workflow = read(ROOT / ".github/workflows/android-ci.yml")
         self.assertRegex(workflow, r"(?m)^  workflow_dispatch:")
         self.assertIn("  push:\n    branches:\n      - main\n", workflow)
-        self.assertNotRegex(workflow, r"(?m)^  (pull_request|schedule):")
+        self.assertIn("  pull_request:\n    branches:\n      - main\n", workflow)
+        self.assertNotRegex(workflow, r"(?m)^  (schedule|pull_request_target):")
+        self.assertIn("permissions:\n  contents: read\n", workflow)
         self.assertIn("gradle-version: '8.13'", workflow)
         ignores = read(ROOT / ".gitignore")
         for pattern in ("*.apk", "*.aab", "*.jks", "*.keystore", "local.properties"):
