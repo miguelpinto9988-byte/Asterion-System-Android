@@ -63,3 +63,8 @@ abductores_acostado	Control lateral de cadera acostado	piernas	cadera_lateral
 deslizamientos_rodilla	Movimiento de rodilla mediante deslizamiento	piernas	deslizamiento_rodilla
 pasos_direcciones	Pasos funcionales en distintas direcciones	piernas	desplazamientos_cortos
 saltos_recreativos	Saltos recreativos catalogados	piernas	salto_recreativo
+flexibilidad_antebrazos	Flexibilidad de manos y antebrazos	movilidad	flexibilidad_antebrazo
+movilidad_torax_pie	Movilidad torácica de pie	movilidad	movilidad_torax
+flexibilidad_cadera_suelo	Flexibilidad de cadera en el suelo	movilidad	estiramiento_cadera
+equilibrio_tandem	Equilibrio de talón y punta	movilidad	equilibrio_tandem
+yoga_movilidad_restaurativa	Yoga de movilidad y posturas restaurativas	movilidad	yoga_movilidad
