@@ -63,6 +63,7 @@ jobs:
           python3 tests/canva_profile_step1_contract.py
           python3 tests/canva_profile_step2_contract.py
           python3 tests/profile_wizard_visual_contract.py
+          python3 tests/profile_monochrome_week_colors_contract.py
           python3 tests/phase16_preflight_static.py
           python3 tests/phase03_visual_source_contract.py
 
