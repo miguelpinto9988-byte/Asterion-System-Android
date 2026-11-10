@@ -1,10 +1,12 @@
 name: Asterion Android — debug CI
 
-# Aprobación del propietario: compilar y validar APK debug automáticamente
-# al publicar cambios en main. La ejecución manual también queda disponible.
-# No generar release, no configurar firma de distribución.
+# Verificación debug para main y pull requests sin fusionar automáticamente.
+# No generar release ni configurar firma de distribución.
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
   workflow_dispatch:
@@ -72,11 +74,12 @@ jobs:
           python3 tests/exercise_five_category_expansion_contract.py
           python3 tests/exercise_intensity_catalog_contract.py
           python3 tests/daily_mission_stability_contract.py
+          python3 tests/mission_diversity_contract.py
           python3 tests/phase16_preflight_static.py
           python3 tests/phase03_visual_source_contract.py
 
       - name: Ejecutar pruebas de core, pruebas debug, lint y ensamblado debug
-        run: gradle --no-daemon --stacktrace --continue :core:test :progress-engine:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
+        run: gradle --no-daemon --stacktrace --continue :core:test :progress-engine:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
 
       - name: Verificar APK firmada de desarrollo
         run: |
@@ -97,6 +100,14 @@ jobs:
         with:
           name: asterion-fase16-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Publicar APK instrumental para comprobar persistencia
+        uses: actions/upload-artifact@v4
+        with:
+          name: asterion-daily-instrumentation-apk
+          path: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
           if-no-files-found: error
           retention-days: 7
 
@@ -121,6 +132,12 @@ jobs:
           name: asterion-fase16-debug-apk
           path: build/smoke
 
+      - name: Descargar pruebas instrumentadas compiladas
+        uses: actions/download-artifact@v4
+        with:
+          name: asterion-daily-instrumentation-apk
+          path: build/smoke
+
       - name: Habilitar aceleración KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -137,7 +154,9 @@ jobs:
           ram-size: 2048M
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           disable-animations: true
-          script: bash ci/android_runtime_smoke.sh
+          script: |
+            bash ci/android_runtime_smoke.sh
+            bash ci/android_daily_instrumented_smoke.sh
 
       - name: Publicar diagnóstico de la ejecución
         if: always()
