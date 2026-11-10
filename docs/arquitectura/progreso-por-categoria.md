@@ -17,25 +17,47 @@ La valoración de 1 a 10 corresponde a la categoría seleccionada por el calenda
 
 ## Comportamiento
 
-- 1–3/10: mantener la propuesta y permitir explorar variantes; nunca aumentar repeticiones automáticamente.
-- 4–6/10: mantener la propuesta.
-- 7–8/10: sugerir como máximo dos actividades y preferir variantes de menor complejidad técnica dentro de la categoría.
-- 9–10/10: sugerir como máximo una actividad y preferir variantes de menor complejidad técnica; descanso permitido.
+- 1–3/10: el motor intenta cambiar automáticamente una variante por otra del **mismo tipo de movimiento y del mismo nivel técnico**, si existe y el material coincide; conserva el número de actividades y no aumenta repeticiones.
+- 4–6/10: el motor conserva las variantes de la sesión anterior de la misma categoría, cuando siguen siendo compatibles.
+- 7–8/10: el motor genera como máximo dos actividades y prefiere variantes técnicamente sencillas dentro de esa categoría.
+- 9–10/10: el motor genera como máximo una actividad de baja complejidad técnica; descanso y suspensión de la actividad siempre posibles.
 - Sin valoración previa: mantener la propuesta, sin inventar datos.
 - Día de descanso: no proponer ejercicios.
 
 La decisión se basa en la valoración **más reciente de esa misma categoría durante los 21 días anteriores**. Las valoraciones del día actual no modifican retroactivamente la misión del día. La valoración de tren inferior nunca se utiliza para ajustar una propuesta de tren superior, ni viceversa.
 
-**Nota sobre progresión de repeticiones:** la versión actual no calcula aumentos automáticos de 3, 4 o 5 repeticiones porque el catálogo de ejercicios no incluye una prescripción individual verificada de series, repeticiones y limitaciones. Una revisión de progresión podría diseñarse más adelante con una base de referencia, información individual apropiada, aceptación del usuario y la opción de mantener o disminuir la exigencia en cualquier momento.
+**Nota sobre progresión de repeticiones:** la versión actual no calcula aumentos automáticos de 3, 4 o 5 repeticiones porque el catálogo de ejercicios no incluye una prescripción individual verificada de series, repeticiones y limitaciones. Una revisión de progresión podría diseñarse más adelante con una base de referencia, información individual apropiada, evaluación de seguridad y capacidad permanente de mantener o disminuir la exigencia.
 
 ## Ejemplo de aceptación
 
-Lunes: tren superior, valoración 3/10 → el miércoles el sistema presenta una revisión opcional únicamente para tren superior. Martes: tren inferior, valoración 5/10 → el viernes el sistema mantiene el nivel. Si el martes se registra 10/10 → el viernes se reduce la propuesta de tren inferior sin alterar la de tren superior.
+Lunes: tren superior, valoración 3/10 → el miércoles el motor intenta seleccionar automáticamente una variante equivalente de tren superior, sin intervención manual. Martes: tren inferior, valoración 5/10 → el viernes el sistema mantiene el nivel. Si el martes se registra 10/10 → el viernes se reduce la propuesta de tren inferior sin alterar la de tren superior.
+
+## Autonomía real y límites de inferencia
+
+**Implementado:** al regenerar la misión, `MissionsActivity` consulta el historial de variantes mostradas para esa categoría mediante `MissionTrackingStore.previousCategoryVariants`; el motor recibe esas variantes y la valoración pertinente, construye automáticamente la propuesta y conserva el resultado en `rememberCategoryProposal`. El usuario no tiene que escoger manualmente una variante.
+
+La lógica es **determinista y basada en reglas**, no un modelo de lenguaje ni una inteligencia entrenada que comprenda por sí sola la biomecánica. Dos variantes del mismo tipo y nivel técnico pueden sentirse diferentes: la etiqueta de nivel técnico NO demuestra que sean equivalentes en volumen ni carga. Por eso el cambio automatizado se limita a esa clasificación y nunca fuerza trabajo adicional.
+
+El registro actual de esfuerzo corresponde a **toda la categoría**, no a cada ejercicio individual. Para afirmar qué ejercicio fue más fácil se necesitarían nuevas observaciones por ejercicio o datos fiables adicionales. Los registros incompletos se consideran desconocidos.
+
+El programa general y la autorización de Monarca siguen siendo independientes: la aprobación inicial de una misión Monarca de cinco días no es reemplazada por la automatización de misiones diarias.
+
+### Verificaciones técnicas
+
+- Conservación de categorías, descansos, horarios del perfil y materiales autorizados.
+- Ante 3/10, intercambio posible de `sentadilla_bilateral_v01` a `sentadilla_bilateral_v02` en la siguiente sesión **de la misma categoría**, si ambas están disponibles; sin subir el nivel técnico.
+- Ante 5/10, mantener la variante previa si sigue siendo compatible.
+- Ante 10/10, disminuir candidatos y priorizar dificultad técnica 1.
+- Un valor de tren inferior no puede aplicarse a tren superior (prueba explícita de rechazo).
+- Propuestas reproducibles para el mismo día y la misma memoria, sin requerir otro clic.
+- No inferir ni imponer metas de repeticiones, cargas, ni progresión forzosa en días 7/14/21.
 
 ## Archivos principales
 
 - `progress-engine/src/main/java/pe/asterionsystem/core/engine/progression/CategoryEffortPolicy.java`
 - `progress-engine/src/test/java/pe/asterionsystem/core/engine/progression/CategoryEffortPolicyTest.java`
+- `progress-engine/src/main/java/pe/asterionsystem/core/engine/missions/MissionPlanner.java`
+- `progress-engine/src/test/java/pe/asterionsystem/core/engine/missions/AutonomousCategoryMissionTest.java`
 - `app/src/main/java/pe/asterionsystem/app/MissionTrackingStore.java`
 - `app/src/main/java/pe/asterionsystem/app/MissionsActivity.java`
 - `tests/mission_tracking_progress_contract.py`
