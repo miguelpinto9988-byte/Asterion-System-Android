@@ -56,7 +56,7 @@ public final class NavigationRenderer {
             openSettingsButton.setOnClickListener(view -> openSettings.run());
             Button openLocalStatusButton = screen.findViewById(R.id.open_local_status);
             openLocalStatusButton.setOnClickListener(view -> openLocalStatus.run());
-            HomeMissionBinder.bind(activity,screen);
+            HomeMissionBinder.bind(activity,screen,openProgress);
         } else if (route == NavigationRoute.SECONDARY) {
             Button backButton = screen.findViewById(R.id.back_to_home);
             backButton.setOnClickListener(view -> back.run());
