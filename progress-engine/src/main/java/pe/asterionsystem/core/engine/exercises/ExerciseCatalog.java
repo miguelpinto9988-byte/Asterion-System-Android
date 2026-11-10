@@ -23,6 +23,7 @@ public final class ExerciseCatalog {
     private final Map<String, ExerciseType> byType;
     private final Map<String, ExerciseVariant> byVariant;
     private final Map<String, ExerciseIntensity> intensityById;
+    private final ExerciseCategoryIndex categoryIndex;
 
     ExerciseCatalog(List<ExerciseFamily> allFamilies, List<ExerciseType> allTypes,
                     List<ExerciseVariant> allVariants) {
@@ -93,11 +94,13 @@ public final class ExerciseCatalog {
         this.families = Collections.unmodifiableList(new ArrayList<>(allFamilies));
         this.types = Collections.unmodifiableList(new ArrayList<>(allTypes));
         this.variants = Collections.unmodifiableList(new ArrayList<>(allVariants));
+        this.categoryIndex = new ExerciseCategoryIndex(this.families,this.types,this.variants);
     }
 
     public List<ExerciseFamily> families() { return families; }
     public List<ExerciseType> types() { return types; }
     public List<ExerciseVariant> variants() { return variants; }
+    public ExerciseCategoryIndex categoryIndex() { return categoryIndex; }
 
     /** Unlabelled older variants are preserved, not assigned speculative intensity. */
     public ExerciseIntensity intensity(String variantId) {
