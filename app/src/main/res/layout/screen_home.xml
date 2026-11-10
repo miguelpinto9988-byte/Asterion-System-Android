@@ -60,9 +60,10 @@
 
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Otros accesos" android:textSize="17sp" android:textStyle="bold" android:textColor="#111111"/>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Herramientas existentes de planificación, configuración y estado local." android:textSize="13sp" android:textStyle="bold" android:textColor="#555555"/>
-    <Button android:id="@+id/open_catalog" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:minHeight="48dp" android:text="Catálogo clásico" android:textStyle="bold" android:textAllCaps="false"/>
+    <Button android:id="@+id/open_catalog" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:minHeight="48dp" android:text="Biblioteca actual" android:textStyle="bold" android:textAllCaps="false"/>
     <Button android:id="@+id/open_plan" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:minHeight="48dp" android:text="Planificación" android:textStyle="bold" android:textAllCaps="false"/>
     <Button android:id="@+id/open_settings" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:minHeight="48dp" android:text="Configuración" android:textStyle="bold" android:textAllCaps="false"/>
+    <Button android:id="@+id/open_legacy_progress" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:minHeight="48dp" android:text="Seguimiento histórico (sin cambios)" android:textStyle="bold" android:textAllCaps="false"/>
     <Button android:id="@+id/open_local_status" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:minHeight="48dp" android:text="Estado local" android:textStyle="bold" android:textAllCaps="false"/>
     <Button android:id="@+id/open_secondary" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:minHeight="48dp" android:text="Más información" android:textStyle="bold" android:textAllCaps="false"/>
 
