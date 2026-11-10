@@ -174,7 +174,7 @@ public final class MissionsActivity extends ComponentActivity {
         WeeklyCategoryChallengePolicy.Review weekly=category==CategoryEffortPolicy.REST
                 ?null:WeeklyCategoryChallengePolicy.evaluate(
                     category,MissionTrackingStore.firstReport(this),today,
-                    MissionTrackingStore.recentCategoryObservations(this,category,today));
+                    MissionTrackingStore.recentCategoryObservations(this,catalog,category,today));
         List<String> pinned=DailyMissionStore.read(this,today,profile,catalog);
         MissionPlanner.Proposal proposal=null;
         if(!pinned.isEmpty()) {
