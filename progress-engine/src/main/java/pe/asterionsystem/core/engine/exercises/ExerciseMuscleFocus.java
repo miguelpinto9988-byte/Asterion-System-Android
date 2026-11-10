@@ -140,9 +140,6 @@ public final class ExerciseMuscleFocus {
     public static Focus forVariant(ExerciseCatalog catalog,ExerciseVariant variant) {
         Objects.requireNonNull(catalog,"catalog");
         Objects.requireNonNull(variant,"variant");
-        for(ExerciseType type:catalog.types()) {
-            if(type.id().equals(variant.typeId()))return forFamily(type.familyId());
-        }
-        return new Focus("no clasificado","");
+        return forFamily(catalog.categoryIndex().familyForVariant(variant.id()));
     }
 }
