@@ -29,3 +29,21 @@ adb shell am instrument -w -e class "$TEST_CLASS#verifyAfterRestartAndDayChange"
 grep -q 'OK (1 test)' "$OUT/daily-pin-restore.txt"
 
 echo "PASS: persisted daily IDs survive process restart; simulated local-day and profile changes invalidate them."
+
+echo "Android instrumentation 3/4: generate and accept Monarca preview"
+adb shell am instrument -w -e class "$TEST_CLASS#seedMonarchPreviewAndAccept" \
+  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
+  | tee "$OUT/monarch-preview-accept.txt"
+grep -q 'OK (1 test)' "$OUT/monarch-preview-accept.txt"
+
+adb shell am force-stop "$PACKAGE"
+adb shell am force-stop "$TEST_PACKAGE" || true
+
+echo "Android instrumentation 4/4: accepted Monarca remains stable; profile edits pause safely"
+adb shell am instrument -w -e class "$TEST_CLASS#verifyMonarchAfterRestartAndProfileReview" \
+  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
+  | tee "$OUT/monarch-active-review.txt"
+grep -q 'OK (1 test)' "$OUT/monarch-active-review.txt"
+
+echo "PASS: seeded Monarca previews, explicit consent and safe pause on profile changes."
+
