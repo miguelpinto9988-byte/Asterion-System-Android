@@ -684,3 +684,63 @@ saltos_abre_cierra_v03	saltos_abre_cierra	Saltos de apertura y cierre a ritmo vi
 saltos_alternos_recreativos_v01	saltos_alternos_recreativos	Alternar apoyos de pies sin despegar ambos	1	sin_equipo	dinamico	0
 saltos_alternos_recreativos_v02	saltos_alternos_recreativos	Saltos alternados cortos sin carga	3	sin_equipo	dinamico	0
 saltos_alternos_recreativos_v03	saltos_alternos_recreativos	Secuencia de saltos alternados vigorosos	4	sin_equipo	dinamico	1
+estiramiento_flexores_muneca_v01	estiramiento_flexores_muneca	Extensión suave de palma con codo apoyado	1	silla	movilidad	0
+estiramiento_flexores_muneca_v02	estiramiento_flexores_muneca	Estiramiento de flexores de muñeca con brazo relajado	2	sin_equipo	movilidad	0
+estiramiento_flexores_muneca_v03	estiramiento_flexores_muneca	Estiramiento de flexores de muñeca sentado con toalla	3	toalla+silla	movilidad	0
+estiramiento_extensores_muneca_v01	estiramiento_extensores_muneca	Flexión suave de la mano con brazo descansado	1	sin_equipo	movilidad	0
+estiramiento_extensores_muneca_v02	estiramiento_extensores_muneca	Estiramiento de extensores con codo apoyado en mesa	2	banco	movilidad	0
+estiramiento_extensores_muneca_v03	estiramiento_extensores_muneca	Estiramiento de extensores de muñeca con apoyo de toalla	3	toalla	movilidad	0
+movilidad_pulgar_v01	movilidad_pulgar	Separar el pulgar de la palma sin resistencia	1	sin_equipo	movilidad	0
+movilidad_pulgar_v02	movilidad_pulgar	Desplazar el pulgar hacia la palma lentamente	2	sin_equipo	movilidad	0
+movilidad_pulgar_v03	movilidad_pulgar	Secuencia de movimientos de pulgar con mano apoyada	3	silla	movilidad	0
+circulos_muneca_v01	circulos_muneca	Círculos pequeños de muñeca con codo apoyado	1	silla	movilidad	0
+circulos_muneca_v02	circulos_muneca	Círculos suaves de ambas muñecas sin apoyo	2	sin_equipo	movilidad	0
+circulos_muneca_v03	circulos_muneca	Círculos alternos de muñeca con cambios lentos de sentido	3	sin_equipo	movilidad	0
+apertura_pectoral_pie_v01	apertura_pectoral_pie	Apertura suave del pecho con brazos a los lados	1	sin_equipo	movilidad	0
+apertura_pectoral_pie_v02	apertura_pectoral_pie	Apertura de pecho con manos sobre pared	2	pared	movilidad	0
+apertura_pectoral_pie_v03	apertura_pectoral_pie	Apertura alterna de brazos con respiración estable	3	sin_equipo	movilidad	0
+rotacion_torax_pared_v01	rotacion_torax_pared	Rotación torácica corta con mano en pared	1	pared	movilidad	0
+rotacion_torax_pared_v02	rotacion_torax_pared	Rotación torácica alterna con ambos pies apoyados	2	sin_equipo	movilidad	0
+rotacion_torax_pared_v03	rotacion_torax_pared	Rotación torácica de pie con brazos en cruz	3	sin_equipo	movilidad	0
+deslizamiento_costal_pie_v01	deslizamiento_costal_pie	Inclinación costal mínima sentado	1	silla	movilidad	0
+deslizamiento_costal_pie_v02	deslizamiento_costal_pie	Inclinación suave de costillas de pie	2	sin_equipo	movilidad	0
+deslizamiento_costal_pie_v03	deslizamiento_costal_pie	Deslizamiento lateral del tronco con brazos relajados	3	sin_equipo	movilidad	0
+extensiones_torax_sentado_v01	extensiones_torax_sentado	Crecimiento axial de espalda sentado con apoyo	1	silla	movilidad	0
+extensiones_torax_sentado_v02	extensiones_torax_sentado	Extensión suave de espalda alta sentado sin carga	2	silla	movilidad	0
+extensiones_torax_sentado_v03	extensiones_torax_sentado	Extensión torácica sentada con brazos abiertos	3	silla	movilidad	0
+estiramiento_mariposa_v01	estiramiento_mariposa	Apertura cómoda de rodillas sentado con pies juntos	1	colchoneta	movilidad	0
+estiramiento_mariposa_v02	estiramiento_mariposa	Postura de mariposa con espalda apoyada en pared	2	colchoneta+pared	movilidad	0
+estiramiento_mariposa_v03	estiramiento_mariposa	Apertura de caderas sentado con respiración relajada	3	colchoneta	movilidad	0
+rodillas_costado_supino_v01	rodillas_costado_supino	Dejar caer una rodilla hacia afuera acostado	1	colchoneta	movilidad	0
+rodillas_costado_supino_v02	rodillas_costado_supino	Apertura alterna de rodillas acostado boca arriba	2	colchoneta	movilidad	0
+rodillas_costado_supino_v03	rodillas_costado_supino	Desplazamiento suave de ambas rodillas hacia un lado	3	colchoneta	movilidad	0
+flexor_cadera_apoyo_v01	flexor_cadera_apoyo	Movilidad de flexor de cadera de pie junto a pared	1	pared	movilidad	0
+flexor_cadera_apoyo_v02	flexor_cadera_apoyo	Movilidad de flexor de cadera con silla estable	2	silla	movilidad	0
+flexor_cadera_apoyo_v03	flexor_cadera_apoyo	Movilidad de flexor de cadera en apoyo semiarrodillado	3	colchoneta	movilidad	0
+rotacion_cadera_tumbado_v01	rotacion_cadera_tumbado	Rotación corta de una cadera acostado boca arriba	1	colchoneta	movilidad	0
+rotacion_cadera_tumbado_v02	rotacion_cadera_tumbado	Rotación alterna de caderas con piernas dobladas	2	colchoneta	movilidad	0
+rotacion_cadera_tumbado_v03	rotacion_cadera_tumbado	Rotación cómoda de ambas caderas tumbado	3	colchoneta	movilidad	0
+apoyo_semi_tandem_v01	apoyo_semi_tandem	Posición de pies semialineados con mano en pared	1	pared	equilibrio	0
+apoyo_semi_tandem_v02	apoyo_semi_tandem	Equilibrio semitándem sin carga cerca de silla	2	silla	equilibrio	0
+apoyo_semi_tandem_v03	apoyo_semi_tandem	Equilibrio semitándem con giro suave de cabeza	3	silla	equilibrio	0
+marcha_tandem_corta_v01	marcha_tandem_corta	Paso talón-punta con apoyo lateral cercano	1	pared	equilibrio	0
+marcha_tandem_corta_v02	marcha_tandem_corta	Marcha corta de talón a punta en suelo plano	2	sin_equipo	equilibrio	0
+marcha_tandem_corta_v03	marcha_tandem_corta	Marcha en línea recta con pausas de equilibrio	3	sin_equipo	equilibrio	0
+balanceo_peso_tandem_v01	balanceo_peso_tandem	Balanceo suave de peso con pies casi alineados	1	pared	equilibrio	0
+balanceo_peso_tandem_v02	balanceo_peso_tandem	Cambio de peso entre pies en apoyo semitándem	2	sin_equipo	equilibrio	0
+balanceo_peso_tandem_v03	balanceo_peso_tandem	Balanceo alterno en postura talón-punta cerca de apoyo	3	silla	equilibrio	0
+alcance_equilibrio_tandem_v01	alcance_equilibrio_tandem	Alcance frontal en semitándem con mano apoyada	1	pared	equilibrio	0
+alcance_equilibrio_tandem_v02	alcance_equilibrio_tandem	Alcance lateral corto en semitándem con apoyo	2	silla	equilibrio	0
+alcance_equilibrio_tandem_v03	alcance_equilibrio_tandem	Alcance alterno en semitándem sin carga	3	sin_equipo	equilibrio	0
+postura_nino_apoyada_v01	postura_nino_apoyada	Postura de descanso del tronco sentado frente a mesa	1	silla	movilidad	0
+postura_nino_apoyada_v02	postura_nino_apoyada	Postura de niño adaptada con apoyo de brazos	2	colchoneta	movilidad	0
+postura_nino_apoyada_v03	postura_nino_apoyada	Postura de niño con brazos descansando sobre toalla	3	colchoneta+toalla	movilidad	0
+postura_cobra_suave_v01	postura_cobra_suave	Extensión leve de espalda tumbado con brazos a los lados	1	colchoneta	movilidad	0
+postura_cobra_suave_v02	postura_cobra_suave	Extensión suave de pecho en postura de esfinge	2	colchoneta	movilidad	0
+postura_cobra_suave_v03	postura_cobra_suave	Postura de cobra parcial con apoyo en antebrazos	3	colchoneta	movilidad	0
+postura_mariposa_restaurativa_v01	postura_mariposa_restaurativa	Apertura de caderas boca arriba con pies apoyados	1	colchoneta	movilidad	0
+postura_mariposa_restaurativa_v02	postura_mariposa_restaurativa	Mariposa reclinada con rodillas cómodamente dobladas	2	colchoneta	movilidad	0
+postura_mariposa_restaurativa_v03	postura_mariposa_restaurativa	Mariposa tumbado con toalla de soporte bajo las piernas	3	colchoneta+toalla	movilidad	0
+postura_triangulo_apoyo_v01	postura_triangulo_apoyo	Inclinación lateral corta de pie junto a pared	1	pared	movilidad	0
+postura_triangulo_apoyo_v02	postura_triangulo_apoyo	Triángulo parcial con mano apoyada en silla	2	silla	movilidad	0
+postura_triangulo_apoyo_v03	postura_triangulo_apoyo	Triángulo suave de pie con brazos abiertos sin carga	3	sin_equipo	movilidad	0
