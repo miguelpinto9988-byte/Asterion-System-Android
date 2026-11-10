@@ -1,6 +1,6 @@
 # Monarca — selección reproducible, variedad por ciclo y autorización
 
-**Rama de propuesta:** `feature/monarca-aleatoriedad-estable-20261110` sobre `feature/misiones-niveles-adaptativos-20261110` (PR #8), a su vez basado en PR #7. No se modifica directamente `main`.
+**Integración final:** PR #9 sobre `main`, después de integrar en orden los PR #6 (consolidación), #7 (variedad) y #8 (mezcla gradual). La publicación de una nueva versión no es automática.
 
 ## Hallazgos de la revisión
 1. El motor anterior usaba `starts.toEpochDay()/5L` como semilla Monarca. La fecha producía variedad, pero **la semilla no incluía la configuración del perfil**. El perfil seguía filtrando qué ejercicios eran elegibles.
