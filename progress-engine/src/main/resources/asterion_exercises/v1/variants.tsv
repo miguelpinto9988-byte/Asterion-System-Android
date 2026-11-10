@@ -624,3 +624,63 @@ apoyo_antebrazo_lateral_v03	apoyo_antebrazo_lateral	Control lateral de tronco co
 transferencia_pelota_lateral_v01	transferencia_pelota_lateral	Cambio de pelota de mano a mano sentado	1	pelota+silla	controlado	0
 transferencia_pelota_lateral_v02	transferencia_pelota_lateral	Cambio lateral de pelota de pie sin giro profundo	2	pelota	controlado	0
 transferencia_pelota_lateral_v03	transferencia_pelota_lateral	Transferencia diagonal de pelota blanda con tronco estable	3	pelota	controlado	0
+sentadilla_isometrica_pared_v01	sentadilla_isometrica_pared	Apoyo de espalda en pared con flexión mínima de rodillas	1	pared	isometrico	0
+sentadilla_isometrica_pared_v02	sentadilla_isometrica_pared	Sentadilla isométrica parcial en pared	2	pared	isometrico	0
+sentadilla_isometrica_pared_v03	sentadilla_isometrica_pared	Sentadilla isométrica en pared con pelota entre rodillas	3	pared+pelota	isometrico	0
+presion_talones_sentado_v01	presion_talones_sentado	Presión suave de talones contra el suelo sentado	1	silla	isometrico	0
+presion_talones_sentado_v02	presion_talones_sentado	Presión alterna de talones sentado en silla	2	silla	isometrico	0
+presion_talones_sentado_v03	presion_talones_sentado	Presión simultánea de talones con tronco alineado	3	silla	isometrico	0
+apoyo_escalonado_estatico_v01	apoyo_escalonado_estatico	Postura escalonada con manos en pared	1	pared	isometrico	0
+apoyo_escalonado_estatico_v02	apoyo_escalonado_estatico	Apoyo escalonado sin carga con rodillas cómodas	2	sin_equipo	isometrico	0
+apoyo_escalonado_estatico_v03	apoyo_escalonado_estatico	Apoyo escalonado con cambio suave de peso	3	sin_equipo	isometrico	0
+talones_estaticos_v01	talones_estaticos	Talones elevados sentado con pies apoyados	1	silla	isometrico	0
+talones_estaticos_v02	talones_estaticos	Talones elevados de pie con apoyo en pared	2	pared	isometrico	0
+talones_estaticos_v03	talones_estaticos	Elevación sostenida de talones con ambos pies sin apoyo	3	sin_equipo	isometrico	0
+clam_cadera_v01	clam_cadera	Apertura corta de rodilla lateral sin banda	1	colchoneta	controlado	0
+clam_cadera_v02	clam_cadera	Apertura de rodilla lateral con pausa cómoda	2	colchoneta	controlado	0
+clam_cadera_v03	clam_cadera	Apertura de rodilla lateral con banda elástica	3	colchoneta+banda	controlado	0
+elevacion_lateral_pierna_suelo_v01	elevacion_lateral_pierna_suelo	Separación corta de pierna tumbado de lado	1	colchoneta	controlado	0
+elevacion_lateral_pierna_suelo_v02	elevacion_lateral_pierna_suelo	Elevación lateral de pierna con rodilla extendida	2	colchoneta	controlado	0
+elevacion_lateral_pierna_suelo_v03	elevacion_lateral_pierna_suelo	Elevación lateral de pierna con pausa breve	3	colchoneta	controlado	0
+circulos_cadera_acostado_v01	circulos_cadera_acostado	Círculo corto de cadera tumbado de lado	1	colchoneta	controlado	0
+circulos_cadera_acostado_v02	circulos_cadera_acostado	Círculo pequeño de pierna extendida lateralmente	2	colchoneta	controlado	0
+circulos_cadera_acostado_v03	circulos_cadera_acostado	Círculo alternado hacia ambos sentidos tumbado	3	colchoneta	controlado	0
+aduccion_pierna_inferior_v01	aduccion_pierna_inferior	Deslizamiento de pierna inferior tumbado de lado	1	colchoneta	controlado	0
+aduccion_pierna_inferior_v02	aduccion_pierna_inferior	Elevación corta de pierna inferior acostado de lado	2	colchoneta	controlado	0
+aduccion_pierna_inferior_v03	aduccion_pierna_inferior	Elevación lateral de pierna inferior con pausa	3	colchoneta	controlado	0
+talon_deslizante_sentado_v01	talon_deslizante_sentado	Deslizar un pie hacia atrás sentado en silla	1	silla	controlado	0
+talon_deslizante_sentado_v02	talon_deslizante_sentado	Deslizamiento alternado de pies en suelo sentado	2	silla	controlado	0
+talon_deslizante_sentado_v03	talon_deslizante_sentado	Deslizamiento de talones sentado con toalla	3	silla+toalla	controlado	0
+talon_deslizante_supino_v01	talon_deslizante_supino	Acercar talón por el suelo tumbado boca arriba	1	colchoneta	controlado	0
+talon_deslizante_supino_v02	talon_deslizante_supino	Deslizar talones alternos acostado en colchoneta	2	colchoneta	controlado	0
+talon_deslizante_supino_v03	talon_deslizante_supino	Deslizamiento de talón con toalla sobre suelo liso	3	colchoneta+toalla	controlado	0
+extension_rodilla_sin_carga_v01	extension_rodilla_sin_carga	Extensión corta de una rodilla sentado en silla	1	silla	controlado	0
+extension_rodilla_sin_carga_v02	extension_rodilla_sin_carga	Extensión alternada de rodillas sentado	2	silla	controlado	0
+extension_rodilla_sin_carga_v03	extension_rodilla_sin_carga	Extensión de rodilla sentado con pausa cómoda	3	silla	controlado	0
+flexion_rodilla_bipeda_v01	flexion_rodilla_bipeda	Flexión mínima de una rodilla con apoyo en pared	1	pared	controlado	0
+flexion_rodilla_bipeda_v02	flexion_rodilla_bipeda	Flexión alterna de rodilla de pie cerca de silla	2	silla	controlado	0
+flexion_rodilla_bipeda_v03	flexion_rodilla_bipeda	Flexión de rodilla de pie con pausa sin carga	3	sin_equipo	controlado	0
+pasos_atras_controlados_v01	pasos_atras_controlados	Paso corto atrás con apoyo en pared	1	pared	dinamico	0
+pasos_atras_controlados_v02	pasos_atras_controlados	Paso alternado atrás en suelo plano	2	sin_equipo	dinamico	0
+pasos_atras_controlados_v03	pasos_atras_controlados	Paso atrás y regreso con control de cadera	3	sin_equipo	dinamico	0
+pasos_diagonales_suelo_v01	pasos_diagonales_suelo	Paso diagonal corto con apoyo lateral	1	pared	dinamico	0
+pasos_diagonales_suelo_v02	pasos_diagonales_suelo	Paso diagonal alterno hacia adelante	2	sin_equipo	dinamico	0
+pasos_diagonales_suelo_v03	pasos_diagonales_suelo	Paso diagonal adelante y atrás sin salto	3	sin_equipo	dinamico	0
+pasos_cruzados_lentos_v01	pasos_cruzados_lentos	Cruce corto de un pie por delante con apoyo	1	pared	dinamico	0
+pasos_cruzados_lentos_v02	pasos_cruzados_lentos	Paso cruzado simple frente a otro pie	2	sin_equipo	dinamico	0
+pasos_cruzados_lentos_v03	pasos_cruzados_lentos	Secuencia de cruces de pies a ritmo cómodo	3	sin_equipo	dinamico	0
+pasos_en_v_v01	pasos_en_v	Apertura de pies en V sentado en silla	1	silla	dinamico	0
+pasos_en_v_v02	pasos_en_v	Paso en V de pie sin salto	2	sin_equipo	dinamico	0
+pasos_en_v_v03	pasos_en_v	Secuencia en V adelante y atrás en suelo plano	3	sin_equipo	dinamico	0
+salto_pies_juntos_v01	salto_pies_juntos	Rebote suave de talones sin despegar los pies	1	sin_equipo	dinamico	0
+salto_pies_juntos_v02	salto_pies_juntos	Salto corto con ambos pies en suelo plano	3	sin_equipo	dinamico	0
+salto_pies_juntos_v03	salto_pies_juntos	Saltos recreativos continuos con ambos pies	4	sin_equipo	dinamico	1
+salto_lateral_sencillo_v01	salto_lateral_sencillo	Paso lateral amplio sin salto	1	sin_equipo	dinamico	0
+salto_lateral_sencillo_v02	salto_lateral_sencillo	Salto lateral corto entre dos marcas en suelo	3	marcas_suelo	dinamico	0
+salto_lateral_sencillo_v03	salto_lateral_sencillo	Secuencia de saltos laterales a ritmo alto	4	marcas_suelo	dinamico	1
+saltos_abre_cierra_v01	saltos_abre_cierra	Apertura y cierre de pies caminando	1	sin_equipo	dinamico	0
+saltos_abre_cierra_v02	saltos_abre_cierra	Salto de apertura y cierre de pies	3	sin_equipo	dinamico	0
+saltos_abre_cierra_v03	saltos_abre_cierra	Saltos de apertura y cierre a ritmo vigoroso	4	sin_equipo	dinamico	1
+saltos_alternos_recreativos_v01	saltos_alternos_recreativos	Alternar apoyos de pies sin despegar ambos	1	sin_equipo	dinamico	0
+saltos_alternos_recreativos_v02	saltos_alternos_recreativos	Saltos alternados cortos sin carga	3	sin_equipo	dinamico	0
+saltos_alternos_recreativos_v03	saltos_alternos_recreativos	Secuencia de saltos alternados vigorosos	4	sin_equipo	dinamico	1
