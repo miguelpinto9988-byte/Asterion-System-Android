@@ -6,6 +6,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
+import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
+import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
+import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
+import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import java.util.List;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import java.util.Set;
@@ -129,6 +135,56 @@ final class MissionTrackingStore {
                     prior,category,effort,completed));
         }
         return Collections.unmodifiableList(observations);
+    }
+
+    /**
+     * Uses actual past check-offs, not stored/generated daily proposals.
+     * Finds the latest completed session for THIS catalog category only.
+     * Today is intentionally excluded so checking off an exercise cannot
+     * unexpectedly change the remaining mission when switching panels.
+     */
+    static List<String> latestCompletedForCategory(Context context,ExerciseCatalog catalog,
+                                                    int category,LocalDate today) {
+        if(catalog==null || today==null || category<0 || category>4)
+            throw new IllegalArgumentException("Parámetros de historial inválidos");
+        Map<String,Integer> familyCategories=new HashMap<>();
+        for(ExerciseFamily family:catalog.families()) {
+            familyCategories.put(family.id(),
+                    ExerciseCategoryMapper.weeklyIndex(family.category()));
+        }
+        Map<String,Integer> typeCategories=new HashMap<>();
+        for(ExerciseType type:catalog.types()) {
+            typeCategories.put(type.id(),
+                    familyCategories.getOrDefault(type.familyId(),-1));
+        }
+        for(int days=1;days<=21;days++) {
+            LocalDate prior=today.minusDays(days);
+            ArrayList<String> hits=new ArrayList<>();
+            for(String id:completedToday(context,prior)) {
+                ExerciseVariant variant=catalog.variant(id).orElse(null);
+                if(variant!=null && typeCategories.getOrDefault(
+                        variant.typeId(),-1)==category) {
+                    hits.add(id);
+                }
+            }
+            if(!hits.isEmpty()) {
+                Collections.sort(hits);
+                return Collections.unmodifiableList(hits);
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    /** Removes obsolete cached full daily proposals, preserves effort/completion. */
+    static void clearLegacyProposalSnapshots(Context context) {
+        SharedPreferences shared=prefs(context);
+        if(shared.getBoolean("legacy_proposal_purged_v2",false))return;
+        SharedPreferences.Editor edit=shared.edit();
+        for(int category=0;category<5;category++) {
+            edit.remove(CATEGORY_PLAN+category);
+            edit.remove(CATEGORY_PLAN_PREVIOUS+category);
+        }
+        edit.putBoolean("legacy_proposal_purged_v2",true).apply();
     }
 
     /**
