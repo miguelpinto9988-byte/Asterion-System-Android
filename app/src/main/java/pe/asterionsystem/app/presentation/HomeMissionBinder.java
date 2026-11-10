@@ -23,7 +23,7 @@ import pe.asterionsystem.app.R;
 final class HomeMissionBinder {
     private HomeMissionBinder() {}
 
-    static void bind(Activity activity, View screen) {
+    static void bind(Activity activity, View screen, Runnable openHistoricalProgress) {
         JSONObject profile=ProfileStore.getRegistration(activity);
         boolean light="light".equals(profile.optString("theme","light"));
         TextView name=screen.findViewById(R.id.home_profile_name);
@@ -36,6 +36,12 @@ final class HomeMissionBinder {
                 .setOnClickListener(v->open(activity,"daily"));
         screen.<Button>findViewById(R.id.open_library)
                 .setOnClickListener(v->open(activity,"library"));
+        screen.<Button>findViewById(R.id.open_progress)
+                .setOnClickListener(v->open(activity,"progress"));
+        screen.<Button>findViewById(R.id.open_catalog)
+                .setOnClickListener(v->open(activity,"library"));
+        screen.<Button>findViewById(R.id.open_legacy_progress)
+                .setOnClickListener(v->openHistoricalProgress.run());
         screen.<Button>findViewById(R.id.open_profile)
                 .setOnClickListener(v->new AlertDialog.Builder(activity)
                         .setTitle("Perfil del cazador")
