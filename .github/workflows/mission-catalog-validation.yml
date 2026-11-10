@@ -1,0 +1,52 @@
+name: Validar misiones desde catálogo 445
+on:
+  push:
+    branches:
+      - feature/missions-from-catalog-consent
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Instalar plataforma Android 36
+        run: |
+          set -euo pipefail
+          SDK_ROOT="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
+          SDKMANAGER="$(command -v sdkmanager || true)"
+          if [ -z "$SDKMANAGER" ]; then
+            SDKMANAGER="$(find "$SDK_ROOT/cmdline-tools" -type f -name sdkmanager | head -n 1)"
+          fi
+          yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses >/dev/null || true
+          "$SDKMANAGER" --sdk_root="$SDK_ROOT" 'platforms;android-36' 'build-tools;35.0.0'
+      - name: Contratos de compatibilidad
+        run: |
+          python3 tests/missions_from_catalog_contract.py
+          python3 tests/global_bold_contract.py
+          python3 tests/profile_monochrome_week_colors_contract.py
+          python3 tests/phase03_visual_source_contract.py
+          python3 tests/phase16_preflight_static.py
+      - name: Compilar y ejecutar pruebas
+        run: gradle --no-daemon :core:test :progress-engine:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug
+      - name: Validar aplicación principal
+        run: |
+          set -euo pipefail
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify "$APK"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" | grep "package: name='pe.asterionsystem.app'"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asterion-missions-main-package-validation
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 5
