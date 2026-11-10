@@ -32,6 +32,19 @@ La decisión se basa en la valoración **más reciente de esa misma categoría d
 
 Lunes: tren superior, valoración 3/10 → el miércoles el motor intenta seleccionar automáticamente una variante equivalente de tren superior, sin intervención manual. Martes: tren inferior, valoración 5/10 → el viernes el sistema mantiene el nivel. Si el martes se registra 10/10 → el viernes se reduce la propuesta de tren inferior sin alterar la de tren superior.
 
+## Revisión automática al séptimo día
+
+La **primera revisión operativa** se habilita después de siete días naturales desde la primera valoración registrada. Se vuelve a evaluar la evidencia de los **siete días anteriores** cada vez que corresponda entrenar esa categoría, sin un botón de selección manual.
+
+- El motor exige al menos **dos actividades completadas y valoradas como poco exigentes (1–3/10)**, procedentes de **días diferentes de una misma categoría**, para habilitar una nueva variante equivalente.
+- Una valoración de esfuerzo alto (7–10/10) en esa ventana da prioridad a la recuperación, aunque la actividad haya quedado incompleta.
+- Las categorías no comparten observaciones ni modificaciones; un informe de tren inferior no decide el progreso de tren superior.
+- Si solo hay una valoración, no hay suficiente evidencia, o el usuario descansó, **se conserva el plan**. El descanso no cuenta como fracaso.
+- El cambio autónomo consiste en seleccionar una variante del **mismo tipo de movimiento y nivel técnico**, cuando esté disponible y sea compatible con el material configurado; no se duplican series ni se imponen incrementos de repeticiones.
+- Las revisiones de 14 y 21 días continúan disponibles para interpretar tendencias generales, y nunca anulan señales de esfuerzo elevado.
+
+La lógica distingue **variedad del desafío** de **intensidad física**: pasar a otra variante del mismo nivel técnico no garantiza que la carga sea equivalente para una persona concreta. El usuario puede descansar, detenerse o corregir su valoración en cualquier momento. No se deduce seguridad de una calificación baja por sí sola.
+
 ## Autonomía real y límites de inferencia
 
 **Implementado:** al regenerar la misión, `MissionsActivity` consulta el historial de variantes mostradas para esa categoría mediante `MissionTrackingStore.previousCategoryVariants`; el motor recibe esas variantes y la valoración pertinente, construye automáticamente la propuesta y conserva el resultado en `rememberCategoryProposal`. El usuario no tiene que escoger manualmente una variante.
@@ -56,6 +69,8 @@ El programa general y la autorización de Monarca siguen siendo independientes: 
 
 - `progress-engine/src/main/java/pe/asterionsystem/core/engine/progression/CategoryEffortPolicy.java`
 - `progress-engine/src/test/java/pe/asterionsystem/core/engine/progression/CategoryEffortPolicyTest.java`
+- `progress-engine/src/main/java/pe/asterionsystem/core/engine/progression/WeeklyCategoryChallengePolicy.java`
+- `progress-engine/src/test/java/pe/asterionsystem/core/engine/progression/WeeklyCategoryChallengePolicyTest.java`
 - `progress-engine/src/main/java/pe/asterionsystem/core/engine/missions/MissionPlanner.java`
 - `progress-engine/src/test/java/pe/asterionsystem/core/engine/missions/AutonomousCategoryMissionTest.java`
 - `app/src/main/java/pe/asterionsystem/app/MissionTrackingStore.java`
