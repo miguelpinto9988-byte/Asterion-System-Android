@@ -20,6 +20,7 @@ final class MissionTrackingStore {
     private static final String FIRST="first_effort_date";
     private static final String DAY="day_done_";
     private static final String RATE="day_effort_";
+    private static final String CATEGORY_RATE="category_effort_";
     private static final String MONARCH="monarch_done_";
 
     private MissionTrackingStore() { }
@@ -68,6 +69,42 @@ final class MissionTrackingStore {
             edit.putString(FIRST,date.toString());
         }
         edit.commit();
+    }
+
+    private static String categoryKey(LocalDate day,int category) {
+        if(category<0 || category>4)throw new IllegalArgumentException(
+                "Solo cinco categorías de actividad pueden recibir valoraciones");
+        return CATEGORY_RATE+day.toString()+"_"+category;
+    }
+
+    /**
+     * Records both category-local feedback and the legacy per-day RPE, so
+     * existing 7/14/21-day charts remain readable. Old day-only ratings are
+     * deliberately NOT inferred as upper/lower/core category observations.
+     */
+    static void rateCategory(Context context,LocalDate day,int category,int effort) {
+        if(effort<1||effort>10)throw new IllegalArgumentException("Escala 1 a 10");
+        String key=categoryKey(day,category);
+        SharedPreferences sp=prefs(context);
+        if(!sp.edit().putInt(key,effort).commit()) {
+            throw new IllegalStateException("No se pudo guardar la valoración de la categoría");
+        }
+        rate(context,day,effort);
+    }
+
+    static int ratingForCategory(Context context,LocalDate day,int category) {
+        int value=prefs(context).getInt(categoryKey(day,category),0);
+        return value>=1&&value<=10?value:0;
+    }
+
+    /** Returns zero if this category was never rated in the preceding 21 days. */
+    static int latestCategoryRating(Context context,int category,LocalDate before) {
+        if(before==null)throw new IllegalArgumentException("Fecha requerida");
+        for(int days=1;days<=21;days++) {
+            int rating=ratingForCategory(context,before.minusDays(days),category);
+            if(rating!=0)return rating;
+        }
+        return 0;
     }
 
     static LocalDate firstReport(Context context) {
