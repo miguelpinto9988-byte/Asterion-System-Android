@@ -1,6 +1,7 @@
 package pe.asterionsystem.app;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -122,11 +123,31 @@ public final class MissionsActivity extends ComponentActivity {
     private void daily() {
         title("Misiones diarias");
         LocalDate today=LocalDate.now();
-        // The last rating belongs ONLY to the training category scheduled
-        // for today. A lower-body report never changes upper-body suggestions.
+        // Only the scheduled category can be adjusted by a session report.
         int category=profile.weekly.get(today.getDayOfWeek().getValue()-1);
+        if(SessionSafetyStore.globallyPaused(this)) {
+            showMedicalHold();
+            return;
+        }
+        if(category!=CategoryEffortPolicy.REST
+                && SessionSafetyStore.categoryPaused(this,category)) {
+            paragraph("Esta categoría quedó en pausa por una molestia comunicada. "
+                    +"No se propondrán ejercicios hasta que haya cesado.");
+            action("Revisar la pausa de esta categoría",()->new AlertDialog.Builder(this)
+                    .setTitle("¿Ha cesado la molestia?")
+                    .setMessage("No continúes si persiste o empeora el dolor. "
+                            +"Busca orientación médica si es necesario.")
+                    .setNegativeButton("Seguir en pausa",null)
+                    .setPositiveButton("Se ha resuelto",(d,w)->{
+                        SessionSafetyStore.clearMinorCategoryPause(this,category);
+                        show(SECTION_DAILY);
+                    }).show());
+            return;
+        }
+        boolean softer=category!=CategoryEffortPolicy.REST
+                && SessionSafetyStore.lighterToday(this,category,today);
         int previousRating=category==CategoryEffortPolicy.REST ? 0
-                :MissionTrackingStore.latestCategoryRating(this,category,today);
+                :softer?9:MissionTrackingStore.latestCategoryRating(this,category,today);
         CategoryEffortPolicy.Decision decision=CategoryEffortPolicy.evaluate(
                 category,previousRating,profile.dailyLimit);
         MissionPlanner.Profile dayProfile=decision.preferSimplerTechnique
@@ -176,6 +197,8 @@ public final class MissionsActivity extends ComponentActivity {
         for(ExerciseVariant entry:proposal.candidates()) {
             dailyExerciseRow(index++,entry,today,category,proposal);
         }
+        action("Rutinas paso a paso",()->openRoutine(
+                SECTION_DAILY,today,category,proposal.candidates()));
         int rating=MissionTrackingStore.ratingForCategory(this,today,category);
         if(rating!=0) paragraph("Valoración de esfuerzo guardada: "+rating+" / 10.");
         action(rating==0?"Finalizar la actividad y valorar esfuerzo"
@@ -233,6 +256,10 @@ public final class MissionsActivity extends ComponentActivity {
 
     private void monarch() {
         title("Misiones Monarca");
+        if(SessionSafetyStore.globallyPaused(this)) {
+            showMedicalHold();
+            return;
+        }
         MonarchSessionStore.Snapshot snapshot=MonarchSessionStore.current(
                 this,LocalDate.now(),planner,profile,catalog);
         paragraph("Misión especial: cinco ejercicios en un período de cinco días. "
@@ -266,6 +293,10 @@ public final class MissionsActivity extends ComponentActivity {
         }
         if(MonarchSessionStore.ACTIVE.equals(snapshot.status)) {
             LocalDate accepted=snapshot.acceptedDate;
+            action("Rutinas paso a paso",()->openRoutine(
+                    SECTION_MONARCH,accepted,
+                    profile.weekly.get(LocalDate.now().getDayOfWeek().getValue()-1),
+                    snapshot.exercises));
             Set<String> recorded=MissionTrackingStore.monarchCompleted(this,accepted);
             long done=snapshot.exercises.stream().filter(v->recorded.contains(v.id())).count();
             paragraph("Participaciones registradas: "+done+" de "+snapshot.exercises.size()
@@ -287,6 +318,40 @@ public final class MissionsActivity extends ComponentActivity {
                         show(SECTION_MONARCH);
                     }).setNegativeButton("Conservar",null).show());
         }
+    }
+
+    private void openRoutine(String kind,LocalDate date,int category,
+                             List<ExerciseVariant> selected) {
+        if(SessionSafetyStore.globallyPaused(this)) {
+            showMedicalHold();
+            return;
+        }
+        if(selected==null || selected.isEmpty())return;
+        ArrayList<String> ids=new ArrayList<>();
+        for(ExerciseVariant entry:selected)ids.add(entry.id());
+        Intent guided=new Intent(this,RoutineStepActivity.class);
+        guided.putExtra("kind",kind);
+        guided.putExtra("date",date.toString());
+        guided.putExtra("category",category);
+        guided.putStringArrayListExtra("variants",ids);
+        startActivity(guided);
+    }
+
+    private void showMedicalHold() {
+        paragraph("Sesiones suspendidas por síntomas importantes.");
+        paragraph(SessionSafetyStore.globalReason(this));
+        paragraph("No se reanudan automáticamente al día siguiente. "
+                +"Ante síntomas graves solicita asistencia médica urgente.");
+        action("Ya recibí evaluación médica",()->new AlertDialog.Builder(this)
+                .setTitle("Confirmar evaluación médica")
+                .setMessage("Esta opción no sustituye una evaluación profesional. "
+                        +"Confirma únicamente si realmente has recibido una evaluación "
+                        +"y sigues las indicaciones para reanudar actividades.")
+                .setNegativeButton("Conservar pausa",null)
+                .setPositiveButton("Confirmar evaluación",(d,w)->{
+                    SessionSafetyStore.acknowledgeProfessionalEvaluation(this);
+                    show(section);
+                }).show());
     }
 
     private void authorize(MonarchSessionStore.Snapshot reviewed) {
