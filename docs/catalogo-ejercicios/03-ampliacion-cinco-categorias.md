@@ -2,6 +2,8 @@
 
 **Fecha:** 2026-11-10 · **Rama:** `main` · **Estado:** datos incorporados al catálogo local; la verificación final depende de CI.
 
+**Actualización posterior (2026-11-10):** este documento refleja la etapa de 505 variantes. La Biblioteca operativa se amplió a **75 familias, 204 tipos y 817 variantes** y añadió etiquetas de intensidad orientativa. Ver [la ampliación más reciente](04-biblioteca-diversa-intensidad.md).
+
 ## Resultado y compatibilidad
 
 El inventario local `progress-engine/src/main/resources/asterion_exercises/v1/` se ha ampliado **sin cambiar ni borrar los identificadores originales**, desde 39 familias / 80 tipos / 445 variantes hasta **49 familias / 100 tipos / 505 variantes**. Se mantienen los tres TSV originales y el mismo lector estricto de datos, sin migración de SQLite ni consultas de red en tiempo de ejecución.
