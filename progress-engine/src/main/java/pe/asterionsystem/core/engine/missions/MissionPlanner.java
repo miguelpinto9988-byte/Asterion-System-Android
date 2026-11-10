@@ -136,6 +136,17 @@ public final class MissionPlanner {
     public Proposal daily(Profile profile, LocalDate today,
                           CategoryEffortPolicy.Decision decision,
                           List<String> previousVariantIds) {
+        return daily(profile,today,decision,previousVariantIds,true);
+    }
+
+    /**
+     * On-device weekly evidence controls whether low-RPE novelty is enabled.
+     * Lower suggestions for high effort remain active independently.
+     */
+    public Proposal daily(Profile profile, LocalDate today,
+                          CategoryEffortPolicy.Decision decision,
+                          List<String> previousVariantIds,
+                          boolean enableEquivalentRotation) {
         Objects.requireNonNull(profile, "profile");
         Objects.requireNonNull(today, "today");
         Objects.requireNonNull(decision, "decision");
@@ -170,8 +181,10 @@ public final class MissionPlanner {
             ExerciseVariant prior=catalog.variant(priorId).orElse(null);
             if(prior==null)continue;
             ExerciseVariant selected=null;
-            if(decision.guidance==CategoryEffortPolicy.Guidance.REVIEW_OPTIONAL) {
-                // Equal technical level and identical movement type only.
+            if(enableEquivalentRotation
+                    && decision.guidance==CategoryEffortPolicy.Guidance.REVIEW_OPTIONAL) {
+                // Only when repeated completed low-effort sessions were seen
+                // at the seven-day checkpoint: same type and technical level.
                 for(ExerciseVariant option:eligible) {
                     if(option.typeId().equals(prior.typeId())
                             && option.difficulty()==prior.difficulty()
