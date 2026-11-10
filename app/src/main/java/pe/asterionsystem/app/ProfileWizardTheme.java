@@ -73,6 +73,10 @@ final class ProfileWizardTheme {
             } else if (text.isClickable() && !(view instanceof CompoundButton)) {
                 text.setBackground(box(light,false,8,density));
                 text.setMinimumHeight(dp(48,density));
+            } else if (text.getBackground() != null && !(view instanceof CompoundButton)) {
+                // Expandable review details once used a dark navy drawable.
+                // In white mode this must become white like every other panel.
+                text.setBackground(box(light,false,8,density));
             }
             if (view instanceof CompoundButton) {
                 ((CompoundButton)view).setButtonTintList(
