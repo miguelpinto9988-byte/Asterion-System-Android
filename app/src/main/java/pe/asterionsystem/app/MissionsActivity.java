@@ -29,6 +29,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
+import pe.asterionsystem.core.engine.progression.EffortAdaptationPolicy;
 
 /**
  * Real read-only catalog + daily proposals + five-day opt-in Monarca preview.
@@ -120,8 +121,23 @@ public final class MissionsActivity extends ComponentActivity {
     private void daily() {
         title("Misiones diarias");
         LocalDate today=LocalDate.now();
-        MissionPlanner.Proposal proposal=planner.daily(profile,today);
+        // Only feedback from PRIOR days may affect the next suggestion.
+        // This avoids changing today's proposal immediately after a new rating.
+        LocalDate previous=today.minusDays(1);
+        EffortReviewEngine.Review last=EffortReviewEngine.review(
+                MissionTrackingStore.firstReport(this),previous,
+                MissionTrackingStore.ratings(this,previous));
+        int suggested=EffortAdaptationPolicy.dailySuggestionCount(profile.dailyLimit,last);
+        MissionPlanner.Profile dayProfile=suggested<profile.dailyLimit
+                ?new MissionPlanner.Profile(profile.experience,profile.goal,
+                    profile.weekly,profile.equipment,suggested)
+                :profile;
+        MissionPlanner.Proposal proposal=planner.daily(dayProfile,today);
         paragraph("Fecha: "+proposal.start()+". Se renueva según el calendario local.");
+        if(suggested<profile.dailyLimit) {
+            paragraph("Hoy se sugieren menos actividades por valoraciones de esfuerzo "
+                    +"anteriores. Puedes descansar o revisar el plan sin penalización.");
+        }
         paragraph(proposal.explanation());
         if(proposal.empty()) {
             paragraph("Sin propuestas de ejercicio para hoy. Se respeta el descanso.");
