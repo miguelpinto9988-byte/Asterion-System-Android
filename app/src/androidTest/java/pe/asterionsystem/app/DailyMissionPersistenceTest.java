@@ -70,6 +70,9 @@ public final class DailyMissionPersistenceTest {
                 profile,DAY).candidates();
         assertEquals(3,variants.size());
         DailyMissionStore.write(context,DAY,profile,library,variants);
+        // Seed a real check-off from the preceding day; it is not a proposal.
+        MissionTrackingStore.setDailyCompleted(
+                context,DAY.minusDays(1),variants.get(0).id(),true);
         assertEquals(ids(new MissionPlanner(library).daily(profile,DAY)),
                 DailyMissionStore.read(context,DAY,profile,library));
     }
@@ -83,6 +86,16 @@ public final class DailyMissionPersistenceTest {
         assertFalse(expected.isEmpty());
         assertEquals("Pin should survive process shutdown/restart",expected,
                 DailyMissionStore.read(context,DAY,profile,library));
+        assertTrue(MissionTrackingStore.recentCompletedForCategory(
+                context,library,0,DAY).contains(expected.get(0)));
+        assertTrue("Completed exercise from upper body must not appear in legs",
+                MissionTrackingStore.recentCompletedForCategory(
+                        context,library,2,DAY).isEmpty());
+        MissionTrackingStore.DiversitySummary observed=
+                MissionTrackingStore.recentDiversityForCategory(
+                        context,library,0,DAY);
+        assertEquals(1,observed.activeDays);
+        assertEquals(1,observed.uniqueVariants);
         assertEquals("Next local day invalidates yesterday's pin",List.of(),
                 DailyMissionStore.read(context,DAY.plusDays(1),profile,library));
         List<ExerciseVariant> tomorrow=new MissionPlanner(library).daily(
