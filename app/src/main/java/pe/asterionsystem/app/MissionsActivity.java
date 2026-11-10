@@ -322,11 +322,21 @@ public final class MissionsActivity extends ComponentActivity {
         }
         MonarchSessionStore.Snapshot snapshot=MonarchSessionStore.current(
                 this,LocalDate.now(),planner,profile,catalog);
-        paragraph("Misión especial: cinco ejercicios en un período de cinco días. "
+        paragraph("Misión especial: cinco opciones para un ciclo de cinco días. "
+                +"El sorteo se mantiene estable al reabrir la app y puede variar "
+                +"entre ciclos, siempre dentro del equipo y perfil compatible. "
                 +"La previsualización no significa activación.");
         if(MonarchSessionStore.ACTIVE.equals(snapshot.status)) {
             paragraph("Estado: ACTIVADA con autorización. "
                     +"Finaliza al comenzar el día "+snapshot.activeUntilExclusive()+".");
+        } else if(MonarchSessionStore.REVIEW_REQUIRED.equals(snapshot.status)) {
+            paragraph("Estado: PAUSADA para revisión. Cambió tu configuración "
+                    +"o alguna variante dejó de ser compatible. La misión "
+                    +"aceptada no se ha sustituido por otro sorteo.");
+            action("Revisar una nueva propuesta con mi perfil actual",()->{
+                MonarchSessionStore.restartAfterReview(this);
+                show(SECTION_MONARCH);
+            });
         } else if(MonarchSessionStore.DECLINED.equals(snapshot.status)) {
             paragraph("Estado: RECHAZADA. No está activa; se ofrecerá otra "
                     +"previsualización al terminar el ciclo de cinco días.");
@@ -340,7 +350,8 @@ public final class MissionsActivity extends ComponentActivity {
             exerciseRow(number+++". "+exercise.name(),
                     "Material: "+material(exercise)+" · Nivel técnico "+exercise.difficulty());
         }
-        if(snapshot.exercises.isEmpty()) {
+        if(snapshot.exercises.isEmpty()
+                && !MonarchSessionStore.REVIEW_REQUIRED.equals(snapshot.status)) {
             paragraph("No hay candidatos compatibles. Configura primero tus días "
                     +"y equipos disponibles en el perfil.");
         }
@@ -429,11 +440,26 @@ public final class MissionsActivity extends ComponentActivity {
                         +"¿Deseas activar un ciclo de cinco días?")
                 .setNegativeButton("Ahora no",null)
                 .setPositiveButton("Aceptar y activar",(dialog,which)->{
-                    boolean accepted=MonarchSessionStore.accept(
-                            this,LocalDate.now(),reviewed);
+                    // Re-check the stored proposal and current profile before
+                    // accepting a dialog opened before a profile/day change.
+                    MonarchSessionStore.Snapshot latest=MonarchSessionStore.current(
+                            this,LocalDate.now(),planner,profile,catalog);
+                    boolean unchanged=latest.canAccept()
+                            && sameMonarchChoices(latest.exercises,reviewed.exercises);
+                    boolean accepted=unchanged && MonarchSessionStore.accept(
+                            this,LocalDate.now(),reviewed,profile);
                     if(!accepted)loading.setText("La propuesta cambió; vuelve a revisarla.");
                     show(SECTION_MONARCH);
                 }).show();
+    }
+
+    private boolean sameMonarchChoices(List<ExerciseVariant> a,
+                                       List<ExerciseVariant> b) {
+        if(a.size()!=b.size())return false;
+        for(int i=0;i<a.size();i++) {
+            if(!a.get(i).id().equals(b.get(i).id()))return false;
+        }
+        return true;
     }
 
     private void progress() {
