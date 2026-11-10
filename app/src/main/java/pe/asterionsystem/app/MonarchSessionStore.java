@@ -113,7 +113,8 @@ final class MonarchSessionStore {
 
     private static String signature(MissionPlanner.Profile profile) {
         return profile.experience+"|"+profile.goal+"|"+profile.weekly
-                +"|"+new java.util.TreeSet<>(profile.equipment);
+                +"|"+new java.util.TreeSet<>(profile.equipment)
+                +"|"+profile.intensityPreference;
     }
 
     private static SharedPreferences preferences(Context context) {
