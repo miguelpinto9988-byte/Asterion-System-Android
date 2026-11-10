@@ -46,6 +46,10 @@ for x in ("GLOBAL_PAUSE_AND_SEEK_MEDICAL_CARE", "STOP_ONLY",
 for x in ("recentInterruption(", "lighterToday(", "categoryPaused(",
           "acknowledgeProfessionalEvaluation(", "globallyPaused("):
     assert x in store,x
+assert "askEffortAfterDailyMission()" in activity
+assert "MissionTrackingStore.rateCategory(" in activity
+assert "this,planDate,category,selected[0]" in activity
+assert "setSingleChoiceItems(choices,-1" in activity
 assert "RoutineSessionStore.save(" in activity
 assert "sequence" in profile and "rest_seconds" in profile
 assert "No se reanudará automáticamente" in policy
