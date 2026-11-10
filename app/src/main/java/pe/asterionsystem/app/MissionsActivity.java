@@ -442,12 +442,15 @@ public final class MissionsActivity extends ComponentActivity {
                 .setPositiveButton("Aceptar y activar",(dialog,which)->{
                     // Re-check the stored proposal and current profile before
                     // accepting a dialog opened before a profile/day change.
+                    MissionPlanner.Profile currentProfile=
+                            MissionProfileAdapter.fromRegistration(
+                                    ProfileStore.getRegistration(this));
                     MonarchSessionStore.Snapshot latest=MonarchSessionStore.current(
-                            this,LocalDate.now(),planner,profile,catalog);
+                            this,LocalDate.now(),planner,currentProfile,catalog);
                     boolean unchanged=latest.canAccept()
                             && sameMonarchChoices(latest.exercises,reviewed.exercises);
                     boolean accepted=unchanged && MonarchSessionStore.accept(
-                            this,LocalDate.now(),reviewed,profile);
+                            this,LocalDate.now(),reviewed,currentProfile);
                     if(!accepted)loading.setText("La propuesta cambió; vuelve a revisarla.");
                     show(SECTION_MONARCH);
                 }).show();
