@@ -44,7 +44,16 @@ final class MissionProfileAdapter {
                 profile.optString("experience","principiante"),
                 profile.optString("goal","bienestar"),
                 week, equipment, dailyCount,
-                profile.optString("intensity","moderada"));
+                profile.optString("intensity","moderada"),
+                // Other training choices also invalidate today's pinned selection.
+                // The fingerprint is hashed by MissionPlanner; raw profile text
+                // is not stored with any day's mission.
+                profile.optString("mode","misiones")+"|"
+                +profile.optString("sequence","rondas")+"|"
+                +profile.optString("rest_seconds","60")+"|"
+                +profile.optString("minutes","30")+"|"
+                +profile.optString("custom_goal","")+"|"
+                +profile.optString("dumbbell_weights",""));
     }
 
     private static boolean isEnabled(JSONObject source, String key, boolean fallback) {
