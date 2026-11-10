@@ -80,6 +80,12 @@ public final class MissionPlanner {
                     ? "baja" : "moderada";
         }
 
+        /** Conservative adaptation retaining the original profile settings. */
+        public Profile adapted(String experienceForToday,int limitForToday) {
+            return new Profile(experienceForToday,goal,weekly,equipment,
+                    limitForToday,intensityPreference,additionalPreferences);
+        }
+
         /**
          * Stable identity of mission-affecting preferences only.
          * Cosmetic theme, user name and body measurements cannot reshuffle.
