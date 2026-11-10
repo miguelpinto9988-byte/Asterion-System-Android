@@ -53,3 +53,8 @@ press_alternativos	Press horizontal con apoyos y ángulos	tren_superior	press_ho
 remadas_soportadas	Remos con soporte y resistencia	tren_superior	remo_soportado
 antebrazo_rotacional	Pronación y supinación del antebrazo	tren_superior	rotacion_antebrazo
 coordinacion_brazos_pelota	Coordinación de brazos con pelota	tren_superior	coordinacion_brazos
+pilates_suelo_inicial	Pilates de control en suelo	tronco	control_suelo
+control_tronco_pie	Estabilidad de tronco de pie	tronco	estabilidad_bipeda
+rotacion_diagonal_tronco	Patrones diagonales del tronco	tronco	alcance_diagonal
+yoga_estabilidad_general	Posturas suaves de yoga y control postural	tronco	yoga_estabilidad
+apoyo_lateral_tronco	Apoyos laterales y control del costado	tronco	estabilidad_lateral
