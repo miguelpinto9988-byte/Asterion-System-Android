@@ -97,7 +97,32 @@ public final class ExerciseMuscleFocus {
             Map.entry("pelota_deportiva_recreativa",new Focus("cardiorrespiratorio","coordinación")),
             Map.entry("cuerda_saltar_recreativa",new Focus("cardiorrespiratorio","piernas")),
             Map.entry("deportes_raqueta_recreativos",new Focus("cardiorrespiratorio","hombros")),
-            Map.entry("recorridos_al_aire_libre",new Focus("cardiorrespiratorio","piernas"))
+            Map.entry("recorridos_al_aire_libre",new Focus("cardiorrespiratorio","piernas")),
+            Map.entry("elevacion_brazos_funcional",new Focus("hombros","brazos")),
+            Map.entry("alcances_pared_brazos",new Focus("hombros","escápulas")),
+            Map.entry("control_brazos_cruzados",new Focus("hombros","pecho")),
+            Map.entry("apoyos_superiores_estables",new Focus("hombros","tronco")),
+            Map.entry("destreza_manos_brazos",new Focus("antebrazo","coordinación")),
+            Map.entry("alineacion_tronco_suave",new Focus("tronco","postura")),
+            Map.entry("alcances_tronco_asistidos",new Focus("tronco","hombros")),
+            Map.entry("coordinacion_tronco_pie",new Focus("tronco","equilibrio")),
+            Map.entry("respiracion_movimiento_tronco",new Focus("respiración","tronco")),
+            Map.entry("control_pelvis_suelo",new Focus("cadera","tronco")),
+            Map.entry("movilidad_rodilla_sentada",new Focus("muslos","rodilla")),
+            Map.entry("pasos_cortos_funcionales",new Focus("piernas","coordinación")),
+            Map.entry("tobillo_control_equilibrio",new Focus("tobillos","equilibrio")),
+            Map.entry("cadera_lateral_pie",new Focus("cadera","equilibrio")),
+            Map.entry("transiciones_silla_estable",new Focus("muslos","cadera")),
+            Map.entry("movilidad_hombros_sentada",new Focus("movilidad","hombros")),
+            Map.entry("movilidad_cadera_silla",new Focus("movilidad","cadera")),
+            Map.entry("movilidad_rodilla_suave",new Focus("movilidad","rodilla")),
+            Map.entry("movilidad_pies_suelo",new Focus("movilidad","pies")),
+            Map.entry("movilidad_toracica_silla",new Focus("movilidad","columna torácica")),
+            Map.entry("marcha_en_sitio_bajoimpacto",new Focus("cardiorrespiratorio","piernas")),
+            Map.entry("pasos_aerobicos_direcciones",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("ritmos_brazos_pasos",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("cardio_desde_silla",new Focus("cardiorrespiratorio","piernas")),
+            Map.entry("juegos_pasos_recreativos",new Focus("cardiorrespiratorio","coordinación"))
     );
 
     private ExerciseMuscleFocus() { }
