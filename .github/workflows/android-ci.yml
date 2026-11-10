@@ -68,6 +68,7 @@ jobs:
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
           python3 tests/weekly_category_review_contract.py
+          python3 tests/routine_step_safety_contract.py
           python3 tests/phase16_preflight_static.py
           python3 tests/phase03_visual_source_contract.py
 
