@@ -92,7 +92,7 @@
                             android:minHeight="48dp"
                             android:layout_marginStart="12dp"
                             android:text="Seleccionar foto" android:textAllCaps="false"
-                            android:textSize="13sp"android:textStyle="bold" />
+                            android:textSize="13sp" android:textStyle="bold" />
                     </LinearLayout>
 
                     <TextView android:layout_width="match_parent"
@@ -104,7 +104,7 @@
                         android:layout_width="match_parent" android:layout_height="52dp"
                         android:layout_marginTop="6dp" android:hint="Escribe tu nombre"
                         android:maxLength="40" android:singleLine="true"
-                        android:inputType="textPersonName|textCapSentences" android:textSize="15sp"android:textStyle="bold" />
+                        android:inputType="textPersonName|textCapSentences" android:textSize="15sp" android:textStyle="bold" />
 
                     <TextView android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                         android:layout_width="match_parent" android:layout_height="52dp"
                         android:layout_marginTop="6dp" android:hint="Edad en años"
                         android:maxLength="3" android:singleLine="true"
-                        android:inputType="number" android:textSize="15sp"android:textStyle="bold" />
+                        android:inputType="number" android:textSize="15sp" android:textStyle="bold" />
 
                     <LinearLayout android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                                 android:layout_width="match_parent" android:layout_height="52dp"
                                 android:layout_marginTop="6dp" android:hint="Opcional"
                                 android:inputType="numberDecimal" android:singleLine="true"
-                                android:textSize="15sp"android:textStyle="bold" />
+                                android:textSize="15sp" android:textStyle="bold" />
                         </LinearLayout>
                         <LinearLayout android:layout_width="0dp" android:layout_weight="1"
                             android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
                                 android:layout_width="match_parent" android:layout_height="52dp"
                                 android:layout_marginTop="6dp" android:hint="Opcional"
                                 android:inputType="numberDecimal" android:singleLine="true"
-                                android:textSize="15sp"android:textStyle="bold" />
+                                android:textSize="15sp" android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -159,21 +159,21 @@
                         <RadioButton android:id="@+id/profile_gender_male"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:text="Masculino"android:textStyle="bold" />
+                            android:text="Masculino" android:textStyle="bold" />
                         <RadioButton android:id="@+id/profile_gender_female"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
-                            android:text="Femenino"android:textStyle="bold" />
+                            android:text="Femenino" android:textStyle="bold" />
                         <RadioButton android:id="@+id/profile_gender_unspecified"
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
                             android:text="No especificado"
-                            android:checked="true"android:textStyle="bold" />
+                            android:checked="true" android:textStyle="bold" />
                     </RadioGroup>
                     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="* Campos obligatorios" android:textSize="12sp"
-                        android:textColor="#555555"android:textStyle="bold" />
+                        android:textColor="#555555" android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout android:id="@+id/profile_dynamic_step"
@@ -191,7 +191,7 @@
                 <Button android:id="@+id/profile_back"
                     android:layout_width="96dp" android:layout_height="52dp"
                     android:text="Atrás" android:textAllCaps="false"
-                    android:visibility="gone"android:textStyle="bold" />
+                    android:visibility="gone" android:textStyle="bold" />
                 <LinearLayout android:id="@+id/profile_create_submit"
                     android:layout_width="0dp" android:layout_weight="1"
                     android:layout_height="52dp"
