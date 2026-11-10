@@ -209,4 +209,93 @@ public class DailyMissionStabilityTest {
                 ids(planner.daily(p,monday,state,List.of(),false,reversed)));
     }
 
+    private MissionPlanner.Profile levelProfile(String experience,int count) {
+        return new MissionPlanner.Profile(experience,"bienestar",upperAllWeek,
+                Set.of("sin_equipo","pared","colchoneta","silla","banco"),
+                count,"moderada","");
+    }
+
+    private int countTechnique(MissionPlanner.Proposal proposal,int level) {
+        int count=0;
+        for(ExerciseVariant v:proposal.candidates())
+            if(v.difficulty()==level)count++;
+        return count;
+    }
+
+    @Test public void beginnerMissionsContainOnlyTechnicalLevelsOneAndTwo() {
+        MissionPlanner.Profile basic=levelProfile("principiante",3);
+        for(int day=0;day<7;day++) {
+            MissionPlanner.Proposal result=planner.daily(basic,monday.plusDays(day));
+            assertEquals(3,result.candidates().size());
+            for(ExerciseVariant v:result.candidates()) {
+                assertTrue(v.difficulty()<=2);
+                assertTrue(catalog.eligibleForAutomaticSuggestion(v));
+            }
+        }
+    }
+
+    @Test public void intermediateEntryIsMostlyBasicThenBecomesMostlyIntermediate() {
+        MissionPlanner.Profile intermediate=levelProfile("intermedio",3);
+        CategoryEffortPolicy.Decision decision=CategoryEffortPolicy.evaluate(0,0,3);
+        MissionPlanner.Proposal entry=planner.daily(intermediate,monday,
+                decision,List.of(),false,List.of(),0);
+        MissionPlanner.Proposal later=planner.daily(intermediate,monday,
+                decision,List.of(),false,List.of(),2);
+        assertEquals(3,entry.candidates().size());
+        assertEquals(1,countTechnique(entry,3));
+        assertEquals(2,countTechnique(later,3));
+        assertEquals(3,later.candidates().size());
+        for(ExerciseVariant v:later.candidates()) {
+            assertTrue(v.difficulty()<=3);
+            assertTrue(catalog.eligibleForAutomaticSuggestion(v));
+        }
+    }
+
+    @Test public void advancedEntryMixesMediumAndHarderSafeOptions() {
+        MissionPlanner.Profile advanced=levelProfile("avanzado",3);
+        CategoryEffortPolicy.Decision decision=CategoryEffortPolicy.evaluate(0,0,3);
+        MissionPlanner.Proposal initial=planner.daily(advanced,monday,
+                decision,List.of(),false,List.of(),0);
+        MissionPlanner.Proposal developed=planner.daily(advanced,monday,
+                decision,List.of(),false,List.of(),2);
+        assertEquals(1,countTechnique(initial,3));
+        assertEquals(2,countTechnique(developed,3));
+        for(ExerciseVariant v:initial.candidates()) {
+            assertTrue(v.difficulty()>=2 && v.difficulty()<=3);
+            assertFalse(v.supervisionRecommended());
+        }
+    }
+
+    @Test public void veryHighEffortNeverEscalatesTechnicalLevel() {
+        MissionPlanner.Profile intermediate=levelProfile("intermedio",6);
+        CategoryEffortPolicy.Decision high=CategoryEffortPolicy.evaluate(0,9,6);
+        MissionPlanner.Proposal reduced=planner.daily(intermediate,monday,
+                high,List.of(),false,List.of(),2);
+        assertTrue(reduced.candidates().size()<=1);
+        for(ExerciseVariant v:reduced.candidates()) {
+            assertEquals(1,v.difficulty());
+        }
+    }
+
+    @Test public void previouslyPinnedMissionDoesNotChangeWithNewMixPhase() {
+        MissionPlanner.Profile intermediate=levelProfile("intermedio",3);
+        CategoryEffortPolicy.Decision decision=CategoryEffortPolicy.evaluate(0,0,3);
+        List<String> first=ids(planner.daily(intermediate,monday,
+                decision,List.of(),false,List.of(),0));
+        planner.daily(intermediate,monday,decision,List.of(),false,List.of(),2);
+        assertEquals(first,ids(planner.restoreDaily(intermediate,monday,first)));
+    }
+
+    @Test public void normalPushupAndKneeSupportedPushupHaveDifferentTechnicalBands() {
+        ExerciseVariant knees=catalog.variant("flexiones_v03").orElseThrow();
+        ExerciseVariant standard=catalog.variant("flexiones_v04").orElseThrow();
+        assertEquals(2,knees.difficulty());
+        assertEquals(3,standard.difficulty());
+        MissionPlanner.Profile intermediate=levelProfile("intermedio",3);
+        assertTrue(intermediate.equipment.containsAll(knees.equipment()));
+        assertTrue(intermediate.equipment.containsAll(standard.equipment()));
+        assertTrue(catalog.eligibleForAutomaticSuggestion(knees));
+        assertTrue(catalog.eligibleForAutomaticSuggestion(standard));
+    }
+
 }
