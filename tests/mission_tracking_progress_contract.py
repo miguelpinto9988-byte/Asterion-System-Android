@@ -20,7 +20,7 @@ ids={v.get(ns+"id") for v in home.iter()}
 for control in ("open_daily","open_monarch","open_library","open_progress",
                 "open_catalog","open_legacy_progress"):
     assert "@+id/"+control in ids,control
-for text in ("MissionTrackingStore.setDailyCompleted(", "MissionTrackingStore.rate(",
+for text in ("MissionTrackingStore.setDailyCompleted(", "MissionTrackingStore.rateCategory(",
              "MissionTrackingStore.markMonarch(", "MissionTrackingStore.completedToday(",
              "MissionTrackingStore.monarchCompleted(", "EffortReviewEngine.review(",
              "new AlertDialog.Builder(this)", "setSingleChoiceItems",
