@@ -42,7 +42,9 @@ final class SessionSafetyStore {
         SharedPreferences.Editor edit=prefs(c).edit();
         switch(result.action) {
             case GLOBAL_PAUSE_AND_SEEK_MEDICAL_CARE:
-                edit.putBoolean(GLOBAL,true).putString(GLOBAL_REASON,result.explanation);
+                edit.putBoolean(GLOBAL,true).putString(GLOBAL_REASON,result.explanation)
+                        .putString(NEXT_PREFIX+category,date.toString())
+                        .remove(APPLIED_PREFIX+category);
                 break;
             case CATEGORY_PAUSE_UNTIL_REVIEW:
                 edit.putBoolean(PAUSE_PREFIX+category,true);
