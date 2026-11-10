@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
+import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
 import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -392,12 +393,7 @@ public final class RoutineStepActivity extends ComponentActivity {
     }
 
     private static int codeToCategory(String taxonomyCode) {
-        if("tren_superior".equals(taxonomyCode))return 0;
-        if("tronco".equals(taxonomyCode))return 1;
-        if("piernas".equals(taxonomyCode))return 2;
-        if("movilidad".equals(taxonomyCode))return 3;
-        if("cardio".equals(taxonomyCode))return 4;
-        return -1; // Integrated and coordination do not map to weekly categories.
+        return ExerciseCategoryMapper.weeklyIndex(taxonomyCode);
     }
 
     private void addText(String value,int size) {
