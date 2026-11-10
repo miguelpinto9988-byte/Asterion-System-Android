@@ -1,7 +1,7 @@
 # Propuesta de mejora — variedad funcional de misiones diarias
 
 **Rama de trabajo:** `feature/misiones-variedad-muscular-20261110`.
-**Estado:** experimental; pendiente de revisión de PR, resultados CI y prueba manual en teléfono.
+**Estado:** verificado en GitHub Actions [#42839728804](https://github.com/miguelpinto9988-byte/Asterion-System-Android/actions/runs/42839728804): contratos, JVM, lint, compilación debug e instrumentación en emulador Android 16 correctos. Pendientes revisión del PR, prueba manual en teléfono y aprobación visual MagicPath.
 **Base:** `main` en `b731cb2939468e246c54d4491e3d36af9db54b26`.
 
 ## 1. Objetivos y límites
