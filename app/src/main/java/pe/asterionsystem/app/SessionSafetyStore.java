@@ -17,6 +17,7 @@ final class SessionSafetyStore {
     private static final String NEXT_PREFIX="lighter_after_";
     private static final String APPLIED_PREFIX="lighter_applied_";
     private static final String PAUSE_PREFIX="category_paused_";
+    private static final String STOP_PREFIX="category_interrupted_";
 
     private SessionSafetyStore() {}
 
@@ -46,6 +47,9 @@ final class SessionSafetyStore {
             }
         }
         SharedPreferences.Editor edit=prefs(c).edit();
+        if(category>=0 && result.action!=SessionInterruptionPolicy.Action.STOP_ONLY) {
+            edit.putString(STOP_PREFIX+category,date.toString());
+        }
         switch(result.action) {
             case GLOBAL_PAUSE_AND_SEEK_MEDICAL_CARE:
                 edit.putBoolean(GLOBAL,true).putString(GLOBAL_REASON,result.explanation);
@@ -67,6 +71,15 @@ final class SessionSafetyStore {
                 break;
         }
         if(!edit.commit())throw new IllegalStateException("No se pudo guardar la pausa");
+    }
+
+    /** No automatic challenge rotation shortly after a category interruption. */
+    static boolean recentInterruption(Context c,int category,LocalDate today,int days) {
+        checkCategory(category);
+        if(today==null || days<1)throw new IllegalArgumentException("Fecha inválida");
+        LocalDate recorded=parse(prefs(c).getString(STOP_PREFIX+category,""));
+        return recorded!=null && !recorded.isAfter(today)
+                && !recorded.isBefore(today.minusDays(days));
     }
 
     /** At most one later session of the same category is reduced. */
