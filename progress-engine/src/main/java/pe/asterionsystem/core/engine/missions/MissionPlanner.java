@@ -46,14 +46,22 @@ public final class MissionPlanner {
         public final Set<String> equipment;
         public final int dailyLimit;
         public final String intensityPreference;
+        private final String additionalPreferences;
 
         public Profile(String experience, String goal, List<Integer> weekly,
                        Set<String> equipment, int dailyLimit) {
-            this(experience,goal,weekly,equipment,dailyLimit,"moderada");
+            this(experience,goal,weekly,equipment,dailyLimit,"moderada","");
         }
 
         public Profile(String experience, String goal, List<Integer> weekly,
                        Set<String> equipment, int dailyLimit, String intensityPreference) {
+            this(experience,goal,weekly,equipment,dailyLimit,intensityPreference,"");
+        }
+
+        public Profile(String experience, String goal, List<Integer> weekly,
+                       Set<String> equipment, int dailyLimit, String intensityPreference,
+                       String additionalPreferences) {
+            this.additionalPreferences=additionalPreferences==null?"":additionalPreferences;
             this.experience = experience == null ? "principiante" : experience;
             this.goal = goal == null ? "bienestar" : goal;
             if (weekly == null || weekly.size() != 7) {
@@ -81,7 +89,7 @@ public final class MissionPlanner {
             Collections.sort(gear);
             String canonical=experience+"|"+goal+"|"+weekly.toString()
                     +"|"+String.join(",",gear)+"|"+dailyLimit
-                    +"|"+intensityPreference;
+                    +"|"+intensityPreference+"|"+additionalPreferences;
             return digestHex(canonical);
         }
     }
