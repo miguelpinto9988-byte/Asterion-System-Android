@@ -17,6 +17,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
+import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,6 +41,7 @@ import pe.asterionsystem.core.engine.missions.SessionInterruptionPolicy;
 public final class RoutineStepActivity extends ComponentActivity {
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private List<ExerciseVariant> exercises=Collections.emptyList();
+    private final Map<String,Integer> categoriesById=new HashMap<>();
     private String kind;
     private LocalDate planDate;
     private int category;
@@ -120,6 +125,14 @@ public final class RoutineStepActivity extends ComponentActivity {
         worker.execute(()->{
             try {
                 ExerciseCatalog catalog=new AssetExerciseCatalogRepository(this).load();
+                Map<String,String> familyForType=new HashMap<>();
+                Map<String,Integer> categoryForFamily=new HashMap<>();
+                for(ExerciseType type:catalog.types())
+                    familyForType.put(type.id(),type.familyId());
+                for(ExerciseFamily family:catalog.families()) {
+                    int index=codeToCategory(family.category());
+                    categoryForFamily.put(family.id(),index);
+                }
                 ArrayList<ExerciseVariant> validated=new ArrayList<>();
                 for(String id:ids) {
                     ExerciseVariant variant=catalog.variant(id).orElse(null);
@@ -128,6 +141,8 @@ public final class RoutineStepActivity extends ComponentActivity {
                         return;
                     }
                     validated.add(variant);
+                    categoriesById.put(variant.id(),categoryForFamily.getOrDefault(
+                            familyForType.get(variant.typeId()),-1));
                 }
 
                 if("daily".equals(kind)) {
@@ -156,7 +171,8 @@ public final class RoutineStepActivity extends ComponentActivity {
                         runOnUiThread(()->block("La misión Monarca no está activa o caducó."));
                         return;
                     }
-                    if(category<0||category>4)category=0;
+                    // Monarca mixes categories. Infer each exercise category
+                    // from taxonomy, not today's unrelated calendar slot.
                 }
                 runOnUiThread(()->{
                     if(closed || isFinishing())return;
@@ -203,6 +219,21 @@ public final class RoutineStepActivity extends ComponentActivity {
             return;
         }
         details.removeAllViews();
+        if(index<exercises.size() && "monarch".equals(kind)) {
+            int currentCategory=effectiveCategory();
+            if(currentCategory>=0
+                    && SessionSafetyStore.categoryPaused(this,currentCategory)) {
+                title.setText("CATEGORÍA EN PAUSA");
+                subtitle.setText("Este movimiento pertenece a una categoría pausada.");
+                addText("Puedes omitirlo y continuar con otros grupos musculares "
+                        +"que no estén en pausa.",14);
+                addAction("Omitir sin registrar",()->{
+                    index++;save();render();
+                });
+                nextButton.setEnabled(false);
+                return;
+            }
+        }
         boolean byRounds="rondas".equals(sequence);
         title.setText("RUTINA PASO A PASO");
         subtitle.setText(("daily".equals(kind)?"Misión diaria":"Misión Monarca")
@@ -297,7 +328,13 @@ public final class RoutineStepActivity extends ComponentActivity {
     private void recordInterruption(int choice) {
         SessionInterruptionPolicy.Assessment assessment=
                 SessionInterruptionPolicy.assess(choice);
-        SessionSafetyStore.report(this,category,LocalDate.now(),assessment);
+        int affected=effectiveCategory();
+        if(affected<0 && !assessment.urgentMedicalAdvice) {
+            // Unclassified movement: do not invent an affected body category.
+            assessment=SessionInterruptionPolicy.assess(
+                    SessionInterruptionPolicy.STOP_WITHOUT_REASON);
+        }
+        SessionSafetyStore.report(this,affected,LocalDate.now(),assessment);
         if(restTimer!=null){restTimer.cancel();restTimer=null;}
         nextButton.setEnabled(false);
         restButton.setEnabled(false);
@@ -312,6 +349,22 @@ public final class RoutineStepActivity extends ComponentActivity {
                                 +"o síntomas intensos, solicita ayuda de emergencia.":""))
                 .setCancelable(false)
                 .setPositiveButton("Entendido",(dialog,which)->finish()).show();
+    }
+
+    private int effectiveCategory() {
+        if("daily".equals(kind))return category;
+        if(exercises.isEmpty())return -1;
+        int position=Math.min(index,exercises.size()-1);
+        return categoriesById.getOrDefault(exercises.get(position).id(),-1);
+    }
+
+    private static int codeToCategory(String taxonomyCode) {
+        if("tren_superior".equals(taxonomyCode))return 0;
+        if("tronco".equals(taxonomyCode))return 1;
+        if("piernas".equals(taxonomyCode))return 2;
+        if("movilidad".equals(taxonomyCode))return 3;
+        if("cardio".equals(taxonomyCode))return 4;
+        return -1; // Integrated and coordination do not map to weekly categories.
     }
 
     private void addText(String value,int size) {
