@@ -135,13 +135,23 @@ public final class MissionsActivity extends ComponentActivity {
                     profile.goal,profile.weekly,profile.equipment,
                     Math.max(1,decision.suggestedActivities))
                 :profile;
-        MissionPlanner.Proposal proposal=planner.daily(dayProfile,today);
+        List<String> previousVariants=category==CategoryEffortPolicy.REST
+                ?java.util.Collections.emptyList()
+                :MissionTrackingStore.previousCategoryVariants(this,category,today);
+        MissionPlanner.Proposal proposal=planner.daily(
+                dayProfile,today,decision,previousVariants);
+        if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
+            MissionTrackingStore.rememberCategoryProposal(
+                    this,category,today,proposal.candidates());
+        }
         paragraph("Fecha: "+proposal.start()+". Se renueva según el calendario local.");
         if(category!=CategoryEffortPolicy.REST) {
             paragraph("Categoría: "+CategoryEffortPolicy.CATEGORY_NAMES[category]
                     +". "+decision.explanation);
             if(decision.guidance==CategoryEffortPolicy.Guidance.REVIEW_OPTIONAL) {
-                action("Explorar variantes de esta categoría",()->show(SECTION_LIBRARY));
+                paragraph("Asterion seleccionó las variantes automáticamente. "
+                        +"Si no existe una alternativa del mismo tipo y nivel técnico, "
+                        +"mantiene la opción compatible anterior.");
             }
         }
         paragraph(proposal.explanation());
