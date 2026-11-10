@@ -27,7 +27,9 @@ grep -E 'ResumedActivity|topResumedActivity|mResumedActivity|mCurrentFocus' "$OU
 echo "Java crash traces:"
 cat "$OUT/crash.txt"
 
-if grep -q 'FATAL EXCEPTION\|Process: pe.asterionsystem.app' "$OUT/crash.txt"; then
+# Detect only Asterion crashes, not unrelated emulator/system processes.
+source ci/android_crash_filter.sh
+if android_app_crashed "$OUT/crash.txt" "$PACKAGE"; then
   echo "ERROR: app crashes on startup. See crash.txt."
   exit 1
 fi

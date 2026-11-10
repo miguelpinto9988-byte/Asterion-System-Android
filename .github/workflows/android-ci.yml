@@ -68,6 +68,7 @@ jobs:
           python3 tests/profile_monochrome_week_colors_contract.py
           python3 tests/missions_from_catalog_contract.py
           python3 tests/monarch_randomness_contract.py
+          python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
           python3 tests/weekly_category_review_contract.py
