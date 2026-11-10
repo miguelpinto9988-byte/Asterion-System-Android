@@ -80,7 +80,7 @@ public final class MissionsActivity extends ComponentActivity {
         findViewById(R.id.missions_tab_library).setOnClickListener(v->show(SECTION_LIBRARY));
 
         themeTree(findViewById(R.id.missions_root));
-        loading.setText("Leyendo 39 familias y 445 variantes locales…");
+        loading.setText("Cargando Biblioteca local de 817 variantes…");
         worker.execute(()-> {
             try {
                 ExerciseCatalog fetched=new AssetExerciseCatalogRepository(this).load();
@@ -106,7 +106,16 @@ public final class MissionsActivity extends ComponentActivity {
 
     @Override protected void onResume() {
         super.onResume();
-        if(catalog!=null)show(section);
+        // Profile might have been edited while this screen was in the back
+        // stack. Date and profile configuration are the ONLY normal reasons
+        // for a different same-day exercise selection.
+        if(catalog!=null) {
+            profile=MissionProfileAdapter.fromRegistration(
+                    ProfileStore.getRegistration(this));
+            light="light".equals(
+                    ProfileStore.getRegistration(this).optString("theme","light"));
+            show(section);
+        }
     }
 
     private void show(String destination) {
@@ -154,28 +163,46 @@ public final class MissionsActivity extends ComponentActivity {
                 category,previousRating,profile.dailyLimit);
         MissionPlanner.Profile dayProfile=decision.preferSimplerTechnique
                 ||decision.suggestedActivities<profile.dailyLimit
-                ?new MissionPlanner.Profile(
+                ?profile.adapted(
                     decision.preferSimplerTechnique?"principiante":profile.experience,
-                    profile.goal,profile.weekly,profile.equipment,
                     Math.max(1,decision.suggestedActivities))
                 :profile;
-        List<String> previousVariants=category==CategoryEffortPolicy.REST
-                ?java.util.Collections.emptyList()
-                :MissionTrackingStore.previousCategoryVariants(this,category,today);
+        // Only today's IDs are pinned, never full generated mission records.
+        // Returning to another panel, reopening the app and completing an
+        // exercise do not redraw the rest of today's planned exercises.
+        MissionTrackingStore.clearLegacyProposalSnapshots(this);
         WeeklyCategoryChallengePolicy.Review weekly=category==CategoryEffortPolicy.REST
                 ?null:WeeklyCategoryChallengePolicy.evaluate(
                     category,MissionTrackingStore.firstReport(this),today,
                     MissionTrackingStore.recentCategoryObservations(this,category,today));
-        MissionPlanner.Proposal proposal=planner.daily(
-                dayProfile,today,decision,previousVariants,
-                weekly!=null && weekly.rotateEquivalentVariant()
-                        && !SessionSafetyStore.recentInterruption(
-                                this,category,today,7));
-        if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
-            MissionTrackingStore.rememberCategoryProposal(
-                    this,category,today,proposal.candidates());
+        List<String> pinned=DailyMissionStore.read(this,today,profile,catalog);
+        MissionPlanner.Proposal proposal=null;
+        if(!pinned.isEmpty()) {
+            try {
+                proposal=planner.restoreDaily(profile,today,pinned);
+            } catch(IllegalArgumentException invalid) {
+                DailyMissionStore.clear(this);
+            }
         }
-        paragraph("Fecha: "+proposal.start()+". Se renueva según el calendario local.");
+        if(proposal==null) {
+            List<String> previousVariants=category==CategoryEffortPolicy.REST
+                    ?java.util.Collections.emptyList()
+                    :MissionTrackingStore.latestCompletedForCategory(
+                            this,catalog,category,today);
+            proposal=planner.daily(
+                    dayProfile,today,decision,previousVariants,
+                    weekly!=null && weekly.rotateEquivalentVariant()
+                            && !SessionSafetyStore.recentInterruption(
+                                    this,category,today,7));
+            if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
+                DailyMissionStore.write(this,today,profile,catalog,
+                        proposal.candidates());
+            }
+        }
+        paragraph("Fecha: "+proposal.start()
+                +". Esta selección permanece igual durante el día, incluso "
+                +"si cierras la aplicación o cambias de panel. Se renueva "
+                +"mañana o al modificar la configuración del perfil.");
         if(category!=CategoryEffortPolicy.REST) {
             paragraph("Categoría: "+CategoryEffortPolicy.CATEGORY_NAMES[category]
                     +". "+decision.explanation);
