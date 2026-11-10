@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
@@ -14,6 +15,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseFamily;
 import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import java.util.List;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
+import pe.asterionsystem.core.engine.exercises.ExerciseMuscleFocus;
 import java.util.Set;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
@@ -168,6 +170,71 @@ final class MissionTrackingStore {
             }
         }
         return Collections.emptyList();
+    }
+
+    /**
+     * The last 14 days of ACTUALLY completed variant IDs in this category.
+     * Current-day check-offs are ignored to avoid reshuffling a pinned day.
+     * Derived from existing private records; no second history is persisted.
+     */
+    static List<String> recentCompletedForCategory(Context context,
+            ExerciseCatalog catalog,int category,LocalDate today) {
+        if(catalog==null || today==null || category<0 || category>4)
+            throw new IllegalArgumentException("Categoría/fecha requerida");
+        Map<String,Integer> categoryForVariant=variantCategories(catalog);
+        LinkedHashSet<String> ids=new LinkedHashSet<>();
+        for(int day=1;day<=14;day++) {
+            ArrayList<String> sorted=new ArrayList<>(completedToday(
+                    context,today.minusDays(day)));
+            Collections.sort(sorted);
+            for(String id:sorted) {
+                if(categoryForVariant.getOrDefault(id,-1)==category)ids.add(id);
+            }
+        }
+        return Collections.unmodifiableList(new ArrayList<>(ids));
+    }
+
+    /** Read-only summary; no new profile keys, DB schema or proposal snapshots. */
+    static final class DiversitySummary {
+        final int activeDays;
+        final int completedMarks;
+        final int uniqueVariants;
+        final int focusGroups;
+
+        DiversitySummary(int activeDays,int completedMarks,int uniqueVariants,
+                         int focusGroups) {
+            this.activeDays=activeDays;
+            this.completedMarks=completedMarks;
+            this.uniqueVariants=uniqueVariants;
+            this.focusGroups=focusGroups;
+        }
+    }
+
+    static DiversitySummary recentDiversityForCategory(Context context,
+            ExerciseCatalog catalog,int category,LocalDate today) {
+        if(catalog==null || today==null || category<0 || category>4)
+            throw new IllegalArgumentException("Categoría/fecha requerida");
+        Map<String,Integer> byVariant=variantCategories(catalog);
+        Set<String> distinctIds=new HashSet<>();
+        Set<String> focusIds=new HashSet<>();
+        int activeDays=0;
+        int total=0;
+        // Include today's check-offs in the displayed summary, but they never
+        // affect the already pinned exercise proposal.
+        for(int days=0;days<14;days++) {
+            boolean dayHasCompletions=false;
+            for(String id:completedToday(context,today.minusDays(days))) {
+                if(byVariant.getOrDefault(id,-1)!=category)continue;
+                dayHasCompletions=true;
+                total++;
+                distinctIds.add(id);
+                catalog.variant(id).ifPresent(variant->focusIds.add(
+                        ExerciseMuscleFocus.forVariant(catalog,variant).key()));
+            }
+            if(dayHasCompletions)activeDays++;
+        }
+        return new DiversitySummary(activeDays,total,distinctIds.size(),
+                focusIds.size());
     }
 
     private static Map<String,Integer> variantCategories(ExerciseCatalog catalog) {

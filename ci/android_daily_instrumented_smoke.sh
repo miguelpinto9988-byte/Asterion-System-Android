@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PACKAGE="pe.asterionsystem.app"
+TEST_PACKAGE="pe.asterionsystem.app.test"
+TEST_APK="build/smoke/app-debug-androidTest.apk"
+TEST_CLASS="pe.asterionsystem.app.DailyMissionPersistenceTest"
+OUT="build/runtime-diagnostics"
+mkdir -p "$OUT"
+test -s "$TEST_APK"
+
+adb install -r "$TEST_APK"
+
+echo "Android instrumentation 1/2: persist daily IDs using a test date"
+adb shell am instrument -w -e class "$TEST_CLASS#seedPin" \
+  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
+  | tee "$OUT/daily-pin-seed.txt"
+grep -q 'OK (1 test)' "$OUT/daily-pin-seed.txt"
+
+# Kill the app process between instrumentation runs. The second invocation
+# obtains a different process and reads the same persisted SharedPreferences.
+adb shell am force-stop "$PACKAGE"
+adb shell am force-stop "$TEST_PACKAGE" || true
+
+echo "Android instrumentation 2/2: verify restart, day rollover and profile change"
+adb shell am instrument -w -e class "$TEST_CLASS#verifyAfterRestartAndDayChange" \
+  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
+  | tee "$OUT/daily-pin-restore.txt"
+grep -q 'OK (1 test)' "$OUT/daily-pin-restore.txt"
+
+echo "PASS: persisted daily IDs survive process restart; simulated local-day and profile changes invalidate them."

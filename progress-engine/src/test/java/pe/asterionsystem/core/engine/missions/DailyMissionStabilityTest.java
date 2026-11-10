@@ -15,6 +15,8 @@ import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalogLoader;
 import pe.asterionsystem.core.engine.exercises.ExerciseIntensity;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
+import pe.asterionsystem.core.engine.exercises.ExerciseMuscleFocus;
+import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
 
 /** Exercises full 817-variant Android asset taxonomy with a real intensity index. */
 public class DailyMissionStabilityTest {
@@ -138,4 +140,73 @@ public class DailyMissionStabilityTest {
             }
         }
     }
+    @Test public void everyCatalogFamilyHasExplicitFunctionalFocus() {
+        assertEquals(75,ExerciseMuscleFocus.classifiedFamilies());
+        catalog.families().forEach(family->{
+            assertTrue(family.id(),ExerciseMuscleFocus.knowsFamily(family.id()));
+            assertFalse(ExerciseMuscleFocus.forFamily(family.id()).primary().isBlank());
+            assertFalse(ExerciseMuscleFocus.forFamily(family.id()).secondary().isBlank());
+        });
+    }
+
+    @Test public void avoidRecentlyCompletedVariantsWhenSafeOptionsRemain() {
+        MissionPlanner.Profile p=profile("moderada",Set.of("sin_equipo","pared"));
+        List<String> recent=ids(planner.daily(p,monday.minusDays(1)));
+        CategoryEffortPolicy.Decision state=CategoryEffortPolicy.evaluate(0,0,3);
+        List<String> chosen=ids(planner.daily(p,monday,state,recent,false,recent));
+        assertEquals(3,chosen.size());
+        assertTrue("No repetir los completados si existen alternativas elegibles",
+                java.util.Collections.disjoint(recent,chosen));
+        assertEquals(chosen,ids(new MissionPlanner(catalog)
+                .daily(p,monday,state,recent,false,new ArrayList<>(recent))));
+    }
+
+    @Test public void recentHistoryOutsideTodaysCategoryDoesNotChangeSelection() {
+        MissionPlanner.Profile p=profile("moderada",Set.of("sin_equipo","pared"));
+        CategoryEffortPolicy.Decision state=CategoryEffortPolicy.evaluate(0,0,3);
+        List<String> baseline=ids(planner.daily(
+                p,monday,state,List.of(),false,List.of()));
+        List<String> otherCategory=new ArrayList<>();
+        for(ExerciseVariant variant:catalog.variants()) {
+            if(variant.id().startsWith("sentadilla_"))otherCategory.add(variant.id());
+        }
+        assertEquals(baseline,ids(planner.daily(
+                p,monday,state,List.of(),false,otherCategory)));
+    }
+
+    @Test public void exhaustedFreshPoolStillProposesOnlyEligibleExercises() {
+        MissionPlanner.Profile p=profile("moderada",Set.of("sin_equipo","pared"));
+        CategoryEffortPolicy.Decision state=CategoryEffortPolicy.evaluate(0,0,3);
+        List<String> allCatalogIds=new ArrayList<>();
+        catalog.variants().forEach(v->allCatalogIds.add(v.id()));
+        MissionPlanner.Proposal selected=planner.daily(
+                p,monday,state,List.of(),false,allCatalogIds);
+        assertEquals(3,selected.candidates().size());
+        assertEquals(3,new HashSet<>(ids(selected)).size());
+        assertEquals(ids(selected),ids(planner.restoreDaily(p,monday,ids(selected))));
+        for(ExerciseVariant variant:selected.candidates()) {
+            assertTrue(catalog.eligibleForAutomaticSuggestion(variant));
+            assertTrue(p.equipment.containsAll(variant.equipment()));
+            assertNotEquals(ExerciseIntensity.HIGH,catalog.intensity(variant.id()));
+        }
+    }
+
+    @Test public void recentCheckoffsNeverAlterRestoredDailyPin() {
+        MissionPlanner.Profile p=profile("moderada",Set.of("sin_equipo","pared"));
+        List<String> pinned=ids(planner.daily(p,monday));
+        CategoryEffortPolicy.Decision state=CategoryEffortPolicy.evaluate(0,0,3);
+        planner.daily(p,monday,state,pinned,false,pinned);
+        assertEquals(pinned,ids(planner.restoreDaily(p,monday,pinned)));
+    }
+
+    @Test public void completedHistoryOrderCannotAffectDaySeed() {
+        MissionPlanner.Profile p=profile("moderada",Set.of("sin_equipo","pared"));
+        List<String> recent=ids(planner.daily(p,monday.minusDays(1)));
+        List<String> reversed=new ArrayList<>(recent);
+        java.util.Collections.reverse(reversed);
+        CategoryEffortPolicy.Decision state=CategoryEffortPolicy.evaluate(0,0,3);
+        assertEquals(ids(planner.daily(p,monday,state,List.of(),false,recent)),
+                ids(planner.daily(p,monday,state,List.of(),false,reversed)));
+    }
+
 }
