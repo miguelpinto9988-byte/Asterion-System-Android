@@ -29,8 +29,7 @@ adapter=(JAVA/"MissionProfileAdapter.java").read_text()
 binder=(JAVA/"presentation/HomeMissionBinder.java").read_text()
 renderer=(JAVA/"presentation/NavigationRenderer.java").read_text()
 assert "catalog.variants()" in planner
-assert "variant.eligibleForAutomaticSuggestion()" in planner
-assert "variant.eligibleForAutomaticSuggestion()" in planner
+assert "catalog.eligibleForAutomaticSuggestion(variant)" in planner
 assert "profile.equipment.containsAll(variant.equipment())" in planner
 assert "today.getDayOfWeek().getValue() - 1" in planner
 assert "today.plusDays(1)" in planner
@@ -52,4 +51,4 @@ assert '"week"' in adapter and '"missions"' in adapter
 assert '"gym_"' in adapter
 assert 'HomeMissionBinder.bind(activity,screen,openProgress)' in renderer
 assert '"monarch"' in binder and '"daily"' in binder and '"library"' in binder
-print("OK: motor conectado a 505 variantes, renovación diaria, Monarca 5 días opt-in y control manual.")
+print("OK: motor conectado a 817 variantes, renovación diaria, Monarca 5 días opt-in y control manual.")
