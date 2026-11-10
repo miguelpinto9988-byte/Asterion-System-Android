@@ -42,6 +42,13 @@ public class WeeklyCategoryChallengePolicyTest {
                 2,monday,monday.plusDays(7),reports).rotateEquivalentVariant());
     }
 
+    @Test public void severeUnfinishedReportAlwaysBlocksNovelty() {
+        List<WeeklyCategoryChallengePolicy.Observation> reports=Arrays.asList(
+                report(1,0,2,true),report(3,0,3,true),report(5,0,10,false));
+        assertEquals(WeeklyCategoryChallengePolicy.Status.RECOVERY_PRIORITY,
+                WeeklyCategoryChallengePolicy.evaluate(0,monday,monday.plusDays(7),reports).status);
+    }
+
     @Test public void incompleteActivitiesCannotTriggerProgression() {
         List<WeeklyCategoryChallengePolicy.Observation> reports=Arrays.asList(
                 report(1,0,1,false),report(3,0,2,true));
