@@ -14,7 +14,7 @@ SMOKE=(ROOT/"ci/android_daily_instrumented_smoke.sh").read_text()
 
 for marker in ('"asterion.monarch.v3|"', "profile.missionSignature()",
                "monarchSeed(profile,starts)", "previousCycleIds",
-               "ranked=takeDiverse(pool,pool.size(),",
+               "shuffled=takeDiverse(pool,pool.size(),",
                "usedCategories.add(", "restoreMonarch(",
                "catalog.eligibleForAutomaticSuggestion(v)",
                "profile.equipment.containsAll(v.equipment())"):
