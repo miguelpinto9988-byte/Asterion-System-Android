@@ -279,8 +279,8 @@ public final class MissionPlanner {
                     daySeed(profile,today),recentCompleted,profile.experience,
                     mixPhase,preferred);
             return new Proposal(DAILY,today,today.plusDays(1),mixed,false,
-                    decision.explanation+" "+MissionDifficultyMixPolicy.explanation(
-                            profile.experience,mixPhase));
+                    decision.explanation+" La mezcla de niveles respeta "
+                    +"las opciones compatibles y el historial de la categoría.");
         }
         List<ExerciseVariant> chosen=new ArrayList<>();
         Set<String> usedTypes=new HashSet<>();
