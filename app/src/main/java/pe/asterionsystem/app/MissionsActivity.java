@@ -529,17 +529,13 @@ public final class MissionsActivity extends ComponentActivity {
                 +"baja, moderada, alta, variable o sin clasificar. "
                 +"Las opciones de intensidad alta y nivel técnico avanzado "
                 +"son informativas y no forman parte de las propuestas automáticas.");
-        Map<String,List<ExerciseFamily>> byGroup=new HashMap<>();
-        for(ExerciseFamily item:catalog.families()) {
-            String primary=ExerciseCategoryMapper.primaryCategory(item.category());
-            byGroup.computeIfAbsent(primary,ignored->new ArrayList<>()).add(item);
-        }
         for(int i=0;i<5;i++) {
             String code=ExerciseCategoryMapper.weeklyCode(i);
-            List<ExerciseFamily> families=byGroup.get(code);
-            if(families==null)continue;
+            List<ExerciseFamily> families=catalog.categoryIndex().families(code);
             paragraph(ExerciseCategoryMapper.displayName(i)+" · "
-                    +families.size()+" familias");
+                    +families.size()+" familias · "
+                    +catalog.categoryIndex().types(code).size()+" tipos · "
+                    +catalog.categoryIndex().variants(code).size()+" variantes");
             for(ExerciseFamily family:families) {
                 action(family.name(),()->showFamily(family));
             }
@@ -549,6 +545,9 @@ public final class MissionsActivity extends ComponentActivity {
     private void showFamily(ExerciseFamily family) {
         content.removeAllViews();
         title(family.name());
+        paragraph("Categoría: "+ExerciseCategoryMapper.displayName(
+                ExerciseCategoryMapper.weeklyIndex(family.category()))
+                +" · Patrón: "+family.movementPattern().replace('_',' '));
         paragraph("Tipos de movimiento en esta familia:");
         for(ExerciseType type:catalog.typesInFamily(family.id())) {
             action(type.name(),()->showType(type,family));
