@@ -25,6 +25,7 @@
             android:name=".ProfileCreateActivity"
             android:exported="false"
             android:theme="@style/Theme.AsterionSystem" />
+        <activity android:name=".ProfileDetailsActivity" android:exported="false" />
         <activity android:name=".CalendarActivity" android:exported="false" />
         <activity android:name=".RoutinesActivity" android:exported="false" />
         <activity
