@@ -76,7 +76,9 @@ public final class MissionsActivity extends ComponentActivity {
         scroll=findViewById(R.id.missions_scroll);
         header=findViewById(R.id.missions_header);
         loading=findViewById(R.id.missions_loading);
-        findViewById(R.id.missions_back).setOnClickListener(v->finish());
+        SimpleBottomNav.attach(this,
+                findViewById(R.id.missions_bottom_bar),
+                SimpleBottomNav.HOME);
         findViewById(R.id.missions_tab_daily).setOnClickListener(v->show(SECTION_DAILY));
         findViewById(R.id.missions_tab_monarch).setOnClickListener(v->show(SECTION_MONARCH));
         findViewById(R.id.missions_tab_library).setOnClickListener(v->show(SECTION_LIBRARY));
