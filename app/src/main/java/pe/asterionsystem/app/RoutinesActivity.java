@@ -65,9 +65,8 @@ public final class RoutinesActivity extends ComponentActivity {
         body.setPadding(0,dp(18),0,dp(16));
         scroller.addView(body);
         root.addView(scroller,new LinearLayout.LayoutParams(-1,0,1));
-        Button back=button("Volver");
-        back.setOnClickListener(v->finish());
-        root.addView(back);
+        root.addView(SimpleBottomNav.create(this,SimpleBottomNav.ROUTINES),
+                new LinearLayout.LayoutParams(-1,dp(62)));
         setContentView(root);
         body.addView(label("Cargando catálogo de ejercicios…",15,true));
         worker.execute(()->{
