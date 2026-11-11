@@ -11,6 +11,7 @@ public final class AvatarMultiViewKinematics {
     public enum ViewMode {
         SIDE("Lateral · ejercicios"),
         FRONT("Frontal · elevación de brazos"),
+        FRONT_SQUAT("Frontal · sentadilla abierta"),
         TOP("Superior · flexión diamante");
         public final String title;
         ViewMode(String title){this.title=title;}
@@ -81,7 +82,7 @@ public final class AvatarMultiViewKinematics {
                 ls,lw,body.upperArm,body.forearm,-1,0f,170f);
         AvatarRigConstraints.TwoBone right=AvatarRigConstraints.twoBone(
                 rs,rw,body.upperArm,body.forearm,1,0f,170f);
-        return new Pose(at(200f,98f),at(200f,126f),ls,rs,left,right,
+        return new Pose(at(200f,103f),at(200f,130f),ls,rs,left,right,
                 at(174f,238f),at(226f,238f),
                 at(174f,332f),at(226f,332f),
                 at(173f,428f),at(227f,428f),
@@ -94,22 +95,51 @@ public final class AvatarMultiViewKinematics {
      * Hands and toes are fixed screen-space contact landmarks. The up/down
      * movement is only subtly legible from above, hence a side mini-view.
      */
+    /**
+     * An actual wide-stance front-camera animation, not the side squat viewed
+     * head-on. The planted ankles are fixed and both knees are projected by
+     * a two-bone solution, outward to opposite sides without stretching.
+     */
+    public static Pose frontWideSquat(float phase,AvatarBodySpec body) {
+        if(body==null)throw new IllegalArgumentException("BodySpec requerido");
+        float d=AvatarKinematics.depthAtPhase(phase);
+        float shift=46f*d;
+        AvatarKinematics.Point ls=at(153f,150f+shift),rs=at(247f,150f+shift);
+        AvatarKinematics.Point lh=at(174f,238f+shift),rh=at(226f,238f+shift);
+        AvatarKinematics.Point la=at(127f,411f),ra=at(273f,411f);
+        AvatarRigConstraints.TwoBone leftLeg=AvatarRigConstraints.twoBone(
+                lh,la,body.upperLeg,body.lowerLeg,1,0f,170f);
+        AvatarRigConstraints.TwoBone rightLeg=AvatarRigConstraints.twoBone(
+                rh,ra,body.upperLeg,body.lowerLeg,-1,0f,170f);
+        if(leftLeg.targetLimited||rightLeg.targetLimited)
+            throw new IllegalArgumentException("Los pies plantados deben ser alcanzables");
+        AvatarKinematics.Point lw=at(184f,212f+shift);
+        AvatarKinematics.Point rw=at(216f,212f+shift);
+        AvatarRigConstraints.TwoBone leftArm=AvatarRigConstraints.twoBone(
+                ls,lw,body.upperArm,body.forearm,1,0f,170f);
+        AvatarRigConstraints.TwoBone rightArm=AvatarRigConstraints.twoBone(
+                rs,rw,body.upperArm,body.forearm,-1,0f,170f);
+        return new Pose(at(200f,103f+shift),at(200f,130f+shift),
+                ls,rs,leftArm,rightArm,lh,rh,leftLeg.joint,
+                rightLeg.joint,la,ra,d,body.upperArm,body.forearm);
+    }
+
     public static Pose diamondTop(float phase,AvatarBodySpec body) {
         if(body==null)throw new IllegalArgumentException("BodySpec requerido");
         float d=AvatarKinematics.depthAtPhase(phase);
-        AvatarKinematics.Point ls=at(107f,151f+13f*d);
-        AvatarKinematics.Point rs=at(209f,151f+13f*d);
-        AvatarKinematics.Point lw=at(150f,197f),rw=at(166f,197f);
+        AvatarKinematics.Point ls=at(132f,158f+5f*d);
+        AvatarKinematics.Point rs=at(238f,158f+5f*d);
+        AvatarKinematics.Point lw=at(178f,226f),rw=at(192f,226f);
         float upper=body.upperArm*.80f,lower=body.forearm*.80f;
         AvatarRigConstraints.TwoBone left=AvatarRigConstraints.twoBone(
                 ls,lw,upper,lower,1,7f,165f);
         AvatarRigConstraints.TwoBone right=AvatarRigConstraints.twoBone(
                 rs,rw,upper,lower,-1,7f,165f);
-        return new Pose(at(158f,86f+7f*d),at(158f,118f+10f*d),
+        return new Pose(at(185f,103f+2f*d),at(185f,129f+3f*d),
                 ls,rs,left,right,
-                at(132f,264f),at(184f,264f),
-                at(138f,334f),at(178f,334f),
-                at(142f,400f),at(174f,400f),
+                at(161f,282f),at(209f,282f),
+                at(168f,341f),at(202f,341f),
+                at(170f,406f),at(200f,406f),
                 d,upper,lower);
     }
 }
