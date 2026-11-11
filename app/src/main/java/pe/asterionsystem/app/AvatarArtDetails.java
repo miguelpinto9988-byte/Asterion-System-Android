@@ -237,24 +237,24 @@ public final class AvatarArtDetails {
                               AvatarKinematics.Point head,AvatarPalette palette){
         if(c==null||shoulder==null||head==null||palette==null)
             throw new IllegalArgumentException("Neck data required");
-        float midX=head.x-3f;
-        float top=head.y+17f;
-        float bottom=shoulder.y+1f;
-        if(bottom<=top)return;
+        float dx=shoulder.x-head.x,dy=shoulder.y-head.y;
+        float length=(float)Math.hypot(dx,dy);
+        if(length<20f||!Float.isFinite(length))return;
+        // Neck is attached to the HEAD-TO-SHOULDER axis, not to the screen
+        // Y-axis. The same illustrated anatomy therefore survives a burpee
+        // when the torso rotates into the horizontal plank projection.
+        c.save();
+        c.translate(head.x,head.y);
+        c.rotate((float)Math.toDegrees(Math.atan2(dy,dx)));
         fill(palette.skinShade);
-        path.rewind();
-        path.moveTo(midX-8f,top);
-        path.quadTo(midX-10f,top+8f,midX-9f,bottom);
-        path.lineTo(midX+8f,bottom);
-        path.quadTo(midX+7f,top+8f,midX+7f,top);
-        path.close();c.drawPath(path,paint);
+        c.drawRoundRect(17f,-8f,length+2f,8f,5f,5f,paint);
         fill(palette.skin);
-        c.drawRoundRect(midX-6f,top,midX+7f,bottom-3f,4f,4f,paint);
-        // Fine collar line, not another thick rounded shoulder.
+        c.drawRoundRect(17f,-6f,length-1f,6f,4f,4f,paint);
         fill(palette.top);
-        c.drawRoundRect(midX-11f,bottom-9f,midX+10f,bottom+1f,5f,5f,paint);
-        line(c,midX-8f,bottom-8f,midX+7f,bottom-8f,
+        c.drawRoundRect(length-6f,-10f,length+5f,10f,4f,4f,paint);
+        line(c,length-6f,-8f,length-6f,8f,
                 palette.female?0xFFCEB7ED:0xFF9BC7E6,1.2f);
+        c.restore();
     }
 
     /**
