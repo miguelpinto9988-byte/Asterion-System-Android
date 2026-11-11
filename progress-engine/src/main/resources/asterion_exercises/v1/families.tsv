@@ -124,3 +124,33 @@ deporte_cardio_ritmo	Movimientos rítmicos cardiovasculares	cardio	cardio_ritmo
 deporte_cardio_agua	Actividad cardiovascular acuática y remo	cardio	cardio_agua
 deporte_cardio_adaptado	Cardio con equipamiento adaptado	cardio	cardio_adaptado
 deporte_cardio_funcional	Movimientos cardiovasculares funcionales	cardio	cardio_funcional
+calistenia_suspension	Calistenia: control de suspensión	tren_superior	suspension_asistida
+gimnasio_maquinas_superior	Gimnasio: máquinas de tren superior	tren_superior	maquinas_superior
+voleibol_toques	Voleibol: contactos de balón	tren_superior	contacto_voleibol
+raqueta_golpes	Deportes de raqueta: golpes técnicos	tren_superior	golpes_raqueta
+hockey_control_palo	Hockey: manejo técnico de implemento	tren_superior	manejo_palo
+balonmano_pases	Balonmano: pases y recepción	tren_superior	pases_balonmano
+pilates_control_respiracion	Pilates: control de respiración y tronco	tren_central	pilates_control
+tronco_antirotacion_deporte	Tronco: control antirrotacional deportivo	tren_central	antirotacion_deporte
+tronco_tecnica_remo	Tronco: coordinación para remo	tren_central	control_remo
+postura_nadador_en_seco	Natación: control de tronco en seco	tren_central	postura_nadador
+tronco_control_balon	Tronco: control de balón deportivo	tren_central	control_balon_tronco
+tronco_yoga_equilibrio	Yoga: equilibrio del tronco	tren_central	yoga_tronco
+futbol_pases_recepciones	Fútbol: pases y control del balón	tren_inferior	tecnica_pie_balon
+gimnasio_maquinas_inferior	Gimnasio: máquinas de piernas	tren_inferior	maquinas_pierna
+baloncesto_pivotes	Baloncesto: pivotes y apoyo de pies	tren_inferior	pivotes_basket
+atletismo_despegue_control	Atletismo: control de despegue	tren_inferior	despegue_pista
+patinaje_apoyos_seco	Patinaje: apoyos en superficie firme	tren_inferior	patinaje_seco
+beisbol_pasos_bases	Béisbol: desplazamientos de bases recreativos	tren_inferior	pasos_beisbol
+movilidad_hombro_raqueta	Movilidad para deportes de raqueta	movilidad	movilidad_raqueta
+movilidad_atletismo_pista	Movilidad general de atletismo	movilidad	movilidad_atleta
+movilidad_nadador_hombros	Movilidad previa a natación en seco	movilidad	movilidad_nado
+movilidad_patinaje_cadera	Movilidad para patinaje y hockey	movilidad	movilidad_patinar
+movilidad_deportiva_manos	Movilidad de manos para deportes con balón	movilidad	movilidad_manos_deporte
+movilidad_danza_yoga	Movilidad de danza y yoga recreativos	movilidad	movilidad_danza
+atletismo_cadencia	Atletismo: coordinación de carrera	cardio	cadencia_carrera
+relevos_movimiento	Atletismo: relevos recreativos	cardio	relevo_pista
+futbol_conduccion	Fútbol: conducción y desplazamientos	cardio	conduccion_futbol
+baloncesto_bote	Baloncesto: bote y control de balón	cardio	bote_basket
+hockey_desplazamientos	Hockey: coordinación y desplazamientos	cardio	pasos_hockey
+acondicionamiento_multideporte	Acondicionamiento deportivo diverso	cardio	movimiento_global

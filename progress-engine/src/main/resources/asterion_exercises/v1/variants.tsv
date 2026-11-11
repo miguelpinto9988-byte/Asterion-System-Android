@@ -1016,3 +1016,243 @@ dep_042_esprint_en_silla_de_ruedas_v01	dep_042_esprint_en_silla_de_ruedas	Esprin
 dep_016_escaladores_mountain_climbers_v01	dep_016_escaladores_mountain_climbers	Escaladores (mountain climbers)	4	sin_equipo	tecnica_guiada	1
 dep_burpee_tecnico_v01	dep_burpee_tecnico	Burpee de referencia (solo información)	4	sin_equipo	tecnica_guiada	1
 dep_carrera_ida_vuelta_v01	dep_carrera_ida_vuelta	Carrera de ida y vuelta con cambios rápidos de dirección (solo información)	4	conos	tecnica_guiada	1
+sujecion_barra_pies_v01	sujecion_barra_pies	Agarre de barra con pies apoyados	1	barra_dominadas	controlado	1
+sujecion_barra_pies_v02	sujecion_barra_pies	Sujeción de barra con descarga parcial de piernas	2	barra_dominadas	controlado	1
+retraccion_colgado_asistido_v01	retraccion_colgado_asistido	Retracción breve con apoyo de pies	1	barra_dominadas	controlado	1
+retraccion_colgado_asistido_v02	retraccion_colgado_asistido	Retracción escapular controlada en suspensión asistida	2	barra_dominadas	controlado	1
+dominada_neutra_asistida_v01	dominada_neutra_asistida	Tracción parcial con apoyo estable	1	barra_dominadas	controlado	1
+dominada_neutra_asistida_v02	dominada_neutra_asistida	Tracción de agarre neutro con asistencia	2	barra_dominadas	controlado	1
+negativa_traccion_soportada_v01	negativa_traccion_soportada	Recorrido parcial con soporte de pies	1	barra_dominadas	controlado	1
+negativa_traccion_soportada_v02	negativa_traccion_soportada	Descenso de tracción con asistencia constante	2	barra_dominadas	controlado	1
+press_vertical_guiado_v01	press_vertical_guiado	Press de hombros guiado corto	1	maquina_gimnasio	controlado	1
+press_vertical_guiado_v02	press_vertical_guiado	Press de hombros guiado en rango cómodo	2	maquina_gimnasio	controlado	1
+remo_apoyo_pecho_maquina_v01	remo_apoyo_pecho_maquina	Remo guiado con recorrido corto	1	maquina_gimnasio	controlado	1
+remo_apoyo_pecho_maquina_v02	remo_apoyo_pecho_maquina	Remo guiado con espalda apoyada	2	maquina_gimnasio	controlado	1
+apertura_posterior_maquina_v01	apertura_posterior_maquina	Separación corta de brazos en máquina	1	maquina_gimnasio	controlado	1
+apertura_posterior_maquina_v02	apertura_posterior_maquina	Apertura posterior controlada en máquina	2	maquina_gimnasio	controlado	1
+curl_brazo_maquina_v01	curl_brazo_maquina	Curl guiado con recorrido parcial	1	maquina_gimnasio	controlado	1
+curl_brazo_maquina_v02	curl_brazo_maquina	Curl guiado con control de retorno	2	maquina_gimnasio	controlado	1
+voleibol_toque_antebrazos_v01	voleibol_toque_antebrazos	Recepción individual de balón con antebrazos	1	balon_voleibol	controlado	1
+voleibol_toque_antebrazos_v02	voleibol_toque_antebrazos	Pase de antebrazos con compañero	2	balon_voleibol	controlado	1
+voleibol_colocacion_dedos_v01	voleibol_colocacion_dedos	Colocación alta individual de balón	1	balon_voleibol	controlado	1
+voleibol_colocacion_dedos_v02	voleibol_colocacion_dedos	Colocación de balón hacia objetivo cercano	2	balon_voleibol	controlado	1
+voleibol_saque_bajo_v01	voleibol_saque_bajo	Saque suave bajo hacia zona próxima	1	balon_voleibol	controlado	1
+voleibol_saque_bajo_v02	voleibol_saque_bajo	Saque bajo orientado a un sector amplio	2	balon_voleibol	controlado	1
+voleibol_recepcion_alta_v01	voleibol_recepcion_alta	Recepción alta de balón con control	1	balon_voleibol	controlado	1
+voleibol_recepcion_alta_v02	voleibol_recepcion_alta	Recepción alta dirigida hacia compañero	2	balon_voleibol	controlado	1
+derecha_raqueta_suave_v01	derecha_raqueta_suave	Gesto de derecha con pelota estática	1	raqueta+pelota	controlado	1
+derecha_raqueta_suave_v02	derecha_raqueta_suave	Golpe de derecha suave con pelota lanzada	2	raqueta+pelota	controlado	1
+reves_raqueta_suave_v01	reves_raqueta_suave	Gesto de revés con pelota cercana	1	raqueta+pelota	controlado	1
+reves_raqueta_suave_v02	reves_raqueta_suave	Revés suave hacia objetivo amplio	2	raqueta+pelota	controlado	1
+volea_raqueta_corta_v01	volea_raqueta_corta	Contacto de volea desde posición fija	1	raqueta+pelota	controlado	1
+volea_raqueta_corta_v02	volea_raqueta_corta	Volea suave con intercambio cercano	2	raqueta+pelota	controlado	1
+servicio_raqueta_control_v01	servicio_raqueta_control	Servicio por debajo del hombro hacia zona amplia	1	raqueta+pelota	controlado	1
+servicio_raqueta_control_v02	servicio_raqueta_control	Servicio técnico de raqueta a ritmo cómodo	2	raqueta+pelota	controlado	1
+conduccion_palo_hockey_lenta_v01	conduccion_palo_hockey_lenta	Conducción corta de pelota en línea	1	palo_hockey+pelota	controlado	1
+conduccion_palo_hockey_lenta_v02	conduccion_palo_hockey_lenta	Conducción de pelota entre marcas separadas	2	palo_hockey+pelota	controlado	1
+recepcion_palo_hockey_v01	recepcion_palo_hockey	Detención de pelota lenta con palo	1	palo_hockey+pelota	controlado	1
+recepcion_palo_hockey_v02	recepcion_palo_hockey	Recepción y control suave de pelota con palo	2	palo_hockey+pelota	controlado	1
+pase_corto_palo_hockey_v01	pase_corto_palo_hockey	Pase corto de pelota a objetivo cercano	1	palo_hockey+pelota	controlado	1
+pase_corto_palo_hockey_v02	pase_corto_palo_hockey	Pase suave de pelota con compañero	2	palo_hockey+pelota	controlado	1
+orientacion_palo_hockey_v01	orientacion_palo_hockey	Control estático del palo con pelota	1	palo_hockey+pelota	controlado	1
+orientacion_palo_hockey_v02	orientacion_palo_hockey	Cambio de orientación del palo y pelota	2	palo_hockey+pelota	controlado	1
+pase_pecho_balonmano_v01	pase_pecho_balonmano	Pase de pecho hacia objetivo cercano	1	balon	controlado	1
+pase_pecho_balonmano_v02	pase_pecho_balonmano	Pase de pecho con compañero en estático	2	balon	controlado	1
+recepcion_balonmano_v01	recepcion_balonmano	Recepción de balón lanzado suavemente	1	balon	controlado	1
+recepcion_balonmano_v02	recepcion_balonmano	Recepción y orientación de balón con compañero	2	balon	controlado	1
+pase_picado_balonmano_v01	pase_picado_balonmano	Pase picado a zona amplia próxima	1	balon	controlado	1
+pase_picado_balonmano_v02	pase_picado_balonmano	Pase picado con recepción de compañero	2	balon	controlado	1
+pase_lateral_balonmano_v01	pase_lateral_balonmano	Transferencia lateral de balón en estático	1	balon	controlado	1
+pase_lateral_balonmano_v02	pase_lateral_balonmano	Pase lateral recreativo con compañero	2	balon	controlado	1
+pilates_centrado_supino_v01	pilates_centrado_supino	Centrado tranquilo boca arriba	1	colchoneta	controlado	1
+pilates_centrado_supino_v02	pilates_centrado_supino	Centrado del tronco con desplazamiento corto de brazos	2	colchoneta	controlado	1
+pilates_pierna_deslizante_v01	pilates_pierna_deslizante	Deslizamiento corto de talón en suelo	1	colchoneta	controlado	1
+pilates_pierna_deslizante_v02	pilates_pierna_deslizante	Deslizamiento alterno de pies con tronco estable	2	colchoneta	controlado	1
+pilates_alcance_brazo_supino_v01	pilates_alcance_brazo_supino	Alcance corto de brazo acostado	1	colchoneta	controlado	1
+pilates_alcance_brazo_supino_v02	pilates_alcance_brazo_supino	Alcances alternos con abdomen estable	2	colchoneta	controlado	1
+pilates_pelvis_neutra_v01	pilates_pelvis_neutra	Búsqueda de pelvis neutra en colchoneta	1	colchoneta	controlado	1
+pilates_pelvis_neutra_v02	pilates_pelvis_neutra	Control de pelvis neutra con movimiento de una pierna	2	colchoneta	controlado	1
+resistencia_rotacion_estatica_v01	resistencia_rotacion_estatica	Sujeción frontal de banda ligera	1	banda	controlado	1
+resistencia_rotacion_estatica_v02	resistencia_rotacion_estatica	Control suave de giro con banda a altura del pecho	2	banda	controlado	1
+alcance_frontal_banda_tronco_v01	alcance_frontal_banda_tronco	Alcance corto de manos con banda	1	banda	controlado	1
+alcance_frontal_banda_tronco_v02	alcance_frontal_banda_tronco	Alcance frontal con tronco estable y banda	2	banda	controlado	1
+retorno_diagonal_banda_v01	retorno_diagonal_banda	Retorno corto de banda en diagonal	1	banda	controlado	1
+retorno_diagonal_banda_v02	retorno_diagonal_banda	Retorno diagonal suave con tronco fijo	2	banda	controlado	1
+estabilizacion_banda_costado_v01	estabilizacion_banda_costado	Sujeción lateral corta de banda	1	banda	controlado	1
+estabilizacion_banda_costado_v02	estabilizacion_banda_costado	Sujeción lateral de banda con cambio de apoyo	2	banda	controlado	1
+remo_alineacion_sentado_v01	remo_alineacion_sentado	Postura neutra sentada con pies estables	1	sin_equipo	controlado	1
+remo_alineacion_sentado_v02	remo_alineacion_sentado	Alineación del tronco sentado con alcance frontal	2	sin_equipo	controlado	1
+remo_bisagra_sentada_v01	remo_bisagra_sentada	Inclinación mínima de tronco sentado	1	sin_equipo	controlado	1
+remo_bisagra_sentada_v02	remo_bisagra_sentada	Bisagra de cadera sentada con amplitud controlada	2	sin_equipo	controlado	1
+remo_retorno_tronco_v01	remo_retorno_tronco	Retorno de tronco desde inclinación corta	1	sin_equipo	controlado	1
+remo_retorno_tronco_v02	remo_retorno_tronco	Alternancia lenta de inclinación y postura erguida	2	sin_equipo	controlado	1
+remo_ritmo_brazos_tronco_v01	remo_ritmo_brazos_tronco	Alternancia de brazos sentado y tronco quieto	1	sin_equipo	controlado	1
+remo_ritmo_brazos_tronco_v02	remo_ritmo_brazos_tronco	Alcance frontal de brazos con postura controlada	2	sin_equipo	controlado	1
+nado_control_toracico_v01	nado_control_toracico	Expansión torácica acostado sin carga	1	colchoneta	controlado	1
+nado_control_toracico_v02	nado_control_toracico	Extensión torácica breve con hombros relajados	2	colchoneta	controlado	1
+nado_alcance_supino_v01	nado_alcance_supino	Alcance de brazo acostado y corto	1	colchoneta	controlado	1
+nado_alcance_supino_v02	nado_alcance_supino	Alcance alterno de brazos boca arriba	2	colchoneta	controlado	1
+nado_pelvis_estable_v01	nado_pelvis_estable	Apoyo pélvico estable sobre colchoneta	1	colchoneta	controlado	1
+nado_pelvis_estable_v02	nado_pelvis_estable	Estabilidad de pelvis con desplazamiento leve de piernas	2	colchoneta	controlado	1
+nado_coordinacion_cruzada_seca_v01	nado_coordinacion_cruzada_seca	Alternancia corta de brazos acostado	1	colchoneta	controlado	1
+nado_coordinacion_cruzada_seca_v02	nado_coordinacion_cruzada_seca	Coordinación suave de brazo y pierna opuestos en seco	2	colchoneta	controlado	1
+transferencia_balon_torso_v01	transferencia_balon_torso	Transferencia breve de balón entre manos	1	balon	controlado	1
+transferencia_balon_torso_v02	transferencia_balon_torso	Transferencia lateral de balón con postura estable	2	balon	controlado	1
+alcance_diagonal_balon_deporte_v01	alcance_diagonal_balon_deporte	Alcance diagonal corto de balón sentado	1	balon	controlado	1
+alcance_diagonal_balon_deporte_v02	alcance_diagonal_balon_deporte	Alcance diagonal de balón con tronco controlado	2	balon	controlado	1
+giro_balon_torso_corto_v01	giro_balon_torso_corto	Giro de torso pequeño con balón cercano	1	balon	controlado	1
+giro_balon_torso_corto_v02	giro_balon_torso_corto	Giro alterno cómodo de torso con balón	2	balon	controlado	1
+control_balon_arriba_abajo_v01	control_balon_arriba_abajo	Desplazamiento corto de balón a altura del pecho	1	balon	controlado	1
+control_balon_arriba_abajo_v02	control_balon_arriba_abajo	Cambio de altura del balón sin perder alineación	2	balon	controlado	1
+yoga_postura_mesa_suave_v01	yoga_postura_mesa_suave	Postura de mesa con cuatro apoyos estables	1	sin_equipo	controlado	1
+yoga_postura_mesa_suave_v02	yoga_postura_mesa_suave	Postura de mesa con alcance corto alterno	2	sin_equipo	controlado	1
+yoga_alcance_lateral_de_pie_v01	yoga_alcance_lateral_de_pie	Alcance lateral pequeño de pie	1	sin_equipo	controlado	1
+yoga_alcance_lateral_de_pie_v02	yoga_alcance_lateral_de_pie	Alcance lateral cómodo de pie con base estable	2	sin_equipo	controlado	1
+yoga_postura_gato_neutro_v01	yoga_postura_gato_neutro	Paso breve entre postura neutra y suave flexión	1	sin_equipo	controlado	1
+yoga_postura_gato_neutro_v02	yoga_postura_gato_neutro	Alternancia lenta de columna neutra y movilidad	2	sin_equipo	controlado	1
+yoga_postura_centro_estable_v01	yoga_postura_centro_estable	Alineación suave de pelvis y tronco de pie	1	sin_equipo	controlado	1
+yoga_postura_centro_estable_v02	yoga_postura_centro_estable	Alineación del centro con traslado corto de peso	2	sin_equipo	controlado	1
+pase_interior_futbol_v01	pase_interior_futbol	Pase suave con pie hacia objetivo cercano	1	balon_futbol	controlado	1
+pase_interior_futbol_v02	pase_interior_futbol	Pase de interior de pie con compañero	2	balon_futbol	controlado	1
+control_planta_futbol_v01	control_planta_futbol	Detención de balón con planta en posición fija	1	balon_futbol	controlado	1
+control_planta_futbol_v02	control_planta_futbol	Control alterno de balón con plantas de ambos pies	2	balon_futbol	controlado	1
+recepcion_interior_futbol_v01	recepcion_interior_futbol	Recepción de balón rodado lento	1	balon_futbol	controlado	1
+recepcion_interior_futbol_v02	recepcion_interior_futbol	Recepción orientada de balón suave	2	balon_futbol	controlado	1
+pase_exterior_futbol_v01	pase_exterior_futbol	Contacto exterior de pie con balón quieto	1	balon_futbol	controlado	1
+pase_exterior_futbol_v02	pase_exterior_futbol	Pase de exterior hacia objetivo amplio	2	balon_futbol	controlado	1
+prensa_piernas_guiada_v01	prensa_piernas_guiada	Prensa guiada de recorrido reducido	1	maquina_gimnasio	controlado	1
+prensa_piernas_guiada_v02	prensa_piernas_guiada	Prensa de piernas en rango técnico cómodo	2	maquina_gimnasio	controlado	1
+curl_femoral_sentado_maquina_v01	curl_femoral_sentado_maquina	Flexión guiada breve de rodilla sentado	1	maquina_gimnasio	controlado	1
+curl_femoral_sentado_maquina_v02	curl_femoral_sentado_maquina	Curl femoral sentado con retorno controlado	2	maquina_gimnasio	controlado	1
+abduccion_cadera_maquina_v01	abduccion_cadera_maquina	Apertura corta de rodillas en máquina	1	maquina_gimnasio	controlado	1
+abduccion_cadera_maquina_v02	abduccion_cadera_maquina	Abducción de cadera guiada en amplitud cómoda	2	maquina_gimnasio	controlado	1
+aduccion_cadera_maquina_v01	aduccion_cadera_maquina	Cierre parcial de rodillas en máquina	1	maquina_gimnasio	controlado	1
+aduccion_cadera_maquina_v02	aduccion_cadera_maquina	Aducción de cadera guiada con control	2	maquina_gimnasio	controlado	1
+pivote_basico_baloncesto_v01	pivote_basico_baloncesto	Pivote corto de pies sin balón	1	balon	controlado	1
+pivote_basico_baloncesto_v02	pivote_basico_baloncesto	Pivote de pie de apoyo sosteniendo balón	2	balon	controlado	1
+parada_dos_tiempos_basket_v01	parada_dos_tiempos_basket	Parada de pasos cortos en cancha	1	balon	controlado	1
+parada_dos_tiempos_basket_v02	parada_dos_tiempos_basket	Parada a ritmo cómodo tras recepción de balón	2	balon	controlado	1
+orientacion_pies_tiro_basket_v01	orientacion_pies_tiro_basket	Colocación estable de pies frente al aro	1	balon	controlado	1
+orientacion_pies_tiro_basket_v02	orientacion_pies_tiro_basket	Ajuste leve de base de pies sosteniendo balón	2	balon	controlado	1
+desplazamiento_pie_apoyo_basket_v01	desplazamiento_pie_apoyo_basket	Cambio breve de pies en posición fija	1	balon	controlado	1
+desplazamiento_pie_apoyo_basket_v02	desplazamiento_pie_apoyo_basket	Cambio de apoyo antes de pase suave	2	balon	controlado	1
+despegue_talones_pista_v01	despegue_talones_pista	Elevación suave de talones en pista	1	sin_equipo	controlado	1
+despegue_talones_pista_v02	despegue_talones_pista	Elevación alterna de talones con apoyo estable	2	sin_equipo	controlado	1
+apoyo_unipodal_pista_v01	apoyo_unipodal_pista	Apoyo breve con pared cercana	1	sin_equipo	controlado	1
+apoyo_unipodal_pista_v02	apoyo_unipodal_pista	Cambio controlado de apoyos de una pierna	2	sin_equipo	controlado	1
+balanceo_brazos_salto_v01	balanceo_brazos_salto	Balanceo corto de brazos con pies estables	1	sin_equipo	controlado	1
+balanceo_brazos_salto_v02	balanceo_brazos_salto	Coordinación suave de brazos y flexión pequeña de rodillas	2	sin_equipo	controlado	1
+aterrizaje_base_footwork_v01	aterrizaje_base_footwork	Separación de pies en base estable	1	sin_equipo	controlado	1
+aterrizaje_base_footwork_v02	aterrizaje_base_footwork	Transición suave a postura estable sin salto	2	sin_equipo	controlado	1
+patinaje_apoyo_lateral_seco_v01	patinaje_apoyo_lateral_seco	Traslado leve de peso lateral de pie	1	sin_equipo	controlado	1
+patinaje_apoyo_lateral_seco_v02	patinaje_apoyo_lateral_seco	Alternancia de peso lateral con rodillas flexibles	2	sin_equipo	controlado	1
+patinaje_posicion_base_v01	patinaje_posicion_base	Flexión leve de rodillas en base amplia	1	sin_equipo	controlado	1
+patinaje_posicion_base_v02	patinaje_posicion_base	Postura de base con cambio corto de peso	2	sin_equipo	controlado	1
+patinaje_paso_diagonal_seco_v01	patinaje_paso_diagonal_seco	Paso diagonal corto sin patines	1	sin_equipo	controlado	1
+patinaje_paso_diagonal_seco_v02	patinaje_paso_diagonal_seco	Paso diagonal alterno en suelo firme	2	sin_equipo	controlado	1
+patinaje_equilibrio_suelo_v01	patinaje_equilibrio_suelo	Apoyo breve con soporte cercano	1	sin_equipo	controlado	1
+patinaje_equilibrio_suelo_v02	patinaje_equilibrio_suelo	Equilibrio controlado en base escalonada	2	sin_equipo	controlado	1
+beisbol_inicio_carrera_base_v01	beisbol_inicio_carrera_base	Primer paso corto desde postura de base	1	sin_equipo	controlado	1
+beisbol_inicio_carrera_base_v02	beisbol_inicio_carrera_base	Salida suave de carrera hacia marca cercana	2	sin_equipo	controlado	1
+beisbol_pie_apoyo_lanzamiento_v01	beisbol_pie_apoyo_lanzamiento	Colocación de pies para gesto deportivo sin lanzamiento	1	sin_equipo	controlado	1
+beisbol_pie_apoyo_lanzamiento_v02	beisbol_pie_apoyo_lanzamiento	Cambio lento de apoyo sin carga	2	sin_equipo	controlado	1
+beisbol_retorno_base_v01	beisbol_retorno_base	Paso corto de retorno hacia marca	1	sin_equipo	controlado	1
+beisbol_retorno_base_v02	beisbol_retorno_base	Retroceso controlado hacia marca de suelo	2	sin_equipo	controlado	1
+beisbol_giro_base_v01	beisbol_giro_base	Cambio de orientación de pies en marca	1	sin_equipo	controlado	1
+beisbol_giro_base_v02	beisbol_giro_base	Giro amplio alrededor de cono sin carrera rápida	2	sin_equipo	controlado	1
+raqueta_movilidad_escapulas_v01	raqueta_movilidad_escapulas	Retracción breve de escápulas de pie	1	sin_equipo	controlado	1
+raqueta_movilidad_escapulas_v02	raqueta_movilidad_escapulas	Alternancia suave de apertura y cierre escapular	2	sin_equipo	controlado	1
+raqueta_rotacion_brazo_suave_v01	raqueta_rotacion_brazo_suave	Rotación corta de brazos con codos cerca	1	sin_equipo	controlado	1
+raqueta_rotacion_brazo_suave_v02	raqueta_rotacion_brazo_suave	Rotación alterna de brazos a amplitud cómoda	2	sin_equipo	controlado	1
+raqueta_pronacion_sin_carga_v01	raqueta_pronacion_sin_carga	Giro corto de antebrazo con codo flexionado	1	sin_equipo	controlado	1
+raqueta_pronacion_sin_carga_v02	raqueta_pronacion_sin_carga	Giro alterno de antebrazo con muñeca neutra	2	sin_equipo	controlado	1
+raqueta_movilidad_munecas_v01	raqueta_movilidad_munecas	Flexión suave de muñeca sin implemento	1	sin_equipo	controlado	1
+raqueta_movilidad_munecas_v02	raqueta_movilidad_munecas	Rotación pequeña de muñecas en ambos sentidos	2	sin_equipo	controlado	1
+atleta_cadera_suave_v01	atleta_cadera_suave	Traslado leve de pelvis de pie	1	sin_equipo	controlado	1
+atleta_cadera_suave_v02	atleta_cadera_suave	Círculos pequeños de cadera con base estable	2	sin_equipo	controlado	1
+atleta_tobillos_preparacion_v01	atleta_tobillos_preparacion	Flexión breve de tobillos en apoyo	1	sin_equipo	controlado	1
+atleta_tobillos_preparacion_v02	atleta_tobillos_preparacion	Balanceo suave del peso hacia la punta de los pies	2	sin_equipo	controlado	1
+atleta_rodilla_en_sitio_v01	atleta_rodilla_en_sitio	Flexión parcial de rodillas de pie	1	sin_equipo	controlado	1
+atleta_rodilla_en_sitio_v02	atleta_rodilla_en_sitio	Alternancia de flexión suave y postura recta	2	sin_equipo	controlado	1
+atleta_torax_preparacion_v01	atleta_torax_preparacion	Rotación corta de tórax de pie	1	sin_equipo	controlado	1
+atleta_torax_preparacion_v02	atleta_torax_preparacion	Alternancia de rotación torácica sin forzar	2	sin_equipo	controlado	1
+nadador_circulo_brazos_corto_v01	nadador_circulo_brazos_corto	Círculos pequeños de brazo sin carga	1	sin_equipo	controlado	1
+nadador_circulo_brazos_corto_v02	nadador_circulo_brazos_corto	Círculos alternos de brazos en rango cómodo	2	sin_equipo	controlado	1
+nadador_abertura_pecho_v01	nadador_abertura_pecho	Apertura corta de brazos a los lados	1	sin_equipo	controlado	1
+nadador_abertura_pecho_v02	nadador_abertura_pecho	Apertura y retorno de brazos con cuello relajado	2	sin_equipo	controlado	1
+nadador_escapulas_pie_v01	nadador_escapulas_pie	Deslizamiento breve de escápulas de pie	1	sin_equipo	controlado	1
+nadador_escapulas_pie_v02	nadador_escapulas_pie	Alternancia suave de elevación y descenso escapular	2	sin_equipo	controlado	1
+nadador_rotacion_costal_pie_v01	nadador_rotacion_costal_pie	Giro corto de tronco con manos cruzadas	1	sin_equipo	controlado	1
+nadador_rotacion_costal_pie_v02	nadador_rotacion_costal_pie	Rotación suave del tórax con pelvis estable	2	sin_equipo	controlado	1
+patinaje_movilidad_cadera_pie_v01	patinaje_movilidad_cadera_pie	Desplazamiento de cadera corto de pie	1	sin_equipo	controlado	1
+patinaje_movilidad_cadera_pie_v02	patinaje_movilidad_cadera_pie	Cambio lateral de pelvis en rango cómodo	2	sin_equipo	controlado	1
+patinaje_tobillo_base_v01	patinaje_tobillo_base	Flexión corta de tobillo sin desplazamiento	1	sin_equipo	controlado	1
+patinaje_tobillo_base_v02	patinaje_tobillo_base	Alternancia suave de carga entre ambos tobillos	2	sin_equipo	controlado	1
+patinaje_muslo_lateral_v01	patinaje_muslo_lateral	Apertura corta de pierna con apoyo cercano	1	sin_equipo	controlado	1
+patinaje_muslo_lateral_v02	patinaje_muslo_lateral	Apertura cómoda alterna de piernas de pie	2	sin_equipo	controlado	1
+patinaje_rodilla_base_v01	patinaje_rodilla_base	Flexión leve de rodillas con base amplia	1	sin_equipo	controlado	1
+patinaje_rodilla_base_v02	patinaje_rodilla_base	Traslado de peso con rodillas flexibles	2	sin_equipo	controlado	1
+pelota_mano_apertura_dedos_v01	pelota_mano_apertura_dedos	Separación breve de dedos sin carga	1	sin_equipo	controlado	1
+pelota_mano_apertura_dedos_v02	pelota_mano_apertura_dedos	Apertura y cierre suave de manos	2	sin_equipo	controlado	1
+pelota_mano_pulgar_v01	pelota_mano_pulgar	Oposición suave de pulgar a dedos	1	sin_equipo	controlado	1
+pelota_mano_pulgar_v02	pelota_mano_pulgar	Secuencia cómoda de oposición de pulgar	2	sin_equipo	controlado	1
+pelota_mano_antebrazo_v01	pelota_mano_antebrazo	Giro breve de palma con brazo cerca del cuerpo	1	sin_equipo	controlado	1
+pelota_mano_antebrazo_v02	pelota_mano_antebrazo	Alternancia controlada de palma arriba y abajo	2	sin_equipo	controlado	1
+pelota_mano_muneca_v01	pelota_mano_muneca	Flexión breve de muñecas sin fuerza	1	sin_equipo	controlado	1
+pelota_mano_muneca_v02	pelota_mano_muneca	Flexoextensión cómoda de ambas muñecas	2	sin_equipo	controlado	1
+danza_cuello_hombros_v01	danza_cuello_hombros	Círculo pequeño de hombros de pie	1	sin_equipo	controlado	1
+danza_cuello_hombros_v02	danza_cuello_hombros	Alternancia de orientación de cabeza y hombros sin forzar	2	sin_equipo	controlado	1
+danza_torax_latitud_v01	danza_torax_latitud	Inclinación suave de tronco sin rebotes	1	sin_equipo	controlado	1
+danza_torax_latitud_v02	danza_torax_latitud	Inclinación lateral alterna con brazos relajados	2	sin_equipo	controlado	1
+danza_cadera_sin_salto_v01	danza_cadera_sin_salto	Traslado breve de cadera con pies apoyados	1	sin_equipo	controlado	1
+danza_cadera_sin_salto_v02	danza_cadera_sin_salto	Transferencia rítmica de peso lateral sin impacto	2	sin_equipo	controlado	1
+danza_pie_plantas_v01	danza_pie_plantas	Elevación corta de talones en sitio	1	sin_equipo	controlado	1
+danza_pie_plantas_v02	danza_pie_plantas	Alternancia suave de talón y punta de ambos pies	2	sin_equipo	controlado	1
+atletismo_marcha_a_v01	atletismo_marcha_a	Marcha corta con postura erguida	1	sin_equipo	controlado	1
+atletismo_marcha_a_v02	atletismo_marcha_a	Marcha alterna de rodillas a altura cómoda	2	sin_equipo	controlado	1
+atletismo_brazos_carrera_v01	atletismo_brazos_carrera	Balanceo corto de brazos en sitio	1	sin_equipo	controlado	1
+atletismo_brazos_carrera_v02	atletismo_brazos_carrera	Alternancia de brazos con marcha suave	2	sin_equipo	controlado	1
+atletismo_pasos_ritmicos_v01	atletismo_pasos_ritmicos	Pasos lentos sobre una línea	1	sin_equipo	controlado	1
+atletismo_pasos_ritmicos_v02	atletismo_pasos_ritmicos	Secuencia cómoda de pasos cortos en pista	2	sin_equipo	controlado	1
+atletismo_trote_postura_v01	atletismo_trote_postura	Marcha rápida con postura estable	1	sin_equipo	controlado	1
+atletismo_trote_postura_v02	atletismo_trote_postura	Trote suave de técnica postural	2	sin_equipo	controlado	1
+relevo_entrega_estatica_v01	relevo_entrega_estatica	Transferencia de testigo entre manos en reposo	1	testigo_relevo	controlado	1
+relevo_entrega_estatica_v02	relevo_entrega_estatica	Entrega de testigo con compañero sin carrera	2	testigo_relevo	controlado	1
+relevo_paso_caminando_v01	relevo_paso_caminando	Entrega de testigo a paso lento	1	testigo_relevo	controlado	1
+relevo_paso_caminando_v02	relevo_paso_caminando	Intercambio de testigo caminando en pista	2	testigo_relevo	controlado	1
+relevo_ritmo_suave_v01	relevo_ritmo_suave	Tránsito corto y lento con testigo	1	testigo_relevo	controlado	1
+relevo_ritmo_suave_v02	relevo_ritmo_suave	Relevo recreativo de ritmo suave con compañero	2	testigo_relevo	controlado	1
+relevo_marca_suelo_v01	relevo_marca_suelo	Paso breve entre marcas de suelo con testigo	1	testigo_relevo	controlado	1
+relevo_marca_suelo_v02	relevo_marca_suelo	Coordinación suave de marcas y cambio de testigo	2	testigo_relevo	controlado	1
+futbol_conduccion_recta_v01	futbol_conduccion_recta	Conducción lenta de balón en línea	1	balon_futbol	controlado	1
+futbol_conduccion_recta_v02	futbol_conduccion_recta	Conducción suave con alternancia de pie	2	balon_futbol	controlado	1
+futbol_conduccion_slalom_v01	futbol_conduccion_slalom	Conducción por conos muy separados	1	balon_futbol	controlado	1
+futbol_conduccion_slalom_v02	futbol_conduccion_slalom	Conducción controlada entre conos con balón	2	balon_futbol	controlado	1
+futbol_cambio_sentido_balon_v01	futbol_cambio_sentido_balon	Giro amplio con balón a paso lento	1	balon_futbol	controlado	1
+futbol_cambio_sentido_balon_v02	futbol_cambio_sentido_balon	Cambio controlado de orientación con balón	2	balon_futbol	controlado	1
+futbol_arrastre_lateral_balon_v01	futbol_arrastre_lateral_balon	Arrastre corto de balón con pie	1	balon_futbol	controlado	1
+futbol_arrastre_lateral_balon_v02	futbol_arrastre_lateral_balon	Arrastre lateral alterno a paso cómodo	2	balon_futbol	controlado	1
+baloncesto_bote_bajo_v01	baloncesto_bote_bajo	Bote estático lento con mano dominante	1	balon	controlado	1
+baloncesto_bote_bajo_v02	baloncesto_bote_bajo	Bote de balón alterno sin desplazamiento	2	balon	controlado	1
+baloncesto_bote_desplazando_v01	baloncesto_bote_desplazando	Bote lento mientras se camina	1	balon	controlado	1
+baloncesto_bote_desplazando_v02	baloncesto_bote_desplazando	Bote controlado caminando con cambio de mano	2	balon	controlado	1
+baloncesto_bote_cruzado_v01	baloncesto_bote_cruzado	Cambio corto de bote de mano en estático	1	balon	controlado	1
+baloncesto_bote_cruzado_v02	baloncesto_bote_cruzado	Bote cruzado suave frente al cuerpo	2	balon	controlado	1
+baloncesto_bote_sentado_v01	baloncesto_bote_sentado	Bote suave desde una silla estable	1	balon	controlado	1
+baloncesto_bote_sentado_v02	baloncesto_bote_sentado	Bote alterno de pelota desde silla	2	balon	controlado	1
+hockey_pasos_laterales_v01	hockey_pasos_laterales	Paso lateral corto sin patines	1	sin_equipo	controlado	1
+hockey_pasos_laterales_v02	hockey_pasos_laterales	Paso lateral alterno en suelo estable	2	sin_equipo	controlado	1
+hockey_giro_amplio_v01	hockey_giro_amplio	Giro amplio caminando sin implemento	1	sin_equipo	controlado	1
+hockey_giro_amplio_v02	hockey_giro_amplio	Cambio de orientación entre marcas caminando	2	sin_equipo	controlado	1
+hockey_pasos_defensivos_v01	hockey_pasos_defensivos	Cambio de apoyo breve de pies	1	sin_equipo	controlado	1
+hockey_pasos_defensivos_v02	hockey_pasos_defensivos	Desplazamiento suave lateral sin contacto	2	sin_equipo	controlado	1
+hockey_retorno_posicion_v01	hockey_retorno_posicion	Paso corto de retorno al centro	1	sin_equipo	controlado	1
+hockey_retorno_posicion_v02	hockey_retorno_posicion	Alternancia cómoda de posición inicial y lateral	2	sin_equipo	controlado	1
+burpee_adaptado_v01	burpee_adaptado	Transición de pie a apoyo elevado sin salto	1	sin_equipo	controlado	1
+burpee_adaptado_v02	burpee_adaptado	Burpee sin salto con apoyo estable	3	sin_equipo	controlado	1
+carreras_ida_vuelta_controladas_v01	carreras_ida_vuelta_controladas	Recorrido corto caminando entre dos marcas	1	sin_equipo	controlado	1
+carreras_ida_vuelta_controladas_v02	carreras_ida_vuelta_controladas	Carrera recreativa de ida y vuelta sin límite de tiempo	3	sin_equipo	controlado	1
+pasos_circuito_suave_v01	pasos_circuito_suave	Secuencia corta de pasos entre marcas	1	sin_equipo	controlado	1
+pasos_circuito_suave_v02	pasos_circuito_suave	Circuito de coordinación caminando sin saltos	2	sin_equipo	controlado	1
+marcha_y_paso_lateral_v01	marcha_y_paso_lateral	Marcha suave seguida de paso lateral corto	1	sin_equipo	controlado	1
+marcha_y_paso_lateral_v02	marcha_y_paso_lateral	Alternancia de marcha y lateralidad sin impacto	2	sin_equipo	controlado	1
