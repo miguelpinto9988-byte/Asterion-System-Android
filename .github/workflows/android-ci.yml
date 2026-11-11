@@ -73,6 +73,7 @@ jobs:
           python3 tests/monarch_randomness_contract.py
           python3 tests/routines_calendar_contract.py
           python3 tests/home_navigation_architecture_contract.py
+          python3 tests/native_avatar_2d_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
