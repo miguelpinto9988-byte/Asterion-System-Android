@@ -99,3 +99,28 @@ pasos_aerobicos_direcciones	Pasos aeróbicos en distintas direcciones	cardio	pas
 ritmos_brazos_pasos	Ritmos suaves de brazos y pasos	cardio	ritmo_pasos
 cardio_desde_silla	Cardio recreativo desde silla	cardio	cardio_sentado
 juegos_pasos_recreativos	Juegos recreativos de pasos suaves	cardio	juego_pasos
+deporte_empujes_superiores	Empujes y apoyos superiores deportivos	tren_superior	empujes_superiores
+deporte_tracciones_superiores	Tracciones deportivas de brazos	tren_superior	tracciones_superiores
+deporte_estabilidad_hombros	Estabilidad de hombros y escápulas	tren_superior	estabilidad_hombros
+deporte_gestos_implementos	Gestos superiores con implementos	tren_superior	gestos_implementos
+deporte_control_brazos_prono	Control de brazos en apoyo prono	tren_superior	control_brazos_prono
+deporte_centro_estabilidad	Estabilidad central en deportes	tren_central	centro_estabilidad
+deporte_centro_rotacion	Rotación y antirotación del tronco	tren_central	centro_rotacion
+deporte_centro_respiracion	Control respiratorio central	tren_central	centro_respiracion
+deporte_centro_acuatico	Control central acuático	tren_central	centro_acuatico
+deporte_centro_transiciones	Transiciones con estabilización del tronco	tren_central	centro_transiciones
+deporte_piernas_potencia	Patrones de potencia de piernas	tren_inferior	piernas_potencia
+deporte_pies_agilidad	Agilidad y técnica de pies	tren_inferior	pies_agilidad
+deporte_fuerza_piernas	Fuerza funcional de piernas	tren_inferior	fuerza_piernas
+deporte_piernas_pilates	Control de piernas en pilates	tren_inferior	piernas_pilates
+deporte_piernas_danza	Movimientos de piernas en danza	tren_inferior	piernas_danza
+deporte_deslizamientos	Deslizamientos y patinaje en seco	tren_inferior	deslizamientos
+deporte_mov_yoga	Posturas de movilidad de yoga	movilidad	mov_yoga
+deporte_mov_articular	Movilidad de articulaciones y estiramientos	movilidad	mov_articular
+deporte_mov_equilibrio	Equilibrio deportivo y marcha	movilidad	mov_equilibrio
+deporte_mov_tecnica	Movilidad de gestos deportivos	movilidad	mov_tecnica
+deporte_cardio_carrera	Carrera técnica y desplazamientos	cardio	cardio_carrera
+deporte_cardio_ritmo	Movimientos rítmicos cardiovasculares	cardio	cardio_ritmo
+deporte_cardio_agua	Actividad cardiovascular acuática y remo	cardio	cardio_agua
+deporte_cardio_adaptado	Cardio con equipamiento adaptado	cardio	cardio_adaptado
+deporte_cardio_funcional	Movimientos cardiovasculares funcionales	cardio	cardio_funcional
