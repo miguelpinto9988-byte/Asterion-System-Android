@@ -20,7 +20,7 @@ families=read("families.tsv")
 types=read("types.tsv")
 variants=read("variants.tsv")
 intensity=read("intensity.tsv")
-assert tuple(map(len,(families,types,variants,intensity)))==(100,254,917,412)
+assert tuple(map(len,(families,types,variants,intensity)))==(125,354,1017,512)
 def unique(rows,key):
     keys=[r[key] for r in rows]
     assert len(keys)==len(set(keys)),key
@@ -36,19 +36,19 @@ assert set(int(x["level"]) for x in variants)<={1,2,3,4,5}
 assert all(v["supervision"]=="1" for v in variants if int(v["level"])>=4)
 category_mapper={"coordinacion":"movilidad","integrado":"tren_central"}
 group_count=Counter(category_mapper.get(f["category"],f["category"]) for f in families)
-assert group_count=={"tren_superior":22,"tren_central":18,"tren_inferior":21,
-                     "movilidad":20,"cardio":19}
+assert group_count=={"tren_superior":27,"tren_central":23,"tren_inferior":27,
+                     "movilidad":24,"cardio":24}
 assert all(f["category"] in {"tren_superior","tren_central","tren_inferior","movilidad","cardio"} for f in families)
 normalized=lambda value:"".join(c for c in unicodedata.normalize("NFD",value.casefold())
                                  if not unicodedata.combining(c))
-assert len({normalized(v["name"]) for v in variants})==917
+assert len({normalized(v["name"]) for v in variants})==1017
 assert len({v["name"] for v in variants})==917
 
 # The historical 75/204/817 rows are a literal prefix; expansion is append-only.
-old_families,families_new=families[:75],families[75:]
-old_types,types_new=types[:204],types[204:]
-old_variants,variants_new=variants[:817],variants[817:]
-old_intensity,intensity_new=intensity[:312],intensity[312:]
+old_families,families_new=families[:75],families[75:100]
+old_types,types_new=types[:204],types[204:254]
+old_variants,variants_new=variants[:817],variants[817:917]
+old_intensity,intensity_new=intensity[:312],intensity[312:412]
 assert len(families_new)==25 and len(types_new)==50
 assert len(variants_new)==100 and len(intensity_new)==100
 assert {"sentadillas","transportes","equilibrio","recorridos_al_aire_libre"} <= {
@@ -77,7 +77,7 @@ for category in group_count:
 
 focus=(CORE/"ExerciseMuscleFocus.java").read_text(encoding="utf-8")
 ids=re.findall(r'Map\.entry\("([a-z0-9_]+)",new Focus\("',focus)
-assert len(ids)==100 and set(ids)==family_ids
+assert len(ids)==125 and set(ids)==family_ids
 index=(CORE/"ExerciseCategoryIndex.java").read_text(encoding="utf-8")
 catalog=(CORE/"ExerciseCatalog.java").read_text(encoding="utf-8")
 activity=(APP/"MissionsActivity.java").read_text(encoding="utf-8")
@@ -91,5 +91,5 @@ assert "catalog.categoryIndex().families(code)" in activity
 assert "catalog.categoryIndex().types(code)" in activity
 assert "catalog.categoryIndex().variants(code)" in activity
 assert "catalog.categoryIndex().categoryForType(type.id())" in planner
-print("OK: 100 families, 254 types, 917 distinct variants, five categories, original IDs, "
-      "100 explicit focus labels and safe two-level new variants.")
+print("OK: 125 families, 354 types, 1017 distinct variants, five categories, original IDs, "
+      "125 explicit focus labels and safe two-level new variants.")
