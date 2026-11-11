@@ -17,6 +17,8 @@ public final class NativeAvatarView extends View {
     private static final float DESIGN_HEIGHT=480f;
     private static final float LOOP_MS=4200f;
     private final AvatarRenderer renderer=new AvatarRenderer();
+    private final AvatarMultiViewRenderer multiRenderer=new AvatarMultiViewRenderer();
+    private AvatarMultiViewKinematics.ViewMode viewMode=AvatarMultiViewKinematics.ViewMode.SIDE;
     private AvatarPalette palette=AvatarPalette.BLUE;
     private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
     private AvatarMotionEngine.Motion motion=AvatarMotionEngine.Motion.SQUAT;
@@ -46,6 +48,15 @@ public final class NativeAvatarView extends View {
     }
     public boolean isFemale(){return female;}
     public AvatarMotionEngine.Motion getMotion(){return motion;}
+    public AvatarMultiViewKinematics.ViewMode getViewMode(){return viewMode;}
+    public void setViewMode(AvatarMultiViewKinematics.ViewMode value){
+        if(value==null)throw new IllegalArgumentException("Vista requerida");
+        viewMode=value;
+        phase=0f;
+        lastFrameMs=SystemClock.uptimeMillis();
+        updateAccessibilityDescription();
+        invalidate();
+    }
     public void setMotion(AvatarMotionEngine.Motion value){
         if(value==null)throw new IllegalArgumentException("Movimiento obligatorio");
         motion=value;
@@ -83,8 +94,11 @@ public final class NativeAvatarView extends View {
     }
 
     private void updateAccessibilityDescription() {
+        String activity=viewMode==AvatarMultiViewKinematics.ViewMode.SIDE
+                ?motion.label:viewMode==AvatarMultiViewKinematics.ViewMode.FRONT
+                ?"elevación frontal de brazos":"flexión en diamante desde arriba, con detalle de manos";
         setContentDescription((female?"Avatar morado":"Avatar azul")
-                +" mostrando "+motion.label.toLowerCase(java.util.Locale.ROOT)
+                +" mostrando "+activity.toLowerCase(java.util.Locale.ROOT)
                 +" como animación ilustrativa. "
                 +(playing?"Animación en reproducción.":"Animación pausada."));
     }
@@ -120,8 +134,16 @@ public final class NativeAvatarView extends View {
                 (getHeight()-DESIGN_HEIGHT*scale)*0.5f);
         canvas.scale(scale,scale);
 
-        renderer.draw(canvas,AvatarMotionEngine.pose(motion,phase,bodySpec),
-                bodySpec,palette,dark,motion.label);
+        if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE) {
+            renderer.draw(canvas,AvatarMotionEngine.pose(motion,phase,bodySpec),
+                    bodySpec,palette,dark,motion.label);
+        } else {
+            AvatarMultiViewKinematics.Pose pose=
+                    viewMode==AvatarMultiViewKinematics.ViewMode.FRONT
+                    ?AvatarMultiViewKinematics.frontArms(phase,bodySpec)
+                    :AvatarMultiViewKinematics.diamondTop(phase,bodySpec);
+            multiRenderer.draw(canvas,pose,viewMode,palette,dark);
+        }
         canvas.restore();
         if(playing&&isAttachedToWindow()&&isShown())postInvalidateOnAnimation();
     }

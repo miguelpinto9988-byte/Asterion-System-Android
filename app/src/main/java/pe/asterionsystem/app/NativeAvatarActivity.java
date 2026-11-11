@@ -24,6 +24,7 @@ public final class NativeAvatarActivity extends ComponentActivity {
     private Button play;
     private SeekBar timeline;
     private Spinner motionPicker;
+    private Spinner scenePicker;
     private TextView status;
     private boolean light;
     private boolean scrubbing;
@@ -79,11 +80,35 @@ public final class NativeAvatarActivity extends ComponentActivity {
         });
         root.addView(motionPicker,new LinearLayout.LayoutParams(-1,dp(50)));
 
+        scenePicker=new Spinner(this);
+        AvatarMultiViewKinematics.ViewMode[] views=
+                AvatarMultiViewKinematics.ViewMode.values();
+        String[] cameraLabels=new String[views.length];
+        for(int i=0;i<views.length;i++)cameraLabels[i]=views[i].title;
+        ArrayAdapter<String> cameraAdapter=new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,cameraLabels);
+        cameraAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        scenePicker.setAdapter(cameraAdapter);
+        scenePicker.setContentDescription("Seleccionar cámara del avatar");
+        scenePicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override public void onItemSelected(AdapterView<?> parent,View v,
+                                                    int position,long id){
+                avatar.setViewMode(views[position]);
+                // Other scenes own their own exercise-specific rig.
+                motionPicker.setEnabled(views[position]==AvatarMultiViewKinematics.ViewMode.SIDE);
+                if(timeline!=null)timeline.setProgress(0);
+                updatePlay();
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent){}
+        });
+        root.addView(scenePicker,new LinearLayout.LayoutParams(-1,dp(50)));
+
         status=text("Avatar azul · Sentadilla",13,true);
         root.addView(status);
         timeline=new SeekBar(this);
         timeline.setMax(1000);
-        timeline.setContentDescription("Posición en el ciclo de sentadilla");
+        timeline.setContentDescription("Posición en el ciclo del ejercicio ilustrado");
         root.addView(timeline,new LinearLayout.LayoutParams(-1,dp(52)));
         timeline.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override public void onProgressChanged(SeekBar seek,int progress,
@@ -123,9 +148,9 @@ public final class NativeAvatarActivity extends ComponentActivity {
             avatar.setSpeed(next);
             speed.setText(next==1f?"Velocidad 1×":"Velocidad 0,5×");
         });
-        root.addView(text("Movimientos ilustrativos con huesos de longitud fija. "
-                +"No evalúan la postura, la técnica ni sustituyen orientación "
-                +"profesional.",12,false));
+        root.addView(text("Cámaras ilustrativas independientes: lateral, frontal y "
+                +"superior con ampliación de manos. El visor no comprueba la "
+                +"postura ni sustituye orientación profesional.",12,false));
         Button back=button("Volver a Rutinas");
         root.addView(back,new LinearLayout.LayoutParams(-1,dp(52)));
         back.setOnClickListener(v->finish());
@@ -144,8 +169,18 @@ public final class NativeAvatarActivity extends ComponentActivity {
             } catch(IllegalArgumentException unknown) {
                 motionPicker.setSelection(0);
             }
-            status.setText(avatar.isFemale()?"Avatar morado · Sentadilla"
-                    :"Avatar azul · Sentadilla");
+            String storedCamera=state.getString("camera","SIDE");
+            try {
+                AvatarMultiViewKinematics.ViewMode restored=
+                        AvatarMultiViewKinematics.ViewMode.valueOf(storedCamera);
+                scenePicker.setSelection(restored.ordinal());
+                avatar.setViewMode(restored);
+                motionPicker.setEnabled(restored==AvatarMultiViewKinematics.ViewMode.SIDE);
+                avatar.setPhase(state.getFloat("phase",0f));
+            } catch(IllegalArgumentException unknown) {
+                scenePicker.setSelection(0);
+            }
+            updatePlay();
             speed.setText(avatar.getSpeed()==1f?"Velocidad 1×":"Velocidad 0,5×");
         }
         applyPlayback();
@@ -154,6 +189,7 @@ public final class NativeAvatarActivity extends ComponentActivity {
     @Override protected void onSaveInstanceState(Bundle state) {
         state.putBoolean("female",avatar.isFemale());
         state.putString("motion",avatar.getMotion().name());
+        state.putString("camera",avatar.getViewMode().name());
         state.putBoolean("playing",playback.isPlaybackRequested());
         state.putFloat("phase",avatar.getPhase());
         state.putFloat("speed",avatar.getSpeed());
@@ -182,8 +218,10 @@ public final class NativeAvatarActivity extends ComponentActivity {
     private void updatePlay(){
         if(avatar==null)return;
         if(play!=null)play.setText(avatar.isPlaying()?"Pausar":"Reproducir");
+        String scene=avatar.getViewMode()==AvatarMultiViewKinematics.ViewMode.SIDE
+                ?avatar.getMotion().label:avatar.getViewMode().title;
         if(status!=null)status.setText((avatar.isFemale()?"Avatar morado":"Avatar azul")
-                +" · "+avatar.getMotion().label+" · "
+                +" · "+scene+" · "
                 +(avatar.isPlaying()?"Reproduciendo":"En pausa"));
     }
     private TextView text(String value,int sp,boolean prominent){
