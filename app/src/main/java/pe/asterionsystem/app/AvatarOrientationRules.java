@@ -129,6 +129,26 @@ public final class AvatarOrientationRules {
         return (float)Math.toDegrees(Math.atan2(dy,dx)+Math.PI*.5);
     }
 
+    /**
+     * Shared front-camera contract for upright scenes. This is a shape
+     * orientation guard, not an assessment of exercise technique; both
+     * heels may temporarily leave the ground in a jumping scene.
+     */
+    public static void requireUprightFrontPose(AvatarMultiViewKinematics.Pose p){
+        if(p==null)throw new IllegalArgumentException("Pose required");
+        BodyFrame standing=forPosture(Posture.STANDING);
+        if(!visibleSurface(standing.faceNormal,Camera.FRONT)||
+                visibleSurface(standing.soleNormal,Camera.TOP)||
+                !(p.head.y<p.neck.y&&p.neck.y<p.leftShoulder.y&&
+                  p.neck.y<p.rightShoulder.y&&
+                  p.leftShoulder.y<p.leftHip.y&&
+                  p.rightShoulder.y<p.rightHip.y&&
+                  p.leftHip.y<p.leftAnkle.y&&
+                  p.rightHip.y<p.rightAnkle.y&&
+                  Math.abs(p.leftShoulder.y-p.rightShoulder.y)<.01f))
+            throw new IllegalArgumentException("Inverted upright projection");
+    }
+
     /** Head above shoulders and toes beyond knees in a TOP prone camera.
      * Catches mirrored / reversed projections before painting shoes. */
     public static void requireProneTopPose(AvatarMultiViewKinematics.Pose p) {
