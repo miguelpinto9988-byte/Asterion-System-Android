@@ -17,7 +17,6 @@ public final class AvatarRenderer {
     private final Path path=new Path();
     private AvatarPalette palette=AvatarPalette.BLUE;
     private AvatarBodySpec body=AvatarBodySpec.DEFAULT;
-    private boolean dark;
 
     public void draw(Canvas canvas,AvatarPose pose,
                      AvatarBodySpec body,AvatarPalette palette,boolean dark) {
@@ -25,7 +24,6 @@ public final class AvatarRenderer {
             throw new IllegalArgumentException("Renderer necesita pose, spec y paleta");
         this.body=body;
         this.palette=palette;
-        this.dark=dark;
         AvatarPose p=pose;
         final int bg=dark?0xFF13131D:0xFFF8F9FD;
         final int grid=dark?0xFF272838:0xFFEAECF4;
@@ -47,7 +45,7 @@ public final class AvatarRenderer {
         drawLimb(canvas,p.farHip,p.farKnee,body.thighWidth*.88f,body.thighWidth*.72f,
                 palette.farLegColor);
         drawLimb(canvas,p.farKnee,p.farAnkle,body.calfWidth*.92f,body.calfWidth*.62f,
-                palette.palette.female?0xFF514D70:palette.skinShade);
+                palette.female?0xFF514D70:palette.skinShade);
         drawJoint(canvas,p.farKnee,11.5f,palette.female?0xFF514D70:palette.skinShade);
         drawLimb(canvas,p.farShoulder,p.farElbow,body.upperArmWidth*.74f,body.upperArmWidth*.62f,palette.skinShade);
         drawLimb(canvas,p.farElbow,p.farWrist,body.forearmWidth,body.forearmWidth*.65f,palette.skinShade);
@@ -56,10 +54,10 @@ public final class AvatarRenderer {
 
         // Front leg: continuous rounded leg silhouettes under sportswear.
         drawShoe(canvas,p.ankle,false);
-        drawLimb(canvas,p.hip,p.knee,body.thighWidth,body.thighWidth*.73f,palette.palette.female?palette.legColor:palette.skin);
-        drawLimb(canvas,p.knee,p.ankle,body.calfWidth,body.calfWidth*.67f,palette.palette.female?palette.legColor:palette.skin);
-        drawJoint(canvas,p.knee,12.5f,palette.palette.female?palette.legColor:palette.skin);
-        if(!female) {
+        drawLimb(canvas,p.hip,p.knee,body.thighWidth,body.thighWidth*.73f,palette.female?palette.legColor:palette.skin);
+        drawLimb(canvas,p.knee,p.ankle,body.calfWidth,body.calfWidth*.67f,palette.female?palette.legColor:palette.skin);
+        drawJoint(canvas,p.knee,12.5f,palette.female?palette.legColor:palette.skin);
+        if(!palette.female) {
             AvatarKinematics.Point hemStart=interp(p.hip,p.knee,.47f);
             AvatarKinematics.Point hemEnd=interp(p.hip,p.knee,.50f);
             drawLimb(canvas,p.hip,hemStart,body.thighWidth*1.16f,body.thighWidth*.91f,palette.shorts);
@@ -73,7 +71,7 @@ public final class AvatarRenderer {
         drawTorso(canvas,p,top,hi);
         drawLimb(canvas,p.shoulder,p.neck,21f,13f,palette.skin);
         drawHead(canvas,p.head);
-        if(!female) {
+        if(!palette.female) {
             drawLimb(canvas,p.shoulder,interp(p.shoulder,p.elbow,.29f),
                     body.upperArmWidth,body.upperArmWidth*.81f,top);
             drawLimb(canvas,interp(p.shoulder,p.elbow,.23f),p.elbow,
@@ -109,7 +107,7 @@ public final class AvatarRenderer {
      * and across its normal. Shoulder width, chest and waist can vary without
      * changing the animated spine length or introducing a mesh dependency.
      */
-    private AvatarKinematics.Point torsoPoint(AvatarKinematics.Pose pose,
+    private AvatarKinematics.Point torsoPoint(AvatarPose pose,
                                                float along,float side) {
         float dx=pose.shoulder.x-pose.hip.x;
         float dy=pose.shoulder.y-pose.hip.y;
@@ -120,7 +118,7 @@ public final class AvatarRenderer {
                 pose.hip.y+dy*along+ny*side);
     }
 
-    private void drawTorso(Canvas canvas,AvatarKinematics.Pose p,
+    private void drawTorso(Canvas canvas,AvatarPose p,
                            int top,int highlight) {
         AvatarKinematics.Point a=torsoPoint(p,0f,-body.waistHalfWidth);
         AvatarKinematics.Point b=torsoPoint(p,.42f,-body.waistHalfWidth*.95f);
@@ -225,7 +223,7 @@ public final class AvatarRenderer {
         drawRoundedRect(c,x-12,y-12,x+39,y+11,9,
                 far?0xFFADB7D4:palette.shoe,1.5f);
         drawRoundedRect(c,x-8,y-10,x+30,y+4,8,
-                far?0xFF687696:(palette.palette.female?0xFF9C81D0:0xFF3A69B0),1f);
+                far?0xFF687696:(palette.female?0xFF9C81D0:0xFF3A69B0),1f);
         color(palette.shoeDark);
         paint.setStrokeWidth(2f);
         c.drawLine(x-7,y+8,x+36,y+8,paint);
