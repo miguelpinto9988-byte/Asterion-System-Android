@@ -50,6 +50,7 @@ public final class AvatarArtDetails {
         c.drawRoundRect(-9f,-11f,12f,11f,6f,6f,paint);
         line(c,-6f,-7f,6f,-7f,0x998CA1C0,1.1f);
         line(c,-6f,7f,6f,7f,0x998CA1C0,1.1f);
+        line(c,1f,-2f,6f,-2f,0x99D5E0EE,.9f);
         c.restore();
     }
 
@@ -102,6 +103,10 @@ public final class AvatarArtDetails {
         fill(0xFF1B2A43);
         c.drawRoundRect(5f,-21f,14f,21f,3f,3f,paint);
         line(c,9f,-16f,9f,17f,0xAA9DAFC7,1f);
+        line(c,-11f,-12f,0f,-16f,0x8899BCD8,1.25f);
+        line(c,-11f,12f,0f,16f,0x8899BCD8,1.25f);
+        fill(0xFFA7B6C8);
+        c.drawRoundRect(6f,-3f,11f,5f,1.5f,1.5f,paint);
         line(c,-9f,-13f,-5f,-7f,0xBB8EA6C4,1.25f);
         line(c,-9f,13f,-5f,7f,0xBB8EA6C4,1.25f);
         c.restore();
@@ -145,6 +150,15 @@ public final class AvatarArtDetails {
         path.close();c.drawPath(path,paint);
         fill(palette.top);
         c.drawCircle(length*.77f,-1f,2.5f,paint);
+        // Collar fabric, sleeve-bound seam and two restrained sport panels.
+        fill(0xCC123666);
+        c.drawArc(length-17f,-12f,length+4f,12f,5f,170f,false,paint);
+        line(c,length*.12f,-body.waistHalfWidth*.54f,
+                length*.23f,-body.waistHalfWidth*.64f,
+                0x9099C9F2,1.1f);
+        line(c,length*.22f,body.waistHalfWidth*.55f,
+                length*.29f,body.waistHalfWidth*.61f,
+                0x9074B9EC,.8f);
         c.restore();
     }
 
@@ -165,6 +179,7 @@ public final class AvatarArtDetails {
         fill(0xFF28598D);
         c.drawRoundRect(len*.85f,-7f,len*.93f,7f,1f,1f,paint);
         line(c,len*.88f,-5f,len*.88f,5f,0xFF83BDE8,1.1f);
+        line(c,len*.89f,-5f,len*.89f,5f,0xFFB6DDF7,.75f);
         c.restore();
     }
 
@@ -191,11 +206,28 @@ public final class AvatarArtDetails {
             float x=-1f+7f*i;
             line(c,x,-5f,x+5f,-2f,0xFFF3F8FF,1.35f);
         }
+        // Forefoot overlay, heel counter, lace eyelets and outsole layering.
+        fill(0xFFD7E5F1);
+        path.rewind();
+        path.moveTo(27f,0f);
+        path.quadTo(40f,1f,41f,7f);
+        path.quadTo(33f,7f,27f,5f);
+        path.close();c.drawPath(path,paint);
+        fill(0xFF7796B4);
+        path.rewind();path.moveTo(-12f,1f);
+        path.lineTo(-9f,-10f);path.lineTo(-3f,-11f);
+        path.lineTo(-4f,5f);path.close();c.drawPath(path,paint);
+        fill(0xFFE6F5FF);
+        for(int i=0;i<3;i++){
+            c.drawCircle(0f+i*6f,-5f+i*.7f,1f,paint);
+        }
+        line(c,13f,-7f,24f,0f,0xFFB7D3EA,.9f);
         fill(0xFFA6B8D0);
         c.drawRoundRect(30f,1f,40f,6f,2f,2f,paint);
         fill(palette.shoeDark);
         c.drawRoundRect(-13f,6f,42f,14f,4f,4f,paint);
         line(c,-9f,10f,36f,10f,0xFFECF4FF,2f);
+        for(int i=0;i<4;i++)line(c,1f+i*9f,12f,5f+i*9f,12f,0xAA91A4BC,.75f);
         c.restore();
     }
 
@@ -213,7 +245,11 @@ public final class AvatarArtDetails {
         path.quadTo(8f,27f,-3f,22f);
         path.cubicTo(-19f,19f,-22f,4f,-16f,-20f);
         path.close();fill(palette.skin);c.drawPath(path,paint);
+        // Ear inset, jaw contour and gentle cheek volume.
+        fill(palette.skinShade);c.drawOval(-19.5f,-2f,-14f,9f,paint);
+        fill(palette.skin);c.drawOval(-19f,-1.5f,-16f,7f,paint);
         fill(0x44FFD4AE);c.drawOval(-2f,4f,14f,14f,paint);
+        line(c,-12f,10f,-2f,20f,0x44BC785A,1f);
         path.rewind();path.moveTo(-19f,-8f);
         path.cubicTo(-23f,-24f,-10f,-34f,4f,-30f);
         path.cubicTo(22f,-33f,27f,-21f,20f,-8f);
@@ -221,6 +257,7 @@ public final class AvatarArtDetails {
         path.quadTo(-3f,-8f,-12f,-11f);
         path.close();fill(palette.hair);c.drawPath(path,paint);
         line(c,-10f,-21f,4f,-25f,0x886A5148,2f);
+        line(c,1f,-27f,13f,-23f,0x663F3637,1.8f);
         if(palette.female){
             fill(palette.hair);
             path.rewind();path.moveTo(-16f,-18f);
