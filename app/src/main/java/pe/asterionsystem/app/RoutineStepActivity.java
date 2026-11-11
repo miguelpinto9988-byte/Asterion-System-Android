@@ -30,6 +30,7 @@ import pe.asterionsystem.app.data.AssetExerciseCatalogRepository;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
+import pe.asterionsystem.core.engine.missions.RoutineGenerator;
 import pe.asterionsystem.core.engine.missions.SessionInterruptionPolicy;
 
 /**
@@ -44,6 +45,9 @@ public final class RoutineStepActivity extends ComponentActivity {
     private List<ExerciseVariant> exercises=Collections.emptyList();
     private final Map<String,Integer> categoriesById=new HashMap<>();
     private String kind;
+    private int requestedMinutes;
+    private int requestedVariation;
+    private String requestedLevel,requestedOfferId;
     private LocalDate planDate;
     private int category;
     private String sequence;
@@ -84,13 +88,17 @@ public final class RoutineStepActivity extends ComponentActivity {
         restSeconds=parseRest(savedProfile.optString("rest_seconds","60"));
         kind=getIntent().getStringExtra("kind");
         category=getIntent().getIntExtra("category",-1);
+        requestedMinutes=getIntent().getIntExtra("minutes",-1);
+        requestedVariation=getIntent().getIntExtra("variation",-1);
+        requestedLevel=getIntent().getStringExtra("level");
+        requestedOfferId=getIntent().getStringExtra("offer_id");
         try {
             planDate=LocalDate.parse(getIntent().getStringExtra("date"));
         }catch(RuntimeException badDate) {
             block("No se pudo comprobar la fecha de esta misión.");
             return;
         }
-        if(!"daily".equals(kind) && !"monarch".equals(kind)) {
+        if(!"daily".equals(kind) && !"monarch".equals(kind) && !"custom".equals(kind)) {
             block("Tipo de misión desconocido.");
             return;
         }
@@ -155,6 +163,36 @@ public final class RoutineStepActivity extends ComponentActivity {
                         runOnUiThread(()->block("La misión diaria cambió o quedó en pausa."));
                         return;
                     }
+                } else if("custom".equals(kind)) {
+                    MissionPlanner.Profile configured=MissionProfileAdapter.fromRegistration(
+                            ProfileStore.getRegistration(this));
+                    if(category<0||category>4||!planDate.equals(LocalDate.now())
+                            ||SessionSafetyStore.categoryPaused(this,category)) {
+                        runOnUiThread(()->block("La rutina cambió o está en pausa."));
+                        return;
+                    }
+                    RoutineGenerator.Request request=new RoutineGenerator.Request(
+                            ExerciseCategoryMapper.weeklyCode(category),requestedMinutes,
+                            requestedLevel,planDate,requestedVariation);
+                    boolean valid=false;
+                    for(RoutineGenerator.Offer choice:new RoutineGenerator(catalog)
+                            .generate(request,configured)) {
+                        if(!choice.id().equals(requestedOfferId)
+                                ||choice.exercises().size()!=validated.size())continue;
+                        valid=true;
+                        for(int i=0;i<validated.size();i++) {
+                            if(!choice.exercises().get(i).id().equals(validated.get(i).id())) {
+                                valid=false;
+                                break;
+                            }
+                        }
+                        if(valid)break;
+                    }
+                    if(!valid) {
+                        runOnUiThread(()->block(
+                                "La rutina dejó de ser compatible. Vuelve a elegirla."));
+                        return;
+                    }
                 } else {
                     MonarchSessionStore.Snapshot snapshot=MonarchSessionStore.current(
                             this,LocalDate.now(),new MissionPlanner(catalog),
@@ -215,7 +253,8 @@ public final class RoutineStepActivity extends ComponentActivity {
     private void render() {
         if(exercises.isEmpty())return;
         if(SessionSafetyStore.globallyPaused(this)
-                ||("daily".equals(kind) && SessionSafetyStore.categoryPaused(this,category))) {
+                ||(("daily".equals(kind)||"custom".equals(kind))
+                    && SessionSafetyStore.categoryPaused(this,category))) {
             block("Sesión detenida por seguridad. Vuelve al módulo de Misiones.");
             return;
         }
@@ -237,7 +276,8 @@ public final class RoutineStepActivity extends ComponentActivity {
         }
         boolean byRounds="rondas".equals(sequence);
         title.setText("RUTINA PASO A PASO");
-        subtitle.setText(("daily".equals(kind)?"Misión diaria":"Misión Monarca")
+        subtitle.setText(("daily".equals(kind)?"Misión diaria":
+                "custom".equals(kind)?"Rutina elegida":"Misión Monarca")
                 +" · Modo: "+(byRounds?"Rondas":"Series")
                 +" · Descanso opcional: "+restSeconds+" segundos");
         nextButton.setEnabled(true);
@@ -255,7 +295,18 @@ public final class RoutineStepActivity extends ComponentActivity {
             nextButton.setOnClickListener(v->{
                 RoutineSessionStore.clear(this,token);
                 if("daily".equals(kind))askEffortAfterDailyMission();
-                else finish();
+                else if("custom".equals(kind)) {
+                    int gained=RoutineExperienceStore.awardOnce(this,planDate);
+                    new AlertDialog.Builder(this)
+                            .setTitle("Rutina registrada")
+                            .setMessage("Has marcado todos los pasos de esta rutina. "
+                                    +(gained>0?"+10 XP de participación voluntaria. "
+                                            :"La experiencia de hoy ya quedó registrada. ")
+                                    +"Puedes descansar; no necesitas repetir la sesión "
+                                    +"ni aumentar la dificultad.")
+                            .setPositiveButton("Cerrar",(d,w)->finish())
+                            .setCancelable(false).show();
+                } else finish();
             });
             return;
         }
@@ -278,9 +329,10 @@ public final class RoutineStepActivity extends ComponentActivity {
         nextButton.setOnClickListener(v->{
             if("daily".equals(kind)) {
                 MissionTrackingStore.setDailyCompleted(this,planDate,current.id(),true);
-            } else {
+            } else if("monarch".equals(kind)) {
                 MissionTrackingStore.markMonarch(this,planDate,current.id());
             }
+            // A custom session is independent of daily and Monarca tracking.
             index++;
             extraSeries=0;
             save();
@@ -386,7 +438,7 @@ public final class RoutineStepActivity extends ComponentActivity {
     }
 
     private int effectiveCategory() {
-        if("daily".equals(kind))return category;
+        if("daily".equals(kind)||"custom".equals(kind))return category;
         if(exercises.isEmpty())return -1;
         int position=Math.min(index,exercises.size()-1);
         return categoriesById.getOrDefault(exercises.get(position).id(),-1);
