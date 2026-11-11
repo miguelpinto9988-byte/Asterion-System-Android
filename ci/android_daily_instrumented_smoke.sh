@@ -47,3 +47,20 @@ grep -q 'OK (1 test)' "$OUT/monarch-active-review.txt"
 
 echo "PASS: seeded Monarca previews, explicit consent and safe pause on profile changes."
 
+CUSTOM_TEST="pe.asterionsystem.app.RoutineExperiencePersistenceTest"
+echo "Android instrumentation 5/6: seed self-reported custom routine XP and steps"
+adb shell am instrument -w -e class "$CUSTOM_TEST#seedCompletedRoutineOnce" \
+  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
+  | tee "$OUT/custom-routine-seed.txt"
+grep -q 'OK (1 test)' "$OUT/custom-routine-seed.txt"
+adb shell am force-stop "$PACKAGE"
+adb shell am force-stop "$TEST_PACKAGE" || true
+
+echo "Android instrumentation 6/6: verify XP cannot be duplicated across restarts"
+adb shell am instrument -w -e class "$CUSTOM_TEST#verifyAfterProcessRestart" \
+  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
+  | tee "$OUT/custom-routine-restart.txt"
+grep -q 'OK (1 test)' "$OUT/custom-routine-restart.txt"
+echo "PASS: custom routine persistence and once-per-day XP."
+
+
