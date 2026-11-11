@@ -122,7 +122,32 @@ public final class ExerciseMuscleFocus {
             Map.entry("pasos_aerobicos_direcciones",new Focus("cardiorrespiratorio","coordinación")),
             Map.entry("ritmos_brazos_pasos",new Focus("cardiorrespiratorio","coordinación")),
             Map.entry("cardio_desde_silla",new Focus("cardiorrespiratorio","piernas")),
-            Map.entry("juegos_pasos_recreativos",new Focus("cardiorrespiratorio","coordinación"))
+            Map.entry("juegos_pasos_recreativos",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("deporte_empujes_superiores",new Focus("pecho","hombros")),
+            Map.entry("deporte_tracciones_superiores",new Focus("espalda","brazos")),
+            Map.entry("deporte_estabilidad_hombros",new Focus("hombros","escápulas")),
+            Map.entry("deporte_gestos_implementos",new Focus("hombros","coordinación")),
+            Map.entry("deporte_control_brazos_prono",new Focus("espalda alta","escápulas")),
+            Map.entry("deporte_centro_estabilidad",new Focus("tronco","estabilidad")),
+            Map.entry("deporte_centro_rotacion",new Focus("tronco","rotación")),
+            Map.entry("deporte_centro_respiracion",new Focus("respiración","tronco")),
+            Map.entry("deporte_centro_acuatico",new Focus("tronco","coordinación")),
+            Map.entry("deporte_centro_transiciones",new Focus("tronco","cadera")),
+            Map.entry("deporte_piernas_potencia",new Focus("piernas","coordinación")),
+            Map.entry("deporte_pies_agilidad",new Focus("piernas","agilidad")),
+            Map.entry("deporte_fuerza_piernas",new Focus("muslos","cadera")),
+            Map.entry("deporte_piernas_pilates",new Focus("cadera","muslos")),
+            Map.entry("deporte_piernas_danza",new Focus("piernas","equilibrio")),
+            Map.entry("deporte_deslizamientos",new Focus("piernas","equilibrio")),
+            Map.entry("deporte_mov_yoga",new Focus("movilidad","columna")),
+            Map.entry("deporte_mov_articular",new Focus("movilidad","articulaciones")),
+            Map.entry("deporte_mov_equilibrio",new Focus("equilibrio","movilidad")),
+            Map.entry("deporte_mov_tecnica",new Focus("movilidad","coordinación")),
+            Map.entry("deporte_cardio_carrera",new Focus("cardiorrespiratorio","piernas")),
+            Map.entry("deporte_cardio_ritmo",new Focus("cardiorrespiratorio","ritmo")),
+            Map.entry("deporte_cardio_agua",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("deporte_cardio_adaptado",new Focus("cardiorrespiratorio","brazos")),
+            Map.entry("deporte_cardio_funcional",new Focus("cardiorrespiratorio","coordinación"))
     );
 
     private ExerciseMuscleFocus() { }
