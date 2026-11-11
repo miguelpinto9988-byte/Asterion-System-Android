@@ -18,7 +18,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.exercises.ExerciseMuscleFocus;
 import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
 
-/** Exercises full 917-variant Android asset taxonomy with a real intensity index. */
+/** Exercises full 1157-variant Android asset taxonomy with a real intensity index. */
 public class DailyMissionStabilityTest {
     private ExerciseCatalog catalog;
     private MissionPlanner planner;
@@ -32,7 +32,7 @@ public class DailyMissionStabilityTest {
             InputStreamReader v=reader(prefix+"variants.tsv");
             InputStreamReader i=reader(prefix+"intensity.tsv")) {
             catalog=ExerciseCatalogLoader.load(f,t,v,i);
-            assertEquals(917,catalog.variants().size());
+            assertEquals(1157,catalog.variants().size());
             planner=new MissionPlanner(catalog);
         }
     }
@@ -141,7 +141,7 @@ public class DailyMissionStabilityTest {
         }
     }
     @Test public void everyCatalogFamilyHasExplicitFunctionalFocus() {
-        assertEquals(100,ExerciseMuscleFocus.classifiedFamilies());
+        assertEquals(130,ExerciseMuscleFocus.classifiedFamilies());
         catalog.families().forEach(family->{
             assertTrue(family.id(),ExerciseMuscleFocus.knowsFamily(family.id()));
             assertFalse(ExerciseMuscleFocus.forFamily(family.id()).primary().isBlank());
