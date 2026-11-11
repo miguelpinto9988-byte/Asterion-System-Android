@@ -1,5 +1,7 @@
 # Catálogo unificado: categoría → familia → tipo → variante
 
+> **Nota de vigencia (11 de noviembre de 2026):** este documento conserva el registro de la primera ampliación (100 familias, 254 tipos, 917 variantes). La ampliación multidisciplinaria posterior llega a **125 familias, 354 tipos y 1.017 variantes**, usa exclusivamente `tren_superior`, `tren_central`, `tren_inferior`, `movilidad` y `cardio` como categorías principales y añade 56 deportes como etiquetas. Véase [catálogo multideporte de cinco categorías](catalogo-multideporte-cinco-categorias.md).
+
 Estado: propuesta independiente sobre la rama principal de Asterion System Android. Inventario añadido **sin sustituir** IDs existentes, SQLite, iconos, pantallas de carga ni el modo de consentimiento Monarca.
 
 ## Problema revisado
