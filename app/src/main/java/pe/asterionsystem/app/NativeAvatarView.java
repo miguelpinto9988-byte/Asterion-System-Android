@@ -47,18 +47,20 @@ public final class NativeAvatarView extends View {
 
     public NativeAvatarView(Context context) {
         super(context);
-        setContentDescription("Avatar 2D articulado realizando una sentadilla ilustrada");
+        updateAccessibilityDescription();
         setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
     }
 
     public void setFemale(boolean value) {
         female=value;
+        updateAccessibilityDescription();
         invalidate();
     }
     public boolean isFemale(){return female;}
     public void setDark(boolean value){dark=value;invalidate();}
     public void setFrameListener(FrameListener value){listener=value;}
     public void setSpeed(float value) {
+        if(!Float.isFinite(value))return;
         speed=Math.max(.5f,Math.min(1.5f,value));
         invalidate();
     }
@@ -67,15 +69,22 @@ public final class NativeAvatarView extends View {
     public boolean isPlaying(){return playing;}
     public void setPlaying(boolean value){
         playing=value;lastFrameMs=SystemClock.uptimeMillis();
+        updateAccessibilityDescription();
         invalidate();
     }
     public void reset(){
         phase=0f;lastFrameMs=SystemClock.uptimeMillis();invalidate();
     }
     public void setPhase(float value){
-        phase=Math.max(0f,Math.min(1f,value));
+        phase=Float.isNaN(value)?0f:Math.max(0f,Math.min(1f,value));
         lastFrameMs=SystemClock.uptimeMillis();
         invalidate();
+    }
+
+    private void updateAccessibilityDescription() {
+        setContentDescription((female?"Avatar morado":"Avatar azul")
+                +" realizando una sentadilla ilustrativa. "
+                +(playing?"Animación en reproducción.":"Animación pausada."));
     }
 
     @Override protected void onAttachedToWindow() {
