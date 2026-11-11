@@ -19,6 +19,7 @@ on:
       - feature/avatar-v7-camaras-proporciones-cuello-20261111
       - feature/avatar-v8-recorridos-cardio-20261111
       - feature/avatar-v9-identidad-visual-multivista-20261111
+      - feature/avatar-v10-orientacion-superficies-20261111
   pull_request:
     branches:
       - main
@@ -97,6 +98,7 @@ jobs:
           python3 tests/avatar_v7_cameras_contract.py
           python3 tests/avatar_v8_motion_contract.py
           python3 tests/avatar_v9_visual_identity_contract.py
+          python3 tests/avatar_v10_orientation_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py

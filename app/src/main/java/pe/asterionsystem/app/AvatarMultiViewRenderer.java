@@ -134,6 +134,7 @@ public final class AvatarMultiViewRenderer {
      * A deliberate short neck is visible above the close jersey collar. */
     private void drawFront(Canvas c,AvatarMultiViewKinematics.Pose p,
                            boolean squat) {
+        AvatarOrientationRules.requireUprightFrontPose(p);
         c.save();
         // Frontal silhouette has the same on-screen head/leg presence as
         // the side camera; keep footwear within the floor framing.
@@ -276,6 +277,7 @@ public final class AvatarMultiViewRenderer {
      * the chest are partly occluded; enlarged inset documents the silhouettes.
      * A side-height card shows motion that overhead cannot show directly. */
     private void drawDiamondTop(Canvas c,AvatarMultiViewKinematics.Pose p) {
+        AvatarOrientationRules.requireProneTopPose(p);
         rr(c,22,47,276,426,17,dark?0xFF1B293C:0xFFF0F5FA);
         color(dark?0xFF22334A:0xFFDCE7F0);
         c.drawOval(117,104,253,406,paint);
@@ -289,7 +291,7 @@ public final class AvatarMultiViewRenderer {
             tapered(c,k,a,bodySpec.calfWidth*.92f,
                     bodySpec.calfWidth*.64f,palette.legColor);
             details.drawCameraJeans(c,h,k,a,direction<0);
-            details.drawProjectedSneaker(c,a,palette,true);
+            details.drawProneTopSneaker(c,a,k,palette);
         }
         // Hands and forearms are behind the back from this camera.
         drawTopArm(c,p.leftShoulder,p.leftElbow,p.leftWrist);
