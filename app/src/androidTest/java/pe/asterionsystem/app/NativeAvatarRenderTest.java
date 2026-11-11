@@ -107,6 +107,38 @@ public final class NativeAvatarRenderTest {
         });
     }
 
+    @Test public void frontAndTopCameraRenderWithHandInsetAndAccessibility(){
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            for(AvatarMultiViewKinematics.ViewMode camera:
+                    new AvatarMultiViewKinematics.ViewMode[]{
+                        AvatarMultiViewKinematics.ViewMode.FRONT,
+                        AvatarMultiViewKinematics.ViewMode.TOP}) {
+                view.setViewMode(camera);
+                assertEquals(camera,view.getViewMode());
+                for(float phase:new float[]{0f,.21f,.49f,.70f,.99f}) {
+                    view.setPhase(phase);
+                    Bitmap bitmap=Bitmap.createBitmap(
+                            400,480,Bitmap.Config.ARGB_8888);
+                    view.draw(new Canvas(bitmap));
+                    assertNotEquals(0,bitmap.getPixel(200,200));
+                    if(camera==AvatarMultiViewKinematics.ViewMode.TOP) {
+                        assertNotEquals(0,bitmap.getPixel(270,185));
+                        assertTrue(view.getContentDescription().toString()
+                                .contains("detalle de manos"));
+                    } else {
+                        assertTrue(view.getContentDescription().toString()
+                                .contains("elevación frontal"));
+                    }
+                    bitmap.recycle();
+                }
+            }
+        });
+    }
+
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
