@@ -45,12 +45,16 @@ public final class AvatarOrientationRules {
 
     public static final class BodyFrame {
         public final Posture posture;
-        public final Vector3 headAxis,faceNormal,soleNormal,toeAxis;
+        public final Vector3 headAxis,faceNormal,torsoAnteriorNormal;
+        public final Vector3 palmNormal,soleNormal,toeAxis;
         BodyFrame(Posture posture,Vector3 headAxis,Vector3 faceNormal,
+                  Vector3 torsoAnteriorNormal,Vector3 palmNormal,
                   Vector3 soleNormal,Vector3 toeAxis){
             this.posture=posture;
             this.headAxis=headAxis.normalized();
             this.faceNormal=faceNormal.normalized();
+            this.torsoAnteriorNormal=torsoAnteriorNormal.normalized();
+            this.palmNormal=palmNormal.normalized();
             this.soleNormal=soleNormal.normalized();
             this.toeAxis=toeAxis.normalized();
             if(Math.abs(this.headAxis.dot(this.faceNormal))>.001f)
@@ -65,10 +69,12 @@ public final class AvatarOrientationRules {
     private static final Vector3 DOWN=new Vector3(0f,-1f,0f);
     private static final BodyFrame STANDING_FRAME=new BodyFrame(
             Posture.STANDING,new Vector3(0f,1f,0f),
-            new Vector3(0f,0f,-1f),DOWN,new Vector3(0f,0f,-1f));
+            new Vector3(0f,0f,-1f),
+            new Vector3(0f,0f,-1f),new Vector3(0f,0f,-1f),
+            DOWN,new Vector3(0f,0f,-1f));
     private static final BodyFrame PRONE_FRAME=new BodyFrame(
             Posture.PRONE_GROUND_FACING,new Vector3(0f,0f,-1f),
-            DOWN,DOWN,new Vector3(0f,0f,1f));
+            DOWN,DOWN,DOWN,DOWN,new Vector3(0f,0f,1f));
 
     public static BodyFrame forPosture(Posture posture) {
         if(posture==null)throw new IllegalArgumentException("Posture required");
@@ -155,6 +161,9 @@ public final class AvatarOrientationRules {
         if(p==null)throw new IllegalArgumentException("Pose required");
         BodyFrame frame=forPosture(Posture.PRONE_GROUND_FACING);
         if(frame.faceNormal.dot(DOWN)<.999f||
+                frame.torsoAnteriorNormal.dot(DOWN)<.999f||
+                frame.palmNormal.dot(DOWN)<.999f||
+                visibleSurface(frame.palmNormal,Camera.TOP)||
                 visibleShoeSurface(Camera.TOP,frame)!=ShoeSurface.UPPER||
                 topToeSign(frame)<0f||
                 !(p.head.y<p.neck.y&&p.neck.y<p.leftHip.y&&

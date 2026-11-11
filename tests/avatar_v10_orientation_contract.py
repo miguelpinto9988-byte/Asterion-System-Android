@@ -9,7 +9,7 @@ a=read('AvatarArtDetails.java')
 m=read('AvatarMultiViewRenderer.java')
 l=read('AvatarRenderer.java')
 for v in ('PRONE_GROUND_FACING','STANDING','faceNormal','soleNormal',
-          'toeAxis','headAxis','visibleSurface(','visibleShoeSurface(',
+          'toeAxis','headAxis','palmNormal','torsoAnteriorNormal','visibleSurface(','visibleShoeSurface(',
           'ShoeSurface.UPPER','topToeSign(','requireProneTopPose(',
           'sideFacingDegrees(','Float.isFinite','project('):
     assert v in o,v

@@ -32,6 +32,19 @@ public final class AvatarOrientationRulesTest {
                 standing.soleNormal,AvatarOrientationRules.Camera.TOP));
     }
 
+    @Test public void anteriorTorsoAndPalmNormalsMatchTheContactPosture(){
+        AvatarOrientationRules.BodyFrame prone=AvatarOrientationRules.forPosture(
+                AvatarOrientationRules.Posture.PRONE_GROUND_FACING);
+        assertEquals(-1f,prone.torsoAnteriorNormal.y,.001f);
+        assertEquals(-1f,prone.palmNormal.y,.001f);
+        assertFalse(AvatarOrientationRules.visibleSurface(
+                prone.palmNormal,AvatarOrientationRules.Camera.TOP));
+        AvatarOrientationRules.BodyFrame neutral=AvatarOrientationRules.forPosture(
+                AvatarOrientationRules.Posture.STANDING);
+        assertEquals(-1f,neutral.torsoAnteriorNormal.z,.001f);
+        assertEquals(-1f,neutral.palmNormal.z,.001f);
+    }
+
     @Test public void orthographicProjectionsAreDifferentForEachCamera(){
         AvatarOrientationRules.Vector3 pt=new AvatarOrientationRules.Vector3(
                 3f,5f,9f);
