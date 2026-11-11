@@ -71,6 +71,22 @@ public final class AvatarKinematicsTest {
         assertThrows(IllegalArgumentException.class,
                 ()->AvatarKinematics.elbowBelow(a,b,Float.NaN,20f));
     }
+    @Test public void customBodySpecPreservesBoneLengthsAndImmutablePose() {
+        AvatarBodySpec spec=new AvatarBodySpec(
+                96f,98f,120f,60f,64f,22f,31f,23f,
+                34f,25f,27f,18f,1f);
+        AvatarPose atRest=AvatarKinematics.squat(0f,spec);
+        for(int i=0;i<=100;i++) {
+            AvatarPose p=AvatarKinematics.squat(i/100f,spec);
+            assertEquals(spec.upperLeg,p.hip.distance(p.knee),EPS);
+            assertEquals(spec.lowerLeg,p.knee.distance(p.ankle),EPS);
+            assertEquals(spec.torso,p.hip.distance(p.shoulder),EPS);
+            assertEquals(spec.upperArm,p.shoulder.distance(p.elbow),EPS);
+            assertEquals(spec.forearm,p.elbow.distance(p.wrist),EPS);
+        }
+        assertEquals(364f,atRest.ankle.y,EPS);
+    }
+
     @Test public void invalidPoseDepthCannotProduceNan() {
         AvatarKinematics.Pose one=AvatarKinematics.squat(Float.NaN);
         assertTrue(Float.isFinite(one.knee.x)&&Float.isFinite(one.knee.y));
