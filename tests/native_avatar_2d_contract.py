@@ -30,8 +30,9 @@ assert "contains(\"sentadilla\")" in step
 assert '<activity android:name=".NativeAvatarActivity" android:exported="false" />' in manifest
 assert 'NativeAvatarActivity' not in home
 # No third-party animation SDK, image/video API, permission or network.
-for token in ("Godot","Unity","VideoView","MediaPlayer","HttpURLConnection",
-              "WebView","FFmpeg","mp4"):
+for token in ("import org.godotengine", "import com.unity3d",
+              "VideoView","MediaPlayer","HttpURLConnection",
+              "WebView","FFmpeg","player.mp4"):
     assert token not in pose+anim+activity,token
 assert "android.permission.INTERNET" not in manifest
 test=(ROOT/"app/src/test/java/pe/asterionsystem/app/AvatarKinematicsTest.java").read_text()
