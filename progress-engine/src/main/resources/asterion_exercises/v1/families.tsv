@@ -1,13 +1,13 @@
 family_id	name	category	pattern
-sentadillas	Sentadillas	piernas	sentadilla
-zancadas	Zancadas y desplantes	piernas	zancada
-bisagra_cadera	Bisagra de cadera	piernas	bisagra
-puentes_cadera	Puentes y extensión de cadera	piernas	extension_cadera
-subida_escalon	Subidas y descensos de escalón	piernas	paso_vertical
-pantorrillas	Pantorrillas y tobillo	piernas	flexion_tobillo
-flexion_rodilla	Flexión de rodilla	piernas	flexion_rodilla
-control_cadera	Abducción y aducción de cadera	piernas	control_cadera
-extension_rodilla	Extensión de rodilla	piernas	extension_rodilla
+sentadillas	Sentadillas	tren_inferior	sentadilla
+zancadas	Zancadas y desplantes	tren_inferior	zancada
+bisagra_cadera	Bisagra de cadera	tren_inferior	bisagra
+puentes_cadera	Puentes y extensión de cadera	tren_inferior	extension_cadera
+subida_escalon	Subidas y descensos de escalón	tren_inferior	paso_vertical
+pantorrillas	Pantorrillas y tobillo	tren_inferior	flexion_tobillo
+flexion_rodilla	Flexión de rodilla	tren_inferior	flexion_rodilla
+control_cadera	Abducción y aducción de cadera	tren_inferior	control_cadera
+extension_rodilla	Extensión de rodilla	tren_inferior	extension_rodilla
 empuje_horizontal	Empuje horizontal	tren_superior	empuje_horizontal
 empuje_vertical	Empuje vertical	tren_superior	empuje_vertical
 aperturas_pecho	Aperturas de pecho	tren_superior	aduccion_hombro
@@ -18,20 +18,20 @@ flexion_codo	Flexión de codo	tren_superior	flexion_codo
 elevaciones_hombro	Elevaciones de hombro	tren_superior	elevacion_hombro
 escapulas	Control escapular	tren_superior	control_escapular
 rotacion_hombro	Rotación del hombro	tren_superior	rotacion_hombro
-extension_espalda	Extensión y estabilidad posterior	tronco	extension_tronco
-core_antextension	Estabilidad anterior del tronco	tronco	anti_extension
-core_anti_rotacion	Control antirrotación	tronco	anti_rotacion
-core_flexion	Flexión de tronco	tronco	flexion_tronco
-core_rotacion	Rotación de tronco	tronco	rotacion_tronco
-equilibrio	Equilibrio y control postural	coordinacion	equilibrio
-transportes	Transportes de cargas	integrado	transporte
+extension_espalda	Extensión y estabilidad posterior	tren_central	extension_tronco
+core_antextension	Estabilidad anterior del tronco	tren_central	anti_extension
+core_anti_rotacion	Control antirrotación	tren_central	anti_rotacion
+core_flexion	Flexión de tronco	tren_central	flexion_tronco
+core_rotacion	Rotación de tronco	tren_central	rotacion_tronco
+equilibrio	Equilibrio y control postural	movilidad	equilibrio
+transportes	Transportes de cargas	tren_central	transporte
 caminata	Caminatas y marcha	cardio	marcha
 carrera	Carrera y trote recreativo	cardio	carrera
 bicicleta	Ciclismo	cardio	ciclismo
 remo_cardio	Remo cardiovascular	cardio	remo_cardio
 eliptica	Elíptica cardiovascular	cardio	eliptica
 escalon_aerobico	Escalones aeróbicos	cardio	escalon
-coordinacion	Coordinación y desplazamientos	coordinacion	coordinacion
+coordinacion	Coordinación y desplazamientos	movilidad	coordinacion
 movilidad_cadera	Movilidad de cadera	movilidad	movilidad_cadera
 movilidad_columna	Movilidad de columna	movilidad	movilidad_columna
 movilidad_hombro	Movilidad de hombro	movilidad	movilidad_hombro
@@ -40,10 +40,10 @@ flexibilidad_piernas	Flexibilidad de piernas	movilidad	flexibilidad
 respiracion_postura	Respiración y postura	movilidad	control_postural
 manos_agarre	Agarre y control de manos	tren_superior	agarre
 control_muneca_fuerza	Control activo de muñeca	tren_superior	control_muneca
-estabilidad_cuadrupedia	Estabilidad en cuadrupedia	tronco	estabilidad_cuadrupedia
-postura_tronco_sentado	Control del tronco sentado	tronco	estabilidad_sedente
-motricidad_pies	Control de los dedos del pie	piernas	motricidad_pie
-extension_cadera_pie	Extensión de cadera fuera de puente	piernas	extension_cadera_pie
+estabilidad_cuadrupedia	Estabilidad en cuadrupedia	tren_central	estabilidad_cuadrupedia
+postura_tronco_sentado	Control del tronco sentado	tren_central	estabilidad_sedente
+motricidad_pies	Control de los dedos del pie	tren_inferior	motricidad_pie
+extension_cadera_pie	Extensión de cadera fuera de puente	tren_inferior	extension_cadera_pie
 movilidad_cervical	Movilidad suave de cuello	movilidad	movilidad_cuello
 movilidad_dedos_manos	Movilidad de dedos y pulgar	movilidad	movilidad_dedos
 pasos_aerobicos_suaves	Pasos aeróbicos de bajo impacto	cardio	pasos_aerobicos
@@ -53,16 +53,16 @@ press_alternativos	Press horizontal con apoyos y ángulos	tren_superior	press_ho
 remadas_soportadas	Remos con soporte y resistencia	tren_superior	remo_soportado
 antebrazo_rotacional	Pronación y supinación del antebrazo	tren_superior	rotacion_antebrazo
 coordinacion_brazos_pelota	Coordinación de brazos con pelota	tren_superior	coordinacion_brazos
-pilates_suelo_inicial	Pilates de control en suelo	tronco	control_suelo
-control_tronco_pie	Estabilidad de tronco de pie	tronco	estabilidad_bipeda
-rotacion_diagonal_tronco	Patrones diagonales del tronco	tronco	alcance_diagonal
-yoga_estabilidad_general	Posturas suaves de yoga y control postural	tronco	yoga_estabilidad
-apoyo_lateral_tronco	Apoyos laterales y control del costado	tronco	estabilidad_lateral
-isometrias_piernas	Isometrías de piernas y apoyos estables	piernas	isometria_inferior
-abductores_acostado	Control lateral de cadera acostado	piernas	cadera_lateral
-deslizamientos_rodilla	Movimiento de rodilla mediante deslizamiento	piernas	deslizamiento_rodilla
-pasos_direcciones	Pasos funcionales en distintas direcciones	piernas	desplazamientos_cortos
-saltos_recreativos	Saltos recreativos catalogados	piernas	salto_recreativo
+pilates_suelo_inicial	Pilates de control en suelo	tren_central	control_suelo
+control_tronco_pie	Estabilidad de tronco de pie	tren_central	estabilidad_bipeda
+rotacion_diagonal_tronco	Patrones diagonales del tronco	tren_central	alcance_diagonal
+yoga_estabilidad_general	Posturas suaves de yoga y control postural	tren_central	yoga_estabilidad
+apoyo_lateral_tronco	Apoyos laterales y control del costado	tren_central	estabilidad_lateral
+isometrias_piernas	Isometrías de piernas y apoyos estables	tren_inferior	isometria_inferior
+abductores_acostado	Control lateral de cadera acostado	tren_inferior	cadera_lateral
+deslizamientos_rodilla	Movimiento de rodilla mediante deslizamiento	tren_inferior	deslizamiento_rodilla
+pasos_direcciones	Pasos funcionales en distintas direcciones	tren_inferior	desplazamientos_cortos
+saltos_recreativos	Saltos recreativos catalogados	tren_inferior	salto_recreativo
 flexibilidad_antebrazos	Flexibilidad de manos y antebrazos	movilidad	flexibilidad_antebrazo
 movilidad_torax_pie	Movilidad torácica de pie	movilidad	movilidad_torax
 flexibilidad_cadera_suelo	Flexibilidad de cadera en el suelo	movilidad	estiramiento_cadera
@@ -79,16 +79,16 @@ alcances_pared_brazos	Alcances de brazos con pared	tren_superior	alcance_pared
 control_brazos_cruzados	Control de brazos cruzados	tren_superior	cruce_brazos
 apoyos_superiores_estables	Apoyos superiores estables	tren_superior	apoyo_superior
 destreza_manos_brazos	Destreza de manos y brazos	tren_superior	destreza_superior
-alineacion_tronco_suave	Alineación suave del tronco	tronco	alineacion_tronco
-alcances_tronco_asistidos	Alcances de tronco con apoyo	tronco	alcance_tronco
-coordinacion_tronco_pie	Coordinación del tronco al caminar en el sitio	tronco	coordinacion_tronco
-respiracion_movimiento_tronco	Respiración asociada a movimiento de tronco	tronco	respiracion_tronco
-control_pelvis_suelo	Control de pelvis en suelo	tronco	control_pelvis
-movilidad_rodilla_sentada	Control de rodilla sentado	piernas	control_rodilla
-pasos_cortos_funcionales	Pasos cortos funcionales	piernas	pasos_cortos
-tobillo_control_equilibrio	Control de tobillo y equilibrio	piernas	control_tobillo
-cadera_lateral_pie	Control lateral de cadera de pie	piernas	cadera_lateral_pie
-transiciones_silla_estable	Transiciones con silla estable	piernas	transicion_silla
+alineacion_tronco_suave	Alineación suave del tronco	tren_central	alineacion_tronco
+alcances_tronco_asistidos	Alcances de tronco con apoyo	tren_central	alcance_tronco
+coordinacion_tronco_pie	Coordinación del tronco al caminar en el sitio	tren_central	coordinacion_tronco
+respiracion_movimiento_tronco	Respiración asociada a movimiento de tronco	tren_central	respiracion_tronco
+control_pelvis_suelo	Control de pelvis en suelo	tren_central	control_pelvis
+movilidad_rodilla_sentada	Control de rodilla sentado	tren_inferior	control_rodilla
+pasos_cortos_funcionales	Pasos cortos funcionales	tren_inferior	pasos_cortos
+tobillo_control_equilibrio	Control de tobillo y equilibrio	tren_inferior	control_tobillo
+cadera_lateral_pie	Control lateral de cadera de pie	tren_inferior	cadera_lateral_pie
+transiciones_silla_estable	Transiciones con silla estable	tren_inferior	transicion_silla
 movilidad_hombros_sentada	Movilidad de hombros sentado	movilidad	movilidad_hombro_sentado
 movilidad_cadera_silla	Movilidad de cadera desde silla	movilidad	movilidad_cadera_silla
 movilidad_rodilla_suave	Movilidad funcional suave de rodilla	movilidad	movilidad_rodilla
