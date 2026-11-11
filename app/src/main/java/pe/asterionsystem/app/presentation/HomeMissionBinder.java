@@ -44,6 +44,12 @@ final class HomeMissionBinder {
                 .setOnClickListener(v->open(activity,"library"));
         screen.<Button>findViewById(R.id.open_legacy_progress)
                 .setOnClickListener(v->openHistoricalProgress.run());
+        screen.<Button>findViewById(R.id.open_routines)
+                .setOnClickListener(v->activity.startActivity(
+                        new Intent(activity,RoutinesActivity.class)));
+        screen.<Button>findViewById(R.id.open_calendar)
+                .setOnClickListener(v->activity.startActivity(
+                        new Intent(activity,CalendarActivity.class)));
         screen.<Button>findViewById(R.id.open_profile)
                 .setOnClickListener(v->new AlertDialog.Builder(activity)
                         .setTitle("Perfil del cazador")
