@@ -8,10 +8,12 @@ on:
       - main
       # Stacked feature PR is based on the catalog PR, not yet on main.
       - feature/rutinas-calendario-aleatoriedad-20261111
+      - feature/avatar-2d-nativo-android-20261111
   pull_request:
     branches:
       - main
       - feature/catalogo-taxonomia-categorias-v2-20261110
+      - feature/rutinas-calendario-aleatoriedad-20261111
   workflow_dispatch:
 
 permissions:
