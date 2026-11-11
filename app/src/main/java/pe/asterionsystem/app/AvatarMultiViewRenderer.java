@@ -35,11 +35,17 @@ public final class AvatarMultiViewRenderer {
         for(int y=65;y<420;y+=55)c.drawLine(35,y,365,y,paint);
         for(int x=55;x<360;x+=55)c.drawLine(x,45,x,413,paint);
         if(camera==AvatarMultiViewKinematics.ViewMode.FRONT
-                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT) {
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_JACKS
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW) {
             boolean squat=camera==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT;
-            drawFront(c,p,squat);
-            text(c,squat?"FRONTAL · SENTADILLA ABIERTA":
-                    "FRONTAL · ELEVACIÓN DE BRAZOS",34,447,11,
+            boolean jacks=camera==AvatarMultiViewKinematics.ViewMode.FRONT_JACKS;
+            drawFront(c,p,squat||jacks);
+            String scene=squat?"FRONTAL · SENTADILLA ABIERTA":
+                    jacks?"FRONTAL · SALTOS DE TIJERA":
+                    camera==AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW
+                    ?"FRONTAL · FLEXIÓN DE CODOS":"FRONTAL · ELEVACIÓN DE BRAZOS";
+            text(c,scene,34,447,11,
                     dark?0xFFC0CCE0:0xFF536987);
         } else if(camera==AvatarMultiViewKinematics.ViewMode.TOP) {
             drawDiamondTop(c,p);
@@ -81,9 +87,9 @@ public final class AvatarMultiViewRenderer {
                            boolean squat) {
         c.save();
         c.scale(.86f,.86f,200f,222f);
-        rr(c,79,419,321,422,2,dark?0xFF65758C:0xFFD4DFEA);
+        rr(c,57,431,343,434,2,dark?0xFF65758C:0xFFD4DFEA);
         color(dark?0xFF263247:0xFFDDE6EE);
-        c.drawOval(83,417,317,431,paint);
+        c.drawOval(80,430,320,440,paint);
 
         // Far-to-near: articulated denim legs are painted behind the pelvis.
         drawFrontDenimLeg(c,p.leftHip,p.leftKnee,p.leftAnkle,true);
