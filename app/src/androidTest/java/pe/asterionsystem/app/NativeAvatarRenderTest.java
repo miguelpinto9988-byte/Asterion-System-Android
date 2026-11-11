@@ -59,6 +59,28 @@ public final class NativeAvatarRenderTest {
             }
         });
     }
+    @Test public void independentlyPaintedV3PartsHaveVisibleDetails() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            AvatarArtDetails art=new AvatarArtDetails();
+            Bitmap bitmap=Bitmap.createBitmap(220,220,Bitmap.Config.ARGB_8888);
+            Canvas canvas=new Canvas(bitmap);
+            AvatarKinematics.Point face=new AvatarKinematics.Point(70,70);
+            AvatarKinematics.Point foot=new AvatarKinematics.Point(70,155);
+            art.drawHead(canvas,face,AvatarBodySpec.DEFAULT,AvatarPalette.BLUE);
+            art.drawSneaker(canvas,foot,AvatarPalette.BLUE,false);
+            assertNotEquals(0,bitmap.getPixel(70,70));
+            assertNotEquals(0,bitmap.getPixel(81,69));
+            assertNotEquals(0,bitmap.getPixel(80,160));
+            bitmap.eraseColor(0);
+            art.drawHead(canvas,face,AvatarBodySpec.DEFAULT,AvatarPalette.PURPLE);
+            art.drawSneaker(canvas,foot,AvatarPalette.PURPLE,false);
+            assertNotEquals(0,bitmap.getPixel(70,70));
+            assertNotEquals(0,bitmap.getPixel(80,160));
+            bitmap.recycle();
+        });
+    }
+
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{

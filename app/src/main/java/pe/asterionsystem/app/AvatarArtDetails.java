@@ -1,0 +1,258 @@
+package pe.asterionsystem.app;
+
+import android.graphics.Canvas;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Shader;
+
+/**
+ * Asterion V3: the skin, face, jersey, trousers and shoes are separate
+ * painted parts. Their highlights and seams follow existing skeleton bones.
+ * Paints, shaders and Path are reused rather than allocated every frame.
+ */
+public final class AvatarArtDetails {
+    private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Path path=new Path();
+    private final LinearGradient jeans=new LinearGradient(0f,-24f,0f,24f,
+            new int[]{0xFF1B2B43,0xFF4E5B78,0xFF26364E},null,Shader.TileMode.CLAMP);
+
+    private void fill(int color) {
+        paint.setShader(null);
+        paint.setColor(color);
+        paint.setStyle(Paint.Style.FILL);
+    }
+    private void line(Canvas c,float x1,float y1,float x2,float y2,int color,float width){
+        fill(color);
+        paint.setStrokeWidth(width);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        c.drawLine(x1,y1,x2,y2,paint);
+    }
+    /** Align a garment layer to an animated bone. Caller balances save. */
+    private float bone(Canvas c,AvatarKinematics.Point start,AvatarKinematics.Point end){
+        c.save();
+        c.translate(start.x,start.y);
+        float dx=end.x-start.x,dy=end.y-start.y;
+        c.rotate((float)Math.toDegrees(Math.atan2(dy,dx)));
+        return (float)Math.hypot(dx,dy);
+    }
+
+    public void drawDenimLeg(Canvas c,AvatarKinematics.Point hip,
+                             AvatarKinematics.Point knee,AvatarKinematics.Point ankle,
+                             boolean far){
+        seamSegment(c,hip,knee,far?28f:33f,false,far);
+        seamSegment(c,knee,ankle,far?22f:24f,true,far);
+        c.save();
+        c.translate(knee.x,knee.y);
+        c.rotate((float)Math.toDegrees(Math.atan2(
+                ankle.y-knee.y,ankle.x-knee.x)));
+        fill(far?0xFF26374F:0xFF43536C);
+        c.drawRoundRect(-9f,-11f,12f,11f,6f,6f,paint);
+        line(c,-6f,-7f,6f,-7f,0x998CA1C0,1.1f);
+        line(c,-6f,7f,6f,7f,0x998CA1C0,1.1f);
+        c.restore();
+    }
+
+    private void seamSegment(Canvas c,AvatarKinematics.Point a,
+                             AvatarKinematics.Point b,float width,
+                             boolean calf,boolean far){
+        float length=bone(c,a,b);
+        // Subtle textile shading under the stitched seam.
+        fill(0x22344762);
+        path.rewind();
+        path.moveTo(length*.10f,-width*.35f);
+        path.cubicTo(length*.36f,-width*.49f,length*.73f,-width*.39f,
+                length*.91f,-width*.25f);
+        path.lineTo(length*.91f,-width*.12f);
+        path.cubicTo(length*.64f,-width*.24f,length*.32f,-width*.25f,
+                length*.10f,-width*.17f);
+        path.close();
+        paint.setShader(jeans);
+        paint.setAlpha(far?85:125);
+        c.drawPath(path,paint);
+        paint.setShader(null);
+        paint.setAlpha(255);
+        line(c,length*.10f,width*.23f,length*.92f,width*.17f,
+                far?0x55899AB4:0xAA8DA3C2,1.3f);
+        line(c,length*.20f,width*.27f,length*.58f,width*.21f,
+                0x66869AB7,.6f);
+        if(calf) {
+            fill(0xFF172840);
+            c.drawRoundRect(length*.84f,-width*.32f,length*.99f,
+                    width*.31f,3f,3f,paint);
+            line(c,length*.88f,width*.19f,length*.96f,width*.19f,
+                    0xCC92A8C8,1.1f);
+        } else {
+            line(c,length*.33f,-width*.09f,length*.49f,-width*.09f,
+                    0x8899A9BF,1f);
+        }
+        c.restore();
+    }
+
+    public void drawPelvis(Canvas c,AvatarKinematics.Point hip,
+                           AvatarKinematics.Point shoulder){
+        bone(c,hip,shoulder);
+        fill(0xFF273A57);
+        path.rewind();
+        path.moveTo(-16f,-20f);
+        path.cubicTo(-12f,-24f,12f,-23f,17f,-18f);
+        path.lineTo(17f,19f);
+        path.cubicTo(8f,23f,-10f,22f,-16f,18f);
+        path.close();c.drawPath(path,paint);
+        fill(0xFF1B2A43);
+        c.drawRoundRect(5f,-21f,14f,21f,3f,3f,paint);
+        line(c,9f,-16f,9f,17f,0xAA9DAFC7,1f);
+        line(c,-9f,-13f,-5f,-7f,0xBB8EA6C4,1.25f);
+        line(c,-9f,13f,-5f,7f,0xBB8EA6C4,1.25f);
+        c.restore();
+    }
+
+    /** Minimal technical fabric grain and seams inside the organic torso. */
+    public void drawJersey(Canvas c,AvatarKinematics.Point hip,
+                           AvatarKinematics.Point shoulder,
+                           AvatarBodySpec body,AvatarPalette palette){
+        float length=bone(c,hip,shoulder);
+        fill(0x55375B91);
+        path.rewind();
+        path.moveTo(length*.09f,-body.waistHalfWidth*.77f);
+        path.cubicTo(length*.4f,-body.waistHalfWidth*.91f,
+                length*.72f,-body.chestHalfWidth*.82f,
+                length*.94f,-body.shoulderHalfWidth*.81f);
+        path.lineTo(length*.90f,-body.shoulderHalfWidth*.53f);
+        path.cubicTo(length*.68f,-body.chestHalfWidth*.57f,
+                length*.4f,-body.waistHalfWidth*.50f,
+                length*.09f,-body.waistHalfWidth*.46f);
+        path.close();c.drawPath(path,paint);
+        line(c,length*.12f,body.waistHalfWidth*.63f,
+                length*.88f,body.chestHalfWidth*.63f,
+                palette.female?0x997C50B9:0xAA93C5ED,1.3f);
+        line(c,length*.19f,-body.waistHalfWidth*.43f,
+                length*.75f,-body.chestHalfWidth*.49f,
+                0x77599BDE,1.5f);
+        fill(0x5587C6F5);
+        for(int i=0;i<6;i++){
+            float x=length*(.29f+i*.09f);
+            c.drawCircle(x,4f,.7f,paint);
+            c.drawCircle(x+2f,-3f,.55f,paint);
+        }
+        // A small geometric jersey motif, not the official Asterion mark.
+        fill(palette.female?0xFFBDB0EC:0xFFB9DDF7);
+        path.rewind();
+        path.moveTo(length*.68f,-2f);
+        path.lineTo(length*.77f,-8f);
+        path.lineTo(length*.86f,-2f);
+        path.lineTo(length*.77f,5f);
+        path.close();c.drawPath(path,paint);
+        fill(palette.top);
+        c.drawCircle(length*.77f,-1f,2.5f,paint);
+        c.restore();
+    }
+
+    public void drawSleeve(Canvas c,AvatarKinematics.Point shoulder,
+                           AvatarKinematics.Point elbow,AvatarPalette palette){
+        float length=bone(c,shoulder,elbow);
+        float x=length*.29f;
+        line(c,x,-10f,x,10f,
+                palette.female?0xFFBFA5E7:0xFF9CCBF1,2.2f);
+        line(c,length*.14f,-10f,length*.22f,-8f,0x99C4E0F9,1.3f);
+        c.restore();
+    }
+
+    public void drawForearm(Canvas c,AvatarKinematics.Point elbow,
+                            AvatarKinematics.Point wrist){
+        float len=bone(c,elbow,wrist);
+        line(c,len*.18f,-4f,len*.63f,-3f,0x88FFE1BC,2.1f);
+        fill(0xFF28598D);
+        c.drawRoundRect(len*.85f,-7f,len*.93f,7f,1f,1f,paint);
+        line(c,len*.88f,-5f,len*.88f,5f,0xFF83BDE8,1.1f);
+        c.restore();
+    }
+
+    /** Independently designed upper, tongue, toe, three laces and outsole. */
+    public void drawSneaker(Canvas c,AvatarKinematics.Point ankle,
+                            AvatarPalette palette,boolean far){
+        c.save();c.translate(ankle.x,ankle.y);
+        path.rewind();
+        path.moveTo(-12f,1f);path.lineTo(-9f,-12f);
+        path.quadTo(-2f,-15f,8f,-12f);
+        path.lineTo(18f,-4f);
+        path.quadTo(40f,-2f,42f,6f);
+        path.quadTo(44f,11f,38f,12f);
+        path.lineTo(-12f,12f);path.close();
+        fill(far?0xFFB5C5D8:palette.shoe);
+        c.drawPath(path,paint);
+        path.rewind();
+        path.moveTo(-9f,-9f);path.lineTo(11f,-10f);
+        path.lineTo(29f,3f);path.lineTo(-5f,4f);path.close();
+        fill(palette.female?0xFF8466B2:0xFF346BA8);
+        c.drawPath(path,paint);
+        line(c,-6f,-5f,23f,-2f,0xCCDAEEFF,1.2f);
+        for(int i=0;i<3;i++){
+            float x=-1f+7f*i;
+            line(c,x,-5f,x+5f,-2f,0xFFF3F8FF,1.35f);
+        }
+        fill(0xFFA6B8D0);
+        c.drawRoundRect(30f,1f,40f,6f,2f,2f,paint);
+        fill(palette.shoeDark);
+        c.drawRoundRect(-13f,6f,42f,14f,4f,4f,paint);
+        line(c,-9f,10f,36f,10f,0xFFECF4FF,2f);
+        c.restore();
+    }
+
+    /** Detailed face, ear, layered hair, eyebrows, two eyes, nose and smile. */
+    public void drawHead(Canvas c,AvatarKinematics.Point center,
+                         AvatarBodySpec body,AvatarPalette palette){
+        c.save();c.translate(center.x,center.y);
+        c.scale(body.headScale,body.headScale);
+        fill(palette.skinShade);
+        c.drawOval(-20f,-1f,-12f,10f,paint);
+        path.rewind();
+        path.moveTo(-16f,-20f);
+        path.cubicTo(-12f,-27f,10f,-27f,18f,-15f);
+        path.quadTo(22f,-1f,20f,14f);
+        path.quadTo(8f,27f,-3f,22f);
+        path.cubicTo(-19f,19f,-22f,4f,-16f,-20f);
+        path.close();fill(palette.skin);c.drawPath(path,paint);
+        fill(0x44FFD4AE);c.drawOval(-2f,4f,14f,14f,paint);
+        path.rewind();path.moveTo(-19f,-8f);
+        path.cubicTo(-23f,-24f,-10f,-34f,4f,-30f);
+        path.cubicTo(22f,-33f,27f,-21f,20f,-8f);
+        path.quadTo(12f,-14f,7f,-14f);
+        path.quadTo(-3f,-8f,-12f,-11f);
+        path.close();fill(palette.hair);c.drawPath(path,paint);
+        line(c,-10f,-21f,4f,-25f,0x886A5148,2f);
+        if(palette.female){
+            fill(palette.hair);
+            path.rewind();path.moveTo(-16f,-18f);
+            path.cubicTo(-34f,-24f,-37f,-5f,-29f,7f);
+            path.lineTo(-21f,11f);
+            path.quadTo(-25f,-4f,-16f,-18f);
+            path.close();c.drawPath(path,paint);
+        }
+        line(c,-1f,-2f,5f,-4f,0xFF5B4039,1.9f);
+        line(c,9f,-4f,14f,-5f,0xFF5B4039,1.5f);
+        fill(0xFF2B353D);
+        c.drawCircle(3f,1f,1.7f,paint);
+        c.drawCircle(13f,0f,1.45f,paint);
+        fill(0xEEFFFFFF);
+        c.drawCircle(3.6f,.35f,.6f,paint);
+        c.drawCircle(13.4f,-.6f,.5f,paint);
+        line(c,15f,4f,19f,8f,0xCCB07C61,1.35f);
+        line(c,19f,8f,15f,9f,0xCCB07C61,1.35f);
+        line(c,7f,15f,16f,14f,0xFF94575B,1.55f);
+        line(c,16f,14f,19f,11f,0xFF94575B,1.55f);
+        c.restore();
+    }
+
+    public void drawHand(Canvas c,AvatarKinematics.Point wrist,int skin){
+        c.save();c.translate(wrist.x,wrist.y);
+        path.rewind();path.moveTo(-6f,-5f);
+        path.quadTo(1f,-9f,7f,-4f);
+        path.lineTo(12f,1f);path.quadTo(13f,5f,6f,8f);
+        path.quadTo(-2f,11f,-8f,4f);path.close();
+        fill(skin);c.drawPath(path,paint);
+        line(c,0f,3f,5f,5f,0x99CA8D6F,.85f);
+        fill(skin);c.drawOval(5f,-8f,14f,0f,paint);
+        c.restore();
+    }
+}

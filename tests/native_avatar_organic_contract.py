@@ -21,7 +21,7 @@ for required in ("armBonesRemainConstantThroughFullIllustratedSquat",
                  "elbowsMoveContinuouslyWithoutTeleporting"):
     assert required in tests,required
 # No dark joint rings and no new engine, images, or network usage.
-joint=renderer[renderer.index("private void drawJoint("):renderer.index("private void drawShoe(")]
+joint=renderer[renderer.index("private void drawJoint("):renderer.index("private void drawOval(")]
 assert "Paint.Style.STROKE" not in joint
 for forbidden in ("import org.godotengine", "UnityPlayer", "MediaPlayer",
                   "android.permission.INTERNET"):

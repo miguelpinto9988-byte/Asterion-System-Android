@@ -5,7 +5,7 @@ public final class AvatarPalette {
     public static final AvatarPalette BLUE=new AvatarPalette(
             false,0xFF26334C,0xFFF0B486,0xFFDE986B,0xFF49352D,0xFF79564A,
             0xFFE6EBF5,0xFF657287,0xFF24559D,0xFF5584C8,0xFF33384E,
-            0xFF353A51,0xFF8F95A8,0xFF5D6A83);
+            0xFF353A51,0xFF263950,0xFF5D6A83);
     public static final AvatarPalette PURPLE=new AvatarPalette(
             true,0xFF26334C,0xFFF0B486,0xFFDE986B,0xFF49352D,0xFF79564A,
             0xFFE6EBF5,0xFF657287,0xFF7850B1,0xFFB194E2,0xFF403B61,
