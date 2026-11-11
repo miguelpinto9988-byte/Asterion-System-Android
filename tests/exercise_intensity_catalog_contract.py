@@ -24,7 +24,7 @@ variants=load("variants.tsv",["variant_id","type_id","name","level",
                               "equipment","execution","supervision"])
 tags=load("intensity.tsv",["variant_id","intensity"])
 
-assert (len(families),len(types),len(variants),len(tags))==(75,204,817,312)
+assert (len(families),len(types),len(variants),len(tags))==(130,374,1157,652)
 ids=[v["variant_id"] for v in variants]
 assert len(set(ids))==len(ids)
 assert len(set(f["family_id"] for f in families))==len(families)
@@ -33,11 +33,11 @@ assert len(set(t["variant_id"] for t in tags))==len(tags)
 assert all(t["variant_id"] in ids for t in tags)
 assert all(t["intensity"] in ("baja","moderada","alta","variable") for t in tags)
 assert Counter(t["intensity"] for t in tags)=={
-    "baja":173,"moderada":87,"variable":35,"alta":17
+    "baja":352,"moderada":245,"variable":38,"alta":17
 }
 norm=lambda s:"".join(c for c in unicodedata.normalize("NFD",s.casefold())
                     if not unicodedata.combining(c))
-assert len(set(map(norm,(v["name"] for v in variants))))==817
+assert len(set(map(norm,(v["name"] for v in variants))))==1157
 
 family_lookup={f["family_id"]:f for f in families}
 type_lookup={t["type_id"]:t for t in types}
@@ -56,7 +56,7 @@ for vid,intensity in tagged_ids.items():
 map_cat={"coordinacion":"movilidad","integrado":"tronco"}
 categories=Counter(map_cat.get(f["category"],f["category"]) for f in families)
 assert categories=={
-    "tren_superior":17,"tronco":13,"piernas":16,"movilidad":15,"cardio":14
+    "tren_superior":28,"tronco":24,"piernas":27,"movilidad":26,"cardio":25
 }
 assert "descanso" not in categories
 
@@ -67,11 +67,11 @@ android=(APP/"MissionsActivity.java").read_text(encoding="utf-8")
 repo=(APP/"data/AssetExerciseCatalogRepository.java").read_text(encoding="utf-8")
 assert "tag!=ExerciseIntensity.HIGH && tag!=ExerciseIntensity.VARIABLE" in catalog
 assert "catalog.eligibleForAutomaticSuggestion(variant)" in planner
-assert "ExerciseCatalogLoader.load(families, types, variants, intensity)" in repo
+assert "ExerciseCatalogLoader.load(families,types,variants,intensity,disciplines)" in repo
 assert 'context.getAssets().open(DIRECTORY + "intensity.tsv")' in repo
 assert "ExerciseIntensity.parse(row[1])" in loader
 assert "catalog.intensity(v.id())" in android
 assert "showTypeFiltered" in android and '"Filtrar por intensidad"' in android
 assert ids[:505] and tagged_ids.get("sentadilla_bilateral_v01") is None
 assert "marcha_v01" in ids and "sentadilla_bilateral_v01" in ids
-print("OK: 75 familias, 204 tipos, 817 variantes (312 con intensidad) y sin selección automática de alta intensidad.")
+print("OK: 130 familias, 374 tipos, 1157 variantes (652 con intensidad) y sin selección automática de alta intensidad.")

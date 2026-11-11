@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.text.InputFilter;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -525,30 +527,103 @@ public final class MissionsActivity extends ComponentActivity {
         title("Biblioteca de ejercicios");
         paragraph("Catálogo real local · "+catalog.families().size()+" familias · "
                 +catalog.types().size()+" tipos · "+catalog.variants().size()+" variantes.");
-        paragraph("Explora familias y variantes por intensidad orientativa: "
-                +"baja, moderada, alta, variable o sin clasificar. "
-                +"Las opciones de intensidad alta y nivel técnico avanzado "
-                +"son informativas y no forman parte de las propuestas automáticas.");
-        Map<String,List<ExerciseFamily>> byGroup=new HashMap<>();
-        for(ExerciseFamily item:catalog.families()) {
-            String primary=ExerciseCategoryMapper.primaryCategory(item.category());
-            byGroup.computeIfAbsent(primary,ignored->new ArrayList<>()).add(item);
-        }
+        paragraph("Explora categorías, familias, tipos, variantes y disciplinas. "
+                +"Los ejercicios de alta intensidad o complejidad se muestran "
+                +"únicamente como información y no se asignan automáticamente.");
+        action("Explorar por deporte o disciplina y material",this::showDisciplinePicker);
         for(int i=0;i<5;i++) {
             String code=ExerciseCategoryMapper.weeklyCode(i);
-            List<ExerciseFamily> families=byGroup.get(code);
-            if(families==null)continue;
+            List<ExerciseFamily> families=catalog.categoryIndex().families(code);
             paragraph(ExerciseCategoryMapper.displayName(i)+" · "
-                    +families.size()+" familias");
+                    +families.size()+" familias · "
+                    +catalog.categoryIndex().types(code).size()+" tipos · "
+                    +catalog.categoryIndex().variants(code).size()+" variantes");
             for(ExerciseFamily family:families) {
                 action(family.name(),()->showFamily(family));
             }
         }
     }
 
+    /** Read-only discovery: discipline tags never modify the daily plan. */
+    private void showDisciplinePicker() {
+        content.removeAllViews();
+        title("Deportes y disciplinas");
+        paragraph("Un mismo tipo de ejercicio puede aparecer en varios deportes, "
+                +"pero conserva una única categoría, familia e identificador.");
+        List<String> names=catalog.disciplineIndex().disciplines();
+        for(String code:names) {
+            action(code.replace('_',' ')+" · "
+                    +catalog.disciplineIndex().types(code).size()+" tipos",
+                    ()->showDisciplineResults(code,null,"",0));
+        }
+        action("Volver a categorías",this::libraryFromDetail);
+        themeTree(content);
+        scroll.post(()->scroll.scrollTo(0,0));
+    }
+
+    private void chooseDisciplineEquipment(String discipline,String query) {
+        java.util.LinkedHashSet<String> equipments=new java.util.LinkedHashSet<>();
+        for(ExerciseVariant variant:catalog.disciplineIndex().variants(discipline))
+            equipments.addAll(variant.equipment());
+        ArrayList<String> codes=new ArrayList<>(equipments);
+        java.util.Collections.sort(codes);
+        codes.add(0,"todos");
+        String[] display=new String[codes.size()];
+        display[0]="Todos los materiales";
+        for(int i=1;i<codes.size();i++)display[i]=codes.get(i).replace('_',' ');
+        new AlertDialog.Builder(this).setTitle("Material")
+                .setItems(display,(dialog,which)->showDisciplineResults(
+                        discipline,which==0?null:codes.get(which),query,0))
+                .show();
+    }
+
+    private void showDisciplineResults(String discipline,String equipment,
+                                       String query,int offset) {
+        content.removeAllViews();
+        title("Disciplina: "+discipline.replace('_',' '));
+        paragraph("Búsqueda local por nombre, material y categoría. "
+                +"La dificultad técnica es orientativa.");
+        action("Filtrar por material"
+                +(equipment==null?"":" · "+equipment.replace('_',' ')),
+                ()->chooseDisciplineEquipment(discipline,query));
+        EditText search=new EditText(this);
+        search.setSingleLine(true);
+        search.setHint("Buscar nombre o familia");
+        search.setText(query);
+        search.setTextColor(light?Color.BLACK:Color.WHITE);
+        search.setHintTextColor(light?0xFF555555:0xFFB0B0B0);
+        search.setFilters(new InputFilter[]{new InputFilter.LengthFilter(120)});
+        content.addView(search,new LinearLayout.LayoutParams(-1,-2));
+        action("Buscar",()->showDisciplineResults(
+                discipline,equipment,search.getText().toString().trim(),0));
+        List<ExerciseVariant> matches=catalog.searchByDiscipline(
+                discipline,query,null,equipment,null,5,25,offset);
+        for(ExerciseVariant v:matches) {
+            String category=catalog.categoryIndex().categoryForVariant(v.id());
+            ExerciseIntensity intensity=catalog.intensity(v.id());
+            exerciseRow(v.name(),"Categoría: "+category.replace('_',' ')
+                    +" · Intensidad: "+intensity.label()
+                    +" · Nivel técnico: "+v.difficulty()
+                    +" · Material: "+material(v)
+                    +(catalog.eligibleForAutomaticSuggestion(v)
+                        ?"":" · Solo referencia; no asignación automática"));
+        }
+        if(matches.isEmpty())paragraph("Sin coincidencias con esos filtros.");
+        if(matches.size()==25)action("Mostrar más resultados",()->
+                showDisciplineResults(discipline,equipment,query,offset+25));
+        if(offset>0)action("Página anterior",()->
+                showDisciplineResults(discipline,equipment,query,Math.max(0,offset-25)));
+        action("Volver a disciplinas",this::showDisciplinePicker);
+        themeTree(content);
+        scroll.post(()->scroll.scrollTo(0,0));
+    }
+
     private void showFamily(ExerciseFamily family) {
         content.removeAllViews();
         title(family.name());
+        paragraph("Categoría: "+ExerciseCategoryMapper.displayName(
+                ExerciseCategoryMapper.weeklyIndex(family.category()))
+                +" · Patrón: "+family.movementPattern().replace('_',' '));
         paragraph("Tipos de movimiento en esta familia:");
         for(ExerciseType type:catalog.typesInFamily(family.id())) {
             action(type.name(),()->showType(type,family));

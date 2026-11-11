@@ -1,6 +1,6 @@
 # Asterion System — Android nativo Java
 
-**Estado operativo (10 de noviembre de 2026):** aplicación Android Java/XML con registro nativo de cuatro pasos, biblioteca local de **75 familias / 204 tipos / 817 variantes**, misiones diarias estables, progreso por categoría y Monarca opcional. La variante debug de `main` superó compilación, pruebas y arranque en emulador Android 16; **no existe una release de distribución validada**. Los apartados de fases anteriores conservan parte del historial técnico.
+**Estado operativo (10 de noviembre de 2026):** aplicación Android Java/XML con registro nativo de cuatro pasos, biblioteca local de **130 familias / 374 tipos / 1157 variantes**, misiones diarias estables, progreso por categoría y Monarca opcional. La variante debug de `main` superó compilación, pruebas y arranque en emulador Android 16; **no existe una release de distribución validada**. Los apartados de fases anteriores conservan parte del historial técnico.
 
 **Consolidación en revisión:** [estado e integración de PR pendientes](docs/consolidacion/ESTADO_2026-11-10.md) y [especificación MagicPath](docs/consolidacion/MAGICPATH_HANDOFF.md). No se fusionan automáticamente los PR #2 y #3.
 
@@ -45,7 +45,7 @@ La evaluación por patrones es **de solo lectura**; la creación de planes y el 
 
 ## Catálogo de familias, tipos y variantes de ejercicios (v1, histórico)
 
-**Inventario operativo vigente: 75 familias, 204 tipos y 817 variantes**, con 312 etiquetas explícitas de intensidad; véase [ampliación y criterios](docs/catalogo-ejercicios/04-biblioteca-diversa-intensidad.md).
+**Inventario operativo vigente: 130 familias, 374 tipos y 1157 variantes**, con 652 etiquetas explícitas de intensidad; incluyendo 25 disciplinas deportivas en [catálogo multideporte](docs/arquitectura/catalogo-multideporte-v3.md) y los [criterios previos](docs/catalogo-ejercicios/04-biblioteca-diversa-intensidad.md).
 
 En una fase inicial se incorporó el inventario de **39 familias, 80 tipos y 445 variantes de ejercicios**, clasificado por movimiento, región funcional, implementos, forma de ejecución y complejidad técnica L1–L5. El inventario está dentro de la aplicación como recursos UTF-8 versionados y puede leerse con `AssetExerciseCatalogRepository`, sin internet ni migración de SQLite v5.
 

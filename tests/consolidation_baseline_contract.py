@@ -29,9 +29,16 @@ families = rows("families.tsv")
 types = rows("types.tsv")
 variants = rows("variants.tsv")
 intensities = rows("intensity.tsv")
-assert (len(families), len(types), len(variants), len(intensities)) == (
-    75, 204, 817, 312
-), "The approved local exercise taxonomy has changed"
+assert len(families)>=75 and len(types)>=204 and len(variants)>=817 and len(intensities)>=312, (
+    "Approved catalog rows must be retained during append-only expansion"
+)
+# The original identifiers are part of persisted mission references.
+assert {"sentadillas","empuje_horizontal","recorridos_al_aire_libre"} <= {
+    f["family_id"] for f in families
+}
+assert {"sentadilla_bilateral_v01","flexiones_v04","marcha_v01"} <= {
+    v["variant_id"] for v in variants
+}
 family_ids = unique(families, "family_id")
 type_ids = unique(types, "type_id")
 variant_ids = unique(variants, "variant_id")
@@ -77,5 +84,5 @@ assert "reviewed.canAccept()" in monarch
 assert "putString(STATUS,ACTIVE)" in monarch
 assert "putString(ACCEPTED,today.toString())" in monarch
 
-print("OK: baseline nativa, 817 variantes, perfil 4 pasos, "
+print("OK: baseline nativa, catálogo ampliable, perfil 4 pasos, "
       "restauracion de activacion y misiones locales.")

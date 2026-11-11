@@ -160,12 +160,9 @@ public final class MissionPlanner {
 
     public MissionPlanner(ExerciseCatalog catalog) {
         this.catalog = Objects.requireNonNull(catalog, "catalog");
-        Map<String, ExerciseFamily> families = new HashMap<>();
-        for (ExerciseFamily family : catalog.families()) families.put(family.id(), family);
         for (ExerciseType type : catalog.types()) {
             familyForType.put(type.id(), type.familyId());
-            categoryForType.put(type.id(), ExerciseCategoryMapper.primaryCategory(
-                    families.get(type.familyId()).category()));
+            categoryForType.put(type.id(),catalog.categoryIndex().categoryForType(type.id()));
         }
     }
 

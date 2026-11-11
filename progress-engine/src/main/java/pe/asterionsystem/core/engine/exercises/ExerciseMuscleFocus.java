@@ -97,7 +97,62 @@ public final class ExerciseMuscleFocus {
             Map.entry("pelota_deportiva_recreativa",new Focus("cardiorrespiratorio","coordinación")),
             Map.entry("cuerda_saltar_recreativa",new Focus("cardiorrespiratorio","piernas")),
             Map.entry("deportes_raqueta_recreativos",new Focus("cardiorrespiratorio","hombros")),
-            Map.entry("recorridos_al_aire_libre",new Focus("cardiorrespiratorio","piernas"))
+            Map.entry("recorridos_al_aire_libre",new Focus("cardiorrespiratorio","piernas")),
+            Map.entry("elevacion_brazos_funcional",new Focus("hombros","brazos")),
+            Map.entry("alcances_pared_brazos",new Focus("hombros","escápulas")),
+            Map.entry("control_brazos_cruzados",new Focus("hombros","pecho")),
+            Map.entry("apoyos_superiores_estables",new Focus("hombros","tronco")),
+            Map.entry("destreza_manos_brazos",new Focus("antebrazo","coordinación")),
+            Map.entry("alineacion_tronco_suave",new Focus("tronco","postura")),
+            Map.entry("alcances_tronco_asistidos",new Focus("tronco","hombros")),
+            Map.entry("coordinacion_tronco_pie",new Focus("tronco","equilibrio")),
+            Map.entry("respiracion_movimiento_tronco",new Focus("respiración","tronco")),
+            Map.entry("control_pelvis_suelo",new Focus("cadera","tronco")),
+            Map.entry("movilidad_rodilla_sentada",new Focus("muslos","rodilla")),
+            Map.entry("pasos_cortos_funcionales",new Focus("piernas","coordinación")),
+            Map.entry("tobillo_control_equilibrio",new Focus("tobillos","equilibrio")),
+            Map.entry("cadera_lateral_pie",new Focus("cadera","equilibrio")),
+            Map.entry("transiciones_silla_estable",new Focus("muslos","cadera")),
+            Map.entry("movilidad_hombros_sentada",new Focus("movilidad","hombros")),
+            Map.entry("movilidad_cadera_silla",new Focus("movilidad","cadera")),
+            Map.entry("movilidad_rodilla_suave",new Focus("movilidad","rodilla")),
+            Map.entry("movilidad_pies_suelo",new Focus("movilidad","pies")),
+            Map.entry("movilidad_toracica_silla",new Focus("movilidad","columna torácica")),
+            Map.entry("marcha_en_sitio_bajoimpacto",new Focus("cardiorrespiratorio","piernas")),
+            Map.entry("pasos_aerobicos_direcciones",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("ritmos_brazos_pasos",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("cardio_desde_silla",new Focus("cardiorrespiratorio","piernas")),
+            Map.entry("juegos_pasos_recreativos",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("calistenia_suspension",new Focus("espalda","agarre")),
+            Map.entry("gimnasio_maquinas_superior",new Focus("hombros","espalda")),
+            Map.entry("voleibol_toques",new Focus("hombros","coordinación")),
+            Map.entry("raqueta_golpes",new Focus("hombros","antebrazo")),
+            Map.entry("hockey_control_palo",new Focus("antebrazo","coordinación")),
+            Map.entry("balonmano_pases",new Focus("hombros","coordinación")),
+            Map.entry("pilates_control_respiracion",new Focus("tronco","respiración")),
+            Map.entry("tronco_antirotacion_deporte",new Focus("oblicuos","tronco")),
+            Map.entry("tronco_tecnica_remo",new Focus("tronco","cadera")),
+            Map.entry("postura_nadador_en_seco",new Focus("tronco","hombros")),
+            Map.entry("tronco_control_balon",new Focus("oblicuos","hombros")),
+            Map.entry("tronco_yoga_equilibrio",new Focus("tronco","equilibrio")),
+            Map.entry("futbol_pases_recepciones",new Focus("piernas","coordinación")),
+            Map.entry("gimnasio_maquinas_inferior",new Focus("muslos","cadera")),
+            Map.entry("baloncesto_pivotes",new Focus("piernas","coordinación")),
+            Map.entry("atletismo_despegue_control",new Focus("piernas","tobillos")),
+            Map.entry("patinaje_apoyos_seco",new Focus("cadera","equilibrio")),
+            Map.entry("beisbol_pasos_bases",new Focus("piernas","coordinación")),
+            Map.entry("movilidad_hombro_raqueta",new Focus("movilidad","hombros")),
+            Map.entry("movilidad_atletismo_pista",new Focus("movilidad","piernas")),
+            Map.entry("movilidad_nadador_hombros",new Focus("movilidad","hombros")),
+            Map.entry("movilidad_patinaje_cadera",new Focus("movilidad","cadera")),
+            Map.entry("movilidad_deportiva_manos",new Focus("movilidad","muñecas")),
+            Map.entry("movilidad_danza_yoga",new Focus("movilidad","cuerpo completo")),
+            Map.entry("atletismo_cadencia",new Focus("cardiorrespiratorio","piernas")),
+            Map.entry("relevos_movimiento",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("futbol_conduccion",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("baloncesto_bote",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("hockey_desplazamientos",new Focus("cardiorrespiratorio","coordinación")),
+            Map.entry("acondicionamiento_multideporte",new Focus("cardiorrespiratorio","cuerpo completo"))
     );
 
     private ExerciseMuscleFocus() { }
@@ -115,9 +170,6 @@ public final class ExerciseMuscleFocus {
     public static Focus forVariant(ExerciseCatalog catalog,ExerciseVariant variant) {
         Objects.requireNonNull(catalog,"catalog");
         Objects.requireNonNull(variant,"variant");
-        for(ExerciseType type:catalog.types()) {
-            if(type.id().equals(variant.typeId()))return forFamily(type.familyId());
-        }
-        return new Focus("no clasificado","");
+        return forFamily(catalog.categoryIndex().familyForVariant(variant.id()));
     }
 }

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.junit.Test;
 
-/** All 817 real catalog variants must belong to exactly one of five weekly bins. */
+/** All 917 real catalog variants must belong to exactly one of five weekly bins. */
 public class ExerciseCategoryMapperTest {
     @Test public void originalSevenSectionsMapToFiveProfileCategories() {
         assertEquals("movilidad",ExerciseCategoryMapper.primaryCategory("coordinacion"));
@@ -29,9 +29,9 @@ public class ExerciseCategoryMapperTest {
              InputStreamReader t=read(base+"types.tsv");
              InputStreamReader v=read(base+"variants.tsv")) {
             ExerciseCatalog catalog=ExerciseCatalogLoader.load(f,t,v);
-            assertEquals(75,catalog.families().size());
-            assertEquals(204,catalog.types().size());
-            assertEquals(817,catalog.variants().size());
+            assertEquals(130,catalog.families().size());
+            assertEquals(374,catalog.types().size());
+            assertEquals(1157,catalog.variants().size());
             Set<Integer> categories=new HashSet<>();
             for(ExerciseFamily family:catalog.families()) {
                 int index=ExerciseCategoryMapper.weeklyIndex(family.category());

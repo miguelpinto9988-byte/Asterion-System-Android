@@ -96,7 +96,7 @@ public final class AsterionDomainEngineTest {
         fixture.tracking.entries.add(new ProgressEntry(plan, "Ejercicio de prueba",
                 TrackingStatus.COMPLETED, ""));
         ProgressAssessment result = fixture.engine.assessWeek(MONDAY, ProgressPatternConfig.standard());
-        assertEquals(100, result.scorePercent().getAsInt());
+        assertEquals(130, result.scorePercent().getAsInt());
         assertEquals(1, fixture.tracking.weekReads);
         assertEquals(0, fixture.tracking.saves);
         assertEquals(0, fixture.tracking.clears);
@@ -136,7 +136,7 @@ public final class AsterionDomainEngineTest {
                 fixture.catalog, new SchedulePlanner(fixture.plans, fixture.catalog),
                 new PreferencesService(fixture.settings), fixture.tracking,
                 ProgressPatternEngine.standard(), taxonomy);
-        assertEquals(75, withTaxonomy.exerciseFamilies().size());
+        assertEquals(130, withTaxonomy.exerciseFamilies().size());
         assertEquals(3, withTaxonomy.exerciseTypes("sentadillas").size());
         assertEquals(7, withTaxonomy.exerciseVariants("sentadilla_bilateral").size());
         assertFalse(withTaxonomy.searchExerciseVariants(

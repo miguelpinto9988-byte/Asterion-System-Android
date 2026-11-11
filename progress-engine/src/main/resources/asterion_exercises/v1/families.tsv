@@ -74,3 +74,58 @@ pelota_deportiva_recreativa	Actividades recreativas con pelota	cardio	deporte_pe
 cuerda_saltar_recreativa	Saltos recreativos con cuerda	cardio	cuerda_salto
 deportes_raqueta_recreativos	Deportes recreativos de raqueta	cardio	raqueta
 recorridos_al_aire_libre	Recreación aeróbica al aire libre	cardio	recorrido_exterior
+elevacion_brazos_funcional	Elevaciones funcionales de brazos	tren_superior	elevacion_controlada
+alcances_pared_brazos	Alcances de brazos con pared	tren_superior	alcance_pared
+control_brazos_cruzados	Control de brazos cruzados	tren_superior	cruce_brazos
+apoyos_superiores_estables	Apoyos superiores estables	tren_superior	apoyo_superior
+destreza_manos_brazos	Destreza de manos y brazos	tren_superior	destreza_superior
+alineacion_tronco_suave	Alineación suave del tronco	tronco	alineacion_tronco
+alcances_tronco_asistidos	Alcances de tronco con apoyo	tronco	alcance_tronco
+coordinacion_tronco_pie	Coordinación del tronco al caminar en el sitio	tronco	coordinacion_tronco
+respiracion_movimiento_tronco	Respiración asociada a movimiento de tronco	tronco	respiracion_tronco
+control_pelvis_suelo	Control de pelvis en suelo	tronco	control_pelvis
+movilidad_rodilla_sentada	Control de rodilla sentado	piernas	control_rodilla
+pasos_cortos_funcionales	Pasos cortos funcionales	piernas	pasos_cortos
+tobillo_control_equilibrio	Control de tobillo y equilibrio	piernas	control_tobillo
+cadera_lateral_pie	Control lateral de cadera de pie	piernas	cadera_lateral_pie
+transiciones_silla_estable	Transiciones con silla estable	piernas	transicion_silla
+movilidad_hombros_sentada	Movilidad de hombros sentado	movilidad	movilidad_hombro_sentado
+movilidad_cadera_silla	Movilidad de cadera desde silla	movilidad	movilidad_cadera_silla
+movilidad_rodilla_suave	Movilidad funcional suave de rodilla	movilidad	movilidad_rodilla
+movilidad_pies_suelo	Movilidad de pies en apoyo	movilidad	movilidad_pies
+movilidad_toracica_silla	Movilidad de tórax con silla	movilidad	movilidad_torax_silla
+marcha_en_sitio_bajoimpacto	Marcha de bajo impacto en sitio	cardio	marcha_suave
+pasos_aerobicos_direcciones	Pasos aeróbicos en distintas direcciones	cardio	pasos_bajoimpacto
+ritmos_brazos_pasos	Ritmos suaves de brazos y pasos	cardio	ritmo_pasos
+cardio_desde_silla	Cardio recreativo desde silla	cardio	cardio_sentado
+juegos_pasos_recreativos	Juegos recreativos de pasos suaves	cardio	juego_pasos
+calistenia_suspension	Calistenia: control de suspensión	tren_superior	suspension_asistida
+gimnasio_maquinas_superior	Gimnasio: máquinas de tren superior	tren_superior	maquinas_superior
+voleibol_toques	Voleibol: contactos de balón	tren_superior	contacto_voleibol
+raqueta_golpes	Deportes de raqueta: golpes técnicos	tren_superior	golpes_raqueta
+hockey_control_palo	Hockey: manejo técnico de implemento	tren_superior	manejo_palo
+balonmano_pases	Balonmano: pases y recepción	tren_superior	pases_balonmano
+pilates_control_respiracion	Pilates: control de respiración y tronco	tronco	pilates_control
+tronco_antirotacion_deporte	Tronco: control antirrotacional deportivo	tronco	antirotacion_deporte
+tronco_tecnica_remo	Tronco: coordinación para remo	tronco	control_remo
+postura_nadador_en_seco	Natación: control de tronco en seco	tronco	postura_nadador
+tronco_control_balon	Tronco: control de balón deportivo	tronco	control_balon_tronco
+tronco_yoga_equilibrio	Yoga: equilibrio del tronco	tronco	yoga_tronco
+futbol_pases_recepciones	Fútbol: pases y control del balón	piernas	tecnica_pie_balon
+gimnasio_maquinas_inferior	Gimnasio: máquinas de piernas	piernas	maquinas_pierna
+baloncesto_pivotes	Baloncesto: pivotes y apoyo de pies	piernas	pivotes_basket
+atletismo_despegue_control	Atletismo: control de despegue	piernas	despegue_pista
+patinaje_apoyos_seco	Patinaje: apoyos en superficie firme	piernas	patinaje_seco
+beisbol_pasos_bases	Béisbol: desplazamientos de bases recreativos	piernas	pasos_beisbol
+movilidad_hombro_raqueta	Movilidad para deportes de raqueta	movilidad	movilidad_raqueta
+movilidad_atletismo_pista	Movilidad general de atletismo	movilidad	movilidad_atleta
+movilidad_nadador_hombros	Movilidad previa a natación en seco	movilidad	movilidad_nado
+movilidad_patinaje_cadera	Movilidad para patinaje y hockey	movilidad	movilidad_patinar
+movilidad_deportiva_manos	Movilidad de manos para deportes con balón	movilidad	movilidad_manos_deporte
+movilidad_danza_yoga	Movilidad de danza y yoga recreativos	movilidad	movilidad_danza
+atletismo_cadencia	Atletismo: coordinación de carrera	cardio	cadencia_carrera
+relevos_movimiento	Atletismo: relevos recreativos	cardio	relevo_pista
+futbol_conduccion	Fútbol: conducción y desplazamientos	cardio	conduccion_futbol
+baloncesto_bote	Baloncesto: bote y control de balón	cardio	bote_basket
+hockey_desplazamientos	Hockey: coordinación y desplazamientos	cardio	pasos_hockey
+acondicionamiento_multideporte	Acondicionamiento deportivo diverso	cardio	movimiento_global
