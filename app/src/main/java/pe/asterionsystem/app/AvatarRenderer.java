@@ -92,7 +92,13 @@ public final class AvatarRenderer {
         drawTorso(canvas,p,top,hi);
         details.drawJersey(canvas,p.hip,p.shoulder,body,palette);
         details.drawShortNeck(canvas,p.shoulder,p.head,palette);
+        // Face follows the spine orientation. During a floor-facing burpee
+        // the profile must look at the floor rather than stay upright.
+        canvas.save();
+        canvas.rotate(AvatarOrientationRules.sideFacingDegrees(
+                p.hip,p.shoulder),p.head.x,p.head.y);
         details.drawHead(canvas,p.head,body,palette);
+        canvas.restore();
         if(!palette.female) {
             drawLimb(canvas,interp(p.shoulder,p.elbow,.095f),
                     interp(p.shoulder,p.elbow,.34f),
