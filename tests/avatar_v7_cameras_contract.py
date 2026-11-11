@@ -17,7 +17,7 @@ for token in ('drawFront(c,p,squat||jacks)', 'drawFrontDenimLeg(',
     assert token in r,token
 assert 'details.drawShortNeck(' in side
 assert 'drawShortNeck(' in art
-assert 'ViewMode.FRONT_SQUAT' in view
+assert 'case FRONT_SQUAT:' in view or 'ViewMode.FRONT_SQUAT' in view
 for name in ('AvatarMultiViewKinematicsTest.java',):
     t=(root/'app/src/test/java/pe/asterionsystem/app'/name).read_text()
     assert 'wideSquatIsGroundedInFrontalPlaneWithOpposedKnees' in t
