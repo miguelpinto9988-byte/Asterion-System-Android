@@ -78,6 +78,7 @@ public final class SimpleBottomNav {
         Intent intent=new Intent(activity,target);
         if(HOME.equals(route)) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("asterion_open_section","home");
         }
         activity.startActivity(intent);
         // Avoid stacking a long chain of independent tab destinations.
