@@ -44,19 +44,7 @@ public final class NavigationRenderer {
         }
         View screen = LayoutInflater.from(activity).inflate(layout, host, false);
         if (route == NavigationRoute.HOME) {
-            Button openSecond = screen.findViewById(R.id.open_secondary);
-            openSecond.setOnClickListener(view -> openSecondary.run());
-            Button openCatalogButton = screen.findViewById(R.id.open_catalog);
-            openCatalogButton.setOnClickListener(view -> openCatalog.run());
-            Button openPlanButton = screen.findViewById(R.id.open_plan);
-            openPlanButton.setOnClickListener(view -> openPlan.run());
-            Button openProgressButton = screen.findViewById(R.id.open_progress);
-            openProgressButton.setOnClickListener(view -> openProgress.run());
-            Button openSettingsButton = screen.findViewById(R.id.open_settings);
-            openSettingsButton.setOnClickListener(view -> openSettings.run());
-            Button openLocalStatusButton = screen.findViewById(R.id.open_local_status);
-            openLocalStatusButton.setOnClickListener(view -> openLocalStatus.run());
-            HomeMissionBinder.bind(activity,screen,openProgress);
+            HomeMissionBinder.bind(activity,screen);
         } else if (route == NavigationRoute.SECONDARY) {
             Button backButton = screen.findViewById(R.id.back_to_home);
             backButton.setOnClickListener(view -> back.run());

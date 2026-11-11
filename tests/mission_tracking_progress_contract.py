@@ -18,7 +18,7 @@ home=ET.parse(app/"res/layout/screen_home.xml").getroot()
 ns="{http://schemas.android.com/apk/res/android}"
 ids={v.get(ns+"id") for v in home.iter()}
 for control in ("open_daily","open_monarch","open_library","open_progress",
-                "open_catalog","open_legacy_progress"):
+                "home_avatar","home_bottom_bar"):
     assert "@+id/"+control in ids,control
 for text in ("MissionTrackingStore.setDailyCompleted(", "MissionTrackingStore.rateCategory(",
              "MissionTrackingStore.markMonarch(", "MissionTrackingStore.completedToday(",
@@ -27,9 +27,12 @@ for text in ("MissionTrackingStore.setDailyCompleted(", "MissionTrackingStore.ra
              "show(SECTION_PROGRESS)", "requestEffort("):
     assert text in activity,text
 for text in ('open(activity,"library")', 'open(activity,"progress")',
-             'openHistoricalProgress.run()', 'open(activity,"daily")'):
+             'open(activity,"daily")'):
     assert text in binder,text
-assert "HomeMissionBinder.bind(activity,screen,openProgress)" in renderer
+assert "HomeMissionBinder.bind(activity,screen)" in renderer
+# Historical catalog/progress remain accessible inside the avatar tools.
+profile_tools=source("ProfileDetailsActivity.java")
+assert '"catalog"' in profile_tools and '"progress"' in profile_tools
 for text in ('"day_effort_"', '"monarch_done_"', '"day_done_"',
              'effort<1||effort>10', "SharedPreferences"):
     assert text in tracking,text

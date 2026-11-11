@@ -63,10 +63,7 @@
             android:orientation="vertical"/>
     </ScrollView>
 
-    <Button android:id="@+id/missions_back"
+    <FrameLayout android:id="@+id/missions_bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Volver a Inicio"
-        android:textAllCaps="false"
-        android:textStyle="bold"/>
+        android:layout_height="62dp"/>
 </LinearLayout>

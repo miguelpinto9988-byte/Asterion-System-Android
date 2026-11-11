@@ -6,9 +6,12 @@ on:
   push:
     branches:
       - main
+      # Stacked feature PR is based on the catalog PR, not yet on main.
+      - feature/rutinas-calendario-aleatoriedad-20261111
   pull_request:
     branches:
       - main
+      - feature/catalogo-taxonomia-categorias-v2-20261110
   workflow_dispatch:
 
 permissions:
@@ -68,6 +71,8 @@ jobs:
           python3 tests/profile_monochrome_week_colors_contract.py
           python3 tests/missions_from_catalog_contract.py
           python3 tests/monarch_randomness_contract.py
+          python3 tests/routines_calendar_contract.py
+          python3 tests/home_navigation_architecture_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
