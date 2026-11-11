@@ -34,11 +34,11 @@ assert set(v["type_id"] for v in variants)==type_ids
 assert set(i["variant_id"] for i in intensity)<=variant_ids
 assert set(int(x["level"]) for x in variants)<={1,2,3,4,5}
 assert all(v["supervision"]=="1" for v in variants if int(v["level"])>=4)
-category_mapper={"coordinacion":"movilidad","integrado":"tronco"}
+category_mapper={"coordinacion":"movilidad","integrado":"tren_central"}
 group_count=Counter(category_mapper.get(f["category"],f["category"]) for f in families)
-assert group_count=={"tren_superior":22,"tronco":18,"piernas":21,
+assert group_count=={"tren_superior":22,"tren_central":18,"tren_inferior":21,
                      "movilidad":20,"cardio":19}
-assert not any(f["category"]=="descanso" for f in families)
+assert all(f["category"] in {"tren_superior","tren_central","tren_inferior","movilidad","cardio"} for f in families)
 normalized=lambda value:"".join(c for c in unicodedata.normalize("NFD",value.casefold())
                                  if not unicodedata.combining(c))
 assert len({normalized(v["name"]) for v in variants})==917
@@ -55,7 +55,7 @@ assert {"sentadillas","transportes","equilibrio","recorridos_al_aire_libre"} <= 
     f["family_id"] for f in old_families}
 assert {"sentadilla_bilateral_v01","flexiones_v04","marcha_v01"} <= {
     v["variant_id"] for v in old_variants}
-assert all(f["category"] in {"tren_superior","tronco","piernas","movilidad","cardio"}
+assert all(f["category"] in {"tren_superior","tren_central","tren_inferior","movilidad","cardio"}
            for f in families_new)
 assert Counter(f["category"] for f in families_new)==dict.fromkeys(group_count,5)
 family_to_cat={f["family_id"]:category_mapper.get(f["category"],f["category"])
