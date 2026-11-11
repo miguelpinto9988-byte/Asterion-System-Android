@@ -46,7 +46,7 @@ El objetivo de un deporte como etiqueta es ayudar a **encontrar movimientos tran
 
 ## Ampliación realizada
 
-La consulta estructurada con Nimble recopiló 123 candidatos. Se seleccionaron **100 tipos de movimiento referenciados**, descartando nombres repetidos o demasiado próximos a los tipos ya existentes; también se añadieron movimientos descriptivos conocidos como burpee y carrera de ida y vuelta, ambas reservadas para revisión manual.
+La consulta estructurada con Nimble recopiló 123 candidatos de distintas fuentes. Se curaron **100 nuevos tipos de movimiento**, incluidos burpee y carrera de ida y vuelta, ambos reservados para revisión manual. Adicionalmente se añadieron etiquetas deportivas a **25 tipos ya existentes** (como sentadillas, dominadas, flexiones, marcha y planchas) para ofrecer búsqueda cruzada **sin duplicar sus ejercicios**. Las 125 fichas deportivas apuntan a los mismos tipos y variantes del catálogo.
 
 | Inventario | Antes del PR #11 | Catálogo v2 inicial | Multideporte |
 |---|---:|---:|---:|
