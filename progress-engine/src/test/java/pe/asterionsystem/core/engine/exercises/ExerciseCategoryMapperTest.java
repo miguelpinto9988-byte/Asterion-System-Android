@@ -11,16 +11,19 @@ import org.junit.Test;
 public class ExerciseCategoryMapperTest {
     @Test public void originalSevenSectionsMapToFiveProfileCategories() {
         assertEquals("movilidad",ExerciseCategoryMapper.primaryCategory("coordinacion"));
-        assertEquals("tronco",ExerciseCategoryMapper.primaryCategory("integrado"));
+        assertEquals("tren_central",ExerciseCategoryMapper.primaryCategory("integrado"));
         assertEquals(0,ExerciseCategoryMapper.weeklyIndex("tren_superior"));
         assertEquals(1,ExerciseCategoryMapper.weeklyIndex("tronco"));
+        assertEquals(1,ExerciseCategoryMapper.weeklyIndex("tren_central"));
         assertEquals(2,ExerciseCategoryMapper.weeklyIndex("piernas"));
+        assertEquals(2,ExerciseCategoryMapper.weeklyIndex("tren_inferior"));
         assertEquals(3,ExerciseCategoryMapper.weeklyIndex("movilidad"));
         assertEquals(4,ExerciseCategoryMapper.weeklyIndex("cardio"));
         assertEquals(3,ExerciseCategoryMapper.weeklyIndex("coordinacion"));
         assertEquals(1,ExerciseCategoryMapper.weeklyIndex("integrado"));
         assertEquals(-1,ExerciseCategoryMapper.weeklyIndex("desconocido"));
         assertEquals(5,ExerciseCategoryMapper.weeklyCodes().size());
+        assertEquals(java.util.List.of("tren_superior","tren_central","tren_inferior","movilidad","cardio"),ExerciseCategoryMapper.weeklyCodes());
     }
 
     @Test public void everySourceFamilyAndVariantIsAccessibleByWeeklyCategory() throws Exception {
