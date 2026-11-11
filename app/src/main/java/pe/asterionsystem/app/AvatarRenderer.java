@@ -29,6 +29,11 @@ public final class AvatarRenderer {
 
     public void draw(Canvas canvas,AvatarPose pose,
                      AvatarBodySpec body,AvatarPalette palette,boolean dark) {
+        draw(canvas,pose,body,palette,dark,"Sentadilla");
+    }
+
+    public void draw(Canvas canvas,AvatarPose pose,AvatarBodySpec body,
+                     AvatarPalette palette,boolean dark,String motionLabel) {
         if(canvas==null||pose==null||body==null||palette==null)
             throw new IllegalArgumentException("Renderer necesita pose, spec y paleta");
         this.body=body;
@@ -102,7 +107,10 @@ public final class AvatarRenderer {
         paint.setTextSize(12);
         paint.setTypeface(LABEL_FACE);
         canvas.drawText(palette.female?"AVATAR MORADO":"AVATAR AZUL",38,436,paint);
-        canvas.drawText("SENTADILLA · ILUSTRACIÓN 2D",38,453,paint);
+        String display=motionLabel==null?"MOVIMIENTO":motionLabel.toUpperCase(
+                java.util.Locale.ROOT);
+        if(display.length()>19)display=display.substring(0,19);
+        canvas.drawText(display+" · ILUSTRACIÓN 2D",38,453,paint);
 
     }
 
