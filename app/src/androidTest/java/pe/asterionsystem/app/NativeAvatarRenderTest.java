@@ -37,6 +37,28 @@ public final class NativeAvatarRenderTest {
         assertNotEquals("Different tops should have visibly distinct colors",male,female);
         frames[0].recycle();frames[1].recycle();
     }
+    @Test public void optionDRendersAcrossResolutionsAndModes() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.setPlaying(false);
+            for(int[] size:new int[][]{{400,480},{200,240},{600,720}}) {
+                view.layout(0,0,size[0],size[1]);
+                for(boolean dark:new boolean[]{false,true}) {
+                    view.setDark(dark);
+                    for(float phase:new float[]{0f,.25f,.48f,.75f}) {
+                        view.setPhase(phase);
+                        Bitmap bm=Bitmap.createBitmap(size[0],size[1],
+                                Bitmap.Config.ARGB_8888);
+                        view.draw(new Canvas(bm));
+                        // Canvas background is solid inside the design margin.
+                        assertNotEquals(0,bm.getPixel(size[0]/2,size[1]/2));
+                        bm.recycle();
+                    }
+                }
+            }
+        });
+    }
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{

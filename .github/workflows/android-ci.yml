@@ -11,6 +11,7 @@ on:
       - feature/avatar-2d-nativo-android-20261111
       - feature/avatar-controles-estables-20261111
       - feature/avatar-silueta-organica-20261111
+      - feature/avatar-opcion-d-rig-render-20261111
   pull_request:
     branches:
       - main
@@ -81,6 +82,7 @@ jobs:
           python3 tests/home_navigation_architecture_contract.py
           python3 tests/native_avatar_2d_contract.py
           python3 tests/native_avatar_organic_contract.py
+          python3 tests/avatar_option_d_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py

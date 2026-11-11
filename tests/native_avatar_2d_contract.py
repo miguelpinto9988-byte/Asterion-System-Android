@@ -6,6 +6,10 @@ APP=ROOT/"app/src/main"
 JAVA=APP/"java/pe/asterionsystem/app"
 def read(name):return (JAVA/name).read_text(encoding="utf8")
 anim=read("NativeAvatarView.java")
+render=read("AvatarRenderer.java")
+body=read("AvatarBodySpec.java")
+palette=read("AvatarPalette.java")
+pose_model=read("AvatarPose.java")
 pose=read("AvatarKinematics.java")
 activity=read("NativeAvatarActivity.java")
 controller=read("AvatarPlaybackController.java")
@@ -14,10 +18,17 @@ step=read("RoutineStepActivity.java")
 manifest=(APP/"AndroidManifest.xml").read_text(encoding="utf8")
 home=(APP/"res/layout/screen_home.xml").read_text(encoding="utf8")
 for token in ("extends View","onDraw(Canvas canvas)","postInvalidateOnAnimation()",
-              "Path()","path.cubicTo","drawLimb(","drawJoint(",
-              "AvatarKinematics.squat(","setFemale(","setPlaying(",
+              "renderer.draw(","AvatarKinematics.squat(","setFemale(","setPlaying(",
               "setPhase(","setSpeed("):
     assert token in anim,token
+for token in ("new Paint(Paint.ANTI_ALIAS_FLAG)","new Path()",
+              "path.cubicTo(","drawLimb(","drawJoint(","drawTorso("):
+    assert token in render,token
+for token in ("waistHalfWidth","chestHalfWidth","upperArm","lowerLeg"):
+    assert token in body,token
+assert "extends AvatarPose" in pose
+assert "class AvatarPose" in pose_model
+assert "AvatarPalette.BLUE" in anim and "AvatarPalette.PURPLE" in anim
 for token in ("kneeForward(","UPPER_LEG","LOWER_LEG","TORSO",
               "depthAtPhase(","new Point(182f,364f)",
               "float raw=(float)Math.hypot(dx,dy)"):

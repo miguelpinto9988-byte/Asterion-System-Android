@@ -24,36 +24,35 @@ public final class AvatarKinematics {
         }
     }
 
-    public static final class Pose {
-        public final Point ankle,farAnkle,knee,farKnee,hip,farHip;
-        public final Point shoulder,farShoulder,neck,head,elbow,wrist;
-        public final Point farElbow,farWrist;
+    /** Compatibility alias; new renderer consumes AvatarPose. */
+    public static final class Pose extends AvatarPose {
         Pose(Point ankle,Point farAnkle,Point knee,Point farKnee,
              Point hip,Point farHip,Point shoulder,Point farShoulder,
              Point neck,Point head,Point elbow,Point wrist,
              Point farElbow,Point farWrist) {
-            this.ankle=ankle;this.farAnkle=farAnkle;
-            this.knee=knee;this.farKnee=farKnee;
-            this.hip=hip;this.farHip=farHip;
-            this.shoulder=shoulder;this.farShoulder=farShoulder;
-            this.neck=neck;this.head=head;
-            this.elbow=elbow;this.wrist=wrist;
-            this.farElbow=farElbow;this.farWrist=farWrist;
+            super(ankle,farAnkle,knee,farKnee,hip,farHip,shoulder,
+                    farShoulder,neck,head,elbow,wrist,farElbow,farWrist);
         }
     }
 
     public static Pose squat(float depth) {
+        return squat(depth,AvatarBodySpec.DEFAULT);
+    }
+
+    /** Testable pose calculation with explicit virtual body geometry. */
+    public static Pose squat(float depth,AvatarBodySpec spec) {
+        if(spec==null)throw new IllegalArgumentException("BodySpec obligatorio");
         final float s=smooth(clamp(depth));
         final Point ankle=new Point(182f,364f);
         final Point farAnkle=new Point(170f,363f);
         final Point hip=new Point(184f-45f*s,190f+69f*s);
         final Point farHip=new Point(hip.x-10f,hip.y-3f);
-        Point knee=kneeForward(hip,ankle,UPPER_LEG,LOWER_LEG);
-        Point farKnee=kneeForward(farHip,farAnkle,UPPER_LEG,LOWER_LEG);
+        Point knee=kneeForward(hip,ankle,spec.upperLeg,spec.lowerLeg);
+        Point farKnee=kneeForward(farHip,farAnkle,spec.upperLeg,spec.lowerLeg);
 
         float trunkTilt=0.10f+0.43f*s;
-        Point shoulder=new Point(hip.x+(float)Math.sin(trunkTilt)*TORSO,
-                hip.y-(float)Math.cos(trunkTilt)*TORSO);
+        Point shoulder=new Point(hip.x+(float)Math.sin(trunkTilt)*spec.torso,
+                hip.y-(float)Math.cos(trunkTilt)*spec.torso);
         Point farShoulder=new Point(shoulder.x-9f,shoulder.y+3f);
         Point neck=new Point(shoulder.x+3f,shoulder.y-9f);
         Point head=new Point(neck.x+5f,neck.y-29f);
@@ -64,8 +63,8 @@ public final class AvatarKinematics {
                 new Point(shoulder.x+105f,shoulder.y+23f),s);
         Point farWrist=lerp(new Point(farShoulder.x-11f,farShoulder.y+101f),
                 new Point(farShoulder.x+102f,farShoulder.y+19f),s);
-        Point elbow=elbowBelow(shoulder,wrist,UPPER_ARM,FOREARM);
-        Point farElbow=elbowBelow(farShoulder,farWrist,UPPER_ARM,FOREARM);
+        Point elbow=elbowBelow(shoulder,wrist,spec.upperArm,spec.forearm);
+        Point farElbow=elbowBelow(farShoulder,farWrist,spec.upperArm,spec.forearm);
         return new Pose(ankle,farAnkle,knee,farKnee,hip,farHip,
                 shoulder,farShoulder,neck,head,elbow,wrist,
                 farElbow,farWrist);
@@ -76,7 +75,8 @@ public final class AvatarKinematics {
      * prevent NaN if later poses or proportions become unreachable.
      */
     public static Point kneeForward(Point hip,Point ankle,float femur,float tibia) {
-        if(femur<=0 || tibia<=0)throw new IllegalArgumentException("Longitudes positivas");
+        if(!Float.isFinite(femur)||!Float.isFinite(tibia)||femur<=0 || tibia<=0)
+            throw new IllegalArgumentException("Longitudes positivas y finitas");
         float dx=ankle.x-hip.x,dy=ankle.y-hip.y;
         float raw=(float)Math.hypot(dx,dy);
         float d=Math.max(Math.abs(femur-tibia)+0.001f,
