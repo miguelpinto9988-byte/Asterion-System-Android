@@ -259,6 +259,10 @@ public final class MissionsActivity extends ComponentActivity {
         for(ExerciseVariant entry:dayProposal.candidates()) {
             dailyExerciseRow(index++,entry,today,category,dayProposal);
         }
+        action("Ver ventana de misión diaria",()->previewMissionPopup(
+                "Misiones de hoy",dayProposal.candidates(),
+                "Selección estable hasta el siguiente día. "
+                +"Registrar o detener una actividad es voluntario."));
         action("Rutinas paso a paso",()->openRoutine(
                 SECTION_DAILY,today,category,dayProposal.candidates()));
         int rating=MissionTrackingStore.ratingForCategory(this,today,category);
@@ -354,6 +358,12 @@ public final class MissionsActivity extends ComponentActivity {
             exerciseRow(number+++". "+exercise.name(),
                     "Material: "+material(exercise)+" · Nivel técnico "+exercise.difficulty());
         }
+        if(!snapshot.exercises.isEmpty()) {
+            action("Ver ventana de misión Monarca",()->previewMissionPopup(
+                    "Misión Monarca · cinco días",snapshot.exercises,
+                    "Esta ventana es solo informativa y nunca activa la misión. "
+                    +"La autorización requiere una confirmación separada."));
+        }
         if(snapshot.exercises.isEmpty()
                 && !MonarchSessionStore.REVIEW_REQUIRED.equals(snapshot.status)) {
             paragraph("No hay candidatos compatibles. Configura primero tus días "
@@ -393,6 +403,21 @@ public final class MissionsActivity extends ComponentActivity {
                         show(SECTION_MONARCH);
                     }).setNegativeButton("Conservar",null).show());
         }
+    }
+
+    private void previewMissionPopup(String heading,List<ExerciseVariant> exercises,
+                                     String note) {
+        StringBuilder body=new StringBuilder();
+        int index=1;
+        for(ExerciseVariant exercise:exercises) {
+            body.append(index++).append(". ").append(exercise.name())
+                .append("\\nMaterial: ").append(material(exercise))
+                .append(" · Complejidad ").append(exercise.difficulty())
+                .append("\\n\\n");
+        }
+        new AlertDialog.Builder(this).setTitle(heading)
+                .setMessage(body.toString()+note)
+                .setPositiveButton("Cerrar",null).show();
     }
 
     private void openRoutine(String kind,LocalDate date,int category,
