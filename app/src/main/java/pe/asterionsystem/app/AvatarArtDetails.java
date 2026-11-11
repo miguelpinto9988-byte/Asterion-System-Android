@@ -66,7 +66,12 @@ public final class AvatarArtDetails {
         path.lineTo(length*.91f,-width*.12f);
         path.cubicTo(length*.64f,-width*.24f,length*.32f,-width*.25f,
                 length*.10f,-width*.17f);
-        path.close();c.drawPath(path,paint);
+        path.close();
+        paint.setShader(jeans);
+        paint.setAlpha(far?85:125);
+        c.drawPath(path,paint);
+        paint.setShader(null);
+        paint.setAlpha(255);
         line(c,length*.10f,width*.23f,length*.92f,width*.17f,
                 far?0x55899AB4:0xAA8DA3C2,1.3f);
         line(c,length*.20f,width*.27f,length*.58f,width*.21f,

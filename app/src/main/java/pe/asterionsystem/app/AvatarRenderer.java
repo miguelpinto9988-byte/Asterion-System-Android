@@ -1,6 +1,8 @@
 package pe.asterionsystem.app;
 
 import android.graphics.Canvas;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Typeface;
@@ -16,6 +18,12 @@ public final class AvatarRenderer {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path=new Path();
     private final AvatarArtDetails details=new AvatarArtDetails();
+    private final LinearGradient blueFabric=new LinearGradient(130f,0f,270f,0f,
+            new int[]{0xFF163C78,0xFF397DBE,0xFF1A427A},
+            null,Shader.TileMode.CLAMP);
+    private final LinearGradient purpleFabric=new LinearGradient(130f,0f,270f,0f,
+            new int[]{0xFF51387C,0xFF9976C4,0xFF51387C},
+            null,Shader.TileMode.CLAMP);
     private AvatarPalette palette=AvatarPalette.BLUE;
     private AvatarBodySpec body=AvatarBodySpec.DEFAULT;
 
@@ -151,7 +159,9 @@ public final class AvatarRenderer {
         path.quadTo(v.x,v.y,a.x,a.y);
         path.close();
         color(top);
+        paint.setShader(palette.female?purpleFabric:blueFabric);
         canvas.drawPath(path,paint);
+        paint.setShader(null);
         paint.setColor(0x3026334C);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(.55f);
