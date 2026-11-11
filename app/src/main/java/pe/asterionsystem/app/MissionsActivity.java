@@ -82,7 +82,7 @@ public final class MissionsActivity extends ComponentActivity {
         findViewById(R.id.missions_tab_library).setOnClickListener(v->show(SECTION_LIBRARY));
 
         themeTree(findViewById(R.id.missions_root));
-        loading.setText("Cargando Biblioteca local de 817 variantes…");
+        loading.setText("Cargando biblioteca local de ejercicios…");
         worker.execute(()-> {
             try {
                 ExerciseCatalog fetched=new AssetExerciseCatalogRepository(this).load();
@@ -529,6 +529,8 @@ public final class MissionsActivity extends ComponentActivity {
                 +"baja, moderada, alta, variable o sin clasificar. "
                 +"Las opciones de intensidad alta y nivel técnico avanzado "
                 +"son informativas y no forman parte de las propuestas automáticas.");
+        action("Buscar ejercicios por deporte",this::chooseSport);
+        action("Buscar ejercicios por material",this::chooseEquipment);
         for(int i=0;i<5;i++) {
             String code=ExerciseCategoryMapper.weeklyCode(i);
             List<ExerciseFamily> families=catalog.categoryIndex().families(code);
@@ -540,6 +542,81 @@ public final class MissionsActivity extends ComponentActivity {
                 action(family.name(),()->showFamily(family));
             }
         }
+    }
+
+    /** A discipline is a tag on exercise types; every result retains its one category. */
+    private void chooseSport() {
+        List<String> codes=catalog.sportIndex().sports();
+        String[] names=new String[codes.size()];
+        for(int i=0;i<codes.size();i++)names[i]=catalog.sportIndex().sportName(codes.get(i));
+        new AlertDialog.Builder(this).setTitle("Explorar por deporte")
+                .setItems(names,(dialog,which)->showSportLibrary(codes.get(which)))
+                .setNegativeButton("Cancelar",null).show();
+    }
+
+    private void showSportLibrary(String sportCode) {
+        content.removeAllViews();
+        title("Deporte: "+catalog.sportIndex().sportName(sportCode));
+        paragraph("Deporte como etiqueta secundaria; la categoría física se mantiene.");
+        int count=0;
+        for(int i=0;i<5;i++) {
+            String category=ExerciseCategoryMapper.weeklyCode(i);
+            List<ExerciseType> matches=new ArrayList<>();
+            for(ExerciseType type:catalog.categoryIndex().types(category))
+                if(catalog.sportIndex().includes(type.id(),sportCode))matches.add(type);
+            if(matches.isEmpty())continue;
+            paragraph(ExerciseCategoryMapper.displayName(i)+" · "+matches.size()+" tipos");
+            for(ExerciseType type:matches)
+                action(type.name(),()->showType(type,familyForType(type)));
+            count+=matches.size();
+        }
+        if(count==0)paragraph("Sin movimientos registrados para este deporte.");
+        action("Volver al catálogo",this::libraryFromDetail);
+        themeTree(content);
+        scroll.post(()->scroll.scrollTo(0,0));
+    }
+
+    private void chooseEquipment() {
+        java.util.Set<String> materials=new java.util.TreeSet<>();
+        for(ExerciseVariant variant:catalog.variants())materials.addAll(variant.equipment());
+        List<String> codes=new ArrayList<>(materials);
+        String[] labels=new String[codes.size()];
+        for(int i=0;i<codes.size();i++)labels[i]=codes.get(i).replace('_',' ');
+        new AlertDialog.Builder(this).setTitle("Filtrar por material")
+                .setItems(labels,(dialog,which)->showEquipmentLibrary(codes.get(which)))
+                .setNegativeButton("Cancelar",null).show();
+    }
+
+    private void showEquipmentLibrary(String materialCode) {
+        content.removeAllViews();
+        title("Material: "+materialCode.replace('_',' '));
+        paragraph("Solo se muestran tipos que tienen al menos una variante con este material.");
+        int count=0;
+        for(int i=0;i<5;i++) {
+            String category=ExerciseCategoryMapper.weeklyCode(i);
+            List<ExerciseType> matches=new ArrayList<>();
+            for(ExerciseType type:catalog.categoryIndex().types(category)) {
+                boolean found=false;
+                for(ExerciseVariant variant:catalog.variantsInType(type.id()))
+                    if(variant.equipment().contains(materialCode)){found=true;break;}
+                if(found)matches.add(type);
+            }
+            if(matches.isEmpty())continue;
+            paragraph(ExerciseCategoryMapper.displayName(i)+" · "+matches.size()+" tipos");
+            for(ExerciseType type:matches)
+                action(type.name(),()->showType(type,familyForType(type)));
+            count+=matches.size();
+        }
+        if(count==0)paragraph("No existen ejercicios para este material.");
+        action("Volver al catálogo",this::libraryFromDetail);
+        themeTree(content);
+        scroll.post(()->scroll.scrollTo(0,0));
+    }
+
+    private ExerciseFamily familyForType(ExerciseType type) {
+        for(ExerciseFamily family:catalog.families())
+            if(family.id().equals(type.familyId()))return family;
+        throw new IllegalArgumentException("Familia inexistente para "+type.id());
     }
 
     private void showFamily(ExerciseFamily family) {
@@ -569,6 +646,15 @@ public final class MissionsActivity extends ComponentActivity {
                                   ExerciseIntensity intensityFilter) {
         content.removeAllViews();
         title(type.name());
+        List<String> disciplines=catalog.sportIndex().namesForType(type.id());
+        if(!disciplines.isEmpty()) {
+            paragraph("Deportes relacionados: "+String.join(", ",disciplines));
+            paragraph("Objetivo del movimiento: "+catalog.sportIndex().goal(type.id()));
+            paragraph("Referencia: "+catalog.sportIndex().sourceOrganization(type.id())
+                    +" · "+catalog.sportIndex().sourceUrl(type.id()));
+            if(catalog.sportIndex().manualOnly(type.id()))
+                paragraph("Solo como referencia. No se asigna a misiones automáticas.");
+        }
         paragraph("Intensidad orientativa: "+(intensityFilter==null
                 ?"Todas":intensityFilter.label())
                 +". Depende de la persona y de cómo se realice la actividad.");
@@ -591,6 +677,8 @@ public final class MissionsActivity extends ComponentActivity {
             exerciseRow(v.name(),"Intensidad: "+tag.label()
                     +" · Material: "+material(v)+" · Nivel técnico "+v.difficulty()
                     +(v.supervisionRecommended()?" · Requiere orientación":"")
+                    +(catalog.sportIndex().manualOnly(type.id())
+                        ?" · Solo para revisión técnica":"")
                     +(tag==ExerciseIntensity.HIGH
                         ?" · Solo información; no se asigna automáticamente":""));
             shown++;
