@@ -12,7 +12,7 @@ public final class AvatarBurpeeKinematics {
     // t, hipX, hipY, nearFootX, farFootX, trunkTilt,
     // nearWristTargetX, nearWristTargetY.
     private static final float[][] KEYS={
-        {0f,   184f,174.4f,182f,170f,.10f,200f,176f},
+        {0f,   184f,174.4f,182f,170f,.10f,202.4f,177.8f},
         {.17f, 178f,238f, 182f,170f,1.12f,300f,303f},
         {.25f, 178f,272f, 182f,170f,1.34f,305f,364f},
         {.40f, 203f,283f, 34f, 36f, 1.34f,305f,364f},
@@ -20,7 +20,7 @@ public final class AvatarBurpeeKinematics {
         {.60f, 203f,283f, 34f, 36f, 1.34f,305f,364f},
         {.75f, 178f,272f, 182f,170f,1.34f,305f,364f},
         {.85f, 178f,238f, 182f,170f,1.12f,300f,303f},
-        {1f,   184f,174.4f,182f,170f,.10f,200f,176f}
+        {1f,   184f,174.4f,182f,170f,.10f,202.4f,177.8f}
     };
 
     public static AvatarKinematics.Pose pose(float phase,AvatarBodySpec spec){
@@ -72,8 +72,16 @@ public final class AvatarBurpeeKinematics {
                 shoulder.y-(float)Math.cos(angle)*33f);
         AvatarRigConstraints.TwoBone arm=AvatarRigConstraints.twoBone(
                 shoulder,point(wx,wy),spec.upperArm,spec.forearm,1,0f,170f);
+        AvatarKinematics.Point farTarget=point(wx-14f,wy-5f);
+        // The rear arm also finishes fully extended in standing poses.
+        float neutral=Math.max(0f,1f-t/.17f);
+        neutral=Math.max(neutral,Math.max(0f,(t-.85f)/.15f));
+        AvatarKinematics.Point farRest=AvatarKinematics.wristOnArc(
+                farShoulder,spec.upperArm+spec.forearm-.03f,.015f);
+        farTarget=point(mix(farTarget.x,farRest.x,neutral),
+                mix(farTarget.y,farRest.y,neutral));
         AvatarRigConstraints.TwoBone backArm=AvatarRigConstraints.twoBone(
-                farShoulder,point(wx-14f,wy-5f),
+                farShoulder,farTarget,
                 spec.upperArm,spec.forearm,1,0f,170f);
         return new AvatarKinematics.Pose(
                 ankle,farAnkle,leg.joint,backLeg.joint,hip,farHip,
