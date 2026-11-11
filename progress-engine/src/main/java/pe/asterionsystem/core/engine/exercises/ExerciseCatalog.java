@@ -24,6 +24,7 @@ public final class ExerciseCatalog {
     private final Map<String, ExerciseVariant> byVariant;
     private final Map<String, ExerciseIntensity> intensityById;
     private final ExerciseCategoryIndex categoryIndex;
+    private final ExerciseSportIndex sportIndex;
 
     ExerciseCatalog(List<ExerciseFamily> allFamilies, List<ExerciseType> allTypes,
                     List<ExerciseVariant> allVariants) {
@@ -33,11 +34,19 @@ public final class ExerciseCatalog {
     ExerciseCatalog(List<ExerciseFamily> allFamilies, List<ExerciseType> allTypes,
                     List<ExerciseVariant> allVariants,
                     Map<String, ExerciseIntensity> intensityOverrides) {
+        this(allFamilies,allTypes,allVariants,intensityOverrides,ExerciseSportIndex.empty());
+    }
+
+    ExerciseCatalog(List<ExerciseFamily> allFamilies, List<ExerciseType> allTypes,
+                    List<ExerciseVariant> allVariants,
+                    Map<String, ExerciseIntensity> intensityOverrides,
+                    ExerciseSportIndex sportIndex) {
         Objects.requireNonNull(intensityOverrides,"intensityOverrides");
+        Objects.requireNonNull(sportIndex,"sportIndex");
         if (allFamilies.isEmpty() || allTypes.isEmpty() || allVariants.isEmpty()) {
             throw new IllegalArgumentException("El catálogo no puede estar vacío");
         }
-        if (allFamilies.size() > 120 || allTypes.size() > 500 || allVariants.size() > 4000) {
+        if (allFamilies.size() > 400 || allTypes.size() > 1500 || allVariants.size() > 10000) {
             throw new IllegalArgumentException("Límite de catálogo excedido");
         }
         byFamily = new LinkedHashMap<>();
@@ -95,12 +104,14 @@ public final class ExerciseCatalog {
         this.types = Collections.unmodifiableList(new ArrayList<>(allTypes));
         this.variants = Collections.unmodifiableList(new ArrayList<>(allVariants));
         this.categoryIndex = new ExerciseCategoryIndex(this.families,this.types,this.variants);
+        this.sportIndex = sportIndex;
     }
 
     public List<ExerciseFamily> families() { return families; }
     public List<ExerciseType> types() { return types; }
     public List<ExerciseVariant> variants() { return variants; }
     public ExerciseCategoryIndex categoryIndex() { return categoryIndex; }
+    public ExerciseSportIndex sportIndex() { return sportIndex; }
 
     /** Unlabelled older variants are preserved, not assigned speculative intensity. */
     public ExerciseIntensity intensity(String variantId) {
@@ -113,7 +124,7 @@ public final class ExerciseCatalog {
      * not automatically assigned to an unsupervised mission.
      */
     public boolean eligibleForAutomaticSuggestion(ExerciseVariant variant) {
-        if(!variant.eligibleForAutomaticSuggestion())return false;
+        if(!variant.eligibleForAutomaticSuggestion() || sportIndex.manualOnly(variant.typeId()))return false;
         ExerciseIntensity tag=intensity(variant.id());
         return tag!=ExerciseIntensity.HIGH && tag!=ExerciseIntensity.VARIABLE;
     }
@@ -142,6 +153,15 @@ public final class ExerciseCatalog {
     public List<ExerciseVariant> search(String query, String category,
                                         String equipment, String execution,
                                         int maximumDifficulty, int limit, int offset) {
+        return search(query, category, equipment, execution, null,
+                maximumDifficulty, limit, offset);
+    }
+
+    /** Sports are search tags, never an alternative primary category. */
+    public List<ExerciseVariant> search(String query, String category,
+                                        String equipment, String execution,
+                                        String sportCode, int maximumDifficulty,
+                                        int limit, int offset) {
         if (query == null || query.length() > 120 || maximumDifficulty < 1 ||
                 maximumDifficulty > 5 || limit < 1 || limit > 100 || offset < 0) {
             throw new IllegalArgumentException("Filtros de búsqueda inválidos");
@@ -149,6 +169,7 @@ public final class ExerciseCatalog {
         if (category != null) TaxonomyChecks.token(category);
         if (equipment != null) TaxonomyChecks.token(equipment);
         if (execution != null) TaxonomyChecks.token(execution);
+        if (sportCode != null) sportIndex.sportName(sportCode);
         String q = normalized(query);
         ArrayList<ExerciseVariant> hits = new ArrayList<>();
         for (ExerciseVariant variant : variants) {
@@ -156,13 +177,16 @@ public final class ExerciseCatalog {
             if (equipment != null && !variant.equipment().contains(equipment)) continue;
             if (execution != null && !variant.execution().equals(execution)) continue;
             ExerciseType type = byType.get(variant.typeId());
+            if (sportCode != null && !sportIndex.includes(type.id(), sportCode)) continue;
             ExerciseFamily family = byFamily.get(type.familyId());
             // Accept the public five-category code while retaining older
             // direct searches by the original taxonomy code.
             if (category != null &&
                     !ExerciseCategoryMapper.primaryCategory(category).equals(
                             categoryIndex.categoryForFamily(family.id()))) continue;
-            if (!q.isEmpty() && !normalized(variant.name() + " " + type.name() + " " + family.name()).contains(q)) {
+            if (!q.isEmpty() && !normalized(variant.name() + " " + type.name() + " " + family.name()
+                    + " " + String.join(" ",sportIndex.namesForType(type.id()))
+                    + " " + sportIndex.goal(type.id())).contains(q)) {
                 continue;
             }
             hits.add(variant);
