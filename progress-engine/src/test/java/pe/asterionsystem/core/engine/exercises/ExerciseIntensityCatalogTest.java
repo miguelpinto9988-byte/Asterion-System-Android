@@ -18,7 +18,7 @@ public final class ExerciseIntensityCatalogTest {
             Reader v=resource(folder+"variants.tsv");
             Reader intensities=resource(folder+"intensity.tsv")) {
             ExerciseCatalog catalog=ExerciseCatalogLoader.load(f,t,v,intensities);
-            assertEquals(917,catalog.variants().size());
+            assertEquals(1157,catalog.variants().size());
             assertEquals(ExerciseIntensity.LOW,catalog.intensity("marcha_acuatica_v01"));
             assertEquals(ExerciseIntensity.HIGH,catalog.intensity("nado_crol_recreativo_v03"));
             assertEquals(ExerciseIntensity.VARIABLE,
