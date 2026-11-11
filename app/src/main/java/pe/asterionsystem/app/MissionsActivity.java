@@ -80,6 +80,10 @@ public final class MissionsActivity extends ComponentActivity {
         findViewById(R.id.missions_tab_daily).setOnClickListener(v->show(SECTION_DAILY));
         findViewById(R.id.missions_tab_monarch).setOnClickListener(v->show(SECTION_MONARCH));
         findViewById(R.id.missions_tab_library).setOnClickListener(v->show(SECTION_LIBRARY));
+        findViewById(R.id.missions_open_routines).setOnClickListener(v->
+                startActivity(new Intent(this,RoutinesActivity.class)));
+        findViewById(R.id.missions_open_calendar).setOnClickListener(v->
+                startActivity(new Intent(this,CalendarActivity.class)));
 
         themeTree(findViewById(R.id.missions_root));
         loading.setText("Cargando biblioteca local de ejercicios…");
