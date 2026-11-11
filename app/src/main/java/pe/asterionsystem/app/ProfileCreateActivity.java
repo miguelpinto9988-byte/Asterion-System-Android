@@ -74,6 +74,13 @@ public final class ProfileCreateActivity extends ComponentActivity {
                 &&ProfileStore.hasProfile(this);
         draft=editMode?ProfileStore.getRegistration(this)
                 :ProfileRegistrationDraft.load(this);
+        if(editMode && state!=null && state.containsKey("edit_draft_json")) {
+            try {
+                draft=new JSONObject(state.getString("edit_draft_json","{}"));
+            } catch(JSONException invalid) {
+                draft=ProfileStore.getRegistration(this);
+            }
+        }
         if(editMode && !draft.has("name"))put("name",ProfileStore.getName(this));
         if (!draft.has("theme")) put("theme","light");
         if(editMode) {
@@ -199,7 +206,7 @@ public final class ProfileCreateActivity extends ComponentActivity {
         back.setVisibility(step==1?View.GONE:View.VISIBLE);
         String[] titles={"","Identidad del cazador","Entrenamiento",
                 "Personalización","Activación del sistema"};
-        heading.setText(titles[step]);
+        heading.setText(step==4&&editMode?"Confirmar cambios":titles[step]);
         indicator.setText(step+" / 4");
         forwardText.setText(step==4?(editMode?"GUARDAR CAMBIOS":"ACTIVAR PERFIL")
                 :"SIGUIENTE");
@@ -284,6 +291,7 @@ public final class ProfileCreateActivity extends ComponentActivity {
     @Override protected void onSaveInstanceState(Bundle saved) {
         if(step==1)saveStepOne(false);
         saved.putInt("stage",step);
+        if(editMode)saved.putString("edit_draft_json",draft.toString());
         super.onSaveInstanceState(saved);
     }
 }
