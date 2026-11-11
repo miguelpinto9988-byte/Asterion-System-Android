@@ -45,8 +45,8 @@ public final class AvatarKinematics {
         final float s=smooth(clamp(depth));
         final Point ankle=new Point(182f,364f);
         final Point farAnkle=new Point(170f,363f);
-        final Point hip=new Point(184f-45f*s,190f+69f*s);
-        final Point farHip=new Point(hip.x-10f,hip.y-3f);
+        final Point hip=new Point(184f-45f*s,174.4f+82f*s);
+        final Point farHip=new Point(hip.x-10f,hip.y-1f);
         AvatarRigConstraints.TwoBone nearLeg=AvatarRigConstraints.twoBone(
                 hip,ankle,spec.upperLeg,spec.lowerLeg,-1,0f,170f);
         AvatarRigConstraints.TwoBone farLeg=AvatarRigConstraints.twoBone(
@@ -58,16 +58,19 @@ public final class AvatarKinematics {
         float trunkTilt=0.10f+0.43f*s;
         Point shoulder=new Point(hip.x+(float)Math.sin(trunkTilt)*spec.torso,
                 hip.y-(float)Math.cos(trunkTilt)*spec.torso);
-        Point farShoulder=new Point(shoulder.x-9f,shoulder.y+3f);
-        Point neck=new Point(shoulder.x+3f,shoulder.y-9f);
-        Point head=new Point(neck.x+5f,neck.y-29f);
+        Point farShoulder=new Point(shoulder.x-6f,shoulder.y+10f);
+        Point neck=new Point(shoulder.x+4f,shoulder.y-2f);
+        Point head=new Point(neck.x+5f,neck.y-16f);
 
         // One target per wrist, with analytical two-bone IK for both elbows.
         // Segment lengths stay fixed even when the wrists travel forward.
-        Point desiredWrist=lerp(new Point(shoulder.x+4f,shoulder.y+107f),
-                new Point(shoulder.x+105f,shoulder.y+23f),s);
-        Point desiredFarWrist=lerp(new Point(farShoulder.x-11f,farShoulder.y+101f),
-                new Point(farShoulder.x+102f,farShoulder.y+19f),s);
+        float fullArmReach=spec.upperArm+spec.forearm-.015f;
+        // Fully extended arms at the beginning and end of the cycle; rotate
+        // the wrist target about the shoulder rather than shortening the chord.
+        Point desiredWrist=wristOnArc(shoulder,fullArmReach,
+                .055f+1.28f*s);
+        Point desiredFarWrist=wristOnArc(farShoulder,fullArmReach,
+                .015f+1.18f*s);
         AvatarRigConstraints.TwoBone nearArm=AvatarRigConstraints.twoBone(
                 shoulder,desiredWrist,spec.upperArm,spec.forearm,1,0f,170f);
         AvatarRigConstraints.TwoBone farArm=AvatarRigConstraints.twoBone(
@@ -120,6 +123,15 @@ public final class AvatarKinematics {
         if(Float.isNaN(t))return 0f;
         return Math.max(0f,Math.min(1f,t));
     }
+    /** A circular wrist target keeps a straight-arm silhouette in profile. */
+    static Point wristOnArc(Point shoulder,float reach,float angle) {
+        if(shoulder==null||!Float.isFinite(reach)||reach<=0f
+                ||!Float.isFinite(angle))
+            throw new IllegalArgumentException("Arm trajectory must be finite");
+        return new Point(shoulder.x+(float)Math.sin(angle)*reach,
+                shoulder.y+(float)Math.cos(angle)*reach);
+    }
+
     private static Point lerp(Point a,Point b,float t) {
         return new Point(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t);
     }

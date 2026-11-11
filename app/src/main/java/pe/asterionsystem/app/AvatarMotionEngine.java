@@ -26,7 +26,7 @@ public final class AvatarMotionEngine {
         float s=AvatarKinematics.depthAtPhase(phase);
         if(motion==Motion.SQUAT)return AvatarKinematics.squat(s,spec);
 
-        float hx=184f,hy=190f,tilt=.10f;
+        float hx=184f,hy=174.4f,tilt=.10f;
         AvatarKinematics.Point ankle=new AvatarKinematics.Point(182f,364f);
         AvatarKinematics.Point farAnkle=new AvatarKinematics.Point(170f,363f);
         switch(motion) {
@@ -42,7 +42,7 @@ public final class AvatarMotionEngine {
                 // Front foot is intentionally free in this motion; far foot
                 // remains a fixed world-space contact.
                 ankle=new AvatarKinematics.Point(182f+24f*s,364f-45f*s);
-                hy-=4f*s;
+                hy+=2f*s;
                 hx+=3f*s;
                 break;
             case LUNGE:
@@ -50,13 +50,13 @@ public final class AvatarMotionEngine {
                 ankle=new AvatarKinematics.Point(217f,364f);
                 farAnkle=new AvatarKinematics.Point(143f,363f);
                 hx=178f-6f*s;
-                hy=188f+35f*s;
+                hy=181f+42f*s;
                 tilt=.12f+.10f*s;
                 break;
             default: throw new IllegalArgumentException("Unknown preset");
         }
         AvatarKinematics.Point hip=new AvatarKinematics.Point(hx,hy);
-        AvatarKinematics.Point farHip=new AvatarKinematics.Point(hx-10f,hy-3f);
+        AvatarKinematics.Point farHip=new AvatarKinematics.Point(hx-10f,hy-1f);
 
         AvatarRigConstraints.TwoBone leg=AvatarRigConstraints.twoBone(
                 hip,ankle,spec.upperLeg,spec.lowerLeg,-1,0f,170f);
@@ -71,38 +71,40 @@ public final class AvatarMotionEngine {
                 hx+(float)Math.sin(tilt)*spec.torso,
                 hy-(float)Math.cos(tilt)*spec.torso);
         AvatarKinematics.Point farShoulder=new AvatarKinematics.Point(
-                shoulder.x-9f,shoulder.y+3f);
+                shoulder.x-6f,shoulder.y+10f);
         AvatarKinematics.Point neck=new AvatarKinematics.Point(
-                shoulder.x+3f,shoulder.y-9f);
+                shoulder.x+4f,shoulder.y-2f);
         AvatarKinematics.Point head=new AvatarKinematics.Point(
-                neck.x+5f,neck.y-29f);
+                neck.x+5f,neck.y-16f);
 
-        float frontDx=4f,frontDy=107f,farDx=-11f,farDy=101f;
-        if(motion==Motion.ARM_RAISE) {
-            frontDx+=57f*s;
-            frontDy-=165f*s;
-            farDx+=68f*s;
-            farDy-=147f*s;
-        } else if(motion==Motion.HIP_HINGE) {
-            frontDx+=48f*s;
-            frontDy-=28f*s;
-            farDx+=44f*s;
-            farDy-=30f*s;
-        } else if(motion==Motion.MARCH) {
-            frontDx+=31f*s;
-            frontDy-=28f*s;
-            farDx+=25f*s;
-            farDy-=26f*s;
-        } else if(motion==Motion.LUNGE) {
-            frontDx+=55f*s;
-            frontDy-=74f*s;
-            farDx+=51f*s;
-            farDy-=66f*s;
+        // Full reach at neutral and at both endpoints. The authored angle
+        // changes smoothly without pulling the wrists towards the shoulders.
+        float nearAngle=.055f,farAngle=.015f;
+        switch(motion) {
+            case ARM_RAISE:
+                nearAngle+=(float)Math.PI*s;
+                farAngle+=(float)Math.PI*s;
+                break;
+            case HIP_HINGE:
+                nearAngle+=.73f*s;
+                farAngle+=.66f*s;
+                break;
+            case MARCH:
+                nearAngle+=.39f*s;
+                farAngle+=.33f*s;
+                break;
+            case LUNGE:
+                nearAngle+=1.03f*s;
+                farAngle+=.94f*s;
+                break;
+            default:
+                break;
         }
-        AvatarKinematics.Point wrist=new AvatarKinematics.Point(
-                shoulder.x+frontDx,shoulder.y+frontDy);
-        AvatarKinematics.Point farWrist=new AvatarKinematics.Point(
-                farShoulder.x+farDx,farShoulder.y+farDy);
+        float reach=spec.upperArm+spec.forearm-.015f;
+        AvatarKinematics.Point wrist=AvatarKinematics.wristOnArc(
+                shoulder,reach,nearAngle);
+        AvatarKinematics.Point farWrist=AvatarKinematics.wristOnArc(
+                farShoulder,reach,farAngle);
         AvatarRigConstraints.TwoBone arm=AvatarRigConstraints.twoBone(
                 shoulder,wrist,spec.upperArm,spec.forearm,1,0f,170f);
         AvatarRigConstraints.TwoBone farArm=AvatarRigConstraints.twoBone(

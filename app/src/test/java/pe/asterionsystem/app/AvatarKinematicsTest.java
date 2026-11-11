@@ -87,6 +87,25 @@ public final class AvatarKinematicsTest {
         assertEquals(364f,atRest.ankle.y,EPS);
     }
 
+    @Test public void squatNowStartsWithExtendedKneesAndElbows(){
+        AvatarBodySpec spec=AvatarBodySpec.DEFAULT;
+        AvatarPose start=AvatarKinematics.squat(0f);
+        AvatarPose finish=AvatarKinematics.squat(1f);
+        assertTrue(start.hip.distance(start.ankle)>
+                spec.upperLeg+spec.lowerLeg-.55f);
+        assertTrue(start.farHip.distance(start.farAnkle)>
+                spec.upperLeg+spec.lowerLeg-.55f);
+        assertTrue(start.shoulder.distance(start.wrist)>
+                spec.upperArm+spec.forearm-.08f);
+        assertTrue(start.farShoulder.distance(start.farWrist)>
+                spec.upperArm+spec.forearm-.08f);
+        assertTrue(finish.hip.y>start.hip.y+75f);
+        assertTrue(finish.hip.distance(finish.ankle)<
+                start.hip.distance(start.ankle)-50f);
+        assertEquals(start.ankle.x,finish.ankle.x,.001f);
+        assertEquals(start.ankle.y,finish.ankle.y,.001f);
+    }
+
     @Test public void invalidPoseDepthCannotProduceNan() {
         AvatarKinematics.Pose one=AvatarKinematics.squat(Float.NaN);
         assertTrue(Float.isFinite(one.knee.x)&&Float.isFinite(one.knee.y));

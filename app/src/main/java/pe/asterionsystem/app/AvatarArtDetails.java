@@ -119,14 +119,14 @@ public final class AvatarArtDetails {
         float length=bone(c,hip,shoulder);
         fill(0x55375B91);
         path.rewind();
-        path.moveTo(length*.09f,-body.waistHalfWidth*.77f);
-        path.cubicTo(length*.4f,-body.waistHalfWidth*.91f,
-                length*.72f,-body.chestHalfWidth*.82f,
-                length*.94f,-body.shoulderHalfWidth*.81f);
-        path.lineTo(length*.90f,-body.shoulderHalfWidth*.53f);
-        path.cubicTo(length*.68f,-body.chestHalfWidth*.57f,
-                length*.4f,-body.waistHalfWidth*.50f,
-                length*.09f,-body.waistHalfWidth*.46f);
+        path.moveTo(length*.09f,-body.waistHalfWidth*.55f);
+        path.cubicTo(length*.4f,-body.waistHalfWidth*.61f,
+                length*.72f,-body.chestHalfWidth*.58f,
+                length*.94f,-body.shoulderHalfWidth*.58f);
+        path.lineTo(length*.90f,-body.shoulderHalfWidth*.39f);
+        path.cubicTo(length*.68f,-body.chestHalfWidth*.39f,
+                length*.4f,-body.waistHalfWidth*.32f,
+                length*.09f,-body.waistHalfWidth*.26f);
         path.close();c.drawPath(path,paint);
         line(c,length*.12f,body.waistHalfWidth*.63f,
                 length*.88f,body.chestHalfWidth*.63f,
@@ -231,53 +231,81 @@ public final class AvatarArtDetails {
         c.restore();
     }
 
-    /** Detailed face, ear, layered hair, eyebrows, two eyes, nose and smile. */
+    /**
+     * Readable, one-eyed side profile with a distinct nose, jaw, ear,
+     * forehead and hairline. The eye count deliberately reflects the camera.
+     * These are artistic features, not a biological or biometric model.
+     */
     public void drawHead(Canvas c,AvatarKinematics.Point center,
                          AvatarBodySpec body,AvatarPalette palette){
         c.save();c.translate(center.x,center.y);
         c.scale(body.headScale,body.headScale);
-        fill(palette.skinShade);
-        c.drawOval(-20f,-1f,-12f,10f,paint);
+        // Hair behind the cheek and neck; remains separate from facial skin.
+        fill(palette.hair);
         path.rewind();
         path.moveTo(-16f,-20f);
-        path.cubicTo(-12f,-27f,10f,-27f,18f,-15f);
-        path.quadTo(22f,-1f,20f,14f);
-        path.quadTo(8f,27f,-3f,22f);
-        path.cubicTo(-19f,19f,-22f,4f,-16f,-20f);
-        path.close();fill(palette.skin);c.drawPath(path,paint);
-        // Ear inset, jaw contour and gentle cheek volume.
-        fill(palette.skinShade);c.drawOval(-19.5f,-2f,-14f,9f,paint);
-        fill(palette.skin);c.drawOval(-19f,-1.5f,-16f,7f,paint);
-        fill(0x44FFD4AE);c.drawOval(-2f,4f,14f,14f,paint);
-        line(c,-12f,10f,-2f,20f,0x44BC785A,1f);
-        path.rewind();path.moveTo(-19f,-8f);
-        path.cubicTo(-23f,-24f,-10f,-34f,4f,-30f);
-        path.cubicTo(22f,-33f,27f,-21f,20f,-8f);
-        path.quadTo(12f,-14f,7f,-14f);
-        path.quadTo(-3f,-8f,-12f,-11f);
-        path.close();fill(palette.hair);c.drawPath(path,paint);
-        line(c,-10f,-21f,4f,-25f,0x886A5148,2f);
-        line(c,1f,-27f,13f,-23f,0x663F3637,1.8f);
+        path.cubicTo(-23f,-26f,-26f,-8f,-21f,10f);
+        path.lineTo(-17f,15f);
+        path.quadTo(-23f,-1f,-16f,-20f);
+        path.close();c.drawPath(path,paint);
+
+        // Profile instead of a broad oval: brow -> nose -> lips -> jaw.
+        path.rewind();
+        path.moveTo(-18f,-18f);
+        path.cubicTo(-13f,-27f,5f,-29f,15f,-18f);
+        path.cubicTo(18f,-14f,18f,-5f,17f,-2f);
+        path.quadTo(24f,3f,23f,6f);
+        path.quadTo(22f,8f,18f,9f);
+        path.quadTo(21f,12f,18f,15f);
+        path.quadTo(17f,22f,7f,23f);
+        path.cubicTo(-3f,23f,-14f,18f,-17f,9f);
+        path.cubicTo(-21f,2f,-21f,-11f,-18f,-18f);
+        path.close();
+        fill(palette.skin);
+        c.drawPath(path,paint);
+
+        // Ear on the near side and subtle jaw modeling.
+        fill(palette.skinShade);
+        c.drawOval(-19f,-1.5f,-10f,9f,paint);
+        fill(palette.skin);
+        c.drawOval(-17.1f,.2f,-12.2f,6.4f,paint);
+        line(c,-15f,2.7f,-13f,4.6f,0x778F5844,.8f);
+        fill(0x25FFE1BC);
+        c.drawOval(-3f,5f,14f,16f,paint);
+        line(c,-7f,15f,4f,21f,0x45B47759,.95f);
+
+        // Natural, asymmetrical cap of short hair and a swept fringe.
+        path.rewind();
+        path.moveTo(-20f,-11f);
+        path.cubicTo(-24f,-23f,-12f,-32f,1f,-31f);
+        path.cubicTo(14f,-33f,24f,-24f,18f,-14f);
+        path.quadTo(12f,-17f,8f,-16f);
+        path.quadTo(4f,-13f,-2f,-14f);
+        path.quadTo(-9f,-11f,-14f,-13f);
+        path.close();
+        fill(palette.hair);c.drawPath(path,paint);
+        line(c,-9f,-25f,3f,-28f,0x665F4942,1.6f);
+        line(c,3f,-28f,13f,-23f,0x554A3A35,1.3f);
         if(palette.female){
             fill(palette.hair);
-            path.rewind();path.moveTo(-16f,-18f);
-            path.cubicTo(-34f,-24f,-37f,-5f,-29f,7f);
-            path.lineTo(-21f,11f);
-            path.quadTo(-25f,-4f,-16f,-18f);
+            path.rewind();
+            path.moveTo(-19f,-20f);
+            path.cubicTo(-32f,-17f,-31f,1f,-26f,14f);
+            path.lineTo(-20f,15f);
+            path.quadTo(-24f,0f,-19f,-20f);
             path.close();c.drawPath(path,paint);
         }
-        line(c,-1f,-2f,5f,-4f,0xFF5B4039,1.9f);
-        line(c,9f,-4f,14f,-5f,0xFF5B4039,1.5f);
-        fill(0xFF2B353D);
-        c.drawCircle(3f,1f,1.7f,paint);
-        c.drawCircle(13f,0f,1.45f,paint);
+        // Only the eye facing the camera should be visible in side view.
+        line(c,7f,-6f,14f,-7f,0xFF60483F,1.6f);
+        fill(0xFF2D353E);
+        c.drawOval(10f,-3f,13.4f,1.3f,paint);
         fill(0xEEFFFFFF);
-        c.drawCircle(3.6f,.35f,.6f,paint);
-        c.drawCircle(13.4f,-.6f,.5f,paint);
-        line(c,15f,4f,19f,8f,0xCCB07C61,1.35f);
-        line(c,19f,8f,15f,9f,0xCCB07C61,1.35f);
-        line(c,7f,15f,16f,14f,0xFF94575B,1.55f);
-        line(c,16f,14f,19f,11f,0xFF94575B,1.55f);
+        c.drawCircle(11.6f,-2.1f,.55f,paint);
+        // Nose bridge, nostril and restrained expression.
+        line(c,18f,0f,21f,4f,0xAAAF765D,.85f);
+        fill(0xFF966D59);c.drawCircle(20.2f,6.4f,.7f,paint);
+        line(c,10f,14f,16f,14.8f,0xFF975B5D,1.25f);
+        line(c,16f,14.8f,18f,12.9f,0xAA975B5D,.85f);
         c.restore();
     }
 

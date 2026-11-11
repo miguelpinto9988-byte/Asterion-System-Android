@@ -13,8 +13,8 @@ tests=(r/"app/src/test/java/pe/asterionsystem/app/AvatarRigConstraintsTest.java"
 for token in ("class AvatarRigConstraints","twoBone(","fabrik(","targetLimited",
               "maxIterations","rootForPinnedEnd(","requireFixedLength("):
     assert token in rig,token
-for token in ("Motion.SQUAT","Motion.ARM_RAISE","Motion.MARCH","Motion.LUNGE",
-              "Motion.HIP_HINGE","assertSkeleton(","targetLimited"):
+for token in ("SQUAT(","ARM_RAISE(","MARCH(","LUNGE(",
+              "HIP_HINGE(","assertSkeleton(","targetLimited"):
     assert token in engine,token
 assert "AvatarRigConstraints.twoBone(" in kin
 for token in ("setMotion(","AvatarMotionEngine.pose(","getMotion()"):

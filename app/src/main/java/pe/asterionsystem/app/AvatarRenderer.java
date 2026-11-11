@@ -52,6 +52,11 @@ public final class AvatarRenderer {
         drawRoundedRect(canvas,38,389,362,392,2,dark?0xFF666B82:0xFFD7DCE7,0);
         drawOval(canvas,113,373,284,389,dark?0xFF242532:0xFFE0E4EB);
 
+        // Raise arms fully overhead without clipping beyond the fixed
+        // 400x480 viewport. Keep the shoe floor coordinate unchanged.
+        canvas.save();
+        if("Elevación de brazos".equals(motionLabel))
+            canvas.scale(.78f,.78f,200f,364f);
 
         // Far limbs first. Rounded pieces overlap at each hinge; joints do
         // not display a separate dark ring when the skeleton bends.
@@ -62,8 +67,14 @@ public final class AvatarRenderer {
                 palette.female?0xFF514D70:0xFF293951);
         drawJoint(canvas,p.farKnee,11.5f,palette.female?0xFF514D70:0xFF293951);
         details.drawDenimLeg(canvas,p.farHip,p.farKnee,p.farAnkle,true);
-        drawLimb(canvas,p.farShoulder,p.farElbow,body.upperArmWidth*.74f,body.upperArmWidth*.62f,palette.skinShade);
-        drawLimb(canvas,p.farElbow,p.farWrist,body.forearmWidth,body.forearmWidth*.65f,palette.skinShade);
+        // Rear upper arm begins inside the back of the jersey; a short
+        // sleeve hides the shoulder pivot instead of a protruding cylinder.
+        drawLimb(canvas,p.farShoulder,interp(p.farShoulder,p.farElbow,.34f),
+                body.upperArmWidth*.75f,body.upperArmWidth*.68f,palette.top);
+        drawLimb(canvas,interp(p.farShoulder,p.farElbow,.27f),p.farElbow,
+                body.upperArmWidth*.67f,body.upperArmWidth*.58f,palette.skinShade);
+        drawLimb(canvas,p.farElbow,p.farWrist,body.forearmWidth,
+                body.forearmWidth*.65f,palette.skinShade);
         drawJoint(canvas,p.farElbow,8f,palette.skinShade);
         details.drawHand(canvas,p.farWrist,palette.skinShade);
 
@@ -83,8 +94,9 @@ public final class AvatarRenderer {
         drawLimb(canvas,p.shoulder,p.neck,21f,13f,palette.skin);
         details.drawHead(canvas,p.head,body,palette);
         if(!palette.female) {
-            drawLimb(canvas,p.shoulder,interp(p.shoulder,p.elbow,.29f),
-                    body.upperArmWidth,body.upperArmWidth*.81f,top);
+            drawLimb(canvas,interp(p.shoulder,p.elbow,.095f),
+                    interp(p.shoulder,p.elbow,.34f),
+                    body.upperArmWidth*.91f,body.upperArmWidth*.79f,top);
             details.drawSleeve(canvas,p.shoulder,p.elbow,palette);
             drawLimb(canvas,interp(p.shoulder,p.elbow,.23f),p.elbow,
                     19f,17f,palette.skin);
@@ -97,6 +109,7 @@ public final class AvatarRenderer {
         drawJoint(canvas,p.elbow,8.8f,palette.skin);
         details.drawForearm(canvas,p.elbow,p.wrist);
         details.drawHand(canvas,p.wrist,palette.skin);
+        canvas.restore();
 
         if(dark) {
             paint.setColor(0xFFADB4CE);
@@ -135,36 +148,43 @@ public final class AvatarRenderer {
                 pose.hip.y+dy*along+ny*side);
     }
 
+    /** Side-profile torso: restrained back contour, ribcage, abdomen,
+     * waist, pelvis and garment shoulder. No concentric oval/capsule body. */
     private void drawTorso(Canvas canvas,AvatarPose p,
                            int top,int highlight) {
-        AvatarKinematics.Point a=torsoPoint(p,0f,-body.waistHalfWidth);
-        AvatarKinematics.Point b=torsoPoint(p,.42f,-body.waistHalfWidth*.95f);
-        AvatarKinematics.Point c=torsoPoint(p,.78f,-body.chestHalfWidth);
-        AvatarKinematics.Point d=torsoPoint(p,1f,-body.shoulderHalfWidth);
-        AvatarKinematics.Point e=torsoPoint(p,1f,body.shoulderHalfWidth);
-        AvatarKinematics.Point f=torsoPoint(p,.78f,body.chestHalfWidth);
-        AvatarKinematics.Point g=torsoPoint(p,.42f,body.waistHalfWidth*.95f);
-        AvatarKinematics.Point h=torsoPoint(p,0f,body.waistHalfWidth);
-        AvatarKinematics.Point v,v2;
-
+        AvatarKinematics.Point hipBack=torsoPoint(p,-.02f,-body.waistHalfWidth*.76f);
+        AvatarKinematics.Point lowerBack=torsoPoint(p,.28f,-body.waistHalfWidth*.72f);
+        AvatarKinematics.Point chestBack=torsoPoint(p,.79f,-body.chestHalfWidth*.72f);
+        AvatarKinematics.Point shoulderBack=torsoPoint(p,1f,-body.shoulderHalfWidth*.68f);
+        AvatarKinematics.Point shoulderFront=torsoPoint(p,1f,body.shoulderHalfWidth*.76f);
+        AvatarKinematics.Point chestFront=torsoPoint(p,.77f,body.chestHalfWidth*.91f);
+        AvatarKinematics.Point abdomenFront=torsoPoint(p,.43f,body.waistHalfWidth*.89f);
+        AvatarKinematics.Point hipFront=torsoPoint(p,0f,body.waistHalfWidth*.97f);
+        AvatarKinematics.Point p1,p2;
         path.rewind();
-        path.moveTo(a.x,a.y);
-        v=torsoPoint(p,.15f,-body.waistHalfWidth*1.14f);v2=torsoPoint(p,.25f,-body.waistHalfWidth);
-        path.cubicTo(v.x,v.y,v2.x,v2.y,b.x,b.y);
-        v=torsoPoint(p,.55f,-body.waistHalfWidth*.95f);v2=torsoPoint(p,.65f,-body.chestHalfWidth*.97f);
-        path.cubicTo(v.x,v.y,v2.x,v2.y,c.x,c.y);
-        v=torsoPoint(p,.93f,-body.chestHalfWidth*1.03f);v2=torsoPoint(p,1f,-body.shoulderHalfWidth*1.26f);
-        path.cubicTo(v.x,v.y,v2.x,v2.y,d.x,d.y);
-        v=torsoPoint(p,1.09f,0f);
-        path.quadTo(v.x,v.y,e.x,e.y);
-        v=torsoPoint(p,1f,body.shoulderHalfWidth*1.26f);v2=torsoPoint(p,.93f,body.chestHalfWidth*1.03f);
-        path.cubicTo(v.x,v.y,v2.x,v2.y,f.x,f.y);
-        v=torsoPoint(p,.65f,body.chestHalfWidth*.97f);v2=torsoPoint(p,.55f,body.waistHalfWidth*.95f);
-        path.cubicTo(v.x,v.y,v2.x,v2.y,g.x,g.y);
-        v=torsoPoint(p,.25f,body.waistHalfWidth);v2=torsoPoint(p,.15f,body.waistHalfWidth*1.14f);
-        path.cubicTo(v.x,v.y,v2.x,v2.y,h.x,h.y);
-        v=torsoPoint(p,-.055f,0f);
-        path.quadTo(v.x,v.y,a.x,a.y);
+        path.moveTo(hipBack.x,hipBack.y);
+        p1=torsoPoint(p,.12f,-body.waistHalfWidth*.69f);
+        p2=torsoPoint(p,.23f,-body.waistHalfWidth*.71f);
+        path.cubicTo(p1.x,p1.y,p2.x,p2.y,lowerBack.x,lowerBack.y);
+        p1=torsoPoint(p,.49f,-body.waistHalfWidth*.73f);
+        p2=torsoPoint(p,.64f,-body.chestHalfWidth*.70f);
+        path.cubicTo(p1.x,p1.y,p2.x,p2.y,chestBack.x,chestBack.y);
+        p1=torsoPoint(p,.93f,-body.chestHalfWidth*.70f);
+        p2=torsoPoint(p,.98f,-body.shoulderHalfWidth*.75f);
+        path.cubicTo(p1.x,p1.y,p2.x,p2.y,shoulderBack.x,shoulderBack.y);
+        p1=torsoPoint(p,1.06f,0f);
+        path.quadTo(p1.x,p1.y,shoulderFront.x,shoulderFront.y);
+        p1=torsoPoint(p,.94f,body.shoulderHalfWidth*.96f);
+        p2=torsoPoint(p,.86f,body.chestHalfWidth*.95f);
+        path.cubicTo(p1.x,p1.y,p2.x,p2.y,chestFront.x,chestFront.y);
+        p1=torsoPoint(p,.61f,body.chestHalfWidth*.85f);
+        p2=torsoPoint(p,.52f,body.waistHalfWidth*.91f);
+        path.cubicTo(p1.x,p1.y,p2.x,p2.y,abdomenFront.x,abdomenFront.y);
+        p1=torsoPoint(p,.27f,body.waistHalfWidth*.85f);
+        p2=torsoPoint(p,.13f,body.waistHalfWidth*.98f);
+        path.cubicTo(p1.x,p1.y,p2.x,p2.y,hipFront.x,hipFront.y);
+        p1=torsoPoint(p,-.055f,0f);
+        path.quadTo(p1.x,p1.y,hipBack.x,hipBack.y);
         path.close();
         color(top);
         paint.setShader(palette.female?purpleFabric:blueFabric);
@@ -176,13 +196,13 @@ public final class AvatarRenderer {
         canvas.drawPath(path,paint);
         paint.setStyle(Paint.Style.FILL);
 
-        // Minimal technical paneling: reference D, not a mechanical joint.
-        drawLimb(canvas,torsoPoint(p,.20f,-body.waistHalfWidth*.54f),
-                torsoPoint(p,.77f,-body.chestHalfWidth*.57f),
-                4.4f,3.2f,highlight);
-        drawLimb(canvas,torsoPoint(p,.40f,body.waistHalfWidth*.76f),
-                torsoPoint(p,.77f,body.chestHalfWidth*.70f),
-                2.6f,2.2f,palette.garmentShade);
+        // Panel seams are restrained and remain inside the garment.
+        drawLimb(canvas,torsoPoint(p,.22f,-body.waistHalfWidth*.43f),
+                torsoPoint(p,.76f,-body.chestHalfWidth*.49f),
+                3.4f,2.8f,highlight);
+        drawLimb(canvas,torsoPoint(p,.38f,body.waistHalfWidth*.57f),
+                torsoPoint(p,.74f,body.chestHalfWidth*.60f),
+                2f,1.8f,palette.garmentShade);
     }
 
     /**
