@@ -9,7 +9,7 @@ import java.util.List;
  */
 public final class ExerciseCategoryMapper {
     private static final List<String> WEEKLY_CODES=List.of(
-            "tren_superior","tronco","piernas","movilidad","cardio");
+            "tren_superior","tren_central","tren_inferior","movilidad","cardio");
     private static final List<String> DISPLAY_NAMES=List.of(
             "Tren superior","Tren central","Tren inferior","Movilidad","Cardio");
 
@@ -19,18 +19,20 @@ public final class ExerciseCategoryMapper {
         if(originalCategory==null)return "";
         switch(originalCategory) {
             case "tren_superior":
-            case "tronco":
-            case "piernas":
+            case "tren_central":
+            case "tren_inferior":
             case "movilidad":
             case "cardio":
                 return originalCategory;
+            case "tronco":
+            case "integrado":
+                return "tren_central";
+            case "piernas":
+                return "tren_inferior";
             case "coordinacion":
                 // Neuromotor balance and coordination = movement control.
                 return "movilidad";
-            case "integrado":
-                // Loaded carries emphasize trunk stabilization, but remain
-                // cross-functional exercises; this is only their primary bin.
-                return "tronco";
+
             default:
                 return "";
         }
