@@ -47,13 +47,18 @@ for key in ('"custom".equals(kind)',"RoutineGenerator.Request(",
 assert "ONCE_PER_DAY=10" in experience
 assert 'p.getBoolean(key,false)' in experience
 assert "date.equals(LocalDate.now())" in experience
-for key in ("RoutinesActivity.class","CalendarActivity.class","R.id.open_routines",
-            "R.id.open_calendar"):
+# The two functional features remain global bottom navigation destinations,
+# never redundant shortcut squares on Home or in the Missions toolbar.
+for key in ("SimpleBottomNav.attach", "R.id.home_avatar",
+            "ProfileDetailsActivity.class"):
     assert key in src("presentation/HomeMissionBinder.java"),key
-for item in ("open_routines","open_calendar"):
-    assert f"@+id/{item}" in home
-for item in ("missions_open_routines","missions_open_calendar"):
-    assert f"@+id/{item}" in missions
+for removed in ("open_routines","open_calendar",
+                "missions_open_routines","missions_open_calendar"):
+    assert f"@+id/{removed}" not in (home+missions),removed
+assert "@+id/home_bottom_bar" in home
+assert "@+id/missions_bottom_bar" in missions
+for key in ("SimpleBottomNav.ROUTINES","SimpleBottomNav.CALENDAR"):
+    assert key in (choose+calendar),key
 for item in (".RoutinesActivity",".CalendarActivity"):
     assert item in manifest
 assert "Collections.shuffle(shuffled,new Random(seed))" in mission
