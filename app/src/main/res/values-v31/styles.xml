@@ -3,6 +3,8 @@
     <!-- Android 12+ system splash stays blank and dark until native approved artwork draws. -->
     <style name="Theme.AsterionSplash" parent="Theme.AsterionSystem">
         <item name="android:windowFullscreen">true</item>
+        <!-- Extend the splash artwork behind camera cutouts on tall displays. -->
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="android:windowBackground">@color/asterion_background</item>
         <item name="android:windowSplashScreenBackground">@color/asterion_background</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/asterion_splash_blank_icon</item>

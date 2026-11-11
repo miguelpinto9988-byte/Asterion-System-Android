@@ -6,27 +6,27 @@
 
 Proyecto Java nativo Android con vistas XML. El HTML se utiliza **solo como previsualización externa**. No se han incorporado HTML, JavaScript, CSS, WebView o Compose a las pantallas Android.
 
-## Identidad visual oficial — ícono permanente
+## Identidad visual oficial — icono actualizable
 
-**Regla obligatoria del proyecto:** el ícono de caballero sombra aprobado por el propietario es la identidad visual definitiva de Asterion System. **No se permite reemplazarlo, rediseñarlo, recolorearlo ni alterarlo en actualizaciones futuras**, tanto de la app como de sus pantallas de carga y materiales vinculados. El archivo de lanzamiento oficial está en [`app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp`](app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp). Su integridad se verifica mediante `tests/branding_icon_lock.py` en GitHub Actions. Véase [la política de identidad visual permanente](docs/identidad/ICONO_OFICIAL_INMUTABLE.md).
+**Decisión del propietario del 8 de noviembre de 2026:** el icono principal puede rediseñarse o sustituirse. El archivo actual sigue en [`app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp`](app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp). La validación `tests/branding_icon_lock.py` ya no fija un SHA-256 ni impide cambiar su apariencia; solamente comprueba la validez técnica del recurso. [Política editable del icono](docs/identidad/ICONO_OFICIAL_INMUTABLE.md).
 
-## Pantallas de carga oficiales — horario permanente
+## Pantallas de carga — imágenes y animaciones editables
 
-Las dos ilustraciones aprobadas se integran sin alteraciones de composición como recursos nativos PNG Full HD vertical (1080 × 1920), **sin agregar el ícono de la app dentro de las pantallas**. La pantalla de arranque dedicada `SplashActivity` elige automáticamente según la hora local del dispositivo:
+Las dos ilustraciones originales se mantienen como respaldo PNG de 1080 × 1920. Cuando no hay GIF de carga integrado, `SplashActivity` selecciona una de ellas según la hora local del dispositivo:
 - **00:00–11:59:** amanecer (`app/src/main/res/drawable-nodpi/asterion_loading_manana.png`).
 - **12:00–23:59:** sombras de tarde/noche (`app/src/main/res/drawable-nodpi/asterion_loading_tarde_noche.png`).
 
-La identidad original del ícono de lanzador queda sin cambios. Estas dos imágenes son permanentes y su modificación queda prohibida en futuras actualizaciones. Los SHA-256 de ambas imágenes, la selección horaria y el manifiesto están protegidos por `tests/branding_splash_lock.py` en GitHub Actions. [Política permanente de pantallas de carga](docs/identidad/PANTALLAS_CARGA_INMUTABLES.md).
+La anterior prohibición de modificar las imágenes y sus SHA-256 fue revocada. Se ha preparado un GIF celestial Full HD de 1080 × 1920, aún pendiente de subir como archivo binario a la rama. El script `tests/branding_splash_lock.py` valida integridad técnica, no composiciones fijas. [Política de pantalla de carga editable](docs/identidad/PANTALLAS_CARGA_INMUTABLES.md) y [estado del GIF](docs/identidad/GIF_CELESTIAL_PREVIEW.md).
 
 ## Puerta de perfil: ventana del Sistema (nativa)
 
 Después de las dos pantallas de carga oficiales, Asterion consulta un perfil local privado. Si no existe, abre la ventana de dos opciones con el diseño aprobado: Crear nuevo perfil (registro local básico del nombre de cazador) y Restaurar perfil (mensaje honesto mientras no exista aún mecanismo de importación). Si ya existe un nombre guardado, entra directamente a Inicio tras la carga.
 
-Los iconos PNG son recursos reales e independientes, los marcos azules y violeta son gráficos nativos escalables con cambios en la pulsación y el fondo se mantiene por separado. Ver [especificación de la ventana](docs/identidad/VENTANA_PERFIL_APROBADA.md). El catálogo, las dos ilustraciones Full HD de carga y el icono permanente de la app no se modificaron.
+Los iconos PNG son recursos reales e independientes, los marcos azules y violeta son gráficos nativos escalables con cambios en la pulsación y el fondo se mantiene por separado. Ver [especificación de la ventana](docs/identidad/VENTANA_PERFIL_APROBADA.md). El catálogo, las dos ilustraciones Full HD anteriores y el icono actual se conservan físicamente hasta aprobar sustitutos.
 
 ## Tipografia global: negrita
 
-Todas las etiquetas, textos, titulos, opciones, botones y campos de entrada nativos deben usar negrita. El tema Android establece una regla compartida y los layouts actuales la aplican explicitamente; el CI ejecuta `tests/global_bold_contract.py` para detectar regresiones y futuras pantallas sin la regla. Los textos que forman parte de ilustraciones oficiales inmutables, como el icono y las pantallas de carga, no se alteran. Mas detalles: [politica tipografica](docs/identidad/TIPOGRAFIA_GLOBAL_NEGRITA.md).
+Todas las etiquetas, textos, titulos, opciones, botones y campos de entrada nativos deben usar negrita. El tema Android establece una regla compartida y los layouts actuales la aplican explicitamente; el CI ejecuta `tests/global_bold_contract.py` para detectar regresiones y futuras pantallas sin la regla. Los textos dibujados dentro de recursos gráficos pueden actualizarse cuando se apruebe un rediseño. Mas detalles: [politica tipografica](docs/identidad/TIPOGRAFIA_GLOBAL_NEGRITA.md).
 
 ## Registro de cazador (4 etapas nativas)
 
