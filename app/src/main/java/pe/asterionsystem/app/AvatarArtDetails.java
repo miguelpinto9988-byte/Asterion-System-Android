@@ -462,6 +462,67 @@ public final class AvatarArtDetails {
         c.restore();
     }
 
+    /**
+     * Overhead projection of a prone contact shoe, not a front-view shoe
+     * translated to the floor. The heel is nearest the knee and the toe
+     * touches the far end of the floor projection. No underside/sole bar
+     * is exposed to the camera above the person's back.
+     */
+    public void drawProneTopSneaker(Canvas c,AvatarKinematics.Point ankle,
+                                   AvatarKinematics.Point knee,
+                                   AvatarPalette palette){
+        if(c==null||ankle==null||knee==null||palette==null)
+            throw new IllegalArgumentException("Shoe pose required");
+        AvatarOrientationRules.BodyFrame frame=AvatarOrientationRules.forPosture(
+                AvatarOrientationRules.Posture.PRONE_GROUND_FACING);
+        if(AvatarOrientationRules.visibleShoeSurface(
+                AvatarOrientationRules.Camera.TOP,frame)
+                !=AvatarOrientationRules.ShoeSurface.UPPER)
+            throw new IllegalStateException("A sole cannot face the overhead camera");
+        float dx=ankle.x-knee.x,dy=ankle.y-knee.y;
+        float distance=(float)Math.hypot(dx,dy);
+        if(!Float.isFinite(distance)||distance<.01f||dy<=0f)
+            throw new IllegalArgumentException("Toe must point away from the knee");
+        c.save();c.translate(ankle.x,ankle.y);
+        c.rotate((float)Math.toDegrees(Math.atan2(dy,dx)-Math.PI/2d));
+
+        // Floor contact is beneath the distal toe, not above the ankle.
+        fill(0x45435A70);
+        c.drawOval(-11f,17f,11f,24f,paint);
+        path.rewind();
+        path.moveTo(-9f,-13f);
+        path.quadTo(0f,-19f,9f,-13f);
+        path.lineTo(11f,8f);
+        path.quadTo(12f,17f,5f,20f);
+        path.quadTo(0f,22f,-5f,20f);
+        path.quadTo(-12f,17f,-11f,8f);
+        path.close();
+        fill(palette.shoe);
+        c.drawPath(path,paint);
+        // Upper panel and shallow shoe tongue seen from above. No sole face.
+        fill(palette.female?0xFF8466B2:0xFF346BA8);
+        path.rewind();
+        path.moveTo(-7f,-9f);
+        path.quadTo(0f,-12f,7f,-9f);
+        path.lineTo(8f,10f);
+        path.quadTo(0f,14f,-8f,10f);
+        path.close();c.drawPath(path,paint);
+        fill(0xFFD7E5F1);
+        c.drawRoundRect(-4f,-7f,4f,9f,2f,2f,paint);
+        // Identical three lace pattern and paletted accents.
+        for(int i=0;i<3;i++){
+            float y=-4f+4f*i;
+            line(c,-6f,y,6f,y+1f,0xFFF3F8FF,1.1f);
+        }
+        fill(0xFFF4F9FF);
+        c.drawOval(-9f,11f,9f,19f,paint);
+        // A narrow contact edge is acceptable; a wide outsole face isn't.
+        line(c,-7f,19f,7f,19f,palette.shoeDark,1.1f);
+        fill(0xFF7796B4);
+        c.drawRoundRect(-9f,-14f,-5f,-8f,1.5f,1.5f,paint);
+        c.restore();
+    }
+
     /** A readable palm and thumb, not a circular wrist joint. */
     public void drawProjectedHand(Canvas c,AvatarKinematics.Point wrist,
                                   AvatarPalette palette){
