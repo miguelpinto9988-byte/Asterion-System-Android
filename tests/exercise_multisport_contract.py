@@ -72,7 +72,7 @@ catalog=(ENGINE/"ExerciseCatalog.java").read_text()
 adapter=(APP/"data/AssetExerciseCatalogRepository.java").read_text()
 activity=(APP/"MissionsActivity.java").read_text()
 assert "Reader intensity, Reader disciplines)" in loader
-assert '"type_id\\tdisciplines\\trole"' in loader
+assert "for(String[] row:rows(disciplines,3," in loader
 assert "new ExerciseDisciplineIndex(this.types,this.variants" in catalog
 assert "tag!=ExerciseIntensity.HIGH && tag!=ExerciseIntensity.VARIABLE" in catalog
 for marker in ("disciplinesForType(","types(String discipline)",
