@@ -12,13 +12,14 @@ for token in ('drawHeadFront(', 'drawHeadTop(', 'drawProjectedSneaker(',
               'drawProjectedHand(', 'drawCameraJeans(',
               'drawForearm(Canvas c,AvatarKinematics.Point elbow,',
               'c.drawRoundRect(', 'palette.skin', 'palette.hair',
-              'palette.shoeDark', 'palette.legColor'):
+              'palette.shoeDark'):
     assert token in art, token
 for token in ('details.drawHeadFront(', 'details.drawHeadTop(',
               'details.drawProjectedSneaker(', 'details.drawProjectedHand(',
               'details.drawCameraJeans(', 'details.drawForearm(',
               'private void tapered(', 'bodySpec.thighWidth',
               'bodySpec.upperArmWidth', 'bodySpec.forearmWidth',
+              'palette.legColor',
               'drawFront(c,p,squat||jacks)', 'drawHandsInset(',
               'drawPushupSideInset('):
     assert token in multi, token
