@@ -27,14 +27,14 @@ assert len({v["variant_id"] for v in variants})==917
 assert len({v["name"].lower() for v in variants})==917,"Duplicate exercise labels"
 category={
     "tren_superior":"tren_superior",
-    "tronco":"tronco",
-    "piernas":"piernas",
+    "tren_central":"tren_central",
+    "tren_inferior":"tren_inferior",
     "movilidad":"movilidad",
     "cardio":"cardio",
     "coordinacion":"movilidad",
-    "integrado":"tronco",
+    "integrado":"tren_central",
 }
-expected={"tren_superior":22,"tronco":18,"piernas":21,"movilidad":20,"cardio":19}
+expected={"tren_superior":22,"tren_central":18,"tren_inferior":21,"movilidad":20,"cardio":19}
 assert Counter(category[f["category"]] for f in families)==expected
 family_id={f["family_id"] for f in families}
 type_family={t["type_id"]:t["family_id"] for t in types}
