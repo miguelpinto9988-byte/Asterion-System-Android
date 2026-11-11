@@ -135,7 +135,10 @@ public final class AvatarMultiViewRenderer {
     private void drawFront(Canvas c,AvatarMultiViewKinematics.Pose p,
                            boolean squat) {
         c.save();
-        c.scale(.86f,.86f,200f,222f);
+        // Frontal silhouette has the same on-screen head/leg presence as
+        // the side camera; keep footwear within the floor framing.
+        c.translate(0f,-18f);
+        c.scale(.94f,.94f,200f,222f);
         rr(c,57,431,343,434,2,dark?0xFF65758C:0xFFD4DFEA);
         color(dark?0xFF263247:0xFFDDE6EE);
         c.drawOval(80,430,320,440,paint);
