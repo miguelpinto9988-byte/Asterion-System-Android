@@ -53,7 +53,9 @@ lookup={x["variant_id"]:x["intensity"] for x in intensity}
 assert lookup["burpee_adaptado_v01"]=="variable"
 assert lookup["burpee_adaptado_v02"]=="variable"
 assert lookup["carreras_ida_vuelta_controladas_v02"]=="variable"
-assert lookup["dominadas_v01"] if "dominadas_v01" in lookup else True
+assert "dominadas" in {x["type_id"] for x in types}
+assert "calistenia" in next(x["disciplines"] for x in sports
+                           if x["type_id"]=="dominadas").split("+")
 assert Counter(x["intensity"] for x in intensity)=={
     "baja":352,"moderada":245,"variable":38,"alta":17
 }
