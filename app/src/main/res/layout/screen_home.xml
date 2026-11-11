@@ -54,7 +54,7 @@
     android:padding="16dp" android:layout_marginTop="12dp"
     android:background="#FFFFFF">
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="05 · BIBLIOTECA DE EJERCICIOS" android:textSize="17sp" android:textStyle="bold" android:textColor="#111111"/>
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="39 familias, 80 tipos y 445 variantes locales." android:textSize="13sp" android:textStyle="bold" android:textColor="#555555"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="125 familias, 354 tipos y 1.017 variantes locales." android:textSize="13sp" android:textStyle="bold" android:textColor="#555555"/>
     <Button android:id="@+id/open_library" android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="10dp" android:minHeight="48dp" android:text="Explorar biblioteca" android:textStyle="bold" android:textAllCaps="false"/>
   </LinearLayout>
 
