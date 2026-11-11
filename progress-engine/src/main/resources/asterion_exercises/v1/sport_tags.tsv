@@ -85,7 +85,7 @@ dep_100_caminata_lateral	tenis+padel+patinaje+esqui	equilibrio, control de cader
 dep_101_caminata_talon_punta	marcha_atletica+patinaje+gimnasia	equilibrio, técnica de apoyo	https://www.nhs.uk/live-well/exercise/balance-exercises/	NHS (National Health Service)	0
 dep_102_apoyo_en_un_pie_equilibrio_unipodal	patinaje+esqui+escalada+yoga	equilibrio, propiocepción	https://www.nhs.uk/live-well/exercise/balance-exercises/	NHS (National Health Service)	0
 dep_115_silencio_en_los_pies_boulder	escalada	técnica, coordinación de pies	https://climbgearhub.com/bouldering-technique-drills-and-exercises	Climb Gear Hub	1
-dep_078_movilidad_de_vallas_hurdle_mobility	atletismo+running	rango de movimiento de cadera	https://worldathletics.org/download/downloadnsa?filename=77d72573-46b5-43ad-8291-3f4f4f3026ce.pdf&urlslug=warm-up-essentials	World Athletics (New Studies in Athletics)	0
+dep_078_movilidad_de_vallas_hurdle_mobility	atletismo+running	rango de movimiento de cadera	https://worldathletics.org/download/downloadnsa?filename=77d72573-46b5-43ad-8291-3f4f4f3026ce.pdf&urlslug=warm-up-essentials	World Athletics (New Studies in Athletics)	1
 dep_087_streamline_en_prono_posicion_hidrodina	natacion+waterpolo	técnica, alineación corporal	https://usaswimming.org/docs/default-source/coaching-resourcesdocuments/adm-competence-progressions.pdf	USA Swimming	1
 dep_099_pop_up_invertido_excentrico_surf	surf	control excéntrico, movilidad	https://surfmastery.com/podcast/125-master-the-pop-up-dry-land-drills-for-faster-smoother-take-offs	Surf Mastery	1
 dep_050_correr_en_linea_recta_fifa_11	futbol+futsal	técnica de carrera, calentamiento, agilidad	https://youthsportsortho.com/pdf/11plus-workbook-updated.pdf	FIFA 11+ / F-MARC	0
