@@ -42,7 +42,7 @@ public final class AvatarMotionEngine {
                 // Front foot is intentionally free in this motion; far foot
                 // remains a fixed world-space contact.
                 ankle=new AvatarKinematics.Point(182f+24f*s,364f-45f*s);
-                hy-=4f*s;
+                hy+=2f*s;
                 hx+=3f*s;
                 break;
             case LUNGE:
