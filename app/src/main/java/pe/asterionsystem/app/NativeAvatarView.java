@@ -94,10 +94,16 @@ public final class NativeAvatarView extends View {
     }
 
     private void updateAccessibilityDescription() {
-        String activity=viewMode==AvatarMultiViewKinematics.ViewMode.SIDE
-                ?motion.label:viewMode==AvatarMultiViewKinematics.ViewMode.FRONT
-                ?"elevación frontal de brazos":viewMode==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT
-                ?"sentadilla abierta en cámara frontal":"flexión en diamante desde arriba, con detalle de manos";
+        String activity;
+        switch(viewMode) {
+            case SIDE: activity=motion.label;break;
+            case FRONT: activity="elevación frontal de brazos";break;
+            case FRONT_SQUAT: activity="sentadilla abierta en cámara frontal";break;
+            case FRONT_JACKS: activity="saltos de tijera en cámara frontal";break;
+            case FRONT_ELBOW: activity="flexión de codos en cámara frontal";break;
+            case TOP: activity="flexión en diamante desde arriba, con detalle de manos";break;
+            default: activity="movimiento ilustrativo";
+        }
         setContentDescription((female?"Avatar morado":"Avatar azul")
                 +" mostrando "+activity.toLowerCase(java.util.Locale.ROOT)
                 +" como animación ilustrativa. "
@@ -120,7 +126,12 @@ public final class NativeAvatarView extends View {
         if(playing&&isShown()) {
             if(lastFrameMs>0) {
                 float dt=Math.max(0,Math.min(80,now-lastFrameMs));
-                phase=(phase+dt*speed/LOOP_MS)%1f;
+                // Multi-pose clips need enough time to show contacts, unlike
+                // a two-keyframe arm raise.
+                float cycleMs=viewMode==AvatarMultiViewKinematics.ViewMode.SIDE
+                        &&motion==AvatarMotionEngine.Motion.BURPEE
+                        ?LOOP_MS*1.6f:LOOP_MS;
+                phase=(phase+dt*speed/cycleMs)%1f;
             }
             if(listener!=null&&now-lastNotifyMs>85) {
                 lastNotifyMs=now;
@@ -139,12 +150,26 @@ public final class NativeAvatarView extends View {
             renderer.draw(canvas,AvatarMotionEngine.pose(motion,phase,bodySpec),
                     bodySpec,palette,dark,motion.label);
         } else {
-            AvatarMultiViewKinematics.Pose pose=
-                    viewMode==AvatarMultiViewKinematics.ViewMode.FRONT
-                    ?AvatarMultiViewKinematics.frontArms(phase,bodySpec)
-                    :viewMode==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT
-                    ?AvatarMultiViewKinematics.frontWideSquat(phase,bodySpec)
-                    :AvatarMultiViewKinematics.diamondTop(phase,bodySpec);
+            AvatarMultiViewKinematics.Pose pose;
+            switch(viewMode) {
+                case FRONT:
+                    pose=AvatarMultiViewKinematics.frontArms(phase,bodySpec);
+                    break;
+                case FRONT_SQUAT:
+                    pose=AvatarMultiViewKinematics.frontWideSquat(phase,bodySpec);
+                    break;
+                case FRONT_JACKS:
+                    pose=AvatarMultiViewKinematics.frontJumpingJack(phase,bodySpec);
+                    break;
+                case FRONT_ELBOW:
+                    pose=AvatarMultiViewKinematics.frontElbowFlex(phase,bodySpec);
+                    break;
+                case TOP:
+                    pose=AvatarMultiViewKinematics.diamondTop(phase,bodySpec);
+                    break;
+                default:
+                    throw new IllegalStateException("Camera not implemented");
+            }
             multiRenderer.draw(canvas,pose,viewMode,palette,dark);
         }
         canvas.restore();
