@@ -24,7 +24,7 @@ assert (len(families),len(types),len(variants))==(125,354,1017)
 assert len({f["family_id"] for f in families})==125
 assert len({t["type_id"] for t in types})==354
 assert len({v["variant_id"] for v in variants})==1017
-assert len({v["name"].lower() for v in variants})==917,"Duplicate exercise labels"
+assert len({v["name"].lower() for v in variants})==1017,"Duplicate exercise labels"
 category={
     "tren_superior":"tren_superior",
     "tren_central":"tren_central",
