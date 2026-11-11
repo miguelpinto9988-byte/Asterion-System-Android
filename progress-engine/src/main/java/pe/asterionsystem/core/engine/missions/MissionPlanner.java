@@ -37,7 +37,7 @@ public final class MissionPlanner {
     public static final String DAILY = "daily";
     public static final String MONARCH = "monarch";
     private static final String[] WEEK_CATEGORIES = {
-            "tren_superior", "tronco", "piernas", "movilidad", "cardio", "descanso"
+            "tren_superior", "tren_central", "tren_inferior", "movilidad", "cardio", "descanso"
     };
 
     public static final class Profile {
@@ -470,7 +470,7 @@ public final class MissionPlanner {
         if ("movilidad".equals(goal) && "movilidad".equals(category)) return 0;
         if ("resistencia".equals(goal) && "cardio".equals(category)) return 0;
         if ("fuerza".equals(goal) &&
-                ("tren_superior".equals(category) || "piernas".equals(category))) return 0;
+                ("tren_superior".equals(category) || "tren_inferior".equals(category))) return 0;
         if ("bienestar".equals(goal) &&
                 ("movilidad".equals(category) || "cardio".equals(category))) return 0;
         return 1;
