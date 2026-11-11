@@ -17,23 +17,32 @@ public final class ExerciseCatalogLoader {
     private ExerciseCatalogLoader() { }
 
     public static ExerciseCatalog load(Reader families, Reader types, Reader variants) throws IOException {
-        return load(families,types,variants,null);
+        return load(families,types,variants,null,null,null);
     }
 
     /** Optional fourth TSV keeps all historical seven-column variant assets compatible. */
     public static ExerciseCatalog load(Reader families, Reader types, Reader variants,
                                        Reader intensity) throws IOException {
+        return load(families,types,variants,intensity,null,null);
+    }
+
+    /** The six-reader overload adds sport tags without changing the legacy data API. */
+    public static ExerciseCatalog load(Reader families,Reader types,Reader variants,
+                                       Reader intensity,Reader sportRegistry,
+                                       Reader sportTags) throws IOException {
+        if((sportRegistry==null)!=(sportTags==null))
+            throw new IllegalArgumentException("Las dos tablas deportivas son obligatorias juntas");
         List<ExerciseFamily> parsedFamilies = new ArrayList<>();
-        for (String[] row : rows(families, 4, "family_id\\tname\\tcategory\\tpattern", 120)) {
+        for (String[] row : rows(families, 4, "family_id\\tname\\tcategory\\tpattern", 400)) {
             parsedFamilies.add(new ExerciseFamily(row[0], row[1], row[2], row[3]));
         }
         List<ExerciseType> parsedTypes = new ArrayList<>();
-        for (String[] row : rows(types, 3, "type_id\\tfamily_id\\tname", 500)) {
+        for (String[] row : rows(types, 3, "type_id\\tfamily_id\\tname", 1500)) {
             parsedTypes.add(new ExerciseType(row[0], row[1], row[2]));
         }
         List<ExerciseVariant> parsedVariants = new ArrayList<>();
         for (String[] row : rows(variants, 7,
-                "variant_id\\ttype_id\\tname\\tlevel\\tequipment\\texecution\\tsupervision", 4000)) {
+                "variant_id\\ttype_id\\tname\\tlevel\\tequipment\\texecution\\tsupervision", 10000)) {
             final int level;
             if (!row[3].matches("[1-5]")) throw new IllegalArgumentException("Nivel inválido: " + row[3]);
             level = Integer.parseInt(row[3]);
@@ -45,13 +54,15 @@ public final class ExerciseCatalogLoader {
         }
         Map<String,ExerciseIntensity> tags=new HashMap<>();
         if(intensity!=null) {
-            for(String[] row:rows(intensity,2,"variant_id\\tintensity",4000)) {
+            for(String[] row:rows(intensity,2,"variant_id\\tintensity",10000)) {
                 if(tags.putIfAbsent(row[0],ExerciseIntensity.parse(row[1]))!=null) {
                     throw new IllegalArgumentException("Intensidad duplicada: "+row[0]);
                 }
             }
         }
-        return new ExerciseCatalog(parsedFamilies, parsedTypes, parsedVariants,tags);
+        ExerciseSportIndex sports=sportRegistry==null?ExerciseSportIndex.empty()
+                :ExerciseSportIndex.load(sportRegistry,sportTags,parsedTypes);
+        return new ExerciseCatalog(parsedFamilies, parsedTypes, parsedVariants,tags,sports);
     }
 
     private static List<String[]> rows(Reader input, int columns, String header, int max)
