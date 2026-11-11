@@ -157,7 +157,11 @@ public final class ExerciseCatalog {
             if (execution != null && !variant.execution().equals(execution)) continue;
             ExerciseType type = byType.get(variant.typeId());
             ExerciseFamily family = byFamily.get(type.familyId());
-            if (category != null && !category.equals(family.category())) continue;
+            // Accept the public five-category code while retaining older
+            // direct searches by the original taxonomy code.
+            if (category != null && !category.equals(family.category())
+                    && !category.equals(categoryIndex.categoryForFamily(family.id())))
+                continue;
             if (!q.isEmpty() && !normalized(variant.name() + " " + type.name() + " " + family.name()).contains(q)) {
                 continue;
             }
