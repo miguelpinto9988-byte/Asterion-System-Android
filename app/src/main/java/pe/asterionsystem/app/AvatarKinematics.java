@@ -47,8 +47,13 @@ public final class AvatarKinematics {
         final Point farAnkle=new Point(170f,363f);
         final Point hip=new Point(184f-45f*s,190f+69f*s);
         final Point farHip=new Point(hip.x-10f,hip.y-3f);
-        Point knee=kneeForward(hip,ankle,spec.upperLeg,spec.lowerLeg);
-        Point farKnee=kneeForward(farHip,farAnkle,spec.upperLeg,spec.lowerLeg);
+        AvatarRigConstraints.TwoBone nearLeg=AvatarRigConstraints.twoBone(
+                hip,ankle,spec.upperLeg,spec.lowerLeg,-1,0f,170f);
+        AvatarRigConstraints.TwoBone farLeg=AvatarRigConstraints.twoBone(
+                farHip,farAnkle,spec.upperLeg,spec.lowerLeg,-1,0f,170f);
+        if(nearLeg.targetLimited||farLeg.targetLimited)
+            throw new IllegalArgumentException("Proporciones incompatibles con apoyo de pies");
+        Point knee=nearLeg.joint,farKnee=farLeg.joint;
 
         float trunkTilt=0.10f+0.43f*s;
         Point shoulder=new Point(hip.x+(float)Math.sin(trunkTilt)*spec.torso,
@@ -59,12 +64,16 @@ public final class AvatarKinematics {
 
         // One target per wrist, with analytical two-bone IK for both elbows.
         // Segment lengths stay fixed even when the wrists travel forward.
-        Point wrist=lerp(new Point(shoulder.x+4f,shoulder.y+107f),
+        Point desiredWrist=lerp(new Point(shoulder.x+4f,shoulder.y+107f),
                 new Point(shoulder.x+105f,shoulder.y+23f),s);
-        Point farWrist=lerp(new Point(farShoulder.x-11f,farShoulder.y+101f),
+        Point desiredFarWrist=lerp(new Point(farShoulder.x-11f,farShoulder.y+101f),
                 new Point(farShoulder.x+102f,farShoulder.y+19f),s);
-        Point elbow=elbowBelow(shoulder,wrist,spec.upperArm,spec.forearm);
-        Point farElbow=elbowBelow(farShoulder,farWrist,spec.upperArm,spec.forearm);
+        AvatarRigConstraints.TwoBone nearArm=AvatarRigConstraints.twoBone(
+                shoulder,desiredWrist,spec.upperArm,spec.forearm,1,0f,170f);
+        AvatarRigConstraints.TwoBone farArm=AvatarRigConstraints.twoBone(
+                farShoulder,desiredFarWrist,spec.upperArm,spec.forearm,1,0f,170f);
+        Point wrist=nearArm.end,farWrist=farArm.end;
+        Point elbow=nearArm.joint,farElbow=farArm.joint;
         return new Pose(ankle,farAnkle,knee,farKnee,hip,farHip,
                 shoulder,farShoulder,neck,head,elbow,wrist,
                 farElbow,farWrist);
