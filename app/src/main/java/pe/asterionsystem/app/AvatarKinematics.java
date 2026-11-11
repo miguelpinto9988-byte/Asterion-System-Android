@@ -74,44 +74,24 @@ public final class AvatarKinematics {
      * Planar two-bone IK; select the forward knee. Distances are clamped to
      * prevent NaN if later poses or proportions become unreachable.
      */
+    /**
+     * Compatibility API, now backed by the shared fixed-length 2-link solver.
+     * Bend-side -1 selects the same forward-facing knee as before.
+     */
     public static Point kneeForward(Point hip,Point ankle,float femur,float tibia) {
-        if(!Float.isFinite(femur)||!Float.isFinite(tibia)||femur<=0 || tibia<=0)
+        if(!Float.isFinite(femur)||!Float.isFinite(tibia)||femur<=0||tibia<=0)
             throw new IllegalArgumentException("Longitudes positivas y finitas");
         float dx=ankle.x-hip.x,dy=ankle.y-hip.y;
         float raw=(float)Math.hypot(dx,dy);
-        float d=Math.max(Math.abs(femur-tibia)+0.001f,
-                Math.min(femur+tibia-0.001f,raw));
-        float ux=raw<0.0001f?0f:dx/raw;
-        float uy=raw<0.0001f?1f:dy/raw;
-        float a=(femur*femur-tibia*tibia+d*d)/(2f*d);
-        float side=(float)Math.sqrt(Math.max(0f,femur*femur-a*a));
-        float midX=hip.x+ux*a,midY=hip.y+uy*a;
-        Point k1=new Point(midX+uy*side,midY-ux*side);
-        Point k2=new Point(midX-uy*side,midY+ux*side);
-        return k1.x>=k2.x?k1:k2;
+        if(!Float.isFinite(raw))throw new IllegalArgumentException("Anclaje inválido");
+        return AvatarRigConstraints.twoBone(hip,ankle,femur,tibia,-1,0f,170f).joint;
     }
 
-    /**
-     * Two-segment illustrative arm: the elbow follows the lower branch of
-     * the circle intersection continuously, rather than independent keyframes.
-     * This preserves lengths but does not represent a clinical movement guide.
-     */
+    /** Compatible name for original arm IK, now using shared fixed lengths. */
     public static Point elbowBelow(Point shoulder,Point wrist,
                                    float upperArm,float forearm) {
-        if(!Float.isFinite(upperArm) || !Float.isFinite(forearm)
-                || upperArm<=0f || forearm<=0f) {
-            throw new IllegalArgumentException("Longitudes positivas y finitas");
-        }
-        float dx=wrist.x-shoulder.x,dy=wrist.y-shoulder.y;
-        float raw=(float)Math.hypot(dx,dy);
-        float d=Math.max(Math.abs(upperArm-forearm)+.001f,
-                Math.min(upperArm+forearm-.001f,raw));
-        float ux=raw<.0001f?0f:dx/raw;
-        float uy=raw<.0001f?1f:dy/raw;
-        float along=(upperArm*upperArm-forearm*forearm+d*d)/(2f*d);
-        float bend=(float)Math.sqrt(Math.max(0f,upperArm*upperArm-along*along));
-        return new Point(shoulder.x+ux*along-uy*bend,
-                shoulder.y+uy*along+ux*bend);
+        return AvatarRigConstraints.twoBone(shoulder,wrist,upperArm,forearm,
+                1,0f,170f).joint;
     }
 
     public static float depthAtPhase(float phase) {
