@@ -26,7 +26,7 @@ final class RoutineSessionStore {
     }
 
     static String token(String kind,LocalDate date,List<ExerciseVariant> exercises) {
-        if(!"daily".equals(kind) && !"monarch".equals(kind))
+        if(!"daily".equals(kind) && !"monarch".equals(kind) && !"custom".equals(kind))
             throw new IllegalArgumentException("Tipo inválido");
         if(date==null||exercises==null||exercises.isEmpty())
             throw new IllegalArgumentException("Sesión vacía");
