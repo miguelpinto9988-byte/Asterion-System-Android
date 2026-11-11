@@ -47,9 +47,22 @@ class NativeVisualTest(unittest.TestCase):
     def test_preserved_routes_and_character_accessibility(self):
         home=xml(RES/"layout/screen_home.xml")
         ids={n.get(NS+"id","") for n in home.iter()}
-        for rid in ("open_catalog","open_plan","open_progress","open_settings",
-                    "open_local_status","open_secondary"):
+        cards=["home_card_monarch","home_card_profile","home_card_daily",
+               "home_card_progress","home_card_library"]
+        for rid in (*cards,"home_avatar","home_bottom_bar",
+                    "open_monarch","open_daily","open_progress","open_library"):
             self.assertIn("@+id/"+rid,ids)
+        for removed in ("open_calendar","open_routines","open_profile",
+                        "open_catalog","open_plan","open_settings",
+                        "open_local_status","open_secondary"):
+            self.assertNotIn("@+id/"+removed,ids)
+        order=[n.get(NS+"id","").replace("@+id/","")
+               for n in home.iter() if n.get(NS+"id","").startswith("@+id/home_card_")]
+        self.assertEqual(cards,order)
+        avatar=next(v for v in home.iter()
+                    if v.get(NS+"id")=="@+id/home_avatar")
+        self.assertEqual("ImageButton",avatar.tag)
+        self.assertIn("perfil",avatar.get(NS+"contentDescription","").lower())
         views=[n for n in home.iter() if n.tag=="ImageView"]
         self.assertTrue(any(v.get(NS+"src")=="@drawable/asterion_guardian"
                          and v.get(NS+"contentDescription")=="@string/design_guardian_description"
