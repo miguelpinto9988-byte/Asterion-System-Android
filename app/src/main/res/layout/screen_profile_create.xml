@@ -43,6 +43,7 @@
                 android:textColor="#111111" />
 
             <TextView
+                android:id="@+id/profile_wizard_mode"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="4dp" android:text="CREACIÓN DE PERFIL"
                 android:textColor="#555555" android:textSize="12sp" android:textStyle="bold" />
