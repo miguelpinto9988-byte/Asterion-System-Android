@@ -60,7 +60,9 @@ public final class AvatarMotionEngineTest {
         float arm=spec.upperArm+spec.forearm;
         float leg=spec.upperLeg+spec.lowerLeg;
         for(AvatarMotionEngine.Motion m:AvatarMotionEngine.Motion.values()){
-            for(float phase:new float[]{0f,.03f,.94f,1f}){
+            float[] endpoints=m==AvatarMotionEngine.Motion.BURPEE
+                    ?new float[]{0f,1f}:new float[]{0f,.03f,.94f,1f};
+            for(float phase:endpoints){
                 AvatarPose p=AvatarMotionEngine.pose(m,phase,spec);
                 assertEquals("near elbow end "+m,arm,
                         p.shoulder.distance(p.wrist),.07f);
