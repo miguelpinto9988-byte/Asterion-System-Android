@@ -139,6 +139,30 @@ public final class NativeAvatarRenderTest {
         });
     }
 
+    @Test public void frontalWideSquatRendersAndKeepsContact(){
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            view.setViewMode(AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT);
+            assertTrue(view.getContentDescription().toString()
+                    .contains("sentadilla abierta"));
+            for(float phase:new float[]{0f,.24f,.49f,.77f,.99f}){
+                view.setPhase(phase);
+                Bitmap bitmap=Bitmap.createBitmap(400,480,Bitmap.Config.ARGB_8888);
+                view.draw(new Canvas(bitmap));
+                assertNotEquals(0,bitmap.getPixel(200,230));
+                bitmap.recycle();
+                AvatarMultiViewKinematics.Pose pose=
+                        AvatarMultiViewKinematics.frontWideSquat(
+                                phase,AvatarBodySpec.DEFAULT);
+                pose.assertArms(.08f);
+                assertEquals(pose.leftShoulder.y,pose.rightShoulder.y,.001f);
+            }
+        });
+    }
+
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{

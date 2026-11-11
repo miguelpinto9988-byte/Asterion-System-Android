@@ -16,6 +16,7 @@ on:
       - feature/avatar-v4-rig-constraints-20261111
       - feature/avatar-v5-perfil-anatomia-recorrido-completo-20261111
       - feature/avatar-v6-multivista-manos-20261111
+      - feature/avatar-v7-camaras-proporciones-cuello-20261111
   pull_request:
     branches:
       - main
@@ -91,6 +92,7 @@ jobs:
           python3 tests/avatar_v4_motion_contract.py
           python3 tests/avatar_v5_anatomy_contract.py
           python3 tests/avatar_v6_multiview_contract.py
+          python3 tests/avatar_v7_cameras_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
