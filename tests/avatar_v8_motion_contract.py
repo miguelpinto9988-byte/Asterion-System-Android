@@ -21,7 +21,7 @@ for token in ("class AvatarBurpeeKinematics","AvatarRigConstraints.twoBone(",
     assert token in burpee,token
 for token in ("BURPEE(", "AvatarBurpeeKinematics.pose("):
     assert token in motion,token
-for token in ("ViewMode.FRONT_JACKS", "ViewMode.FRONT_ELBOW", "LOOP_MS*1.6f"):
+for token in ("case FRONT_JACKS:", "case FRONT_ELBOW:", "LOOP_MS*1.6f"):
     assert token in view,token
 tests=(root/"app/src/test/java/pe/asterionsystem/app/AvatarMultiViewKinematicsTest.java").read_text()
 for token in ("wideSquatBeginsAndEndsFullyExtendedWithFixedShoes",
