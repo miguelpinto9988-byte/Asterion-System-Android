@@ -53,10 +53,10 @@ for vid,intensity in tagged_ids.items():
     if intensity=="alta":
         assert lookup[vid]["supervision"]=="1",vid
 
-map_cat={"coordinacion":"movilidad","integrado":"tronco"}
+map_cat={"coordinacion":"movilidad","integrado":"tren_central"}
 categories=Counter(map_cat.get(f["category"],f["category"]) for f in families)
 assert categories=={
-    "tren_superior":22,"tronco":18,"piernas":21,"movilidad":20,"cardio":19
+    "tren_superior":22,"tren_central":18,"tren_inferior":21,"movilidad":20,"cardio":19
 }
 assert "descanso" not in categories
 
