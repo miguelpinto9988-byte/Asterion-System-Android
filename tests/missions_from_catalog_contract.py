@@ -15,7 +15,7 @@ for name in ("open_monarch","home_profile_name","open_daily","open_progress","op
 layout=ET.parse(BASE/"res/layout/screen_missions.xml").getroot()
 ids2={node.get(NS+"id") for node in layout.iter() if node.get(NS+"id")}
 for name in ("missions_tab_monarch","missions_tab_daily","missions_tab_library",
-             "missions_content","missions_back"):
+             "missions_content","missions_bottom_bar"):
     assert "@+id/"+name in ids2,name
 
 manifest=ET.parse(BASE/"AndroidManifest.xml").getroot()
@@ -51,6 +51,6 @@ assert 'AssetExerciseCatalogRepository(this).load()' in activity
 assert 'ProfileStore.getRegistration(this)' in activity
 assert '"week"' in adapter and '"missions"' in adapter
 assert '"gym_"' in adapter
-assert 'HomeMissionBinder.bind(activity,screen,openProgress)' in renderer
+assert 'HomeMissionBinder.bind(activity,screen)' in renderer
 assert '"monarch"' in binder and '"daily"' in binder and '"library"' in binder
 print("OK: motor conectado a 1017 variantes, renovación diaria, Monarca 5 días opt-in y control manual.")
