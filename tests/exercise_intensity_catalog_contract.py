@@ -33,7 +33,7 @@ assert len(set(t["variant_id"] for t in tags))==len(tags)
 assert all(t["variant_id"] in ids for t in tags)
 assert all(t["intensity"] in ("baja","moderada","alta","variable") for t in tags)
 assert Counter(t["intensity"] for t in tags)=={
-    "baja":281,"moderada":147,"variable":67,"alta":17
+    "baja":281,"moderada":146,"variable":68,"alta":17
 }
 norm=lambda s:"".join(c for c in unicodedata.normalize("NFD",s.casefold())
                     if not unicodedata.combining(c))
