@@ -261,7 +261,7 @@ public final class RoutinesActivity extends ComponentActivity {
     }
     private Button button(String value) {
         Button button=new Button(this);
-        button.setText(value);button.setTextAllCaps(false);
+        button.setText(value);button.setAllCaps(false);
         button.setMinHeight(dp(48));button.setTextColor(foreground());
         GradientDrawable shape=new GradientDrawable();
         shape.setColor(background());shape.setCornerRadius(dp(10));
