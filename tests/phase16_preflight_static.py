@@ -166,7 +166,7 @@ class PreflightNoBuild(unittest.TestCase):
         app_gradle = read(MODULES)
         adapter = read(APP_JAVA / "pe/asterionsystem/app/data/AssetExerciseCatalogRepository.java")
         self.assertIn("assets.srcDir '../progress-engine/src/main/resources'", app_gradle)
-        self.assertIn("ExerciseCatalogLoader.load(families, types, variants, intensity)", adapter)
+        self.assertIn("ExerciseCatalogLoader.load(families,types,variants,intensity,disciplines)", adapter)
         self.assertIn("getAssets().open", adapter)
         self.assertIn("Looper.getMainLooper()", adapter)
 
