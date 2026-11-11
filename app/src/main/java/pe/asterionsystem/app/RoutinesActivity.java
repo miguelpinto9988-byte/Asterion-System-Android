@@ -108,6 +108,8 @@ public final class RoutinesActivity extends ComponentActivity {
     private void render() {
         if(catalog==null||profile==null)return;
         body.removeAllViews();
+        choose("Ver avatares 2D animados · Sin internet",()->
+                startActivity(new Intent(this,NativeAvatarActivity.class)));
         body.addView(label("CONFIGURACIÓN",16,true));
         choose("Categoría · "+ExerciseCategoryMapper.displayName(categoryIndex),
                 ()->new AlertDialog.Builder(this)
