@@ -183,9 +183,9 @@ class PreflightNoBuild(unittest.TestCase):
         variants = read_rows("variants.tsv",
                              ["variant_id", "type_id", "name", "level",
                               "equipment", "execution", "supervision"])
-        self.assertEqual((125, 354, 1017), (len(families), len(types), len(variants)))
+        self.assertEqual((155, 474, 1257), (len(families), len(types), len(variants)))
         intensity = read_rows("intensity.tsv", ["variant_id", "intensity"])
-        self.assertEqual(512, len(intensity))
+        self.assertEqual(752, len(intensity))
         self.assertEqual(len({row[0] for row in intensity}), len(intensity))
         self.assertTrue(all(row[1] in ("baja", "moderada", "alta", "variable")
                             for row in intensity))

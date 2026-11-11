@@ -32,9 +32,9 @@ public final class ExerciseCatalogLoaderTest {
 
     @Test public void packagedInventoryCountsAndHierarchyAreValid() throws Exception {
         ExerciseCatalog index = loadBundled();
-        assertEquals(125, index.families().size());
-        assertEquals(354, index.types().size());
-        assertEquals(1017, index.variants().size());
+        assertEquals(155, index.families().size());
+        assertEquals(474, index.types().size());
+        assertEquals(1257, index.variants().size());
         for (ExerciseFamily family : index.families()) {
             assertFalse("Family without types: " + family.id(),
                     index.typesInFamily(family.id()).isEmpty());

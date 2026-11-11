@@ -68,15 +68,15 @@ public final class ExerciseCategoryIndexTest {
                         .primary().equals("no clasificado"));
             }
         }
-        assertEquals(125,families);
-        assertEquals(354,types);
-        assertEquals(1017,variants);
+        assertEquals(155,families);
+        assertEquals(474,types);
+        assertEquals(1257,variants);
         assertEquals(catalog.variants().size(),variantIds.size());
     }
 
     @Test public void categoryInventoryMatchesDeclaredProfileOrder() throws Exception {
         ExerciseCategoryIndex index=load().categoryIndex();
-        int[] familyCounts={27,23,27,24,24};
+        int[] familyCounts={33,29,33,30,30};
         for(int i=0;i<5;i++) {
             String id=ExerciseCategoryMapper.weeklyCode(i);
             assertEquals(familyCounts[i],index.families(id).size());
