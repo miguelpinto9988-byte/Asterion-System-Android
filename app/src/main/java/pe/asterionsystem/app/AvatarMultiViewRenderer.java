@@ -134,6 +134,7 @@ public final class AvatarMultiViewRenderer {
      * A deliberate short neck is visible above the close jersey collar. */
     private void drawFront(Canvas c,AvatarMultiViewKinematics.Pose p,
                            boolean squat) {
+        AvatarOrientationRules.requireUprightFrontPose(p);
         c.save();
         // Frontal silhouette has the same on-screen head/leg presence as
         // the side camera; keep footwear within the floor framing.
