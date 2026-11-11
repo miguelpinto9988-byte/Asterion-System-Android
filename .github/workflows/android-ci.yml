@@ -10,12 +10,14 @@ on:
       - feature/rutinas-calendario-aleatoriedad-20261111
       - feature/avatar-2d-nativo-android-20261111
       - feature/avatar-controles-estables-20261111
+      - feature/avatar-silueta-organica-20261111
   pull_request:
     branches:
       - main
       - feature/catalogo-taxonomia-categorias-v2-20261110
       - feature/rutinas-calendario-aleatoriedad-20261111
       - consolidacion/asterion-integracion-20261111
+      - feature/avatar-controles-estables-20261111
   workflow_dispatch:
 
 permissions:
@@ -78,6 +80,7 @@ jobs:
           python3 tests/routines_calendar_contract.py
           python3 tests/home_navigation_architecture_contract.py
           python3 tests/native_avatar_2d_contract.py
+          python3 tests/native_avatar_organic_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
