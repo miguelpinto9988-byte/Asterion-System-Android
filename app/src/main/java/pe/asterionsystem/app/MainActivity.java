@@ -2,6 +2,7 @@ package pe.asterionsystem.app;
 
 import androidx.activity.ComponentActivity;
 import androidx.activity.OnBackPressedCallback;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -145,6 +146,8 @@ public final class MainActivity extends ComponentActivity {
      * it restores the route being viewed instead of applying a new start route.
      */
     private NavigationState initialNavigation(Bundle saved) {
+        NavigationRoute requested=consumeRequestedSection(getIntent());
+        if(requested!=null)return NavigationState.initial().navigateTo(requested);
         if (saved != null) return NavigationBundleAdapter.read(saved);
         AppPreferences.StartSection preferred = preferencesService.current().startSection();
         NavigationRoute route;
@@ -155,6 +158,31 @@ public final class MainActivity extends ComponentActivity {
             default: route = NavigationRoute.HOME; break;
         }
         return NavigationState.initial().navigateTo(route);
+    }
+
+    /** One-off deep link used only by the private profile tools menu. */
+    private NavigationRoute consumeRequestedSection(Intent intent) {
+        if(intent==null)return null;
+        String section=intent.getStringExtra("asterion_open_section");
+        intent.removeExtra("asterion_open_section");
+        if(section==null)return null;
+        switch(section) {
+            case "home": return NavigationRoute.HOME;
+            case "plan": return NavigationRoute.PLAN;
+            case "settings": return NavigationRoute.SETTINGS;
+            case "local_status": return NavigationRoute.LOCAL_STATUS;
+            case "progress": return NavigationRoute.PROGRESS;
+            case "catalog": return NavigationRoute.CATALOG;
+            case "secondary": return NavigationRoute.SECONDARY;
+            default: return null;
+        }
+    }
+
+    @Override protected void onNewIntent(Intent incoming) {
+        super.onNewIntent(incoming);
+        NavigationRoute requested=consumeRequestedSection(incoming);
+        setIntent(incoming);
+        if(requested!=null&&navigation!=null)navigation.navigateTo(requested);
     }
 
     private void renderNavigation() {
@@ -237,6 +265,12 @@ public final class MainActivity extends ComponentActivity {
     @Override protected void onResume() {
         super.onResume();
         lifecycleAdapter.onResumed();
+        // Avatar edits update the committed profile while MainActivity remains
+        // underneath. Rebind the five cards on return to refresh name/theme.
+        if(navigation!=null && renderer!=null
+                && navigation.state().current()==NavigationRoute.HOME) {
+            renderNavigation();
+        }
     }
 
     @Override protected void onPause() {
