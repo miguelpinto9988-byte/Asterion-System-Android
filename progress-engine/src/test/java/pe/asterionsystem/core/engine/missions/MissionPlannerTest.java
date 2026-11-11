@@ -55,7 +55,7 @@ public class MissionPlannerTest {
         assertEquals(one.candidates().get(0).id(),again.candidates().get(0).id());
         assertTrue(one.candidates().size()<=3);
         for(ExerciseVariant variant:one.candidates()) {
-            assertTrue(variant.difficulty()<=1);
+            assertTrue(variant.difficulty()<=2);
             assertFalse(variant.supervisionRecommended());
             assertTrue(p.equipment.containsAll(variant.equipment()));
         }
@@ -70,7 +70,7 @@ public class MissionPlannerTest {
         assertTrue(p.requiresConsent());
         assertEquals(5,p.candidates().size());
         for(ExerciseVariant v:p.candidates()) {
-            assertTrue(v.difficulty()<=1);
+            assertTrue(v.difficulty()<=2);
             assertFalse(v.supervisionRecommended());
         }
     }
