@@ -42,7 +42,7 @@ assert all(f["category"] in {"tren_superior","tren_central","tren_inferior","mov
 normalized=lambda value:"".join(c for c in unicodedata.normalize("NFD",value.casefold())
                                  if not unicodedata.combining(c))
 assert len({normalized(v["name"]) for v in variants})==1017
-assert len({v["name"] for v in variants})==917
+assert len({v["name"] for v in variants})==1017
 
 # The historical 75/204/817 rows are a literal prefix; expansion is append-only.
 old_families,families_new=families[:75],families[75:100]
