@@ -29,9 +29,9 @@ public class ExerciseCategoryMapperTest {
              InputStreamReader t=read(base+"types.tsv");
              InputStreamReader v=read(base+"variants.tsv")) {
             ExerciseCatalog catalog=ExerciseCatalogLoader.load(f,t,v);
-            assertEquals(100,catalog.families().size());
-            assertEquals(254,catalog.types().size());
-            assertEquals(917,catalog.variants().size());
+            assertEquals(130,catalog.families().size());
+            assertEquals(374,catalog.types().size());
+            assertEquals(1157,catalog.variants().size());
             Set<Integer> categories=new HashSet<>();
             for(ExerciseFamily family:catalog.families()) {
                 int index=ExerciseCategoryMapper.weeklyIndex(family.category());
