@@ -37,4 +37,27 @@ public final class NativeAvatarRenderTest {
         assertNotEquals("Different tops should have visibly distinct colors",male,female);
         frames[0].recycle();frames[1].recycle();
     }
+    @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.setPlaying(false);
+            view.setPhase(Float.NaN);
+            assertEquals(0f,view.getPhase(),.0001f);
+            view.setPhase(Float.NEGATIVE_INFINITY);
+            assertEquals(0f,view.getPhase(),.0001f);
+            view.setPhase(Float.POSITIVE_INFINITY);
+            assertEquals(1f,view.getPhase(),.0001f);
+            view.setSpeed(1f);
+            view.setSpeed(Float.NaN);
+            assertEquals(1f,view.getSpeed(),.0001f);
+            view.setSpeed(Float.POSITIVE_INFINITY);
+            assertEquals(1f,view.getSpeed(),.0001f);
+            view.setFemale(true);
+            assertTrue(view.getContentDescription().toString().contains("Avatar morado"));
+            assertTrue(view.getContentDescription().toString().contains("pausada"));
+            view.setPlaying(true);
+            assertTrue(view.getContentDescription().toString().contains("reproducción"));
+        });
+    }
 }

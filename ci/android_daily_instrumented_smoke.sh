@@ -65,11 +65,11 @@ echo "PASS: custom routine persistence and once-per-day XP."
 
 echo "Android instrumentation 7/7: native Canvas paints blue and purple squat avatars"
 adb shell am instrument -w -e class \
-  "pe.asterionsystem.app.NativeAvatarRenderTest#blueAndPurpleDrawDifferentPausedPosePixels" \
+  "pe.asterionsystem.app.NativeAvatarRenderTest" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
   | tee "$OUT/native-avatar-render.txt"
-grep -q 'OK (1 test)' "$OUT/native-avatar-render.txt"
-echo "PASS: two distinct native Android 2D avatar renders."
+grep -q 'OK (2 tests)' "$OUT/native-avatar-render.txt"
+echo "PASS: native avatar palettes, timeline bounds and accessibility (2 tests)."
 
 
 

@@ -17,6 +17,7 @@ import androidx.activity.ComponentActivity;
  */
 public final class NativeAvatarActivity extends ComponentActivity {
     private NativeAvatarView avatar;
+    private final AvatarPlaybackController playback=new AvatarPlaybackController();
     private Button play;
     private SeekBar timeline;
     private TextView status;
@@ -47,8 +48,8 @@ public final class NativeAvatarActivity extends ComponentActivity {
         Button purple=button("Chica morada");
         genders.addView(blue,new LinearLayout.LayoutParams(0,dp(52),1));
         genders.addView(purple,new LinearLayout.LayoutParams(0,dp(52),1));
-        blue.setOnClickListener(v->{avatar.setFemale(false);status.setText("Avatar azul · Sentadilla");});
-        purple.setOnClickListener(v->{avatar.setFemale(true);status.setText("Avatar morado · Sentadilla");});
+        blue.setOnClickListener(v->{avatar.setFemale(false);updatePlay();});
+        purple.setOnClickListener(v->{avatar.setFemale(true);updatePlay();});
         root.addView(genders);
 
         status=text("Avatar azul · Sentadilla",13,true);
@@ -64,11 +65,13 @@ public final class NativeAvatarActivity extends ComponentActivity {
             }
             @Override public void onStartTrackingTouch(SeekBar seek) {
                 scrubbing=true;
-                avatar.setPlaying(false);
-                updatePlay();
+                playback.beginScrub();
+                applyPlayback();
             }
             @Override public void onStopTrackingTouch(SeekBar seek) {
                 scrubbing=false;
+                playback.endScrub();
+                applyPlayback();
             }
         });
         avatar.setFrameListener(value->{
@@ -84,8 +87,8 @@ public final class NativeAvatarActivity extends ComponentActivity {
         controls.addView(speed,new LinearLayout.LayoutParams(0,dp(52),1));
         root.addView(controls);
         play.setOnClickListener(v->{
-            avatar.setPlaying(!avatar.isPlaying());
-            updatePlay();
+            playback.toggleRequested();
+            applyPlayback();
         });
         reset.setOnClickListener(v->{avatar.reset();timeline.setProgress(0);});
         speed.setOnClickListener(v->{
@@ -104,28 +107,46 @@ public final class NativeAvatarActivity extends ComponentActivity {
             avatar.setFemale(state.getBoolean("female",false));
             avatar.setSpeed(state.getFloat("speed",1f));
             avatar.setPhase(state.getFloat("phase",0f));
-            avatar.setPlaying(state.getBoolean("playing",true));
+            playback.setPlaybackRequested(state.getBoolean("playing",true));
             status.setText(avatar.isFemale()?"Avatar morado · Sentadilla"
                     :"Avatar azul · Sentadilla");
             speed.setText(avatar.getSpeed()==1f?"Velocidad 1×":"Velocidad 0,5×");
         }
-        updatePlay();
+        applyPlayback();
     }
 
     @Override protected void onSaveInstanceState(Bundle state) {
         state.putBoolean("female",avatar.isFemale());
-        state.putBoolean("playing",avatar.isPlaying());
+        state.putBoolean("playing",playback.isPlaybackRequested());
         state.putFloat("phase",avatar.getPhase());
         state.putFloat("speed",avatar.getSpeed());
         super.onSaveInstanceState(state);
     }
+    @Override protected void onResume(){
+        super.onResume();
+        playback.onResume();
+        applyPlayback();
+    }
     @Override protected void onPause(){
-        // Stop rendering invisible frames to avoid unnecessary battery usage.
-        if(avatar!=null)avatar.setPlaying(false);
+        // The Activity may be hidden by Android without a manual pause.
+        // Retain the user's preference so playback resumes only when requested.
+        playback.onPause();
+        applyPlayback();
         super.onPause();
     }
+    @Override protected void onDestroy(){
+        if(avatar!=null)avatar.setFrameListener(null);
+        super.onDestroy();
+    }
+    private void applyPlayback(){
+        if(avatar!=null)avatar.setPlaying(playback.shouldPlay());
+        updatePlay();
+    }
     private void updatePlay(){
+        if(avatar==null)return;
         if(play!=null)play.setText(avatar.isPlaying()?"Pausar":"Reproducir");
+        if(status!=null)status.setText((avatar.isFemale()?"Avatar morado":"Avatar azul")
+                +" · Sentadilla · "+(avatar.isPlaying()?"Reproduciendo":"En pausa"));
     }
     private TextView text(String value,int sp,boolean prominent){
         TextView label=new TextView(this);

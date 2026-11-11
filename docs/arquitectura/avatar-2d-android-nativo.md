@@ -41,3 +41,23 @@ La investigación biomecánica resalta que la sentadilla cambia con la anchura y
 - JUnit `AvatarKinematicsTest`: segmentos de longitud constante, tobillos fijos, desplazamiento continuo de pelvis y fases interpoladas.
 - Contrato Python `tests/native_avatar_2d_contract.py`: dependencias nativas, entrada desde Rutinas/guía de sentadilla, no cambios en la estructura de Inicio.
 - Android CI: JUnit, Lint, `assembleDebug` y emulador Android 16.
+
+## Mejora incremental de estabilidad del reproductor
+
+La rama `feature/avatar-controles-estables-20261111` separa la **preferencia de reproducción**
+del usuario del estado de visibilidad de Android mediante `AvatarPlaybackController`
+(Java puro, cubierto por JUnit). Al ocultarse la pantalla se detienen los fotogramas,
+y al regresar se reanuda solo si la persona había elegido reproducir. Una pausa
+manual persiste al rotar la pantalla o regresar desde otra aplicación.
+
+Mientras se arrastra el control de progreso, la animación se suspende sin cambiar
+la preferencia previa: al terminar el desplazamiento puede continuar automáticamente
+solo si estaba solicitada. Los valores no finitos de velocidad y posición se
+validan para impedir un estado interno inválido. Las descripciones de accesibilidad
+identifican el personaje y si se encuentra en reproducción o pausa, sin generar
+avisos en cada fotograma.
+
+La apariencia original azul/morado y la sentadilla esquemática se mantienen
+sin rediseño; no hay nuevos ejercicios ni afirmaciones de análisis biomecánico.
+Además del render de ambos personajes, la CI ejecuta una segunda prueba
+instrumentada de límites y accesibilidad y pruebas JVM del controlador.

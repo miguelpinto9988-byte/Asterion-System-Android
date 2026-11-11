@@ -8,6 +8,7 @@ def read(name):return (JAVA/name).read_text(encoding="utf8")
 anim=read("NativeAvatarView.java")
 pose=read("AvatarKinematics.java")
 activity=read("NativeAvatarActivity.java")
+controller=read("AvatarPlaybackController.java")
 routine=read("RoutinesActivity.java")
 step=read("RoutineStepActivity.java")
 manifest=(APP/"AndroidManifest.xml").read_text(encoding="utf8")
@@ -24,6 +25,11 @@ for token in ("kneeForward(","UPPER_LEG","LOWER_LEG","TORSO",
 for token in ("Chico azul","Chica morada","Pausar","Reiniciar",
               "Velocidad 1×","SeekBar","setOnSeekBarChangeListener"):
     assert token in activity,token
+for token in ("playback.onResume()","playback.onPause()","playback.beginScrub()",
+              "playback.endScrub()","playback.isPlaybackRequested()"):
+    assert token in activity,token
+assert "shouldPlay()" in controller
+assert "updateAccessibilityDescription()" in anim
 assert 'new Intent(this,NativeAvatarActivity.class)' in routine
 assert 'new Intent(this,NativeAvatarActivity.class)' in step
 assert "contains(\"sentadilla\")" in step
