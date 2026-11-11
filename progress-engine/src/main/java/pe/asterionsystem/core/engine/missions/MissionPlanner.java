@@ -608,6 +608,10 @@ public final class MissionPlanner {
         Objects.requireNonNull(recentlyCompleted,"recentlyCompleted");
         // Seeded full-catalog shuffle is reproducible for one date/profile.
         ArrayList<ExerciseVariant> shuffled=new ArrayList<>(pool);
+        // Catalog additions and resource-row order cannot perturb the
+        // deterministic draw except when the actual eligible set changes.
+        // This shared selection is used by both daily and Monarca proposals.
+        shuffled.sort(Comparator.comparing(ExerciseVariant::id));
         Collections.shuffle(shuffled,new Random(seed));
         ArrayList<ExerciseVariant> selected=new ArrayList<>();
         Set<String> usedIds=new HashSet<>();
