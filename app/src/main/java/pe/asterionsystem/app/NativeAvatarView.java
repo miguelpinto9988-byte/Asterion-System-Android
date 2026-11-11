@@ -19,6 +19,7 @@ public final class NativeAvatarView extends View {
     private final AvatarRenderer renderer=new AvatarRenderer();
     private AvatarPalette palette=AvatarPalette.BLUE;
     private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
+    private AvatarMotionEngine.Motion motion=AvatarMotionEngine.Motion.SQUAT;
 
     private boolean female=false;
     private boolean playing=true;
@@ -44,6 +45,15 @@ public final class NativeAvatarView extends View {
         invalidate();
     }
     public boolean isFemale(){return female;}
+    public AvatarMotionEngine.Motion getMotion(){return motion;}
+    public void setMotion(AvatarMotionEngine.Motion value){
+        if(value==null)throw new IllegalArgumentException("Movimiento obligatorio");
+        motion=value;
+        phase=0f;
+        lastFrameMs=SystemClock.uptimeMillis();
+        updateAccessibilityDescription();
+        invalidate();
+    }
     public void setBodySpec(AvatarBodySpec value){
         if(value==null)throw new IllegalArgumentException("BodySpec obligatorio");
         bodySpec=value;invalidate();
@@ -74,7 +84,8 @@ public final class NativeAvatarView extends View {
 
     private void updateAccessibilityDescription() {
         setContentDescription((female?"Avatar morado":"Avatar azul")
-                +" realizando una sentadilla ilustrativa. "
+                +" mostrando "+motion.label.toLowerCase(java.util.Locale.ROOT)
+                +" como animación ilustrativa. "
                 +(playing?"Animación en reproducción.":"Animación pausada."));
     }
 
@@ -109,9 +120,8 @@ public final class NativeAvatarView extends View {
                 (getHeight()-DESIGN_HEIGHT*scale)*0.5f);
         canvas.scale(scale,scale);
 
-        renderer.draw(canvas,AvatarKinematics.squat(
-                AvatarKinematics.depthAtPhase(phase),bodySpec),
-                bodySpec,palette,dark);
+        renderer.draw(canvas,AvatarMotionEngine.pose(motion,phase,bodySpec),
+                bodySpec,palette,dark,motion.label);
         canvas.restore();
         if(playing&&isAttachedToWindow()&&isShown())postInvalidateOnAnimation();
     }

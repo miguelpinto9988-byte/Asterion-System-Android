@@ -47,8 +47,13 @@ public final class AvatarKinematics {
         final Point farAnkle=new Point(170f,363f);
         final Point hip=new Point(184f-45f*s,190f+69f*s);
         final Point farHip=new Point(hip.x-10f,hip.y-3f);
-        Point knee=kneeForward(hip,ankle,spec.upperLeg,spec.lowerLeg);
-        Point farKnee=kneeForward(farHip,farAnkle,spec.upperLeg,spec.lowerLeg);
+        AvatarRigConstraints.TwoBone nearLeg=AvatarRigConstraints.twoBone(
+                hip,ankle,spec.upperLeg,spec.lowerLeg,-1,0f,170f);
+        AvatarRigConstraints.TwoBone farLeg=AvatarRigConstraints.twoBone(
+                farHip,farAnkle,spec.upperLeg,spec.lowerLeg,-1,0f,170f);
+        if(nearLeg.targetLimited||farLeg.targetLimited)
+            throw new IllegalArgumentException("Proporciones incompatibles con apoyo de pies");
+        Point knee=nearLeg.joint,farKnee=farLeg.joint;
 
         float trunkTilt=0.10f+0.43f*s;
         Point shoulder=new Point(hip.x+(float)Math.sin(trunkTilt)*spec.torso,
@@ -59,12 +64,16 @@ public final class AvatarKinematics {
 
         // One target per wrist, with analytical two-bone IK for both elbows.
         // Segment lengths stay fixed even when the wrists travel forward.
-        Point wrist=lerp(new Point(shoulder.x+4f,shoulder.y+107f),
+        Point desiredWrist=lerp(new Point(shoulder.x+4f,shoulder.y+107f),
                 new Point(shoulder.x+105f,shoulder.y+23f),s);
-        Point farWrist=lerp(new Point(farShoulder.x-11f,farShoulder.y+101f),
+        Point desiredFarWrist=lerp(new Point(farShoulder.x-11f,farShoulder.y+101f),
                 new Point(farShoulder.x+102f,farShoulder.y+19f),s);
-        Point elbow=elbowBelow(shoulder,wrist,spec.upperArm,spec.forearm);
-        Point farElbow=elbowBelow(farShoulder,farWrist,spec.upperArm,spec.forearm);
+        AvatarRigConstraints.TwoBone nearArm=AvatarRigConstraints.twoBone(
+                shoulder,desiredWrist,spec.upperArm,spec.forearm,1,0f,170f);
+        AvatarRigConstraints.TwoBone farArm=AvatarRigConstraints.twoBone(
+                farShoulder,desiredFarWrist,spec.upperArm,spec.forearm,1,0f,170f);
+        Point wrist=nearArm.end,farWrist=farArm.end;
+        Point elbow=nearArm.joint,farElbow=farArm.joint;
         return new Pose(ankle,farAnkle,knee,farKnee,hip,farHip,
                 shoulder,farShoulder,neck,head,elbow,wrist,
                 farElbow,farWrist);
@@ -74,44 +83,24 @@ public final class AvatarKinematics {
      * Planar two-bone IK; select the forward knee. Distances are clamped to
      * prevent NaN if later poses or proportions become unreachable.
      */
+    /**
+     * Compatibility API, now backed by the shared fixed-length 2-link solver.
+     * Bend-side -1 selects the same forward-facing knee as before.
+     */
     public static Point kneeForward(Point hip,Point ankle,float femur,float tibia) {
-        if(!Float.isFinite(femur)||!Float.isFinite(tibia)||femur<=0 || tibia<=0)
+        if(!Float.isFinite(femur)||!Float.isFinite(tibia)||femur<=0||tibia<=0)
             throw new IllegalArgumentException("Longitudes positivas y finitas");
         float dx=ankle.x-hip.x,dy=ankle.y-hip.y;
         float raw=(float)Math.hypot(dx,dy);
-        float d=Math.max(Math.abs(femur-tibia)+0.001f,
-                Math.min(femur+tibia-0.001f,raw));
-        float ux=raw<0.0001f?0f:dx/raw;
-        float uy=raw<0.0001f?1f:dy/raw;
-        float a=(femur*femur-tibia*tibia+d*d)/(2f*d);
-        float side=(float)Math.sqrt(Math.max(0f,femur*femur-a*a));
-        float midX=hip.x+ux*a,midY=hip.y+uy*a;
-        Point k1=new Point(midX+uy*side,midY-ux*side);
-        Point k2=new Point(midX-uy*side,midY+ux*side);
-        return k1.x>=k2.x?k1:k2;
+        if(!Float.isFinite(raw))throw new IllegalArgumentException("Anclaje inválido");
+        return AvatarRigConstraints.twoBone(hip,ankle,femur,tibia,-1,0f,170f).joint;
     }
 
-    /**
-     * Two-segment illustrative arm: the elbow follows the lower branch of
-     * the circle intersection continuously, rather than independent keyframes.
-     * This preserves lengths but does not represent a clinical movement guide.
-     */
+    /** Compatible name for original arm IK, now using shared fixed lengths. */
     public static Point elbowBelow(Point shoulder,Point wrist,
                                    float upperArm,float forearm) {
-        if(!Float.isFinite(upperArm) || !Float.isFinite(forearm)
-                || upperArm<=0f || forearm<=0f) {
-            throw new IllegalArgumentException("Longitudes positivas y finitas");
-        }
-        float dx=wrist.x-shoulder.x,dy=wrist.y-shoulder.y;
-        float raw=(float)Math.hypot(dx,dy);
-        float d=Math.max(Math.abs(upperArm-forearm)+.001f,
-                Math.min(upperArm+forearm-.001f,raw));
-        float ux=raw<.0001f?0f:dx/raw;
-        float uy=raw<.0001f?1f:dy/raw;
-        float along=(upperArm*upperArm-forearm*forearm+d*d)/(2f*d);
-        float bend=(float)Math.sqrt(Math.max(0f,upperArm*upperArm-along*along));
-        return new Point(shoulder.x+ux*along-uy*bend,
-                shoulder.y+uy*along+ux*bend);
+        return AvatarRigConstraints.twoBone(shoulder,wrist,upperArm,forearm,
+                1,0f,170f).joint;
     }
 
     public static float depthAtPhase(float phase) {

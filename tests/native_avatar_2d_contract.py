@@ -18,7 +18,7 @@ step=read("RoutineStepActivity.java")
 manifest=(APP/"AndroidManifest.xml").read_text(encoding="utf8")
 home=(APP/"res/layout/screen_home.xml").read_text(encoding="utf8")
 for token in ("extends View","onDraw(Canvas canvas)","postInvalidateOnAnimation()",
-              "renderer.draw(","AvatarKinematics.squat(","setFemale(","setPlaying(",
+              "renderer.draw(","AvatarMotionEngine.pose(","setFemale(","setPlaying(",
               "setPhase(","setSpeed("):
     assert token in anim,token
 for token in ("new Paint(Paint.ANTI_ALIAS_FLAG)","new Path()",

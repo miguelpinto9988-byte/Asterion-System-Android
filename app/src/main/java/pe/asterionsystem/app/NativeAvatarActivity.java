@@ -6,6 +6,9 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ public final class NativeAvatarActivity extends ComponentActivity {
     private final AvatarPlaybackController playback=new AvatarPlaybackController();
     private Button play;
     private SeekBar timeline;
+    private Spinner motionPicker;
     private TextView status;
     private boolean light;
     private boolean scrubbing;
@@ -51,6 +55,29 @@ public final class NativeAvatarActivity extends ComponentActivity {
         blue.setOnClickListener(v->{avatar.setFemale(false);updatePlay();});
         purple.setOnClickListener(v->{avatar.setFemale(true);updatePlay();});
         root.addView(genders);
+
+        // The catalog is not mapped automatically: only authored and reviewed
+        // 2D examples appear here, each with explicit anchors and targets.
+        motionPicker=new Spinner(this);
+        AvatarMotionEngine.Motion[] choices=AvatarMotionEngine.Motion.values();
+        String[] labels=new String[choices.length];
+        for(int i=0;i<choices.length;i++)labels[i]=choices[i].label;
+        ArrayAdapter<String> motionAdapter=new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,labels);
+        motionAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        motionPicker.setAdapter(motionAdapter);
+        motionPicker.setContentDescription("Ejemplo de movimiento ilustrado");
+        motionPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override public void onItemSelected(AdapterView<?> parent,
+                    View v,int position,long id){
+                avatar.setMotion(choices[position]);
+                if(timeline!=null)timeline.setProgress(0);
+                updatePlay();
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent){}
+        });
+        root.addView(motionPicker,new LinearLayout.LayoutParams(-1,dp(50)));
 
         status=text("Avatar azul · Sentadilla",13,true);
         root.addView(status);
@@ -96,9 +123,9 @@ public final class NativeAvatarActivity extends ComponentActivity {
             avatar.setSpeed(next);
             speed.setText(next==1f?"Velocidad 1×":"Velocidad 0,5×");
         });
-        root.addView(text("Movimiento esquemático; no comprueba tu postura "
-                +"ni sustituye la orientación de un profesional. "
-                +"La profundidad y la inclinación son orientativas.",12,false));
+        root.addView(text("Movimientos ilustrativos con huesos de longitud fija. "
+                +"No evalúan la postura, la técnica ni sustituyen orientación "
+                +"profesional.",12,false));
         Button back=button("Volver a Rutinas");
         root.addView(back,new LinearLayout.LayoutParams(-1,dp(52)));
         back.setOnClickListener(v->finish());
@@ -108,6 +135,15 @@ public final class NativeAvatarActivity extends ComponentActivity {
             avatar.setSpeed(state.getFloat("speed",1f));
             avatar.setPhase(state.getFloat("phase",0f));
             playback.setPlaybackRequested(state.getBoolean("playing",true));
+            String restored=state.getString("motion","SQUAT");
+            try {
+                AvatarMotionEngine.Motion selected=AvatarMotionEngine.Motion.valueOf(restored);
+                motionPicker.setSelection(selected.ordinal());
+                avatar.setMotion(selected);
+                avatar.setPhase(state.getFloat("phase",0f));
+            } catch(IllegalArgumentException unknown) {
+                motionPicker.setSelection(0);
+            }
             status.setText(avatar.isFemale()?"Avatar morado · Sentadilla"
                     :"Avatar azul · Sentadilla");
             speed.setText(avatar.getSpeed()==1f?"Velocidad 1×":"Velocidad 0,5×");
@@ -117,6 +153,7 @@ public final class NativeAvatarActivity extends ComponentActivity {
 
     @Override protected void onSaveInstanceState(Bundle state) {
         state.putBoolean("female",avatar.isFemale());
+        state.putString("motion",avatar.getMotion().name());
         state.putBoolean("playing",playback.isPlaybackRequested());
         state.putFloat("phase",avatar.getPhase());
         state.putFloat("speed",avatar.getSpeed());
@@ -146,7 +183,8 @@ public final class NativeAvatarActivity extends ComponentActivity {
         if(avatar==null)return;
         if(play!=null)play.setText(avatar.isPlaying()?"Pausar":"Reproducir");
         if(status!=null)status.setText((avatar.isFemale()?"Avatar morado":"Avatar azul")
-                +" · Sentadilla · "+(avatar.isPlaying()?"Reproduciendo":"En pausa"));
+                +" · "+avatar.getMotion().label+" · "
+                +(avatar.isPlaying()?"Reproduciendo":"En pausa"));
     }
     private TextView text(String value,int sp,boolean prominent){
         TextView label=new TextView(this);
