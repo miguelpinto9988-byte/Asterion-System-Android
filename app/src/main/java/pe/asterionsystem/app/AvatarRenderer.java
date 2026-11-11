@@ -15,6 +15,7 @@ public final class AvatarRenderer {
             Typeface.DEFAULT,Typeface.BOLD);
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path=new Path();
+    private final AvatarArtDetails details=new AvatarArtDetails();
     private AvatarPalette palette=AvatarPalette.BLUE;
     private AvatarBodySpec body=AvatarBodySpec.DEFAULT;
 
@@ -41,48 +42,48 @@ public final class AvatarRenderer {
 
         // Far limbs first. Rounded pieces overlap at each hinge; joints do
         // not display a separate dark ring when the skeleton bends.
-        drawShoe(canvas,p.farAnkle,true);
+        details.drawSneaker(canvas,p.farAnkle,palette,true);
         drawLimb(canvas,p.farHip,p.farKnee,body.thighWidth*.88f,body.thighWidth*.72f,
                 palette.farLegColor);
         drawLimb(canvas,p.farKnee,p.farAnkle,body.calfWidth*.92f,body.calfWidth*.62f,
-                palette.female?0xFF514D70:palette.skinShade);
-        drawJoint(canvas,p.farKnee,11.5f,palette.female?0xFF514D70:palette.skinShade);
+                palette.female?0xFF514D70:0xFF293951);
+        drawJoint(canvas,p.farKnee,11.5f,palette.female?0xFF514D70:0xFF293951);
+        details.drawDenimLeg(canvas,p.farHip,p.farKnee,p.farAnkle,true);
         drawLimb(canvas,p.farShoulder,p.farElbow,body.upperArmWidth*.74f,body.upperArmWidth*.62f,palette.skinShade);
         drawLimb(canvas,p.farElbow,p.farWrist,body.forearmWidth,body.forearmWidth*.65f,palette.skinShade);
         drawJoint(canvas,p.farElbow,8f,palette.skinShade);
-        drawHand(canvas,p.farWrist,palette.skinShade);
+        details.drawHand(canvas,p.farWrist,palette.skinShade);
 
         // Front leg: continuous rounded leg silhouettes under sportswear.
-        drawShoe(canvas,p.ankle,false);
-        drawLimb(canvas,p.hip,p.knee,body.thighWidth,body.thighWidth*.73f,palette.female?palette.legColor:palette.skin);
-        drawLimb(canvas,p.knee,p.ankle,body.calfWidth,body.calfWidth*.67f,palette.female?palette.legColor:palette.skin);
-        drawJoint(canvas,p.knee,12.5f,palette.female?palette.legColor:palette.skin);
-        if(!palette.female) {
-            AvatarKinematics.Point hemStart=interp(p.hip,p.knee,.47f);
-            AvatarKinematics.Point hemEnd=interp(p.hip,p.knee,.50f);
-            drawLimb(canvas,p.hip,hemStart,body.thighWidth*1.16f,body.thighWidth*.91f,palette.shorts);
-            drawLimb(canvas,hemStart,hemEnd,28f,25f,hi);
-        } else {
-            drawLimb(canvas,interp(p.hip,p.knee,.21f),
-                    interp(p.hip,p.knee,.80f),3f,2.6f,hi);
-        }
+        details.drawSneaker(canvas,p.ankle,palette,false);
+        drawLimb(canvas,p.hip,p.knee,body.thighWidth,body.thighWidth*.73f,
+                palette.legColor);
+        drawLimb(canvas,p.knee,p.ankle,body.calfWidth,body.calfWidth*.67f,
+                palette.legColor);
+        drawJoint(canvas,p.knee,12.5f,palette.legColor);
+        details.drawDenimLeg(canvas,p.hip,p.knee,p.ankle,false);
+        details.drawPelvis(canvas,p.hip,p.shoulder);
 
         // Contoured torso instead of the former straight cylinder.
         drawTorso(canvas,p,top,hi);
+        details.drawJersey(canvas,p.hip,p.shoulder,body,palette);
         drawLimb(canvas,p.shoulder,p.neck,21f,13f,palette.skin);
-        drawHead(canvas,p.head);
+        details.drawHead(canvas,p.head,body,palette);
         if(!palette.female) {
             drawLimb(canvas,p.shoulder,interp(p.shoulder,p.elbow,.29f),
                     body.upperArmWidth,body.upperArmWidth*.81f,top);
+            details.drawSleeve(canvas,p.shoulder,p.elbow,palette);
             drawLimb(canvas,interp(p.shoulder,p.elbow,.23f),p.elbow,
                     19f,17f,palette.skin);
         } else {
             drawLimb(canvas,p.shoulder,p.elbow,19f,16f,palette.skin);
             drawJoint(canvas,p.shoulder,12f,top);
         }
-        drawLimb(canvas,p.elbow,p.wrist,body.forearmWidth,body.forearmWidth*.71f,palette.skin);
+        drawLimb(canvas,p.elbow,p.wrist,body.forearmWidth,
+                body.forearmWidth*.71f,palette.skin);
         drawJoint(canvas,p.elbow,8.8f,palette.skin);
-        drawHand(canvas,p.wrist,palette.skin);
+        details.drawForearm(canvas,p.elbow,p.wrist);
+        details.drawHand(canvas,p.wrist,palette.skin);
 
         if(dark) {
             paint.setColor(0xFFADB4CE);
@@ -217,50 +218,6 @@ public final class AvatarRenderer {
     private void drawJoint(Canvas c,AvatarKinematics.Point p,float radius,int fill) {
         color(fill);
         c.drawCircle(p.x,p.y,radius,paint);
-    }
-    private void drawShoe(Canvas c,AvatarKinematics.Point ankle,boolean far) {
-        float x=ankle.x,y=ankle.y;
-        drawRoundedRect(c,x-12,y-12,x+39,y+11,9,
-                far?0xFFADB7D4:palette.shoe,1.5f);
-        drawRoundedRect(c,x-8,y-10,x+30,y+4,8,
-                far?0xFF687696:(palette.female?0xFF9C81D0:0xFF3A69B0),1f);
-        color(palette.shoeDark);
-        paint.setStrokeWidth(2f);
-        c.drawLine(x-7,y+8,x+36,y+8,paint);
-    }
-    private void drawHand(Canvas c,AvatarKinematics.Point wrist,int skin){
-        drawOval(c,wrist.x-7,wrist.y-7,wrist.x+10,wrist.y+6,skin);
-    }
-
-    private void drawHead(Canvas c,AvatarKinematics.Point center) {
-        c.save();
-        c.translate(center.x,center.y);
-        c.scale(body.headScale,body.headScale);
-        float x=0f,y=0f;
-        if(palette.female) {
-            drawOval(c,x-25,y-26,x+13,y+27,palette.hair);
-            // Ponytail follows the head as one piece.
-            path.reset();path.moveTo(x-18,y-18);
-            path.cubicTo(x-41,y-39,x-47,y-14,x-39,y+4);
-            path.cubicTo(x-44,y+19,x-31,y+22,x-25,y+16);
-            path.quadTo(x-20,y+1,x-18,y-18);path.close();
-            color(palette.hair);c.drawPath(path,paint);
-        }
-        drawOval(c,x-18,y-23,x+20,y+21,palette.skin);
-        path.reset();
-        path.moveTo(x-19,y-7);
-        path.cubicTo(x-22,y-26,x-8,y-34,x+11,y-28);
-        path.cubicTo(x+25,y-26,x+22,y-10,x+19,y-9);
-        path.quadTo(x+7,y-17,x-2,y-13);
-        path.quadTo(x-12,y-11,x-19,y-7);path.close();
-        color(palette.hair);c.drawPath(path,paint);
-        color(palette.hairHighlight);
-        c.drawOval(x-13,y-22,x+8,y-19,paint);
-        color(palette.outline);
-        c.drawCircle(x+11,y-1,1.7f,paint);
-        paint.setStrokeWidth(1.3f);
-        c.drawLine(x+17,y+10,x+11,y+12,paint);
-        c.restore();
     }
     private void drawOval(Canvas c,float l,float t,float r,float b,int fill){
         color(fill);
