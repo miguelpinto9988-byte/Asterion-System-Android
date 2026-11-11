@@ -82,12 +82,12 @@ public final class ExerciseCategoryIndexTest {
             assertEquals(familyCounts[i],index.families(id).size());
         }
         assertEquals("movilidad",index.categoryForFamily("equilibrio"));
-        assertEquals("tronco",index.categoryForFamily("transportes"));
+        assertEquals("tren_central",index.categoryForFamily("transportes"));
         assertEquals("tren_superior",index.categoryForVariant(
                 "elevacion_frontal_sentado_v01"));
-        assertEquals("tronco",index.categoryForVariant(
+        assertEquals("tren_central",index.categoryForVariant(
                 "inclinacion_pelvis_pie_v01"));
-        assertEquals("piernas",index.categoryForVariant(
+        assertEquals("tren_inferior",index.categoryForVariant(
                 "paso_frente_y_retorno_v01"));
         assertEquals("movilidad",index.categoryForVariant(
                 "giro_talon_suelo_v01"));
@@ -100,7 +100,7 @@ public final class ExerciseCategoryIndexTest {
         assertThrows(UnsupportedOperationException.class,
                 ()->index.categories().add("descanso"));
         assertThrows(UnsupportedOperationException.class,
-                ()->index.families("piernas").clear());
+                ()->index.families("tren_inferior").clear());
         assertThrows(UnsupportedOperationException.class,
                 ()->index.types("movilidad").clear());
         assertThrows(UnsupportedOperationException.class,
@@ -121,7 +121,7 @@ public final class ExerciseCategoryIndexTest {
                 catalog.search("Equilibrio sobre una pierna","coordinacion",
                         null,5,100,0).isEmpty());
         assertFalse("Integrated movement must appear under trunk",
-                catalog.search("Transportes de cargas","tronco",
+                catalog.search("Transportes de cargas","tren_central",
                         null,5,100,0).isEmpty());
         assertFalse("New category families must be searchable",
                 catalog.search("Marcha recreativa sentado","cardio",
