@@ -133,48 +133,49 @@ public final class NativeAvatarView extends View {
         AvatarKinematics.Pose p=AvatarKinematics.squat(
                 AvatarKinematics.depthAtPhase(phase));
 
-        // Far limbs first, then foreground anatomical forms.
+        // Far limbs first. Rounded pieces overlap at each hinge; joints do
+        // not display a separate dark ring when the skeleton bends.
         drawShoe(canvas,p.farAnkle,true);
-        drawLimb(canvas,p.farHip,p.farKnee,24f,22f,0xFF666A80);
-        drawLimb(canvas,p.farKnee,p.farAnkle,20f,15f,0xFF5B6078);
-        drawLimb(canvas,p.farShoulder,p.farElbow,18f,15f,SKIN_SHADOW);
-        drawLimb(canvas,p.farElbow,p.farWrist,14f,10f,SKIN_SHADOW);
+        drawLimb(canvas,p.farHip,p.farKnee,29f,23f,
+                female?0xFF4D486A:0xFF8F95A8);
+        drawLimb(canvas,p.farKnee,p.farAnkle,22f,15f,
+                female?0xFF514D70:SKIN_SHADOW);
+        drawJoint(canvas,p.farKnee,11.5f,female?0xFF514D70:SKIN_SHADOW);
+        drawLimb(canvas,p.farShoulder,p.farElbow,19f,16f,SKIN_SHADOW);
+        drawLimb(canvas,p.farElbow,p.farWrist,17f,11f,SKIN_SHADOW);
+        drawJoint(canvas,p.farElbow,8f,SKIN_SHADOW);
         drawHand(canvas,p.farWrist,SKIN_SHADOW);
 
-        // Front leg, continuous rounded surfaces over the IK joints.
+        // Front leg: continuous rounded leg silhouettes under sportswear.
         drawShoe(canvas,p.ankle,false);
-        drawLimb(canvas,p.hip,p.knee,29f,25f,female?0xFF403B61:0xFF353A51);
-        drawLimb(canvas,p.knee,p.ankle,23f,16f,female?0xFF454064:SKIN);
-        drawJoint(canvas,p.knee,12.5f,female?0xFF48426B:SKIN);
+        drawLimb(canvas,p.hip,p.knee,33f,24f,female?0xFF45405F:SKIN);
+        drawLimb(canvas,p.knee,p.ankle,24f,16f,female?0xFF45405F:SKIN);
+        drawJoint(canvas,p.knee,12.5f,female?0xFF45405F:SKIN);
         if(!female) {
-            // Male shorts over the upper leg, keeping the joint curve natural.
-            AvatarKinematics.Point thighEnd=interp(p.hip,p.knee,.48f);
-            drawLimb(canvas,p.hip,thighEnd,34f,30f,TROUSERS);
-            drawLimb(canvas,thighEnd,interp(p.hip,p.knee,.52f),30f,29f,hi);
+            AvatarKinematics.Point hemStart=interp(p.hip,p.knee,.47f);
+            AvatarKinematics.Point hemEnd=interp(p.hip,p.knee,.50f);
+            drawLimb(canvas,p.hip,hemStart,38f,30f,TROUSERS);
+            drawLimb(canvas,hemStart,hemEnd,28f,25f,hi);
         } else {
-            drawLimb(canvas,interp(p.hip,p.knee,.14f),p.knee,2.8f,2.2f,hi);
-            drawLimb(canvas,interp(p.knee,p.ankle,.08f),
-                    interp(p.knee,p.ankle,.89f),2.6f,2.5f,hi);
+            drawLimb(canvas,interp(p.hip,p.knee,.21f),
+                    interp(p.hip,p.knee,.80f),3f,2.6f,hi);
         }
 
-        // Back-to-front body geometry: torso, collar, neckline, head, front arm.
-        drawLimb(canvas,p.hip,p.shoulder,46f,50f,top);
-        drawLimb(canvas,interp(p.hip,p.shoulder,.16f),
-                interp(p.hip,p.shoulder,.8f),5f,6f,hi);
-        drawJoint(canvas,p.hip,20f,top);
-        drawLimb(canvas,p.shoulder,p.neck,23f,15f,SKIN);
+        // Contoured torso instead of the former straight cylinder.
+        drawTorso(canvas,p,top,hi);
+        drawLimb(canvas,p.shoulder,p.neck,21f,13f,SKIN);
         drawHead(canvas,p.head);
         if(!female) {
-            drawLimb(canvas,p.shoulder,interp(p.shoulder,p.elbow,.25f),
-                    25f,23f,top);
-            drawLimb(canvas,interp(p.shoulder,p.elbow,.19f),p.elbow,
-                    19f,16f,SKIN);
+            drawLimb(canvas,p.shoulder,interp(p.shoulder,p.elbow,.29f),
+                    26f,21f,top);
+            drawLimb(canvas,interp(p.shoulder,p.elbow,.23f),p.elbow,
+                    19f,17f,SKIN);
         } else {
-            drawLimb(canvas,p.shoulder,p.elbow,18.5f,16f,SKIN);
-            drawJoint(canvas,p.shoulder,13f,top);
+            drawLimb(canvas,p.shoulder,p.elbow,19f,16f,SKIN);
+            drawJoint(canvas,p.shoulder,12f,top);
         }
-        drawLimb(canvas,p.elbow,p.wrist,16f,11f,SKIN);
-        drawJoint(canvas,p.elbow,8.5f,SKIN);
+        drawLimb(canvas,p.elbow,p.wrist,17f,12f,SKIN);
+        drawJoint(canvas,p.elbow,8.8f,SKIN);
         drawHand(canvas,p.wrist,SKIN);
 
         if(dark) {
@@ -197,48 +198,117 @@ public final class NativeAvatarView extends View {
         return new AvatarKinematics.Point(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t);
     }
 
-    /** Organic tapered outline with Bezier curvature, not rectangle segments. */
+    /**
+     * Coordinates in a soft torso silhouette: along the hip-shoulder axis
+     * and across its normal. Shoulder width, chest and waist can vary without
+     * changing the animated spine length or introducing a mesh dependency.
+     */
+    private AvatarKinematics.Point torsoPoint(AvatarKinematics.Pose pose,
+                                               float along,float side) {
+        float dx=pose.shoulder.x-pose.hip.x;
+        float dy=pose.shoulder.y-pose.hip.y;
+        float length=(float)Math.hypot(dx,dy);
+        float nx=-dy/length,ny=dx/length;
+        return new AvatarKinematics.Point(
+                pose.hip.x+dx*along+nx*side,
+                pose.hip.y+dy*along+ny*side);
+    }
+
+    private void drawTorso(Canvas canvas,AvatarKinematics.Pose p,
+                           int top,int highlight) {
+        AvatarKinematics.Point a=torsoPoint(p,0f,-21f);
+        AvatarKinematics.Point b=torsoPoint(p,.42f,-20f);
+        AvatarKinematics.Point c=torsoPoint(p,.78f,-31f);
+        AvatarKinematics.Point d=torsoPoint(p,1f,-23f);
+        AvatarKinematics.Point e=torsoPoint(p,1f,23f);
+        AvatarKinematics.Point f=torsoPoint(p,.78f,31f);
+        AvatarKinematics.Point g=torsoPoint(p,.42f,20f);
+        AvatarKinematics.Point h=torsoPoint(p,0f,21f);
+        AvatarKinematics.Point v,v2;
+
+        path.rewind();
+        path.moveTo(a.x,a.y);
+        v=torsoPoint(p,.15f,-24f);v2=torsoPoint(p,.25f,-21f);
+        path.cubicTo(v.x,v.y,v2.x,v2.y,b.x,b.y);
+        v=torsoPoint(p,.55f,-20f);v2=torsoPoint(p,.65f,-30f);
+        path.cubicTo(v.x,v.y,v2.x,v2.y,c.x,c.y);
+        v=torsoPoint(p,.93f,-32f);v2=torsoPoint(p,1f,-29f);
+        path.cubicTo(v.x,v.y,v2.x,v2.y,d.x,d.y);
+        v=torsoPoint(p,1.09f,0f);
+        path.quadTo(v.x,v.y,e.x,e.y);
+        v=torsoPoint(p,1f,29f);v2=torsoPoint(p,.93f,32f);
+        path.cubicTo(v.x,v.y,v2.x,v2.y,f.x,f.y);
+        v=torsoPoint(p,.65f,30f);v2=torsoPoint(p,.55f,20f);
+        path.cubicTo(v.x,v.y,v2.x,v2.y,g.x,g.y);
+        v=torsoPoint(p,.25f,21f);v2=torsoPoint(p,.15f,24f);
+        path.cubicTo(v.x,v.y,v2.x,v2.y,h.x,h.y);
+        v=torsoPoint(p,-.055f,0f);
+        path.quadTo(v.x,v.y,a.x,a.y);
+        path.close();
+        color(top);
+        canvas.drawPath(path,paint);
+        paint.setColor(0x3026334C);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(.55f);
+        canvas.drawPath(path,paint);
+        paint.setStyle(Paint.Style.FILL);
+
+        // One compact garment highlight, without high-contrast outlines.
+        drawLimb(canvas,torsoPoint(p,.19f,-12f),
+                torsoPoint(p,.78f,-19f),4.4f,3.7f,highlight);
+    }
+
+    /**
+     * Tapered filled Bézier volume with curved ends. Overlapping rounded
+     * silhouettes eliminate seams when two hinged segments rotate.
+     */
     private void drawLimb(Canvas c,AvatarKinematics.Point a,
                           AvatarKinematics.Point b,float wa,float wb,int fill) {
         float dx=b.x-a.x,dy=b.y-a.y;
         float distance=(float)Math.hypot(dx,dy);
         if(distance<.01f)return;
-        float nx=-dy/distance,ny=dx/distance;
+        float ux=dx/distance,uy=dy/distance;
+        float nx=-uy,ny=ux;
         float x1=a.x+nx*wa*.5f,y1=a.y+ny*wa*.5f;
         float x2=b.x+nx*wb*.5f,y2=b.y+ny*wb*.5f;
         float x3=b.x-nx*wb*.5f,y3=b.y-ny*wb*.5f;
         float x4=a.x-nx*wa*.5f,y4=a.y-ny*wa*.5f;
-        path.reset();
+        path.rewind();
         path.moveTo(x1,y1);
-        path.cubicTo(a.x+dx*.32f+nx*(wa*.52f+1.5f),
-                a.y+dy*.32f+ny*(wa*.52f+1.5f),
-                a.x+dx*.72f+nx*(wb*.52f+1.5f),
-                a.y+dy*.72f+ny*(wb*.52f+1.5f),x2,y2);
-        path.quadTo(b.x+dx/distance*2,b.y+dy/distance*2,x3,y3);
-        path.cubicTo(a.x+dx*.72f-nx*(wb*.52f+1.5f),
-                a.y+dy*.72f-ny*(wb*.52f+1.5f),
-                a.x+dx*.32f-nx*(wa*.52f+1.5f),
-                a.y+dy*.32f-ny*(wa*.52f+1.5f),x4,y4);
-        path.quadTo(a.x-dx/distance*2,a.y-dy/distance*2,x1,y1);
+        path.cubicTo(a.x+dx*.30f+nx*wa*.51f,
+                a.y+dy*.30f+ny*wa*.51f,
+                a.x+dx*.72f+nx*wb*.51f,
+                a.y+dy*.72f+ny*wb*.51f,x2,y2);
+        path.cubicTo(b.x+ux*wb*.40f+nx*wb*.44f,
+                b.y+uy*wb*.40f+ny*wb*.44f,
+                b.x+ux*wb*.40f-nx*wb*.44f,
+                b.y+uy*wb*.40f-ny*wb*.44f,x3,y3);
+        path.cubicTo(a.x+dx*.72f-nx*wb*.51f,
+                a.y+dy*.72f-ny*wb*.51f,
+                a.x+dx*.30f-nx*wa*.51f,
+                a.y+dy*.30f-ny*wa*.51f,x4,y4);
+        path.cubicTo(a.x-ux*wa*.40f-nx*wa*.44f,
+                a.y-uy*wa*.40f-ny*wa*.44f,
+                a.x-ux*wa*.40f+nx*wa*.44f,
+                a.y-uy*wa*.40f+ny*wa*.44f,x1,y1);
         path.close();
         color(fill);
         c.drawPath(path,paint);
-        paint.setColor(OUTLINE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1.35f);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        c.drawPath(path,paint);
-        paint.setStyle(Paint.Style.FILL);
+        if(wa>=7f && wb>=7f) {
+            paint.setColor(0x3026334C);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(.55f);
+            paint.setStrokeJoin(Paint.Join.ROUND);
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            c.drawPath(path,paint);
+            paint.setStyle(Paint.Style.FILL);
+        }
     }
 
+    /** Joint fill is continuous with its segments; no decorative dark ring. */
     private void drawJoint(Canvas c,AvatarKinematics.Point p,float radius,int fill) {
         color(fill);
         c.drawCircle(p.x,p.y,radius,paint);
-        paint.setColor(OUTLINE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1.1f);
-        c.drawCircle(p.x,p.y,radius,paint);
-        paint.setStyle(Paint.Style.FILL);
     }
     private void drawShoe(Canvas c,AvatarKinematics.Point ankle,boolean far) {
         float x=ankle.x,y=ankle.y;
