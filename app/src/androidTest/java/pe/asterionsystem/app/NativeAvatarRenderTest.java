@@ -208,6 +208,65 @@ public final class NativeAvatarRenderTest {
         });
     }
 
+    @Test public void sharedVisualDetailsRenderForAllThreeProjections(){
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            AvatarArtDetails details=new AvatarArtDetails();
+            for(AvatarPalette palette:new AvatarPalette[]{
+                    AvatarPalette.BLUE,AvatarPalette.PURPLE}) {
+                Bitmap frame=Bitmap.createBitmap(260,280,Bitmap.Config.ARGB_8888);
+                Canvas c=new Canvas(frame);
+                AvatarKinematics.Point head=new AvatarKinematics.Point(75,82);
+                AvatarKinematics.Point sole=new AvatarKinematics.Point(76,206);
+                AvatarKinematics.Point hand=new AvatarKinematics.Point(168,205);
+                details.drawHeadFront(c,head,AvatarBodySpec.DEFAULT,palette);
+                details.drawHeadTop(c,new AvatarKinematics.Point(177,82),
+                        AvatarBodySpec.DEFAULT,palette);
+                details.drawProjectedSneaker(c,sole,palette,false);
+                details.drawProjectedSneaker(c,
+                        new AvatarKinematics.Point(123,206),palette,true);
+                details.drawProjectedHand(c,hand,palette);
+                assertNotEquals("frontal face",0,frame.getPixel(75,82));
+                assertNotEquals("hair in top view",0,frame.getPixel(177,64));
+                assertNotEquals("front shoe",0,frame.getPixel(76,206));
+                assertNotEquals("overhead shoe",0,frame.getPixel(123,206));
+                assertNotEquals("palm and thumb",0,frame.getPixel(168,205));
+                frame.recycle();
+            }
+        });
+    }
+
+    @Test public void consistentCamerasRenderEntireAnimationWithoutGaps(){
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            for(boolean purple:new boolean[]{false,true}){
+                view.setFemale(purple);
+                for(AvatarMultiViewKinematics.ViewMode camera:
+                        new AvatarMultiViewKinematics.ViewMode[]{
+                        AvatarMultiViewKinematics.ViewMode.SIDE,
+                        AvatarMultiViewKinematics.ViewMode.FRONT,
+                        AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT,
+                        AvatarMultiViewKinematics.ViewMode.FRONT_JACKS,
+                        AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW,
+                        AvatarMultiViewKinematics.ViewMode.TOP}) {
+                    view.setViewMode(camera);
+                    for(float t:new float[]{0f,.19f,.41f,.5f,.76f,1f}) {
+                        view.setPhase(t);
+                        Bitmap frame=Bitmap.createBitmap(400,480,
+                                Bitmap.Config.ARGB_8888);
+                        view.draw(new Canvas(frame));
+                        assertNotEquals("scene needs background",0,
+                                frame.getPixel(200,210));
+                        frame.recycle();
+                    }
+                }
+            }
+        });
+    }
+
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
