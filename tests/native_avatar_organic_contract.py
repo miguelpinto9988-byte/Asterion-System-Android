@@ -15,7 +15,7 @@ for required in ("drawTorso(canvas,p,top,hi);", "private void drawTorso(",
                  "paint.setStrokeCap(Paint.Cap.ROUND)", "0x3026334C"):
     assert required in renderer,required
 for required in ("UPPER_ARM=58f", "FOREARM=63f", "elbowBelow(",
-                 "Point elbow=nearArm.joint", "Point farElbow=farArm.joint",
+                 "Point elbow=nearArm.joint", "farElbow=farArm.joint",
                  "AvatarRigConstraints.twoBone("):
     assert required in rig,required
 for required in ("armBonesRemainConstantThroughFullIllustratedSquat",
