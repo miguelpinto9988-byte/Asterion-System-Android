@@ -18,6 +18,7 @@ for v in ('drawProneTopSneaker(', 'ShoeSurface.UPPER',
           'c.rotate(', 'Floor contact','No sole face'):
     assert v in a,v
 assert 'AvatarOrientationRules.requireProneTopPose(p);' in m
+assert 'AvatarOrientationRules.requireUprightFrontPose(p);' in m
 assert 'details.drawProneTopSneaker(c,a,k,palette);' in m
 assert 'details.drawProjectedSneaker(c,a,palette,true);' not in m
 assert 'canvas.rotate(AvatarOrientationRules.sideFacingDegrees(' in l

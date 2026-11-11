@@ -92,6 +92,22 @@ public final class AvatarOrientationRulesTest {
         assertTrue(p.leftKnee.y<p.leftAnkle.y);
     }
 
+    @Test public void allUprightCamerasKeepTheFaceAboveTheTorso(){
+        for(int i=0;i<=160;i++){
+            float phase=i/160f;
+            AvatarMultiViewKinematics.Pose[] poses={
+                AvatarMultiViewKinematics.frontArms(phase,SPEC),
+                AvatarMultiViewKinematics.frontWideSquat(phase,SPEC),
+                AvatarMultiViewKinematics.frontJumpingJack(phase,SPEC),
+                AvatarMultiViewKinematics.frontElbowFlex(phase,SPEC)
+            };
+            for(AvatarMultiViewKinematics.Pose p:poses)
+                AvatarOrientationRules.requireUprightFrontPose(p);
+        }
+        assertThrows(IllegalArgumentException.class,()->
+                AvatarOrientationRules.requireUprightFrontPose(null));
+    }
+
     @Test public void worldAxesAreUnitLengthAndPerpendicular(){
         for(AvatarOrientationRules.Posture posture:
                 AvatarOrientationRules.Posture.values()){
