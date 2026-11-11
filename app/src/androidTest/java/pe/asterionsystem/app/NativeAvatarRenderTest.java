@@ -81,6 +81,32 @@ public final class NativeAvatarRenderTest {
         });
     }
 
+    @Test public void fiveMotionPresetsRenderWithoutChangingRigDimensions() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            for(AvatarMotionEngine.Motion m:AvatarMotionEngine.Motion.values()){
+                view.setMotion(m);
+                assertEquals(m,view.getMotion());
+                assertTrue(view.getContentDescription().toString()
+                        .contains(m.label.toLowerCase(java.util.Locale.ROOT)));
+                for(float phase:new float[]{0f,.18f,.48f,.7f,.99f}){
+                    view.setPhase(phase);
+                    Bitmap frame=Bitmap.createBitmap(
+                            400,480,Bitmap.Config.ARGB_8888);
+                    view.draw(new Canvas(frame));
+                    assertNotEquals(0,frame.getPixel(200,300));
+                    frame.recycle();
+                    AvatarMotionEngine.assertSkeleton(
+                            AvatarMotionEngine.pose(m,phase,AvatarBodySpec.DEFAULT),
+                            AvatarBodySpec.DEFAULT,.07f);
+                }
+            }
+        });
+    }
+
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{

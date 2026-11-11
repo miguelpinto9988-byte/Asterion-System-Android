@@ -13,6 +13,7 @@ on:
       - feature/avatar-silueta-organica-20261111
       - feature/avatar-opcion-d-rig-render-20261111
       - feature/avatar-v3-detalle-por-piezas-20261111
+      - feature/avatar-v4-rig-constraints-20261111
   pull_request:
     branches:
       - main
@@ -85,6 +86,7 @@ jobs:
           python3 tests/native_avatar_organic_contract.py
           python3 tests/avatar_option_d_contract.py
           python3 tests/avatar_v3_visual_contract.py
+          python3 tests/avatar_v4_motion_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
