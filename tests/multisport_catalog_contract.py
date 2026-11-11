@@ -22,7 +22,7 @@ registry=read(DATA/"sport_registry.tsv")
 sports=read(DATA/"sport_tags.tsv")
 research=read(DOC)
 assert (len(families),len(types),len(variants),len(intensity))==(125,354,1017,512)
-assert (len(registry),len(sports),len(research))==(56,100,100)
+assert (len(registry),len(sports),len(research))==(56,125,100)
 assert all({x["category"] for x in families}=={
     "tren_superior","tren_inferior","tren_central","movilidad","cardio"}
            for _ in range(1)), "Sixth category or legacy top-level code detected"
@@ -80,6 +80,7 @@ for row in research:
         assert row["intensity"] in ("variable","alta")
     assert row["type_name"] and row["goal"] and row["source_org"]
 assert len(tag_use)==56 and min(tag_use.values())>0
+assert {"sentadilla_bilateral","flexiones","dominadas","plancha_frontal","marcha"} <= set(sports_by_type)
 assert manual>=25
 assert len(source_urls)>=25
 assert by_variant["dep_burpee_tecnico_v01"]["supervision"]=="1"
