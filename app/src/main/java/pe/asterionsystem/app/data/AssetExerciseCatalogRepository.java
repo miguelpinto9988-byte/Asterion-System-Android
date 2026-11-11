@@ -33,8 +33,13 @@ public final class AssetExerciseCatalogRepository {
              Reader variants = new InputStreamReader(
                      context.getAssets().open(DIRECTORY + "variants.tsv"), StandardCharsets.UTF_8);
              Reader intensity = new InputStreamReader(
-                     context.getAssets().open(DIRECTORY + "intensity.tsv"), StandardCharsets.UTF_8)) {
-            return ExerciseCatalogLoader.load(families, types, variants, intensity);
+                     context.getAssets().open(DIRECTORY + "intensity.tsv"), StandardCharsets.UTF_8);
+             Reader sportRegistry = new InputStreamReader(
+                     context.getAssets().open(DIRECTORY + "sport_registry.tsv"), StandardCharsets.UTF_8);
+             Reader sportTags = new InputStreamReader(
+                     context.getAssets().open(DIRECTORY + "sport_tags.tsv"), StandardCharsets.UTF_8)) {
+            return ExerciseCatalogLoader.load(families, types, variants,
+                    intensity, sportRegistry, sportTags);
         } catch (IOException invalid) {
             throw new IllegalStateException("No se pudo cargar el catálogo de ejercicios", invalid);
         }
