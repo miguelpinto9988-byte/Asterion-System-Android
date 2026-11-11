@@ -47,8 +47,13 @@ final class RoutineSessionStore {
     static void save(Context c,String token,int index,int round,int extraSeries) {
         if(index<0||round<1||extraSeries<0)
             throw new IllegalArgumentException("Progreso inválido");
-        prefs(c).edit().putInt(token+"_index",index)
-                .putInt(token+"_round",round).putInt(token+"_series",extraSeries).apply();
+        // Step progress must survive process death immediately after a step.
+        // commit() confirms durable persistence before the UI advances.
+        if(!prefs(c).edit().putInt(token+"_index",index)
+                .putInt(token+"_round",round).putInt(token+"_series",extraSeries)
+                .commit()) {
+            throw new IllegalStateException("No se pudo guardar el avance de la rutina");
+        }
     }
 
     static void clear(Context c,String token) {
