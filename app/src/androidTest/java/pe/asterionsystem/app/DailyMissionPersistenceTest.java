@@ -69,7 +69,7 @@ public final class DailyMissionPersistenceTest {
         assertEquals(0,MissionLevelProgressStore.observe(
                 context,"intermedio",0,DAY,null,false).phase);
         ExerciseCatalog library=catalog();
-        assertEquals(917,library.variants().size());
+        assertEquals(1157,library.variants().size());
         MissionPlanner.Profile profile=profile("bienestar");
         List<ExerciseVariant> variants=new MissionPlanner(library).daily(
                 profile,DAY).candidates();
