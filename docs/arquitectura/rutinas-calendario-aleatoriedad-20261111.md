@@ -47,19 +47,19 @@ No se introduce un límite arbitrario de años; se aplica el rango real admitido
 
 ## 5. Pantallas y ventanas
 
-- Inicio: mantiene intactas las cinco tarjetas aprobadas. Se añaden botones a Rutinas y Calendario entre los accesos complementarios.
-- Misiones: mantiene las pestañas Monarca, Diarias y Biblioteca; incorpora accesos secundarios a Rutinas y Calendario.
-- Misiones diarias y Monarca: se añaden ventanas de vista previa nativas (`AlertDialog`) que muestran la lista y metadatos, sin completar ni activar misiones.
+- Inicio: muestra cinco tarjetas rectangulares ordenadas verticalmente: (1) Monarca, (2) Perfil, (3) Misiones diarias, (4) Progreso, (5) Biblioteca. No hay botones de navegación rápida extra ni accesos duplicados al calendario o rutinas. El avatar de 52dp de la esquina superior derecha es el único botón para abrir y editar el perfil; la segunda tarjeta sigue mostrando sus datos de manera informativa.
+- Navegación inferior de Inicio, Misiones, Rutinas y Calendario: **solo Inicio, Rutinas y Calendario** mediante `SimpleBottomNav`, con objetivos táctiles de al menos 48dp. Las categorías Monarca y Diarias no están en la barra inferior, sino en tarjetas de Inicio y pestañas de contenido de Misiones. La pantalla de Misiones no añade botones superiores redundantes hacia Rutinas/Calendario.
+- Perfil: `ProfileDetailsActivity` permite consultar el registro desde el avatar de Inicio. `ProfileCreateActivity` admite `edit_profile=true`, precarga el perfil **ya confirmado**, edita en el formulario de cuatro etapas y guarda únicamente tras la confirmación final. Las modificaciones no pisan un borrador anterior ni reinician la sesión del dispositivo. El menú secundario de perfil concentra Planificación, Configuración, Estado local y herramientas históricas, sin llenar Inicio de enlaces.\n- Misiones diarias y Monarca: se añaden ventanas de vista previa nativas (`AlertDialog`) que muestran la lista y metadatos, sin completar ni activar misiones.
 - Rutinas: selector de categoría/tiempo/nivel, seis opciones, vista previa independiente y confirmación de selección.
 - Sesión: ejercicio actual, controles de avance, descanso voluntario, pausa y detención.
 - Calendario: navegación por meses y años, marcas de registro y ficha del día seleccionado.
 
-La maqueta interactiva descargable generada para revisión visual es **una simulación de interfaz**; no debe presentarse como captura real de un dispositivo. Para validar la apariencia exacta se recomienda revisar la APK en emulador/teléfono.
+La maqueta interactiva descargable de la conversación es **una simulación de interfaz**; no debe presentarse como captura real de un dispositivo. Para validar la apariencia exacta se recomienda revisar la APK en emulador/teléfono.
 
 ## 6. Verificaciones
 
 - `RoutineGeneratorTest` JUnit: estabilidad por fecha/semilla, seis ofertas, cinco categorías, seguridad, diversidad, cambio explícito de sorteo y calendario bisiesto.
-- `tests/routines_calendar_contract.py`: referencias entre Activity, Java y XML, filtros, semilla, XP y navegación.
+- `tests/routines_calendar_contract.py` y `tests/home_navigation_architecture_contract.py`: filtros, semilla, XP, jerarquía exacta de cinco tarjetas, avatar de perfil, editor seguro y barra inferior de tres destinos.
 - `RoutineExperiencePersistenceTest` Android instrumentado: evita XP repetidos y confirma persistencia tras terminar y reiniciar el proceso.
 - Contratos anteriores y pruebas instrumentadas de misiones/Monarca deben seguir funcionando sin migraciones de bases de datos.
 
