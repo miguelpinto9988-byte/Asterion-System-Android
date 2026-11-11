@@ -64,7 +64,7 @@ public final class ExerciseCatalogLoader {
                     "type_id\\tdisciplines\\trole",500)) {
                 if(!row[1].matches("[a-z][a-z0-9_+]{1,300}"))
                     throw new IllegalArgumentException("Etiquetas deportivas inválidas");
-                if(sportTags.putIfAbsent(row[0],List.of(row[1].split("\\\\+",-1)))!=null)
+                if(sportTags.putIfAbsent(row[0],List.of(row[1].split("\\+",-1)))!=null)
                     throw new IllegalArgumentException("Tipo deportivo duplicado: "+row[0]);
                 roles.put(row[0],row[2]);
             }
