@@ -78,6 +78,22 @@ public final class ExerciseSportIndexTest {
                 c.variant("dep_carrera_ida_vuelta_v01").orElseThrow()));
     }
 
+    @Test public void addedDisciplinesStayManualOnlyUntilEditorialReview() throws Exception {
+        ExerciseCatalog c=catalog();
+        assertEquals(1257,c.variants().size());
+        int extra=0;
+        for(int index=1017;index<c.variants().size();index++) {
+            ExerciseVariant variant=c.variants().get(index);
+            extra++;
+            assertTrue("Pending-review item not supervised: "+variant.id(),
+                    variant.supervisionRecommended());
+            assertFalse("Pending-review item auto suggested: "+variant.id(),
+                    c.eligibleForAutomaticSuggestion(variant));
+            assertNotEquals(ExerciseIntensity.UNCLASSIFIED,c.intensity(variant.id()));
+        }
+        assertEquals(240,extra);
+    }
+
     @Test public void sourceAndSportFiltersAreImmutableAndValidated() throws Exception {
         ExerciseCatalog c=catalog();
         assertThrows(UnsupportedOperationException.class,
