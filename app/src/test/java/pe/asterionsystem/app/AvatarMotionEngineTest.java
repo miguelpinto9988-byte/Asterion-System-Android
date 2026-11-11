@@ -52,6 +52,42 @@ public final class AvatarMotionEngineTest {
             assertEquals(0f,start.elbow.distance(end.elbow),EPS);
         }
     }
+    @Test public void everyMotionStartsAndFinishesWithExtendedLimbs(){
+        AvatarBodySpec spec=AvatarBodySpec.DEFAULT;
+        float arm=spec.upperArm+spec.forearm;
+        float leg=spec.upperLeg+spec.lowerLeg;
+        for(AvatarMotionEngine.Motion m:AvatarMotionEngine.Motion.values()){
+            for(float phase:new float[]{0f,.03f,.94f,1f}){
+                AvatarPose p=AvatarMotionEngine.pose(m,phase,spec);
+                assertEquals("near elbow end "+m,arm,
+                        p.shoulder.distance(p.wrist),.07f);
+                assertEquals("far elbow end "+m,arm,
+                        p.farShoulder.distance(p.farWrist),.07f);
+                if(m!=AvatarMotionEngine.Motion.LUNGE){
+                    assertTrue("near knee neutral "+m,
+                            p.hip.distance(p.ankle)>leg-.55f);
+                    assertTrue("far knee neutral "+m,
+                            p.farHip.distance(p.farAnkle)>leg-.55f);
+                }
+                assertTrue("rear shoulder must be lower in profile "+m,
+                        p.farShoulder.y>p.shoulder.y+8f);
+            }
+        }
+    }
+
+    @Test public void armRaiseHasCompleteOverheadArcAtPeak(){
+        AvatarBodySpec spec=AvatarBodySpec.DEFAULT;
+        AvatarPose start=AvatarMotionEngine.pose(
+                AvatarMotionEngine.Motion.ARM_RAISE,0f,spec);
+        AvatarPose peak=AvatarMotionEngine.pose(
+                AvatarMotionEngine.Motion.ARM_RAISE,.49f,spec);
+        assertTrue(start.wrist.y>start.shoulder.y+115f);
+        assertTrue(peak.wrist.y<peak.shoulder.y-115f);
+        assertTrue(peak.farWrist.y<peak.farShoulder.y-115f);
+        assertTrue(peak.wrist.distance(start.wrist)>220f);
+        AvatarMotionEngine.assertSkeleton(peak,spec,.07f);
+    }
+
     @Test public void allExerciseLabelsExistAndNullIsRejected(){
         assertEquals(5,AvatarMotionEngine.Motion.values().length);
         for(AvatarMotionEngine.Motion m:AvatarMotionEngine.Motion.values())
