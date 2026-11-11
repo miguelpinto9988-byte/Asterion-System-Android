@@ -96,7 +96,8 @@ public final class NativeAvatarView extends View {
     private void updateAccessibilityDescription() {
         String activity=viewMode==AvatarMultiViewKinematics.ViewMode.SIDE
                 ?motion.label:viewMode==AvatarMultiViewKinematics.ViewMode.FRONT
-                ?"elevación frontal de brazos":"flexión en diamante desde arriba, con detalle de manos";
+                ?"elevación frontal de brazos":viewMode==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT
+                ?"sentadilla abierta en cámara frontal":"flexión en diamante desde arriba, con detalle de manos";
         setContentDescription((female?"Avatar morado":"Avatar azul")
                 +" mostrando "+activity.toLowerCase(java.util.Locale.ROOT)
                 +" como animación ilustrativa. "
@@ -141,6 +142,8 @@ public final class NativeAvatarView extends View {
             AvatarMultiViewKinematics.Pose pose=
                     viewMode==AvatarMultiViewKinematics.ViewMode.FRONT
                     ?AvatarMultiViewKinematics.frontArms(phase,bodySpec)
+                    :viewMode==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT
+                    ?AvatarMultiViewKinematics.frontWideSquat(phase,bodySpec)
                     :AvatarMultiViewKinematics.diamondTop(phase,bodySpec);
             multiRenderer.draw(canvas,pose,viewMode,palette,dark);
         }

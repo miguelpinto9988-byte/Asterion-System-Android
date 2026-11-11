@@ -73,9 +73,9 @@ public final class AvatarMotionEngine {
         AvatarKinematics.Point farShoulder=new AvatarKinematics.Point(
                 shoulder.x-6f,shoulder.y+10f);
         AvatarKinematics.Point neck=new AvatarKinematics.Point(
-                shoulder.x+4f,shoulder.y-2f);
+                shoulder.x+4f,shoulder.y-6f);
         AvatarKinematics.Point head=new AvatarKinematics.Point(
-                neck.x+5f,neck.y-16f);
+                neck.x+4f,neck.y-27f);
 
         // Full reach at neutral and at both endpoints. The authored angle
         // changes smoothly without pulling the wrists towards the shoulders.

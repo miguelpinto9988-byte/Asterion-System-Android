@@ -59,8 +59,8 @@ public final class AvatarKinematics {
         Point shoulder=new Point(hip.x+(float)Math.sin(trunkTilt)*spec.torso,
                 hip.y-(float)Math.cos(trunkTilt)*spec.torso);
         Point farShoulder=new Point(shoulder.x-6f,shoulder.y+10f);
-        Point neck=new Point(shoulder.x+4f,shoulder.y-2f);
-        Point head=new Point(neck.x+5f,neck.y-16f);
+        Point neck=new Point(shoulder.x+4f,shoulder.y-6f);
+        Point head=new Point(neck.x+4f,neck.y-27f);
 
         // One target per wrist, with analytical two-bone IK for both elbows.
         // Segment lengths stay fixed even when the wrists travel forward.
