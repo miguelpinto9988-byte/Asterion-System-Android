@@ -42,6 +42,19 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+        <Button android:id="@+id/missions_open_routines"
+            android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="48dp" android:text="Rutinas"
+            android:textAllCaps="false" android:textStyle="bold" />
+        <Button android:id="@+id/missions_open_calendar"
+            android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="48dp" android:text="Calendario"
+            android:textAllCaps="false" android:textStyle="bold" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/missions_loading"
         android:layout_width="match_parent"
