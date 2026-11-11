@@ -23,6 +23,7 @@ import org.json.JSONObject;
  */
 public final class ProfileDetailsActivity extends ComponentActivity {
     private LinearLayout content;
+    private Button backButton;
     private float density;
     private boolean light;
 
@@ -38,9 +39,9 @@ public final class ProfileDetailsActivity extends ComponentActivity {
         content.setOrientation(LinearLayout.VERTICAL);
         scroller.addView(content);
         shell.addView(scroller,new LinearLayout.LayoutParams(-1,0,1));
-        Button back=button("Volver");
-        back.setOnClickListener(v->finish());
-        shell.addView(back,new LinearLayout.LayoutParams(-1,dp(52)));
+        backButton=button("Volver");
+        backButton.setOnClickListener(v->finish());
+        shell.addView(backButton,new LinearLayout.LayoutParams(-1,dp(52)));
         setContentView(shell);
         render();
     }
@@ -53,6 +54,7 @@ public final class ProfileDetailsActivity extends ComponentActivity {
     private void render() {
         JSONObject data=ProfileStore.getRegistration(this);
         light="light".equals(data.optString("theme","light"));
+        if(backButton!=null)styleButton(backButton);
         content.removeAllViews();
         content.getRootView().setBackgroundColor(light?Color.WHITE:0xFF080808);
         content.addView(title("MI PERFIL",23));
@@ -139,15 +141,18 @@ public final class ProfileDetailsActivity extends ComponentActivity {
         Button button=new Button(this);
         button.setText(text);
         button.setAllCaps(false);
-        button.setTextColor(light?Color.BLACK:Color.WHITE);
         button.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         button.setMinHeight(dp(48));
+        styleButton(button);
+        return button;
+    }
+    private void styleButton(Button button) {
+        button.setTextColor(light?Color.BLACK:Color.WHITE);
         GradientDrawable background=new GradientDrawable();
         background.setColor(light?Color.WHITE:0xFF14131A);
         background.setStroke(dp(1),light?0xFFBBBBBB:0xFF777777);
         background.setCornerRadius(dp(10));
         button.setBackground(background);
-        return button;
     }
     private int dp(int size){return Math.round(size*density);}
 }
