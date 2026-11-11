@@ -29,6 +29,7 @@ public final class ProfileDetailsActivity extends ComponentActivity {
     @Override protected void onCreate(Bundle saved) {
         super.onCreate(saved);
         density=getResources().getDisplayMetrics().density;
+        light="light".equals(ProfileStore.getRegistration(this).optString("theme","light"));
         LinearLayout shell=new LinearLayout(this);
         shell.setOrientation(LinearLayout.VERTICAL);
         shell.setPadding(dp(18),dp(16),dp(18),dp(14));
@@ -130,6 +131,7 @@ public final class ProfileDetailsActivity extends ComponentActivity {
         view.setText(text);
         view.setTextSize(size);
         view.setTextColor(light?0xFF111111:Color.WHITE);
+        view.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         view.setPadding(0,dp(10),0,dp(5));
         return view;
     }
