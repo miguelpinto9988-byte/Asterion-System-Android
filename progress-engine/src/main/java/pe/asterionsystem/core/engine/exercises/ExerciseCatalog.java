@@ -159,9 +159,9 @@ public final class ExerciseCatalog {
             ExerciseFamily family = byFamily.get(type.familyId());
             // Accept the public five-category code while retaining older
             // direct searches by the original taxonomy code.
-            if (category != null && !category.equals(family.category())
-                    && !category.equals(categoryIndex.categoryForFamily(family.id())))
-                continue;
+            if (category != null &&
+                    !ExerciseCategoryMapper.primaryCategory(category).equals(
+                            categoryIndex.categoryForFamily(family.id()))) continue;
             if (!q.isEmpty() && !normalized(variant.name() + " " + type.name() + " " + family.name()).contains(q)) {
                 continue;
             }
