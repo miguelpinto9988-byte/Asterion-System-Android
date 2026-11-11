@@ -11,7 +11,7 @@ view=g('NativeAvatarView.java')
 for token in ('FRONT_SQUAT(', 'frontWideSquat(', 'leftLeg.joint',
               'rightLeg.joint', 'body.upperLeg', 'body.lowerLeg'):
     assert token in k,token
-for token in ('drawFront(c,p,squat)', 'drawFrontDenimLeg(',
+for token in ('drawFront(c,p,squat||jacks)', 'drawFrontDenimLeg(',
               'drawFrontArm(', 'drawDiamondTop(', 'drawHandsInset(',
               'drawPushupSideInset(', 'rr(c,193f,topNeck'):
     assert token in r,token
@@ -21,4 +21,4 @@ assert 'ViewMode.FRONT_SQUAT' in view
 for name in ('AvatarMultiViewKinematicsTest.java',):
     t=(root/'app/src/test/java/pe/asterionsystem/app'/name).read_text()
     assert 'wideSquatIsGroundedInFrontalPlaneWithOpposedKnees' in t
-print('OK: 4 proyecciones por ejercicio, cuello en todas, apoyo fijo.')
+print('OK: 6 escenas articuladas por ejercicio, cuello en todas, apoyo fijo.')

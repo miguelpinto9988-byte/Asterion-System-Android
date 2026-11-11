@@ -163,6 +163,51 @@ public final class NativeAvatarRenderTest {
         });
     }
 
+    @Test public void jumpingJacksElbowsAndBurpeeRenderInBothPalettes() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            for(boolean female:new boolean[]{false,true}) {
+                view.setFemale(female);
+                for(AvatarMultiViewKinematics.ViewMode scene:
+                        new AvatarMultiViewKinematics.ViewMode[]{
+                        AvatarMultiViewKinematics.ViewMode.FRONT_JACKS,
+                        AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW}) {
+                    view.setViewMode(scene);
+                    for(float phase:new float[]{0f,.24f,.49f,.76f,1f}) {
+                        view.setPhase(phase);
+                        Bitmap frame=Bitmap.createBitmap(400,480,
+                                Bitmap.Config.ARGB_8888);
+                        view.draw(new Canvas(frame));
+                        assertNotEquals(0,frame.getPixel(200,200));
+                        frame.recycle();
+                        AvatarMultiViewKinematics.Pose pose=
+                                scene==AvatarMultiViewKinematics.ViewMode.FRONT_JACKS
+                                ?AvatarMultiViewKinematics.frontJumpingJack(
+                                        phase,AvatarBodySpec.DEFAULT)
+                                :AvatarMultiViewKinematics.frontElbowFlex(
+                                        phase,AvatarBodySpec.DEFAULT);
+                        pose.assertArms(.09f);
+                    }
+                }
+                view.setViewMode(AvatarMultiViewKinematics.ViewMode.SIDE);
+                view.setMotion(AvatarMotionEngine.Motion.BURPEE);
+                assertTrue(view.getContentDescription().toString()
+                        .contains("burpee"));
+                for(float phase:new float[]{0f,.17f,.25f,.40f,.5f,.75f,1f}) {
+                    view.setPhase(phase);
+                    Bitmap frame=Bitmap.createBitmap(400,480,
+                            Bitmap.Config.ARGB_8888);
+                    view.draw(new Canvas(frame));
+                    assertNotEquals(0,frame.getPixel(200,240));
+                    frame.recycle();
+                }
+            }
+        });
+    }
+
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{

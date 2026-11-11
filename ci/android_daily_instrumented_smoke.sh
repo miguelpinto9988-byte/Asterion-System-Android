@@ -63,13 +63,13 @@ adb shell am instrument -w -e class "$CUSTOM_TEST#verifyAfterProcessRestart" \
 grep -q 'OK (1 test)' "$OUT/custom-routine-restart.txt"
 echo "PASS: custom routine persistence and once-per-day XP."
 
-echo "Android instrumentation 7/7: native Canvas paints five fixed-length motion presets"
+echo "Android instrumentation 7/7: native Canvas paints eight multiview and articulated motion tests"
 adb shell am instrument -w -e class \
   "pe.asterionsystem.app.NativeAvatarRenderTest" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
   | tee "$OUT/native-avatar-render.txt"
-grep -q 'OK (7 tests)' "$OUT/native-avatar-render.txt"
-echo "PASS: native avatar palettes, resolutions, themes and accessibility (7 tests)."
+grep -q 'OK (8 tests)' "$OUT/native-avatar-render.txt"
+echo "PASS: native avatar palettes, resolutions, themes and accessibility (8 tests)."
 
 
 
