@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate append-only 917-variant catalog and five profile training groups."""
+"""Validate append-only 1157-variant catalog and five profile training groups."""
 from collections import Counter
 import csv
 from pathlib import Path
@@ -20,11 +20,11 @@ families=records("families.tsv",["family_id","name","category","pattern"])
 types=records("types.tsv",["type_id","family_id","name"])
 variants=records("variants.tsv",["variant_id","type_id","name",
                                  "level","equipment","execution","supervision"])
-assert (len(families),len(types),len(variants))==(100,254,917)
-assert len({f["family_id"] for f in families})==100
-assert len({t["type_id"] for t in types})==254
-assert len({v["variant_id"] for v in variants})==917
-assert len({v["name"].lower() for v in variants})==917,"Duplicate exercise labels"
+assert (len(families),len(types),len(variants))==(130,374,1157)
+assert len({f["family_id"] for f in families})==130
+assert len({t["type_id"] for t in types})==374
+assert len({v["variant_id"] for v in variants})==1157
+assert len({v["name"].lower() for v in variants})==1157,"Duplicate exercise labels"
 category={
     "tren_superior":"tren_superior",
     "tronco":"tronco",
@@ -34,7 +34,7 @@ category={
     "coordinacion":"movilidad",
     "integrado":"tronco",
 }
-expected={"tren_superior":22,"tronco":18,"piernas":21,"movilidad":20,"cardio":19}
+expected={"tren_superior":28,"tronco":24,"piernas":27,"movilidad":26,"cardio":25}
 assert Counter(category[f["category"]] for f in families)==expected
 family_id={f["family_id"] for f in families}
 type_family={t["type_id"]:t["family_id"] for t in types}
@@ -64,4 +64,4 @@ assert "ExerciseCategoryMapper.displayName(i)" in activity
 assert "for(int i=0;i<5;i++)" in activity
 assert "ExerciseCategoryMapper.weeklyIndex(taxonomyCode)" in guided
 assert "AssetExerciseCatalogRepository(this).load()" in activity
-print("OK: 100 familias, 254 tipos, 917 variantes y exactamente 5 categorías operativas.")
+print("OK: 130 familias, 374 tipos, 1157 variantes y exactamente 5 categorías operativas.")
