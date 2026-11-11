@@ -267,6 +267,47 @@ public final class NativeAvatarRenderTest {
         });
     }
 
+    @Test public void proneTopShoesFollowLegAxisAndNeverShowOutsole() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            AvatarArtDetails details=new AvatarArtDetails();
+            AvatarKinematics.Point ankle=new AvatarKinematics.Point(100f,170f);
+            AvatarKinematics.Point knee=new AvatarKinematics.Point(100f,105f);
+            for(AvatarPalette palette:new AvatarPalette[]{
+                    AvatarPalette.BLUE,AvatarPalette.PURPLE}){
+                Bitmap b=Bitmap.createBitmap(210,220,Bitmap.Config.ARGB_8888);
+                details.drawProneTopSneaker(new Canvas(b),ankle,knee,palette);
+                assertNotEquals("shoe upper must be visible",0,
+                        b.getPixel(100,173));
+                assertNotEquals("toe touches floor projection",0,
+                        b.getPixel(100,188));
+                b.recycle();
+            }
+            try {
+                details.drawProneTopSneaker(
+                        new Canvas(Bitmap.createBitmap(210,220,
+                                Bitmap.Config.ARGB_8888)),
+                        ankle,new AvatarKinematics.Point(100f,200f),
+                        AvatarPalette.BLUE);
+                fail("A knee below ankle would flip the top shoe");
+            }catch(IllegalArgumentException expected) {
+                // Inverted shoe axis correctly rejected.
+            }
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            view.setViewMode(AvatarMultiViewKinematics.ViewMode.TOP);
+            for(float phase:new float[]{0f,.2f,.49f,.75f,1f}){
+                view.setPhase(phase);
+                Bitmap frame=Bitmap.createBitmap(400,480,
+                        Bitmap.Config.ARGB_8888);
+                view.draw(new Canvas(frame));
+                assertNotEquals(0,frame.getPixel(200,400));
+                frame.recycle();
+            }
+        });
+    }
+
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
