@@ -118,11 +118,12 @@ public final class AvatarMultiViewRenderer {
         line(c,180,143,168,159,0xFF8BC8F4,2f);
         line(c,220,143,232,159,0xFF8BC8F4,2f);
         // Two sleeves share the shoulder height; no protruding shoulder.
-        circle(c,159,153,12,palette.top);
-        circle(c,241,153,12,palette.top);
-        // Small neckline is visibly separate from head.
-        rr(c,192,118,208,143,6,palette.skin);
-        circle(c,200,145,12,palette.top);
+        circle(c,159,153,9,palette.top);
+        circle(c,241,153,9,palette.top);
+        // Visible short neck, separated from a shallow jersey collar.
+        rr(c,192,117,208,141,5,palette.skin);
+        rr(c,189,136,211,145,4,0xFF1E4B80);
+        line(c,190,138,210,138,0xFF78BDE7,1.1f);
         drawFaceFront(c,200,97);
         // Small geometric clothing mark, not official brand asset.
         text(c,"A",212,188,11,0xFFCAE8F9);
