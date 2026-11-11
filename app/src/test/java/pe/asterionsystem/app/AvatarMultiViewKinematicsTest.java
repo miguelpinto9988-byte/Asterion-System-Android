@@ -56,6 +56,51 @@ public final class AvatarMultiViewKinematicsTest {
         assertEquals(start.leftAnkle.y,depth.leftAnkle.y,EPS);
         assertEquals(start.rightAnkle.x,depth.rightAnkle.x,EPS);
     }
+    @Test public void wideSquatIsGroundedInFrontalPlaneWithOpposedKnees(){
+        AvatarBodySpec spec=AvatarBodySpec.DEFAULT;
+        AvatarMultiViewKinematics.Pose neutral=
+                AvatarMultiViewKinematics.frontWideSquat(0f,spec);
+        AvatarMultiViewKinematics.Pose deepest=
+                AvatarMultiViewKinematics.frontWideSquat(.49f,spec);
+        for(int i=0;i<=240;i++) {
+            AvatarMultiViewKinematics.Pose p=
+                    AvatarMultiViewKinematics.frontWideSquat(i/240f,spec);
+            p.assertArms(.08f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.leftHip,p.leftKnee,spec.upperLeg,.08f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.leftKnee,p.leftAnkle,spec.lowerLeg,.08f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.rightHip,p.rightKnee,spec.upperLeg,.08f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.rightKnee,p.rightAnkle,spec.lowerLeg,.08f);
+            assertEquals(neutral.leftAnkle.x,p.leftAnkle.x,.001f);
+            assertEquals(neutral.rightAnkle.y,p.rightAnkle.y,.001f);
+            assertEquals(p.leftShoulder.y,p.rightShoulder.y,.001f);
+            assertTrue(p.leftKnee.x<p.leftHip.x);
+            assertTrue(p.rightKnee.x>p.rightHip.x);
+        }
+        assertTrue(deepest.leftHip.y>neutral.leftHip.y+40f);
+        assertTrue(deepest.rightKnee.x>neutral.rightKnee.x+10f);
+        assertEquals(4,AvatarMultiViewKinematics.ViewMode.values().length);
+    }
+
+    @Test public void headAndNeckAreSeparateFromShouldersInEveryCamera(){
+        for(float phase:new float[]{0f,.2f,.49f,.7f,1f}){
+            AvatarMultiViewKinematics.Pose a=
+                    AvatarMultiViewKinematics.frontArms(phase,AvatarBodySpec.DEFAULT);
+            AvatarMultiViewKinematics.Pose b=
+                    AvatarMultiViewKinematics.frontWideSquat(phase,AvatarBodySpec.DEFAULT);
+            AvatarMultiViewKinematics.Pose c=
+                    AvatarMultiViewKinematics.diamondTop(phase,AvatarBodySpec.DEFAULT);
+            for(AvatarMultiViewKinematics.Pose p:new AvatarMultiViewKinematics.Pose[]{a,b,c}) {
+                assertTrue(p.head.y<p.neck.y);
+                assertTrue(p.neck.y<p.leftShoulder.y);
+                assertEquals(p.leftShoulder.y,p.rightShoulder.y,.001f);
+            }
+        }
+    }
+
     @Test public void invalidViewParamsAreRejected(){
         assertThrows(IllegalArgumentException.class,()->
                 AvatarMultiViewKinematics.frontArms(0f,null));

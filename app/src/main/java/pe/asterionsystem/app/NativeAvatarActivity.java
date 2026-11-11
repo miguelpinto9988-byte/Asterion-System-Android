@@ -171,11 +171,11 @@ public final class NativeAvatarActivity extends ComponentActivity {
             }
             String storedCamera=state.getString("camera","SIDE");
             try {
-                AvatarMultiViewKinematics.ViewMode restored=
+                AvatarMultiViewKinematics.ViewMode restoredCameraMode=
                         AvatarMultiViewKinematics.ViewMode.valueOf(storedCamera);
-                scenePicker.setSelection(restored.ordinal());
-                avatar.setViewMode(restored);
-                motionPicker.setEnabled(restored==AvatarMultiViewKinematics.ViewMode.SIDE);
+                scenePicker.setSelection(restoredCameraMode.ordinal());
+                avatar.setViewMode(restoredCameraMode);
+                motionPicker.setEnabled(restoredCameraMode==AvatarMultiViewKinematics.ViewMode.SIDE);
                 avatar.setPhase(state.getFloat("phase",0f));
             } catch(IllegalArgumentException unknown) {
                 scenePicker.setSelection(0);

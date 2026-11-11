@@ -91,7 +91,7 @@ public final class AvatarRenderer {
         // Contoured torso instead of the former straight cylinder.
         drawTorso(canvas,p,top,hi);
         details.drawJersey(canvas,p.hip,p.shoulder,body,palette);
-        drawLimb(canvas,p.shoulder,p.neck,21f,13f,palette.skin);
+        details.drawShortNeck(canvas,p.shoulder,p.head,palette);
         details.drawHead(canvas,p.head,body,palette);
         if(!palette.female) {
             drawLimb(canvas,interp(p.shoulder,p.elbow,.095f),

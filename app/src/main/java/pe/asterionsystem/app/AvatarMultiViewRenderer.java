@@ -34,9 +34,12 @@ public final class AvatarMultiViewRenderer {
         paint.setStrokeWidth(1f);
         for(int y=65;y<420;y+=55)c.drawLine(35,y,365,y,paint);
         for(int x=55;x<360;x+=55)c.drawLine(x,45,x,413,paint);
-        if(camera==AvatarMultiViewKinematics.ViewMode.FRONT) {
-            drawFront(c,p);
-            text(c,"FRONTAL · ELEVACIÓN DE BRAZOS",34,447,12,
+        if(camera==AvatarMultiViewKinematics.ViewMode.FRONT
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT) {
+            boolean squat=camera==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT;
+            drawFront(c,p,squat);
+            text(c,squat?"FRONTAL · SENTADILLA ABIERTA":
+                    "FRONTAL · ELEVACIÓN DE BRAZOS",34,447,11,
                     dark?0xFFC0CCE0:0xFF536987);
         } else if(camera==AvatarMultiViewKinematics.ViewMode.TOP) {
             drawDiamondTop(c,p);
@@ -72,62 +75,120 @@ public final class AvatarMultiViewRenderer {
         color(fill);c.drawCircle(x,y,r,paint);
     }
 
-    /** Frontal view of the same adult avatar, with independent left/right arms. */
-    private void drawFront(Canvas c,AvatarMultiViewKinematics.Pose p){
+    /** Frontal anatomy follows the actual hip/shoulder pair, not fixed pixels.
+     * A deliberate short neck is visible above the close jersey collar. */
+    private void drawFront(Canvas c,AvatarMultiViewKinematics.Pose p,
+                           boolean squat) {
         c.save();
-        c.scale(.89f,.89f,200f,210f);
-        rr(c,95,426,305,430,2,dark?0xFF56627A:0xFFD2DBE8);
-        color(dark?0xFF283249:0xFFDFE5EF);
-        c.drawOval(110,425,290,438,paint);
-        // Back arms, then torso, with sleeve junctions covering their roots.
-        limb(c,p.leftShoulder,p.leftElbow,13,palette.top);
-        limb(c,p.leftElbow,p.leftWrist,11,palette.skin);
-        limb(c,p.rightShoulder,p.rightElbow,13,palette.top);
-        limb(c,p.rightElbow,p.rightWrist,11,palette.skin);
-        circle(c,p.leftElbow.x,p.leftElbow.y,10,palette.skin);
-        circle(c,p.rightElbow.x,p.rightElbow.y,10,palette.skin);
-        handsSimple(c,p.leftWrist,p.rightWrist);
-        // Fixed legs: hip->knee->ankle, colored as denim exercise trousers.
-        limb(c,p.leftHip,p.leftKnee,17,palette.legColor);
-        limb(c,p.leftKnee,p.leftAnkle,13,palette.legColor);
-        limb(c,p.rightHip,p.rightKnee,17,palette.legColor);
-        limb(c,p.rightKnee,p.rightAnkle,13,palette.legColor);
-        circle(c,p.leftKnee.x,p.leftKnee.y,12,palette.legColor);
-        circle(c,p.rightKnee.x,p.rightKnee.y,12,palette.legColor);
-        line(c,178,290,174,405,0xFF879CBB,1.25f);
-        line(c,222,290,226,405,0xFF879CBB,1.25f);
+        c.scale(.86f,.86f,200f,222f);
+        rr(c,79,419,321,422,2,dark?0xFF65758C:0xFFD4DFEA);
+        color(dark?0xFF263247:0xFFDDE6EE);
+        c.drawOval(83,417,317,431,paint);
+
+        // Far-to-near: articulated denim legs are painted behind the pelvis.
+        drawFrontDenimLeg(c,p.leftHip,p.leftKnee,p.leftAnkle,true);
+        drawFrontDenimLeg(c,p.rightHip,p.rightKnee,p.rightAnkle,false);
         drawShoeFront(c,p.leftAnkle.x,p.leftAnkle.y);
         drawShoeFront(c,p.rightAnkle.x,p.rightAnkle.y);
-        // Waist and tailored torso, avoiding a pill-shaped silhouette.
+
+        float waistY=p.leftHip.y+8f;
         path.rewind();
-        path.moveTo(174,235);path.cubicTo(180,249,219,249,226,235);
-        path.lineTo(226,269);path.quadTo(200,279,174,269);path.close();
-        color(palette.shorts);c.drawPath(path,paint);
-        path.rewind();path.moveTo(166,148);
-        path.cubicTo(158,161,166,194,170,208);
-        path.quadTo(178,233,174,240);
-        path.quadTo(201,250,226,240);
-        path.quadTo(224,224,231,206);
-        path.cubicTo(236,180,240,165,234,148);
-        path.quadTo(201,138,166,148);path.close();
+        path.moveTo(p.leftHip.x-12f,p.leftHip.y-11f);
+        path.quadTo(200f,p.leftHip.y-17f,p.rightHip.x+12f,p.rightHip.y-11f);
+        path.lineTo(p.rightHip.x+9f,p.rightHip.y+28f);
+        path.quadTo(200f,p.rightHip.y+34f,p.leftHip.x-9f,p.leftHip.y+28f);
+        path.close();
+        color(palette.legColor);c.drawPath(path,paint);
+        line(c,p.leftHip.x-9f,waistY,200f,waistY+4f,
+                0xFF718CA9,1.3f);
+        line(c,200f,waistY+4f,p.rightHip.x+9f,waistY,
+                0xFF718CA9,1.3f);
+        rr(c,196f,waistY-1f,204f,waistY+4f,1.8f,0xFFB6C8D7);
+
+        // Sleeve-to-forearm drawing uses separate IK endpoints. Small shoulder
+        // seams visually blend the sleeves into the torso, rather than orbs.
+        drawFrontArm(c,p.leftShoulder,p.leftElbow,p.leftWrist,true);
+        drawFrontArm(c,p.rightShoulder,p.rightElbow,p.rightWrist,false);
+
+        float sy=p.leftShoulder.y,hy=p.leftHip.y;
+        path.rewind();
+        path.moveTo(p.leftShoulder.x+11f,sy-5f);
+        path.cubicTo(158f,sy-14f,180f,sy-13f,200f,sy-8f);
+        path.cubicTo(222f,sy-13f,240f,sy-14f,
+                p.rightShoulder.x-11f,sy-5f);
+        path.cubicTo(235f,sy+24f,228f,sy+52f,229f,hy-6f);
+        path.quadTo(201f,hy+4f,171f,hy-6f);
+        path.cubicTo(172f,sy+54f,165f,sy+25f,
+                p.leftShoulder.x+11f,sy-5f);
+        path.close();
         color(palette.top);
-        paint.setShader(palette.female?purple:blue);c.drawPath(path,paint);
-        paint.setShader(null);
-        line(c,172,164,179,229,palette.accent,2.3f);
-        line(c,229,164,222,229,palette.accent,2.3f);
-        line(c,180,143,168,159,0xFF8BC8F4,2f);
-        line(c,220,143,232,159,0xFF8BC8F4,2f);
-        // Two sleeves share the shoulder height; no protruding shoulder.
-        circle(c,159,153,9,palette.top);
-        circle(c,241,153,9,palette.top);
-        // Visible short neck, separated from a shallow jersey collar.
-        rr(c,192,117,208,141,5,palette.skin);
-        rr(c,189,136,211,145,4,0xFF1E4B80);
-        line(c,190,138,210,138,0xFF78BDE7,1.1f);
-        drawFaceFront(c,200,97);
-        // Small geometric clothing mark, not official brand asset.
-        text(c,"A",212,188,11,0xFFCAE8F9);
+        paint.setShader(palette.female?purple:blue);
+        c.drawPath(path,paint);paint.setShader(null);
+        // Narrow side panels, collar seam and gentle fabric grain.
+        line(c,174f,sy+16f,179f,hy-14f,palette.accent,2f);
+        line(c,226f,sy+16f,221f,hy-14f,palette.accent,2f);
+        line(c,180f,hy-7f,221f,hy-7f,0xFF8FC0E4,1.1f);
+        for(int n=0;n<5;n++) {
+            float y=sy+35f+11f*n;
+            line(c,194f,y,210f,y+1f,0x334CB4E0,.7f);
+        }
+        // Skin neck: head bottom ~head.y+24, collar begins at shoulder-11.
+        float topNeck=p.head.y+19f;
+        rr(c,193f,topNeck,207f,sy-6f,5f,palette.skin);
+        rr(c,190f,sy-11f,210f,sy-1f,5f,palette.top);
+        line(c,191f,sy-10f,209f,sy-10f,
+                palette.female?0xFFCDB7EF:0xFF9FD1F4,1.4f);
+        drawFaceFront(c,p.head.x,p.head.y);
+        text(c,"A",215f,sy+42f,11f,0xFFCCE7FA);
         c.restore();
+    }
+
+    private void drawFrontDenimLeg(Canvas c,AvatarKinematics.Point hip,
+                                   AvatarKinematics.Point knee,
+                                   AvatarKinematics.Point ankle,
+                                   boolean left) {
+        limb(c,hip,knee,17f,palette.legColor);
+        limb(c,knee,ankle,12.5f,palette.legColor);
+        circle(c,knee.x,knee.y,11.6f,palette.legColor);
+        // Flexible diagonal textile seam follows both moving bones.
+        float sign=left?-1f:1f;
+        line(c,hip.x+sign*5f,hip.y+23f,
+                knee.x+sign*3f,knee.y-10f,0x887F9AB7,1.4f);
+        line(c,knee.x+sign*3f,knee.y+10f,
+                ankle.x+sign*3f,ankle.y-12f,0x887F9AB7,1.1f);
+        c.save();c.translate(knee.x,knee.y);
+        rr(c,-9f,-12f,9f,12f,5f,0xFF3B4D69);
+        line(c,-7f,-6f,7f,-6f,0xAA90ACC7,1.1f);
+        line(c,-7f,6f,7f,6f,0xAA90ACC7,1.1f);
+        c.restore();
+    }
+
+    private void drawFrontArm(Canvas c,AvatarKinematics.Point shoulder,
+                              AvatarKinematics.Point elbow,
+                              AvatarKinematics.Point wrist,boolean left) {
+        float dx=elbow.x-shoulder.x,dy=elbow.y-shoulder.y;
+        AvatarKinematics.Point sleeve=new AvatarKinematics.Point(
+                shoulder.x+dx*.32f,shoulder.y+dy*.32f);
+        limb(c,shoulder,sleeve,13.5f,palette.top);
+        limb(c,sleeve,elbow,10.7f,palette.skin);
+        limb(c,elbow,wrist,9f,palette.skin);
+        circle(c,elbow.x,elbow.y,9f,palette.skin);
+        circle(c,wrist.x,wrist.y,7.3f,palette.skin);
+        float u=(float)Math.hypot(dx,dy);
+        if(u>.001f){
+            float nx=-dy/u,ny=dx/u;
+            line(c,sleeve.x-9f*nx,sleeve.y-9f*ny,
+                    sleeve.x+9f*nx,sleeve.y+9f*ny,
+                    palette.accent,1.8f);
+        }
+        // Small wrist cuff readable during a complete arm raise.
+        float vx=wrist.x-elbow.x,vy=wrist.y-elbow.y;
+        float l=(float)Math.hypot(vx,vy);
+        if(l>.001f) {
+            float x=wrist.x-vx/l*9f,y=wrist.y-vy/l*9f;
+            line(c,x-vy/l*5f,y+vx/l*5f,
+                    x+vy/l*5f,y-vx/l*5f,0xFF4B7EAC,1.8f);
+        }
     }
 
     private void drawFaceFront(Canvas c,float x,float y){
@@ -164,54 +225,90 @@ public final class AvatarMultiViewRenderer {
         circle(c,r.x,r.y,8,palette.skin);
     }
 
-    /**
-     * Not a standing figure turned sideways: feet are at the far end, crown
-     * of head and upper back face the overhead camera, hands touch the ground.
-     */
+    /** Floor-facing, overhead camera: back + crown are visible. Hands below
+     * the chest are partly occluded; enlarged inset documents the silhouettes.
+     * A side-height card shows motion that overhead cannot show directly. */
     private void drawDiamondTop(Canvas c,AvatarMultiViewKinematics.Pose p) {
-        rr(c,42,58,244,419,17,dark?0xFF192436:0xFFF1F5FA);
-        // The ground-contact shadow changes slightly as the torso lowers.
-        int shadow=dark?0x442D4A71:0x2D6A849E;
-        color(shadow);c.drawOval(101,132,216,310,paint);
-        // Shoes and trousers point away from the head in top-down space.
-        for(int dir:new int[]{-1,1}) {
-            AvatarKinematics.Point hip=dir<0?p.leftHip:p.rightHip;
-            AvatarKinematics.Point knee=dir<0?p.leftKnee:p.rightKnee;
-            AvatarKinematics.Point ankle=dir<0?p.leftAnkle:p.rightAnkle;
-            limb(c,hip,knee,14,palette.legColor);
-            limb(c,knee,ankle,12,palette.legColor);
-            line(c,hip.x+dir*6,hip.y+16,ankle.x+dir*3,ankle.y-13,
-                    0xFF879AB7,1f);
-            rr(c,ankle.x-11,ankle.y-11,ankle.x+11,ankle.y+9,6,palette.shoe);
-            line(c,ankle.x-8,ankle.y-2,ankle.x+8,ankle.y-2,
-                    0xFF386CA0,2.5f);
+        rr(c,22,47,276,426,17,dark?0xFF1B293C:0xFFF0F5FA);
+        color(dark?0xFF22334A:0xFFDCE7F0);
+        c.drawOval(117,104,253,406,paint);
+        // Fixed toe contacts and gradual denim narrowing towards each shoe.
+        for(int direction:new int[]{-1,1}) {
+            AvatarKinematics.Point h=direction<0?p.leftHip:p.rightHip;
+            AvatarKinematics.Point k=direction<0?p.leftKnee:p.rightKnee;
+            AvatarKinematics.Point a=direction<0?p.leftAnkle:p.rightAnkle;
+            limb(c,h,k,15f,palette.legColor);
+            limb(c,k,a,11.8f,palette.legColor);
+            circle(c,k.x,k.y,11.7f,palette.legColor);
+            line(c,h.x+direction*4f,h.y+17f,
+                    a.x+direction*3f,a.y-14f,0x997991B1,1.25f);
+            rr(c,a.x-12f,a.y-12f,a.x+12f,a.y+9f,6f,palette.shoe);
+            rr(c,a.x-14f,a.y+6f,a.x+14f,a.y+12f,5f,palette.shoeDark);
+            line(c,a.x-7f,a.y-4f,a.x+7f,a.y-4f,0xFF3C78AA,2f);
         }
-        // Body seen from above: back of the blue shirt and seam detailing.
-        path.rewind();path.moveTo(p.leftShoulder.x,p.leftShoulder.y-10);
-        path.quadTo(158,p.head.y+56,p.rightShoulder.x,p.rightShoulder.y-10);
-        path.lineTo(p.rightHip.x+6,p.rightHip.y+2);
-        path.quadTo(158,280,p.leftHip.x-6,p.leftHip.y+2);
-        path.close();color(palette.top);
-        paint.setShader(palette.female?purple:blue);
-        c.drawPath(path,paint);paint.setShader(null);
-        line(c,p.leftShoulder.x+9,p.leftShoulder.y+8,139,248,palette.accent,2f);
-        line(c,p.rightShoulder.x-9,p.rightShoulder.y+8,178,248,palette.accent,2f);
-        line(c,144,255,170,255,0xFF9DC9E9,1.1f);
-        // Two arm chains swing outside the torso, converging at paired hands.
+        // Hands and forearms are behind the back from this camera.
         drawTopArm(c,p.leftShoulder,p.leftElbow,p.leftWrist);
         drawTopArm(c,p.rightShoulder,p.rightElbow,p.rightWrist);
-        // Back of head: dark hair crown; face correctly invisible from above.
-        rr(c,143,p.neck.y-10,173,p.neck.y+8,9,palette.skin);
-        color(palette.hair);c.drawOval(p.head.x-26,p.head.y-26,
-                p.head.x+26,p.head.y+24,paint);
-        color(palette.hairHighlight);
+
+        // Neck begins beneath the visible hair, joins the jersey collar.
+        float nY=p.neck.y;
+        rr(c,177f,p.head.y+17f,193f,nY+16f,6f,palette.skin);
+
+        // This tapered contour is the BACK of the shirt, not a front-facing
+        // standing torso. It occludes the hands located beneath the chest.
         path.rewind();
-        path.moveTo(p.head.x-13,p.head.y-8);
-        path.quadTo(p.head.x+1,p.head.y-25,p.head.x+15,p.head.y-7);
-        path.quadTo(p.head.x+3,p.head.y-10,p.head.x-13,p.head.y-8);
+        path.moveTo(p.leftShoulder.x+5f,p.leftShoulder.y-7f);
+        path.cubicTo(146f,p.leftShoulder.y-21f,
+                217f,p.rightShoulder.y-21f,
+                p.rightShoulder.x-5f,p.rightShoulder.y-7f);
+        path.cubicTo(227f,205f,222f,244f,p.rightHip.x+11f,p.rightHip.y+2f);
+        path.quadTo(185f,300f,p.leftHip.x-11f,p.leftHip.y+2f);
+        path.cubicTo(148f,245f,142f,211f,
+                p.leftShoulder.x+5f,p.leftShoulder.y-7f);
+        path.close();
+        color(palette.top);
+        paint.setShader(palette.female?purple:blue);
+        c.drawPath(path,paint);paint.setShader(null);
+        line(c,p.leftShoulder.x+15f,p.leftShoulder.y+20f,
+                p.leftHip.x-2f,p.leftHip.y-17f,
+                palette.accent,1.8f);
+        line(c,p.rightShoulder.x-15f,p.rightShoulder.y+20f,
+                p.rightHip.x+2f,p.rightHip.y-17f,
+                palette.accent,1.8f);
+        line(c,164f,p.leftShoulder.y+21f,205f,p.leftShoulder.y+21f,
+                0xCC9DC6E9,1f);
+        line(c,168f,p.leftHip.y-13f,202f,p.leftHip.y-13f,
+                0x9991BFDE,1.1f);
+
+        // Collar is drawn around a moderate-short visible neck.
+        rr(c,175f,p.leftShoulder.y-13f,
+                195f,p.leftShoulder.y-3f,5f,palette.top);
+        line(c,177f,p.leftShoulder.y-11f,
+                193f,p.leftShoulder.y-11f,0xFFADD4F0,1.3f);
+        // Hair viewed from above, face deliberately invisible.
+        color(palette.hair);
+        path.rewind();
+        path.moveTo(p.head.x-25f,p.head.y-5f);
+        path.cubicTo(p.head.x-27f,p.head.y-27f,p.head.x+22f,p.head.y-32f,
+                p.head.x+27f,p.head.y-6f);
+        path.cubicTo(p.head.x+27f,p.head.y+20f,p.head.x-18f,
+                p.head.y+26f,p.head.x-25f,p.head.y-5f);
         path.close();c.drawPath(path,paint);
-        // Enlarged hand view is always separate because fingers cannot be
-        // read accurately on a full-body mobile-size sprite.
+        line(c,p.head.x-9f,p.head.y-12f,p.head.x+12f,p.head.y-19f,
+                0x775C4A45,1.8f);
+
+        // Paired dashed anchors show hidden hand contact, not floating palms.
+        color(dark?0xFFC8D9EA:0xFF7393AF);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(1.3f);
+        paint.setPathEffect(null);
+        c.drawCircle(185f,p.leftWrist.y,18f,paint);
+        paint.setStyle(Paint.Style.FILL);
+        line(c,205f,p.leftWrist.y,280f,227f,
+                dark?0xFFAED4F3:0xFF74A6CB,1f);
+        // Explanation visible at mobile sizes.
+        text(c,"ZONA BAJO EL TORSO",45f,55f,8f,
+                dark?0xFFC9D8EB:0xFF617E9D);
         drawHandsInset(c);
         drawPushupSideInset(c,p.depth);
     }

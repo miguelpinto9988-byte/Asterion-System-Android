@@ -231,6 +231,32 @@ public final class AvatarArtDetails {
         c.restore();
     }
 
+    /** A modest, visible side neck tucked under the jaw and shirt collar.
+     * Head geometry and shoulder pivots stay unchanged by this visual layer. */
+    public void drawShortNeck(Canvas c,AvatarKinematics.Point shoulder,
+                              AvatarKinematics.Point head,AvatarPalette palette){
+        if(c==null||shoulder==null||head==null||palette==null)
+            throw new IllegalArgumentException("Neck data required");
+        float midX=head.x-3f;
+        float top=head.y+17f;
+        float bottom=shoulder.y+1f;
+        if(bottom<=top)return;
+        fill(palette.skinShade);
+        path.rewind();
+        path.moveTo(midX-8f,top);
+        path.quadTo(midX-10f,top+8f,midX-9f,bottom);
+        path.lineTo(midX+8f,bottom);
+        path.quadTo(midX+7f,top+8f,midX+7f,top);
+        path.close();c.drawPath(path,paint);
+        fill(palette.skin);
+        c.drawRoundRect(midX-6f,top,midX+7f,bottom-3f,4f,4f,paint);
+        // Fine collar line, not another thick rounded shoulder.
+        fill(palette.top);
+        c.drawRoundRect(midX-11f,bottom-9f,midX+10f,bottom+1f,5f,5f,paint);
+        line(c,midX-8f,bottom-8f,midX+7f,bottom-8f,
+                palette.female?0xFFCEB7ED:0xFF9BC7E6,1.2f);
+    }
+
     /**
      * Readable, one-eyed side profile with a distinct nose, jaw, ear,
      * forehead and hairline. The eye count deliberately reflects the camera.
