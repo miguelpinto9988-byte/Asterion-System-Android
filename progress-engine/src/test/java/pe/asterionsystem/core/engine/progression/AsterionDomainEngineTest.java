@@ -136,7 +136,7 @@ public final class AsterionDomainEngineTest {
                 fixture.catalog, new SchedulePlanner(fixture.plans, fixture.catalog),
                 new PreferencesService(fixture.settings), fixture.tracking,
                 ProgressPatternEngine.standard(), taxonomy);
-        assertEquals(125, withTaxonomy.exerciseFamilies().size());
+        assertEquals(155, withTaxonomy.exerciseFamilies().size());
         assertEquals(3, withTaxonomy.exerciseTypes("sentadillas").size());
         assertEquals(7, withTaxonomy.exerciseVariants("sentadilla_bilateral").size());
         assertFalse(withTaxonomy.searchExerciseVariants(

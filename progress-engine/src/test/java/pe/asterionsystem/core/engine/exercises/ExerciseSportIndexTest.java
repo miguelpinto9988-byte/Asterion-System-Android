@@ -24,9 +24,9 @@ public final class ExerciseSportIndexTest {
 
     @Test public void exactlyFivePrimaryCategoriesForAllSourcedSports() throws Exception {
         ExerciseCatalog c=catalog();
-        assertEquals(125,c.families().size());
-        assertEquals(354,c.types().size());
-        assertEquals(1017,c.variants().size());
+        assertEquals(155,c.families().size());
+        assertEquals(474,c.types().size());
+        assertEquals(1257,c.variants().size());
         assertEquals(5,c.categoryIndex().categories().size());
         assertEquals(56,c.sportIndex().sports().size());
         assertEquals(56,new HashSet<>(c.sportIndex().sports()).size());

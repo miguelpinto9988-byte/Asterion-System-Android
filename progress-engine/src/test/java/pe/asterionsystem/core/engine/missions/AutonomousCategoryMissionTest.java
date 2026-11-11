@@ -27,7 +27,7 @@ public class AutonomousCategoryMissionTest {
              InputStreamReader types=resource(prefix+"types.tsv");
              InputStreamReader variants=resource(prefix+"variants.tsv")) {
             ExerciseCatalog catalog=ExerciseCatalogLoader.load(family,types,variants);
-            assertEquals(1017,catalog.variants().size());
+            assertEquals(1257,catalog.variants().size());
             planner=new MissionPlanner(catalog);
         }
         profile=new MissionPlanner.Profile("principiante","bienestar",
