@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import org.json.JSONObject;
 import pe.asterionsystem.app.MissionsActivity;
+import pe.asterionsystem.app.RoutinesActivity;
+import pe.asterionsystem.app.CalendarActivity;
 import pe.asterionsystem.app.ProfileStore;
 import pe.asterionsystem.app.R;
 
