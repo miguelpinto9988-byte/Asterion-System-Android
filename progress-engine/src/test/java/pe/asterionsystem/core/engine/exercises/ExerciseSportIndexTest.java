@@ -48,7 +48,8 @@ public final class ExerciseSportIndexTest {
         assertFalse(c.search("","tren_superior",null,null,"calistenia",5,100,0).isEmpty());
         assertTrue(c.search("","movilidad",null,null,"baloncesto",5,100,0).stream()
                 .allMatch(v->c.categoryIndex().categoryForVariant(v.id()).equals("movilidad")));
-        assertTrue(c.sportIndex().codesForType("sentadilla_bilateral").isEmpty());
+        assertTrue(c.sportIndex().includes("sentadilla_bilateral","futbol"));
+        assertTrue(c.sportIndex().includes("dominadas","calistenia"));
         assertFalse(c.search("","tronco",null,5,100,0).isEmpty());
         assertFalse(c.search("","piernas",null,5,100,0).isEmpty());
     }
