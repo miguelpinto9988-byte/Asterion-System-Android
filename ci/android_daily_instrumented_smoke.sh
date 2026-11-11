@@ -68,8 +68,8 @@ adb shell am instrument -w -e class \
   "pe.asterionsystem.app.NativeAvatarRenderTest" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
   | tee "$OUT/native-avatar-render.txt"
-grep -q 'OK (3 tests)' "$OUT/native-avatar-render.txt"
-echo "PASS: native avatar palettes, resolutions, themes and accessibility (3 tests)."
+grep -q 'OK (4 tests)' "$OUT/native-avatar-render.txt"
+echo "PASS: native avatar palettes, resolutions, themes and accessibility (4 tests)."
 
 
 
