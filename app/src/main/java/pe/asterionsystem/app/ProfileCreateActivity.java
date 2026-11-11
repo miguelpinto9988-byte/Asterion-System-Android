@@ -30,6 +30,7 @@ public final class ProfileCreateActivity extends ComponentActivity {
     private JSONObject draft;
     private int step=1;
     private boolean confirmed=false;
+    private boolean editMode=false;
     private float density;
 
     private FrameLayout root;
@@ -68,8 +69,17 @@ public final class ProfileCreateActivity extends ComponentActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.screen_profile_create);
         density=getResources().getDisplayMetrics().density;
-        draft=ProfileRegistrationDraft.load(this);
+        // Editing starts from the committed profile, not an abandoned draft.
+        editMode=getIntent().getBooleanExtra("edit_profile",false)
+                &&ProfileStore.hasProfile(this);
+        draft=editMode?ProfileStore.getRegistration(this)
+                :ProfileRegistrationDraft.load(this);
+        if(editMode && !draft.has("name"))put("name",ProfileStore.getName(this));
         if (!draft.has("theme")) put("theme","light");
+        if(editMode) {
+            ((TextView)findViewById(R.id.profile_wizard_mode))
+                    .setText("EDICIÓN DE PERFIL");
+        }
 
         root=findViewById(R.id.profile_wizard_root);
         panel=findViewById(R.id.profile_create_panel);
@@ -128,8 +138,12 @@ public final class ProfileCreateActivity extends ComponentActivity {
     private void put(String key,Object value) {
         try {
             draft.put(key,value);
-            ProfileRegistrationDraft.save(this,draft);
+            persistDraft();
         }catch(JSONException failure){throw new IllegalStateException(failure);}
+    }
+
+    private void persistDraft() {
+        if(!editMode)ProfileRegistrationDraft.save(this,draft);
     }
 
     private boolean saveStepOne(boolean validate) {
@@ -187,17 +201,18 @@ public final class ProfileCreateActivity extends ComponentActivity {
                 "Personalización","Activación del sistema"};
         heading.setText(titles[step]);
         indicator.setText(step+" / 4");
-        forwardText.setText(step==4?"ACTIVAR PERFIL":"SIGUIENTE");
+        forwardText.setText(step==4?(editMode?"GUARDAR CAMBIOS":"ACTIVAR PERFIL")
+                :"SIGUIENTE");
         forward.setEnabled(step!=4);
         forward.setAlpha(step==4?0.5f:1f);
 
         if(step>1) {
             ProfileRegistrationSteps forms=new ProfileRegistrationSteps(
-                    this,draft,()->ProfileRegistrationDraft.save(this,draft),
+                    this,draft,this::persistDraft,
                     this::onConfirmationChanged);
             if(step==2)dynamic.addView(forms.step2());
             if(step==3)dynamic.addView(new SimpleProfileStepThreeView(
-                    this,draft,()->ProfileRegistrationDraft.save(this,draft),
+                    this,draft,this::persistDraft,
                     this::applyTheme));
             if(step==4)dynamic.addView(forms.step4());
         }
@@ -225,6 +240,11 @@ public final class ProfileCreateActivity extends ComponentActivity {
             if(!ProfileStore.saveRegistration(this,draft)) {
                 Toast.makeText(this,"No se pudo guardar el perfil. Comprueba los campos.",
                         Toast.LENGTH_LONG).show();
+                return;
+            }
+            if(editMode) {
+                Toast.makeText(this,"Cambios de perfil guardados.",Toast.LENGTH_SHORT).show();
+                finish();
                 return;
             }
             ProfileRegistrationDraft.clear(this);
