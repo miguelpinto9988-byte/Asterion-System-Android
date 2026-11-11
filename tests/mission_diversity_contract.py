@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Guard the 125-family focus mapping and recent completed-only variety logic."""
+"""Guard the 155-family focus mapping and recent completed-only variety logic."""
 from pathlib import Path
 import csv
 import re
@@ -15,7 +15,7 @@ with (LIB/"resources/asterion_exercises/v1/families.tsv").open(encoding="utf-8")
     families={row["family_id"] for row in csv.DictReader(f,delimiter="\t")}
 
 focus_ids=re.findall(r'Map\.entry\("([a-z0-9_]+)",new Focus\("',FOCUS)
-assert len(focus_ids)==125 and len(set(focus_ids))==125
+assert len(focus_ids)==155 and len(set(focus_ids))==155
 assert set(focus_ids)==families, "All family IDs must be classified"
 for marker in ("ExerciseMuscleFocus.forFamily(", "recentCompleted",
                "daily(Profile profile, LocalDate today,", "new Random(seed)",
@@ -32,4 +32,4 @@ for marker in ("MissionTrackingStore.recentCompletedForCategory(",
 for marker in ("seedPin()", "verifyAfterRestartAndDayChange()",
                "DailyMissionStore.write(", "DailyMissionStore.read("):
     assert marker in TEST,marker
-print("OK: 125 focos, variedad por completados reales, aislamiento de categoria y prueba Android.")
+print("OK: 155 focos, variedad por completados reales, aislamiento de categoria y prueba Android.")

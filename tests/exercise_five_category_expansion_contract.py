@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate append-only 1017-variant catalog and five profile training groups."""
+"""Validate append-only 1257-variant catalog and five profile training groups."""
 from collections import Counter
 import csv
 from pathlib import Path
@@ -20,11 +20,11 @@ families=records("families.tsv",["family_id","name","category","pattern"])
 types=records("types.tsv",["type_id","family_id","name"])
 variants=records("variants.tsv",["variant_id","type_id","name",
                                  "level","equipment","execution","supervision"])
-assert (len(families),len(types),len(variants))==(125,354,1017)
-assert len({f["family_id"] for f in families})==125
-assert len({t["type_id"] for t in types})==354
-assert len({v["variant_id"] for v in variants})==1017
-assert len({v["name"].lower() for v in variants})==1017,"Duplicate exercise labels"
+assert (len(families),len(types),len(variants))==(155,474,1257)
+assert len({f["family_id"] for f in families})==155
+assert len({t["type_id"] for t in types})==474
+assert len({v["variant_id"] for v in variants})==1257
+assert len({v["name"].lower() for v in variants})==1257,"Duplicate exercise labels"
 category={
     "tren_superior":"tren_superior",
     "tren_central":"tren_central",
@@ -34,7 +34,7 @@ category={
     "coordinacion":"movilidad",
     "integrado":"tren_central",
 }
-expected={"tren_superior":27,"tren_central":23,"tren_inferior":27,"movilidad":24,"cardio":24}
+expected={"tren_superior":33,"tren_central":29,"tren_inferior":33,"movilidad":30,"cardio":30}
 assert Counter(category[f["category"]] for f in families)==expected
 family_id={f["family_id"] for f in families}
 type_family={t["type_id"]:t["family_id"] for t in types}
@@ -64,4 +64,4 @@ assert "ExerciseCategoryMapper.displayName(i)" in activity
 assert "for(int i=0;i<5;i++)" in activity
 assert "ExerciseCategoryMapper.weeklyIndex(taxonomyCode)" in guided
 assert "AssetExerciseCatalogRepository(this).load()" in activity
-print("OK: 125 familias, 354 tipos, 1017 variantes y exactamente 5 categorías operativas.")
+print("OK: 155 familias, 474 tipos, 1257 variantes y exactamente 5 categorías operativas.")

@@ -21,7 +21,7 @@ intensity=read(DATA/"intensity.tsv")
 registry=read(DATA/"sport_registry.tsv")
 sports=read(DATA/"sport_tags.tsv")
 research=read(DOC)
-assert (len(families),len(types),len(variants),len(intensity))==(125,354,1017,512)
+assert (len(families),len(types),len(variants),len(intensity))==(155,474,1257,752)
 assert (len(registry),len(sports),len(research))==(56,125,100)
 assert all({x["category"] for x in families}=={
     "tren_superior","tren_inferior","tren_central","movilidad","cardio"}
@@ -49,7 +49,7 @@ assert families[0]["family_id"]=="sentadillas"
 assert types[0]["type_id"]=="sentadilla_bilateral"
 assert variants[0]["variant_id"]=="sentadilla_bilateral_v01"
 assert variants[916]["variant_id"]=="seguir_pasos_ritmicos_v02"
-assert len({r["name"].casefold() for r in variants})==1017
+assert len({r["name"].casefold() for r in variants})==1257
 assert all(v["supervision"]=="1" for v in variants
            if int(v["level"])>=4)
 
@@ -87,7 +87,7 @@ assert by_variant["dep_burpee_tecnico_v01"]["supervision"]=="1"
 assert by_variant["dep_carrera_ida_vuelta_v01"]["supervision"]=="1"
 assert len([x for x in variants if x["variant_id"].startswith("dep_")])==100
 focus=(CORE/"ExerciseMuscleFocus.java").read_text(encoding="utf-8")
-assert focus.count("Map.entry(")==125
+assert focus.count("Map.entry(")==155
 loader=(CORE/"ExerciseCatalogLoader.java").read_text(encoding="utf-8")
 index=(CORE/"ExerciseSportIndex.java").read_text(encoding="utf-8")
 catalog=(CORE/"ExerciseCatalog.java").read_text(encoding="utf-8")
@@ -101,5 +101,5 @@ assert "sportIndex.includes(type.id(), sportCode)" in catalog
 assert "chooseSport" in activity and "chooseEquipment" in activity
 assert "showSportLibrary" in activity and "showEquipmentLibrary" in activity
 assert "57," not in index  # sport tags are not main training categories
-print(f"OK: 5 primary categories, 125 families, 354 types, 1017 variants; "
+print(f"OK: 5 primary categories, 155 families, 474 types, 1257 variants; "
       f"{len(tag_use)} sports, {len(source_urls)} citations, {manual} manual-only records.")
