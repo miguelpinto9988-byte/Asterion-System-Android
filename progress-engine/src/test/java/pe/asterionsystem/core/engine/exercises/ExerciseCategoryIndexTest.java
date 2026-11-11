@@ -111,6 +111,25 @@ public final class ExerciseCategoryIndexTest {
                 ()->index.categoryForVariant("invalid_missing"));
     }
 
+    @Test public void catalogSearchAcceptsFiveCategoriesAndHistoricalCodes()
+            throws Exception {
+        ExerciseCatalog catalog=load();
+        assertFalse("Coordination must be discoverable under mobility",
+                catalog.search("Equilibrio sobre una pierna","movilidad",
+                        null,5,100,0).isEmpty());
+        assertFalse("Historic coordination filters remain valid",
+                catalog.search("Equilibrio sobre una pierna","coordinacion",
+                        null,5,100,0).isEmpty());
+        assertFalse("Integrated movement must appear under trunk",
+                catalog.search("Transportes de cargas","tronco",
+                        null,5,100,0).isEmpty());
+        assertFalse("New category families must be searchable",
+                catalog.search("Marcha recreativa sentado","cardio",
+                        null,2,100,0).isEmpty());
+        assertTrue("Rest is never an exercise category",
+                catalog.search("","descanso",null,5,100,0).isEmpty());
+    }
+
     @Test public void expandedVariantsKeepLowComplexityAndExplicitIntensity()
             throws Exception {
         ExerciseCatalog catalog=load();
