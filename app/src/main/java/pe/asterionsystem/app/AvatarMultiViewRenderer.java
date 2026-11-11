@@ -14,19 +14,27 @@ import android.graphics.Shader;
 public final class AvatarMultiViewRenderer {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path=new Path();
+    private final AvatarArtDetails details=new AvatarArtDetails();
+    private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
     private final LinearGradient blue=new LinearGradient(
-            140f,70f,255f,300f,0xFF4289C7,0xFF163A71,Shader.TileMode.CLAMP);
+            140f,70f,255f,300f,0xFF397DBE,0xFF163C78,Shader.TileMode.CLAMP);
     private final LinearGradient purple=new LinearGradient(
-            140f,70f,255f,300f,0xFFB394E0,0xFF493170,Shader.TileMode.CLAMP);
+            140f,70f,255f,300f,0xFF9976C4,0xFF51387C,Shader.TileMode.CLAMP);
     private AvatarPalette palette=AvatarPalette.BLUE;
     private boolean dark;
 
     public void draw(Canvas c,AvatarMultiViewKinematics.Pose p,
                      AvatarMultiViewKinematics.ViewMode camera,
                      AvatarPalette palette,boolean dark) {
-        if(c==null||p==null||camera==null||palette==null)
-            throw new IllegalArgumentException("Vista y pose necesarias");
-        this.palette=palette;this.dark=dark;
+        draw(c,p,camera,palette,dark,AvatarBodySpec.DEFAULT);
+    }
+
+    public void draw(Canvas c,AvatarMultiViewKinematics.Pose p,
+                     AvatarMultiViewKinematics.ViewMode camera,
+                     AvatarPalette palette,boolean dark,AvatarBodySpec body) {
+        if(c==null||p==null||camera==null||palette==null||body==null)
+            throw new IllegalArgumentException("Vista, paleta y spec necesarios");
+        this.palette=palette;this.dark=dark;this.bodySpec=body;
         int bg=dark?0xFF131722:0xFFF8FAFE;
         int grid=dark?0xFF252D40:0xFFE8EDF5;
         rr(c,10,8,390,468,18,bg);
@@ -79,6 +87,47 @@ public final class AvatarMultiViewRenderer {
     }
     private void circle(Canvas c,float x,float y,float r,int fill){
         color(fill);c.drawCircle(x,y,r,paint);
+    }
+
+    /**
+     * Reusable soft cutout contour. The variable-width silhouette matches
+     * the Bézier limbs used by AvatarRenderer, avoiding cylindrical front
+     * legs and round elbow beads in other camera projections.
+     */
+    private void tapered(Canvas c,AvatarKinematics.Point a,
+                         AvatarKinematics.Point b,float wa,float wb,int fill){
+        float dx=b.x-a.x,dy=b.y-a.y;
+        float d=(float)Math.hypot(dx,dy);
+        if(d<.01f)return;
+        float nx=-dy/d,ny=dx/d,ux=dx/d,uy=dy/d;
+        path.rewind();
+        path.moveTo(a.x+nx*wa*.5f,a.y+ny*wa*.5f);
+        path.cubicTo(a.x+dx*.3f+nx*wa*.51f,a.y+dy*.3f+ny*wa*.51f,
+                a.x+dx*.72f+nx*wb*.51f,a.y+dy*.72f+ny*wb*.51f,
+                b.x+nx*wb*.5f,b.y+ny*wb*.5f);
+        path.cubicTo(b.x+ux*wb*.4f+nx*wb*.44f,
+                b.y+uy*wb*.4f+ny*wb*.44f,
+                b.x+ux*wb*.4f-nx*wb*.44f,
+                b.y+uy*wb*.4f-ny*wb*.44f,
+                b.x-nx*wb*.5f,b.y-ny*wb*.5f);
+        path.cubicTo(a.x+dx*.72f-nx*wb*.51f,
+                a.y+dy*.72f-ny*wb*.51f,
+                a.x+dx*.3f-nx*wa*.51f,
+                a.y+dy*.3f-ny*wa*.51f,
+                a.x-nx*wa*.5f,a.y-ny*wa*.5f);
+        path.cubicTo(a.x-ux*wa*.4f-nx*wa*.44f,
+                a.y-uy*wa*.4f-ny*wa*.44f,
+                a.x-ux*wa*.4f+nx*wa*.44f,
+                a.y-uy*wa*.4f+ny*wa*.44f,
+                a.x+nx*wa*.5f,a.y+ny*wa*.5f);
+        path.close();
+        color(fill);c.drawPath(path,paint);
+        paint.setColor(0x3026334C);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(.55f);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        c.drawPath(path,paint);
+        paint.setStyle(Paint.Style.FILL);
     }
 
     /** Frontal anatomy follows the actual hip/shoulder pair, not fixed pixels.
@@ -153,9 +202,10 @@ public final class AvatarMultiViewRenderer {
                                    AvatarKinematics.Point knee,
                                    AvatarKinematics.Point ankle,
                                    boolean left) {
-        limb(c,hip,knee,17f,palette.legColor);
-        limb(c,knee,ankle,12.5f,palette.legColor);
-        circle(c,knee.x,knee.y,11.6f,palette.legColor);
+        tapered(c,hip,knee,bodySpec.thighWidth,
+                bodySpec.thighWidth*.73f,palette.legColor);
+        tapered(c,knee,ankle,bodySpec.calfWidth,
+                bodySpec.calfWidth*.67f,palette.legColor);
         // Flexible diagonal textile seam follows both moving bones.
         float sign=left?-1f:1f;
         line(c,hip.x+sign*5f,hip.y+23f,
@@ -167,6 +217,8 @@ public final class AvatarMultiViewRenderer {
         line(c,-7f,-6f,7f,-6f,0xAA90ACC7,1.1f);
         line(c,-7f,6f,7f,6f,0xAA90ACC7,1.1f);
         c.restore();
+        // The same denim seam-and-knee artwork as the lateral avatar.
+        details.drawCameraJeans(c,hip,knee,ankle,left);
     }
 
     private void drawFrontArm(Canvas c,AvatarKinematics.Point shoulder,
@@ -175,11 +227,15 @@ public final class AvatarMultiViewRenderer {
         float dx=elbow.x-shoulder.x,dy=elbow.y-shoulder.y;
         AvatarKinematics.Point sleeve=new AvatarKinematics.Point(
                 shoulder.x+dx*.32f,shoulder.y+dy*.32f);
-        limb(c,shoulder,sleeve,13.5f,palette.top);
-        limb(c,sleeve,elbow,10.7f,palette.skin);
-        limb(c,elbow,wrist,9f,palette.skin);
-        circle(c,elbow.x,elbow.y,9f,palette.skin);
-        circle(c,wrist.x,wrist.y,7.3f,palette.skin);
+        tapered(c,shoulder,sleeve,
+                bodySpec.upperArmWidth*.91f,
+                bodySpec.upperArmWidth*.79f,palette.top);
+        tapered(c,sleeve,elbow,bodySpec.upperArmWidth*.72f,
+                bodySpec.upperArmWidth*.59f,palette.skin);
+        tapered(c,elbow,wrist,bodySpec.forearmWidth,
+                bodySpec.forearmWidth*.71f,palette.skin);
+        details.drawForearm(c,elbow,wrist,palette);
+        details.drawProjectedHand(c,wrist,palette);
         float u=(float)Math.hypot(dx,dy);
         if(u>.001f){
             float nx=-dy/u,ny=dx/u;
@@ -198,33 +254,15 @@ public final class AvatarMultiViewRenderer {
     }
 
     private void drawFaceFront(Canvas c,float x,float y){
-        c.save();c.translate(x,y);
-        color(palette.skin);c.drawOval(-23,-28,23,26,paint);
-        color(palette.skinShade);c.drawOval(-26,-7,-20,8,paint);
-        c.drawOval(20,-7,26,8,paint);
-        path.rewind();path.moveTo(-23,-9);
-        path.cubicTo(-29,-37,-10,-40,0,-37);
-        path.cubicTo(16,-42,29,-30,23,-9);
-        path.lineTo(17,-17);
-        path.quadTo(10,-20,3,-19);
-        path.quadTo(-9,-15,-18,-18);path.close();
-        color(palette.hair);c.drawPath(path,paint);
-        line(c,-14,-6,-5,-8,0xFF624A3E,1.8f);
-        line(c,5,-8,14,-6,0xFF624A3E,1.8f);
-        color(0xFF293642);c.drawOval(-11,-2,-6,3,paint);
-        c.drawOval(6,-2,11,3,paint);
-        circle(c,-8,-1,0.9f,0xFFF6FFFF);circle(c,8,-1,.9f,0xFFF6FFFF);
-        line(c,0,3,-1,10,0xFFB87861,1f);
-        line(c,-6,16,0,18,0xFF995E60,1.4f);
-        line(c,0,18,6,16,0xFF995E60,1.4f);
-        c.restore();
+        details.drawHeadFront(c,new AvatarKinematics.Point(x,y),
+                bodySpec,palette);
     }
+
     private void drawShoeFront(Canvas c,float x,float y){
-        rr(c,x-13,y-8,x+13,y+8,5,palette.shoe);
-        rr(c,x-15,y+5,x+15,y+11,4,palette.shoeDark);
-        line(c,x-7,y-4,x+6,y-4,0xFF3D74AA,2f);
-        line(c,x-6,y,x+7,y,0xFF7FAFDA,1.3f);
+        details.drawProjectedSneaker(c,new AvatarKinematics.Point(x,y),
+                palette,false);
     }
+
     private void handsSimple(Canvas c,AvatarKinematics.Point l,
                              AvatarKinematics.Point r){
         circle(c,l.x,l.y,8,palette.skin);
@@ -243,14 +281,12 @@ public final class AvatarMultiViewRenderer {
             AvatarKinematics.Point h=direction<0?p.leftHip:p.rightHip;
             AvatarKinematics.Point k=direction<0?p.leftKnee:p.rightKnee;
             AvatarKinematics.Point a=direction<0?p.leftAnkle:p.rightAnkle;
-            limb(c,h,k,15f,palette.legColor);
-            limb(c,k,a,11.8f,palette.legColor);
-            circle(c,k.x,k.y,11.7f,palette.legColor);
-            line(c,h.x+direction*4f,h.y+17f,
-                    a.x+direction*3f,a.y-14f,0x997991B1,1.25f);
-            rr(c,a.x-12f,a.y-12f,a.x+12f,a.y+9f,6f,palette.shoe);
-            rr(c,a.x-14f,a.y+6f,a.x+14f,a.y+12f,5f,palette.shoeDark);
-            line(c,a.x-7f,a.y-4f,a.x+7f,a.y-4f,0xFF3C78AA,2f);
+            tapered(c,h,k,bodySpec.thighWidth*.93f,
+                    bodySpec.thighWidth*.70f,palette.legColor);
+            tapered(c,k,a,bodySpec.calfWidth*.92f,
+                    bodySpec.calfWidth*.64f,palette.legColor);
+            details.drawCameraJeans(c,h,k,a,direction<0);
+            details.drawProjectedSneaker(c,a,palette,true);
         }
         // Hands and forearms are behind the back from this camera.
         drawTopArm(c,p.leftShoulder,p.leftElbow,p.leftWrist);
@@ -291,17 +327,8 @@ public final class AvatarMultiViewRenderer {
                 195f,p.leftShoulder.y-3f,5f,palette.top);
         line(c,177f,p.leftShoulder.y-11f,
                 193f,p.leftShoulder.y-11f,0xFFADD4F0,1.3f);
-        // Hair viewed from above, face deliberately invisible.
-        color(palette.hair);
-        path.rewind();
-        path.moveTo(p.head.x-25f,p.head.y-5f);
-        path.cubicTo(p.head.x-27f,p.head.y-27f,p.head.x+22f,p.head.y-32f,
-                p.head.x+27f,p.head.y-6f);
-        path.cubicTo(p.head.x+27f,p.head.y+20f,p.head.x-18f,
-                p.head.y+26f,p.head.x-25f,p.head.y-5f);
-        path.close();c.drawPath(path,paint);
-        line(c,p.head.x-9f,p.head.y-12f,p.head.x+12f,p.head.y-19f,
-                0x775C4A45,1.8f);
+        // The same palette hair and headScale as the two other cameras.
+        details.drawHeadTop(c,p.head,bodySpec,palette);
 
         // Paired dashed anchors show hidden hand contact, not floating palms.
         color(dark?0xFFC8D9EA:0xFF7393AF);
@@ -322,12 +349,27 @@ public final class AvatarMultiViewRenderer {
     private void drawTopArm(Canvas c,AvatarKinematics.Point shoulder,
                             AvatarKinematics.Point elbow,
                             AvatarKinematics.Point wrist){
-        limb(c,shoulder,elbow,12,palette.top);
-        limb(c,elbow,wrist,9,palette.skin);
-        circle(c,elbow.x,elbow.y,9,palette.skin);
-        circle(c,wrist.x,wrist.y,9,palette.skin);
-        line(c,shoulder.x,shoulder.y,elbow.x,elbow.y,
-                palette.accent,1.4f);
+        // Only the near-shoulder THIRD is fabric, just as in the side
+        // view; painting the whole upper arm blue was a V8 inconsistency.
+        AvatarKinematics.Point sleeve=new AvatarKinematics.Point(
+                shoulder.x+(elbow.x-shoulder.x)*.32f,
+                shoulder.y+(elbow.y-shoulder.y)*.32f);
+        tapered(c,shoulder,sleeve,bodySpec.upperArmWidth*.86f,
+                bodySpec.upperArmWidth*.75f,palette.top);
+        tapered(c,sleeve,elbow,bodySpec.upperArmWidth*.68f,
+                bodySpec.upperArmWidth*.59f,palette.skin);
+        tapered(c,elbow,wrist,bodySpec.forearmWidth,
+                bodySpec.forearmWidth*.70f,palette.skin);
+        details.drawForearm(c,elbow,wrist,palette);
+        details.drawProjectedHand(c,wrist,palette);
+        float length=(float)Math.hypot(elbow.x-shoulder.x,elbow.y-shoulder.y);
+        if(length>.001f){
+            float px=-(elbow.y-shoulder.y)/length;
+            float py=(elbow.x-shoulder.x)/length;
+            line(c,sleeve.x-9f*px,sleeve.y-9f*py,
+                    sleeve.x+9f*px,sleeve.y+9f*py,
+                    palette.accent,1.5f);
+        }
     }
 
     /** High contrast, symbolic finger detail with visible diamond negative space. */
