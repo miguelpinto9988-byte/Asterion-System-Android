@@ -174,9 +174,14 @@ public final class AvatarArtDetails {
 
     public void drawForearm(Canvas c,AvatarKinematics.Point elbow,
                             AvatarKinematics.Point wrist){
+        drawForearm(c,elbow,wrist,AvatarPalette.BLUE);
+    }
+
+    public void drawForearm(Canvas c,AvatarKinematics.Point elbow,
+                            AvatarKinematics.Point wrist,AvatarPalette palette){
         float len=bone(c,elbow,wrist);
         line(c,len*.18f,-4f,len*.63f,-3f,0x88FFE1BC,2.1f);
-        fill(0xFF28598D);
+        fill(palette.female?0xFF7654A1:0xFF28598D);
         c.drawRoundRect(len*.85f,-7f,len*.93f,7f,1f,1f,paint);
         line(c,len*.88f,-5f,len*.88f,5f,0xFF83BDE8,1.1f);
         line(c,len*.89f,-5f,len*.89f,5f,0xFFB6DDF7,.75f);
