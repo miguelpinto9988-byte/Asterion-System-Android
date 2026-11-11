@@ -12,6 +12,8 @@ public final class AvatarKinematics {
     public static final float UPPER_LEG=94f;
     public static final float LOWER_LEG=96f;
     public static final float TORSO=118f;
+    public static final float UPPER_ARM=58f;
+    public static final float FOREARM=63f;
     private AvatarKinematics() {}
 
     public static final class Point {
@@ -56,15 +58,14 @@ public final class AvatarKinematics {
         Point neck=new Point(shoulder.x+3f,shoulder.y-9f);
         Point head=new Point(neck.x+5f,neck.y-29f);
 
-        // During the squat the forearms travel forward without snapping.
-        Point elbow=lerp(new Point(shoulder.x+7f,shoulder.y+59f),
-                new Point(shoulder.x+51f,shoulder.y+10f),s);
-        Point wrist=lerp(new Point(shoulder.x+2f,shoulder.y+105f),
-                new Point(shoulder.x+112f,shoulder.y+18f),s);
-        Point farElbow=lerp(new Point(farShoulder.x-9f,farShoulder.y+58f),
-                new Point(farShoulder.x+47f,farShoulder.y+7f),s);
-        Point farWrist=lerp(new Point(farShoulder.x-12f,farShoulder.y+102f),
-                new Point(farShoulder.x+105f,farShoulder.y+14f),s);
+        // One target per wrist, with analytical two-bone IK for both elbows.
+        // Segment lengths stay fixed even when the wrists travel forward.
+        Point wrist=lerp(new Point(shoulder.x+4f,shoulder.y+107f),
+                new Point(shoulder.x+105f,shoulder.y+23f),s);
+        Point farWrist=lerp(new Point(farShoulder.x-11f,farShoulder.y+101f),
+                new Point(farShoulder.x+102f,farShoulder.y+19f),s);
+        Point elbow=elbowBelow(shoulder,wrist,UPPER_ARM,FOREARM);
+        Point farElbow=elbowBelow(farShoulder,farWrist,UPPER_ARM,FOREARM);
         return new Pose(ankle,farAnkle,knee,farKnee,hip,farHip,
                 shoulder,farShoulder,neck,head,elbow,wrist,
                 farElbow,farWrist);
@@ -88,6 +89,29 @@ public final class AvatarKinematics {
         Point k1=new Point(midX+uy*side,midY-ux*side);
         Point k2=new Point(midX-uy*side,midY+ux*side);
         return k1.x>=k2.x?k1:k2;
+    }
+
+    /**
+     * Two-segment illustrative arm: the elbow follows the lower branch of
+     * the circle intersection continuously, rather than independent keyframes.
+     * This preserves lengths but does not represent a clinical movement guide.
+     */
+    public static Point elbowBelow(Point shoulder,Point wrist,
+                                   float upperArm,float forearm) {
+        if(!Float.isFinite(upperArm) || !Float.isFinite(forearm)
+                || upperArm<=0f || forearm<=0f) {
+            throw new IllegalArgumentException("Longitudes positivas y finitas");
+        }
+        float dx=wrist.x-shoulder.x,dy=wrist.y-shoulder.y;
+        float raw=(float)Math.hypot(dx,dy);
+        float d=Math.max(Math.abs(upperArm-forearm)+.001f,
+                Math.min(upperArm+forearm-.001f,raw));
+        float ux=raw<.0001f?0f:dx/raw;
+        float uy=raw<.0001f?1f:dy/raw;
+        float along=(upperArm*upperArm-forearm*forearm+d*d)/(2f*d);
+        float bend=(float)Math.sqrt(Math.max(0f,upperArm*upperArm-along*along));
+        return new Point(shoulder.x+ux*along-uy*bend,
+                shoulder.y+uy*along+ux*bend);
     }
 
     public static float depthAtPhase(float phase) {

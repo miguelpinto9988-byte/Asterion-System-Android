@@ -41,6 +41,36 @@ public final class AvatarKinematicsTest {
             assertTrue(d>=0f&&d<=1f);
         }
     }
+    @Test public void armBonesRemainConstantThroughFullIllustratedSquat() {
+        for(int i=0;i<=100;i++) {
+            AvatarKinematics.Pose p=AvatarKinematics.squat(i/100f);
+            assertEquals(AvatarKinematics.UPPER_ARM,
+                    p.shoulder.distance(p.elbow),EPS);
+            assertEquals(AvatarKinematics.FOREARM,
+                    p.elbow.distance(p.wrist),EPS);
+            assertEquals(AvatarKinematics.UPPER_ARM,
+                    p.farShoulder.distance(p.farElbow),EPS);
+            assertEquals(AvatarKinematics.FOREARM,
+                    p.farElbow.distance(p.farWrist),EPS);
+        }
+    }
+    @Test public void elbowsMoveContinuouslyWithoutTeleporting() {
+        AvatarKinematics.Pose previous=AvatarKinematics.squat(0f);
+        for(int i=1;i<=200;i++) {
+            AvatarKinematics.Pose current=AvatarKinematics.squat(i/200f);
+            assertTrue("Front elbow jumped",current.elbow.distance(previous.elbow)<3f);
+            assertTrue("Far elbow jumped",current.farElbow.distance(previous.farElbow)<3f);
+            previous=current;
+        }
+    }
+    @Test public void invalidArmSegmentLengthsAreRejected() {
+        AvatarKinematics.Point a=new AvatarKinematics.Point(0,0);
+        AvatarKinematics.Point b=new AvatarKinematics.Point(10,10);
+        assertThrows(IllegalArgumentException.class,
+                ()->AvatarKinematics.elbowBelow(a,b,0f,20f));
+        assertThrows(IllegalArgumentException.class,
+                ()->AvatarKinematics.elbowBelow(a,b,Float.NaN,20f));
+    }
     @Test public void invalidPoseDepthCannotProduceNan() {
         AvatarKinematics.Pose one=AvatarKinematics.squat(Float.NaN);
         assertTrue(Float.isFinite(one.knee.x)&&Float.isFinite(one.knee.y));
