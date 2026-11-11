@@ -107,7 +107,7 @@ public final class AvatarRenderer {
         drawLimb(canvas,p.elbow,p.wrist,body.forearmWidth,
                 body.forearmWidth*.71f,palette.skin);
         drawJoint(canvas,p.elbow,8.8f,palette.skin);
-        details.drawForearm(canvas,p.elbow,p.wrist);
+        details.drawForearm(canvas,p.elbow,p.wrist,palette);
         details.drawHand(canvas,p.wrist,palette.skin);
         canvas.restore();
 

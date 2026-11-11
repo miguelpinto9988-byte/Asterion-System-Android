@@ -170,7 +170,7 @@ public final class NativeAvatarView extends View {
                 default:
                     throw new IllegalStateException("Camera not implemented");
             }
-            multiRenderer.draw(canvas,pose,viewMode,palette,dark);
+            multiRenderer.draw(canvas,pose,viewMode,palette,dark,bodySpec);
         }
         canvas.restore();
         if(playing&&isAttachedToWindow()&&isShown())postInvalidateOnAnimation();

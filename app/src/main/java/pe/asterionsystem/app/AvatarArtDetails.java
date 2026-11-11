@@ -174,9 +174,14 @@ public final class AvatarArtDetails {
 
     public void drawForearm(Canvas c,AvatarKinematics.Point elbow,
                             AvatarKinematics.Point wrist){
+        drawForearm(c,elbow,wrist,AvatarPalette.BLUE);
+    }
+
+    public void drawForearm(Canvas c,AvatarKinematics.Point elbow,
+                            AvatarKinematics.Point wrist,AvatarPalette palette){
         float len=bone(c,elbow,wrist);
         line(c,len*.18f,-4f,len*.63f,-3f,0x88FFE1BC,2.1f);
-        fill(0xFF28598D);
+        fill(palette.female?0xFF7654A1:0xFF28598D);
         c.drawRoundRect(len*.85f,-7f,len*.93f,7f,1f,1f,paint);
         line(c,len*.88f,-5f,len*.88f,5f,0xFF83BDE8,1.1f);
         line(c,len*.89f,-5f,len*.89f,5f,0xFFB6DDF7,.75f);
@@ -333,6 +338,152 @@ public final class AvatarArtDetails {
         line(c,10f,14f,16f,14.8f,0xFF975B5D,1.25f);
         line(c,16f,14.8f,18f,12.9f,0xAA975B5D,.85f);
         c.restore();
+    }
+
+    /**
+     * The same face identity as the lateral profile, now projected forward:
+     * narrow lower jaw, single swept forelock, smaller eyebrows, gentle
+     * skin highlight, discreet mouth and the exact palette hair/skin shades.
+     * Drawn at the same headScale as the side camera.
+     */
+    public void drawHeadFront(Canvas c,AvatarKinematics.Point center,
+                              AvatarBodySpec spec,AvatarPalette palette){
+        if(c==null||center==null||spec==null||palette==null)
+            throw new IllegalArgumentException("Head inputs required");
+        c.save();c.translate(center.x,center.y);
+        c.scale(spec.headScale,spec.headScale);
+        fill(palette.skinShade);
+        c.drawOval(-24f,-6f,-18f,8f,paint);
+        c.drawOval(18f,-6f,24f,8f,paint);
+        // Forehead, cheeks and rounded-angular jaw: matches side profile,
+        // unlike the old face oval with circular eyes.
+        path.rewind();path.moveTo(-20f,-17f);
+        path.cubicTo(-18f,-26f,15f,-28f,20f,-16f);
+        path.cubicTo(22f,-5f,20f,10f,14f,18f);
+        path.quadTo(7f,23f,0f,23f);
+        path.quadTo(-8f,23f,-15f,17f);
+        path.cubicTo(-21f,10f,-23f,-5f,-20f,-17f);
+        path.close();fill(palette.skin);c.drawPath(path,paint);
+        fill(0x24FFE4C8);
+        c.drawOval(-16f,1f,-5f,12f,paint);
+        c.drawOval(6f,1f,16f,12f,paint);
+        // Crown and fringe follow the same asymmetrical side hair motif.
+        path.rewind();path.moveTo(-21f,-10f);
+        path.cubicTo(-25f,-25f,-14f,-31f,-1f,-30f);
+        path.cubicTo(12f,-35f,23f,-28f,21f,-12f);
+        path.quadTo(11f,-18f,5f,-16f);
+        path.quadTo(-5f,-12f,-13f,-16f);
+        path.quadTo(-17f,-12f,-21f,-10f);
+        path.close();fill(palette.hair);c.drawPath(path,paint);
+        line(c,-11f,-26f,2f,-28f,0x665F4942,1.5f);
+        line(c,3f,-29f,13f,-25f,0x555A453F,1.3f);
+        if(palette.female){
+            path.rewind();path.moveTo(-21f,-16f);
+            path.quadTo(-29f,-8f,-24f,16f);
+            path.lineTo(-20f,18f);
+            path.quadTo(-22f,-1f,-21f,-16f);
+            path.close();c.drawPath(path,paint);
+        }
+        // Eyes: near-black pupil but NO oversized white rings.
+        line(c,-13f,-6.5f,-5f,-7.7f,0xFF60483F,1.45f);
+        line(c,5f,-7.7f,13f,-6.5f,0xFF60483F,1.45f);
+        fill(0xFF2D353E);
+        c.drawOval(-11.8f,-3f,-7.6f,1.2f,paint);
+        c.drawOval(7.6f,-3f,11.8f,1.2f,paint);
+        fill(0xEEFFFFFF);
+        c.drawCircle(-10.3f,-2.2f,.55f,paint);
+        c.drawCircle(10.3f,-2.2f,.55f,paint);
+        line(c,0f,0f,-1f,8f,0xAAAF765D,.8f);
+        line(c,-1f,8f,2f,9f,0x889F674F,.65f);
+        line(c,-5f,14.4f,0f,15.6f,0xFF975B5D,1.15f);
+        line(c,0f,15.6f,5f,14.4f,0xFF975B5D,1.15f);
+        c.restore();
+    }
+
+    /**
+     * The very same short-haired head seen from above: no face is visible.
+     * Uses the identical palette and physical headScale as side and front.
+     */
+    public void drawHeadTop(Canvas c,AvatarKinematics.Point head,
+                            AvatarBodySpec spec,AvatarPalette palette){
+        if(c==null||head==null||spec==null||palette==null)
+            throw new IllegalArgumentException("Overhead head inputs required");
+        c.save();c.translate(head.x,head.y);
+        c.scale(spec.headScale,spec.headScale);
+        path.rewind();
+        path.moveTo(-22f,-8f);
+        path.cubicTo(-24f,-26f,14f,-32f,22f,-11f);
+        path.cubicTo(27f,8f,16f,23f,-3f,24f);
+        path.cubicTo(-20f,24f,-26f,6f,-22f,-8f);
+        path.close();fill(palette.hair);c.drawPath(path,paint);
+        // Same swept hair part shown in both face projections.
+        line(c,-10f,-17f,4f,-23f,0x775F4942,1.5f);
+        line(c,3f,-23f,13f,-18f,0x665A453F,1.4f);
+        if(palette.female){
+            fill(palette.hair);
+            c.drawOval(-24f,-12f,-15f,23f,paint);
+        }
+        c.restore();
+    }
+
+    /** Front and top footwear have the same white, blue-stripe, three-lace,
+     * heel-counter and outsole detail as drawSneaker() from the side. */
+    public void drawProjectedSneaker(Canvas c,AvatarKinematics.Point ankle,
+                                     AvatarPalette palette,boolean overhead){
+        if(c==null||ankle==null||palette==null)
+            throw new IllegalArgumentException("Shoe inputs required");
+        c.save();c.translate(ankle.x,ankle.y);
+        float width=overhead?12f:13f;
+        float height=overhead?13f:11f;
+        fill(palette.shoe);
+        path.rewind();path.moveTo(-width,-height+3f);
+        path.quadTo(0f,-height-3f,width,-height+3f);
+        path.lineTo(width,height-2f);
+        path.quadTo(0f,height+2f,-width,height-2f);
+        path.close();c.drawPath(path,paint);
+        fill(palette.female?0xFF8466B2:0xFF346BA8);
+        path.rewind();path.moveTo(-width+2f,-height+5f);
+        path.quadTo(0f,-height+1f,width-2f,-height+5f);
+        path.lineTo(width-4f,height*.46f);
+        path.quadTo(0f,height*.18f,-width+4f,height*.46f);
+        path.close();c.drawPath(path,paint);
+        // Heel counter, tongue, and eyelets reproduce the side sneaker.
+        fill(0xFF7796B4);
+        c.drawRoundRect(-width,-height+4f,-width+4f,3f,2f,2f,paint);
+        fill(0xFFD7E5F1);
+        c.drawRoundRect(-4f,-height+4f,4f,height*.51f,2f,2f,paint);
+        for(int i=0;i<3;i++) {
+            float y=-height+6f+4f*i;
+            line(c,-6f,y,6f,y+1f,0xFFF3F8FF,1.15f);
+        }
+        fill(palette.shoeDark);
+        c.drawRoundRect(-width-2f,height-4f,width+2f,height+3f,3f,3f,paint);
+        line(c,-width+1f,height,width-1f,height,0xFFECF4FF,1.5f);
+        c.restore();
+    }
+
+    /** A readable palm and thumb, not a circular wrist joint. */
+    public void drawProjectedHand(Canvas c,AvatarKinematics.Point wrist,
+                                  AvatarPalette palette){
+        if(c==null||wrist==null||palette==null)
+            throw new IllegalArgumentException("Hand inputs required");
+        c.save();c.translate(wrist.x,wrist.y);
+        path.rewind();path.moveTo(-6f,-5f);
+        path.quadTo(1f,-8f,7f,-4f);
+        path.lineTo(11f,1f);path.quadTo(13f,4f,7f,8f);
+        path.quadTo(0f,10f,-7f,5f);path.close();
+        fill(palette.skin);c.drawPath(path,paint);
+        fill(palette.skin);c.drawOval(4f,-8f,12f,0f,paint);
+        line(c,-2f,3f,6f,4f,0x99CA8D6F,.8f);
+        c.restore();
+    }
+
+    /** Reuse the side-view denim stitches and moving knee patch for the other
+     * projections; there is no alternative simplified trouser texture. */
+    public void drawCameraJeans(Canvas c,AvatarKinematics.Point hip,
+                                AvatarKinematics.Point knee,
+                                AvatarKinematics.Point ankle,boolean far){
+        drawDenimLeg(c,hip,knee,ankle,far);
     }
 
     public void drawHand(Canvas c,AvatarKinematics.Point wrist,int skin){
