@@ -12,6 +12,8 @@ public final class AvatarMultiViewKinematics {
         SIDE("Lateral · ejercicios"),
         FRONT("Frontal · elevación de brazos"),
         FRONT_SQUAT("Frontal · sentadilla abierta"),
+        FRONT_JACKS("Frontal · saltos de tijera"),
+        FRONT_ELBOW("Frontal · articulación de codos"),
         TOP("Superior · flexión diamante");
         public final String title;
         ViewMode(String title){this.title=title;}
@@ -103,25 +105,86 @@ public final class AvatarMultiViewKinematics {
     public static Pose frontWideSquat(float phase,AvatarBodySpec body) {
         if(body==null)throw new IllegalArgumentException("BodySpec requerido");
         float d=AvatarKinematics.depthAtPhase(phase);
-        float shift=46f*d;
-        AvatarKinematics.Point ls=at(153f,150f+shift),rs=at(247f,150f+shift);
-        AvatarKinematics.Point lh=at(174f,238f+shift),rh=at(226f,238f+shift);
-        AvatarKinematics.Point la=at(127f,411f),ra=at(273f,411f);
+        float shift=49f*d;
+        AvatarKinematics.Point ls=at(153f,156f+shift),rs=at(247f,156f+shift);
+        AvatarKinematics.Point lh=at(174f,244f+shift),rh=at(226f,244f+shift);
+        AvatarKinematics.Point la=at(127f,428f),ra=at(273f,428f);
         AvatarRigConstraints.TwoBone leftLeg=AvatarRigConstraints.twoBone(
                 lh,la,body.upperLeg,body.lowerLeg,1,0f,170f);
         AvatarRigConstraints.TwoBone rightLeg=AvatarRigConstraints.twoBone(
                 rh,ra,body.upperLeg,body.lowerLeg,-1,0f,170f);
         if(leftLeg.targetLimited||rightLeg.targetLimited)
             throw new IllegalArgumentException("Los pies plantados deben ser alcanzables");
-        AvatarKinematics.Point lw=at(184f,212f+shift);
-        AvatarKinematics.Point rw=at(216f,212f+shift);
+        AvatarKinematics.Point lw=at(184f,218f+shift);
+        AvatarKinematics.Point rw=at(216f,218f+shift);
         AvatarRigConstraints.TwoBone leftArm=AvatarRigConstraints.twoBone(
                 ls,lw,body.upperArm,body.forearm,1,0f,170f);
         AvatarRigConstraints.TwoBone rightArm=AvatarRigConstraints.twoBone(
                 rs,rw,body.upperArm,body.forearm,-1,0f,170f);
-        return new Pose(at(200f,103f+shift),at(200f,130f+shift),
+        return new Pose(at(200f,109f+shift),at(200f,136f+shift),
                 ls,rs,leftArm,rightArm,lh,rh,leftLeg.joint,
                 rightLeg.joint,la,ra,d,body.upperArm,body.forearm);
+    }
+
+    /**
+     * Frontal cardio demonstration: one complete closed/open/closed cycle.
+     * Knee and elbow positions are recalculated via fixed-length IK. During
+     * the two travel intervals the feet are allowed to be airborne; there
+     * is no claim that the 2D timing validates human movement technique.
+     */
+    public static Pose frontJumpingJack(float phase,AvatarBodySpec body) {
+        if(body==null)throw new IllegalArgumentException("BodySpec requerido");
+        if(!Float.isFinite(phase))
+            throw new IllegalArgumentException("Fase finita requerida");
+        float t=Math.max(0f,Math.min(1f,phase));
+        float d=.5f-.5f*(float)Math.cos(Math.PI*2d*t);
+        float hop=9f*Math.abs((float)Math.sin(Math.PI*2d*t));
+        float lift=16f*d-hop;
+        AvatarKinematics.Point ls=at(153f,150f+lift),rs=at(247f,150f+lift);
+        AvatarKinematics.Point lh=at(174f,238f+lift),rh=at(226f,238f+lift);
+        AvatarKinematics.Point la=at(174f-69f*d,428f-hop);
+        AvatarKinematics.Point ra=at(226f+69f*d,428f-hop);
+        AvatarRigConstraints.TwoBone legL=AvatarRigConstraints.twoBone(
+                lh,la,body.upperLeg,body.lowerLeg,1,0f,170f);
+        AvatarRigConstraints.TwoBone legR=AvatarRigConstraints.twoBone(
+                rh,ra,body.upperLeg,body.lowerLeg,-1,0f,170f);
+        if(legL.targetLimited||legR.targetLimited)
+            throw new IllegalStateException("Los pies deben permanecer al alcance");
+        float angle=.025f+((float)Math.PI-.05f)*d;
+        float reach=body.upperArm+body.forearm-.03f;
+        AvatarKinematics.Point lw=at(ls.x-(float)Math.sin(angle)*reach,
+                ls.y+(float)Math.cos(angle)*reach);
+        AvatarKinematics.Point rw=at(rs.x+(float)Math.sin(angle)*reach,
+                rs.y+(float)Math.cos(angle)*reach);
+        AvatarRigConstraints.TwoBone armL=AvatarRigConstraints.twoBone(
+                ls,lw,body.upperArm,body.forearm,-1,0f,170f);
+        AvatarRigConstraints.TwoBone armR=AvatarRigConstraints.twoBone(
+                rs,rw,body.upperArm,body.forearm,1,0f,170f);
+        return new Pose(at(200f,103f+lift),at(200f,130f+lift),
+                ls,rs,armL,armR,lh,rh,legL.joint,legR.joint,
+                la,ra,d,body.upperArm,body.forearm);
+    }
+
+    /** Deliberate elbow-flexion demonstration distinct from straight arm
+     * raises, to make the hinge and its constant link lengths inspectable. */
+    public static Pose frontElbowFlex(float phase,AvatarBodySpec body) {
+        if(body==null)throw new IllegalArgumentException("BodySpec requerido");
+        float d=AvatarKinematics.depthAtPhase(phase);
+        AvatarKinematics.Point ls=at(153f,150f),rs=at(247f,150f);
+        float reach=body.upperArm+body.forearm-.03f;
+        AvatarKinematics.Point lw=at(
+                ls.x+(30f*d),ls.y+reach*(1f-d)+39f*d);
+        AvatarKinematics.Point rw=at(
+                rs.x-(30f*d),rs.y+reach*(1f-d)+39f*d);
+        AvatarRigConstraints.TwoBone armL=AvatarRigConstraints.twoBone(
+                ls,lw,body.upperArm,body.forearm,1,0f,170f);
+        AvatarRigConstraints.TwoBone armR=AvatarRigConstraints.twoBone(
+                rs,rw,body.upperArm,body.forearm,-1,0f,170f);
+        return new Pose(at(200f,103f),at(200f,130f),ls,rs,
+                armL,armR,at(174f,238f),at(226f,238f),
+                at(174f,332f),at(226f,332f),
+                at(174f,428f),at(226f,428f),
+                d,body.upperArm,body.forearm);
     }
 
     public static Pose diamondTop(float phase,AvatarBodySpec body) {

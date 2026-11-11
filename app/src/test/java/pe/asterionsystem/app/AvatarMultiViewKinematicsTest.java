@@ -82,7 +82,7 @@ public final class AvatarMultiViewKinematicsTest {
         }
         assertTrue(deepest.leftHip.y>neutral.leftHip.y+40f);
         assertTrue(deepest.rightKnee.x>neutral.rightKnee.x+10f);
-        assertEquals(4,AvatarMultiViewKinematics.ViewMode.values().length);
+        assertEquals(6,AvatarMultiViewKinematics.ViewMode.values().length);
     }
 
     @Test public void headAndNeckAreSeparateFromShouldersInEveryCamera(){
@@ -98,6 +98,86 @@ public final class AvatarMultiViewKinematicsTest {
                 assertTrue(p.neck.y<p.leftShoulder.y);
                 assertEquals(p.leftShoulder.y,p.rightShoulder.y,.001f);
             }
+        }
+    }
+
+    @Test public void wideSquatBeginsAndEndsFullyExtendedWithFixedShoes(){
+        AvatarBodySpec spec=AvatarBodySpec.DEFAULT;
+        AvatarMultiViewKinematics.Pose a=
+                AvatarMultiViewKinematics.frontWideSquat(0f,spec);
+        AvatarMultiViewKinematics.Pose b=
+                AvatarMultiViewKinematics.frontWideSquat(1f,spec);
+        AvatarMultiViewKinematics.Pose low=
+                AvatarMultiViewKinematics.frontWideSquat(.49f,spec);
+        float leg=spec.upperLeg+spec.lowerLeg;
+        assertTrue(a.leftHip.distance(a.leftAnkle)>leg-.15f);
+        assertTrue(a.rightHip.distance(a.rightAnkle)>leg-.15f);
+        assertEquals(0f,a.leftKnee.distance(b.leftKnee),.06f);
+        assertEquals(0f,a.rightKnee.distance(b.rightKnee),.06f);
+        assertEquals(0f,a.leftAnkle.distance(low.leftAnkle),.001f);
+        assertEquals(0f,a.rightAnkle.distance(low.rightAnkle),.001f);
+        assertTrue(low.leftHip.y>a.leftHip.y+48f);
+        for(int i=0;i<=300;i++){
+            AvatarMultiViewKinematics.Pose p=
+                    AvatarMultiViewKinematics.frontWideSquat(i/300f,spec);
+            assertTrue(p.leftHip.distance(p.leftAnkle)<=leg+.07f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.leftHip,p.leftKnee,spec.upperLeg,.09f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.leftKnee,p.leftAnkle,spec.lowerLeg,.09f);
+        }
+    }
+
+    @Test public void jumpingJacksOpenAndCloseWithIKAndVisibleFlight(){
+        AvatarBodySpec spec=AvatarBodySpec.DEFAULT;
+        AvatarMultiViewKinematics.Pose a=
+                AvatarMultiViewKinematics.frontJumpingJack(0f,spec);
+        AvatarMultiViewKinematics.Pose peak=
+                AvatarMultiViewKinematics.frontJumpingJack(.5f,spec);
+        AvatarMultiViewKinematics.Pose end=
+                AvatarMultiViewKinematics.frontJumpingJack(1f,spec);
+        AvatarMultiViewKinematics.Pose flight=
+                AvatarMultiViewKinematics.frontJumpingJack(.25f,spec);
+        assertTrue(a.leftWrist.y>a.leftShoulder.y+110f);
+        assertTrue(peak.leftWrist.y<peak.leftShoulder.y-110f);
+        assertTrue(peak.rightWrist.y<peak.rightShoulder.y-110f);
+        assertTrue(peak.leftAnkle.x<a.leftAnkle.x-60f);
+        assertTrue(peak.rightAnkle.x>a.rightAnkle.x+60f);
+        assertTrue(flight.leftAnkle.y<a.leftAnkle.y-8f);
+        assertEquals(0f,a.leftAnkle.distance(end.leftAnkle),.06f);
+        assertEquals(0f,a.leftWrist.distance(end.leftWrist),.06f);
+        for(int i=0;i<=300;i++){
+            AvatarMultiViewKinematics.Pose p=
+                    AvatarMultiViewKinematics.frontJumpingJack(i/300f,spec);
+            p.assertArms(.09f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.leftHip,p.leftKnee,spec.upperLeg,.09f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.leftKnee,p.leftAnkle,spec.lowerLeg,.09f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.rightHip,p.rightKnee,spec.upperLeg,.09f);
+            AvatarRigConstraints.requireFixedLength(
+                    p.rightKnee,p.rightAnkle,spec.lowerLeg,.09f);
+        }
+    }
+
+    @Test public void visibleElbowFlexionChangesReachWithoutStretch(){
+        AvatarBodySpec spec=AvatarBodySpec.DEFAULT;
+        AvatarMultiViewKinematics.Pose a=
+                AvatarMultiViewKinematics.frontElbowFlex(0f,spec);
+        AvatarMultiViewKinematics.Pose peak=
+                AvatarMultiViewKinematics.frontElbowFlex(.49f,spec);
+        AvatarMultiViewKinematics.Pose end=
+                AvatarMultiViewKinematics.frontElbowFlex(1f,spec);
+        assertTrue(a.leftShoulder.distance(a.leftWrist)>120.8f);
+        assertTrue(peak.leftShoulder.distance(peak.leftWrist)<55f);
+        assertTrue(peak.rightShoulder.distance(peak.rightWrist)<55f);
+        assertTrue(peak.leftElbow.x<a.leftElbow.x-10f);
+        assertEquals(0f,a.leftWrist.distance(end.leftWrist),.09f);
+        for(int i=0;i<=300;i++){
+            AvatarMultiViewKinematics.Pose p=
+                    AvatarMultiViewKinematics.frontElbowFlex(i/300f,spec);
+            p.assertArms(.09f);
         }
     }
 

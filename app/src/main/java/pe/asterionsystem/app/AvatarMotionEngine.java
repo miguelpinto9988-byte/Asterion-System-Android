@@ -13,7 +13,8 @@ public final class AvatarMotionEngine {
         HIP_HINGE("Bisagra de cadera"),
         ARM_RAISE("Elevación de brazos"),
         MARCH("Marcha"),
-        LUNGE("Zancada");
+        LUNGE("Zancada"),
+        BURPEE("Burpee · perfil");
         public final String label;
         Motion(String label){this.label=label;}
     }
@@ -25,6 +26,7 @@ public final class AvatarMotionEngine {
             throw new IllegalArgumentException("Movimiento y proporciones obligatorios");
         float s=AvatarKinematics.depthAtPhase(phase);
         if(motion==Motion.SQUAT)return AvatarKinematics.squat(s,spec);
+        if(motion==Motion.BURPEE)return AvatarBurpeeKinematics.pose(phase,spec);
 
         float hx=184f,hy=174.4f,tilt=.10f;
         AvatarKinematics.Point ankle=new AvatarKinematics.Point(182f,364f);
