@@ -43,8 +43,8 @@ assert all(k in by_type for k in sports_by_type)
 assert len({r["variant_id"] for r in intensity})==len(intensity)
 assert {r["variant_id"] for r in intensity}<={r["variant_id"] for r in variants}
 assert Counter(f["category"] for f in families)=={
-    "tren_superior":27,"tren_inferior":27,"tren_central":23,
-    "movilidad":24,"cardio":24}
+    "tren_superior":33,"tren_inferior":33,"tren_central":29,
+    "movilidad":30,"cardio":30}
 assert families[0]["family_id"]=="sentadillas"
 assert types[0]["type_id"]=="sentadilla_bilateral"
 assert variants[0]["variant_id"]=="sentadilla_bilateral_v01"
