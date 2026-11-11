@@ -15,9 +15,10 @@ public final class AvatarMotionEngineTest {
                         m,i/300f,AvatarBodySpec.DEFAULT);
                 AvatarMotionEngine.assertSkeleton(p,AvatarBodySpec.DEFAULT,EPS);
                 if(last!=null){
-                    assertTrue("hip jump in "+m,p.hip.distance(last.hip)<4f);
-                    assertTrue("knee jump in "+m,p.knee.distance(last.knee)<4f);
-                    assertTrue("elbow jump in "+m,p.elbow.distance(last.elbow)<4f);
+                    float limit=m==AvatarMotionEngine.Motion.BURPEE?7f:4f;
+                    assertTrue("hip jump in "+m,p.hip.distance(last.hip)<limit);
+                    assertTrue("knee jump in "+m,p.knee.distance(last.knee)<limit);
+                    assertTrue("elbow jump in "+m,p.elbow.distance(last.elbow)<limit);
                 }
                 last=p;
             }
@@ -31,8 +32,10 @@ public final class AvatarMotionEngineTest {
             for(int i=1;i<=100;i++){
                 AvatarKinematics.Pose p=AvatarMotionEngine.pose(
                         m,i/100f,AvatarBodySpec.DEFAULT);
-                assertEquals(0f,p.farAnkle.distance(start.farAnkle),EPS);
-                if(m!=AvatarMotionEngine.Motion.MARCH)
+                if(m!=AvatarMotionEngine.Motion.BURPEE)
+                    assertEquals(0f,p.farAnkle.distance(start.farAnkle),EPS);
+                if(m!=AvatarMotionEngine.Motion.MARCH
+                        &&m!=AvatarMotionEngine.Motion.BURPEE)
                     assertEquals(0f,p.ankle.distance(start.ankle),EPS);
             }
         }
@@ -89,7 +92,7 @@ public final class AvatarMotionEngineTest {
     }
 
     @Test public void allExerciseLabelsExistAndNullIsRejected(){
-        assertEquals(5,AvatarMotionEngine.Motion.values().length);
+        assertEquals(6,AvatarMotionEngine.Motion.values().length);
         for(AvatarMotionEngine.Motion m:AvatarMotionEngine.Motion.values())
             assertTrue(m.label.length()>4);
         assertThrows(IllegalArgumentException.class,()->
