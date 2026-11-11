@@ -23,8 +23,14 @@ public final class ExerciseCatalogLoader {
     /** Optional fourth TSV keeps all historical seven-column variant assets compatible. */
     public static ExerciseCatalog load(Reader families, Reader types, Reader variants,
                                        Reader intensity) throws IOException {
+        return load(families,types,variants,intensity,null);
+    }
+
+    /** Optional fifth TSV attaches sports to types without altering existing IDs. */
+    public static ExerciseCatalog load(Reader families, Reader types, Reader variants,
+                                       Reader intensity, Reader disciplines) throws IOException {
         List<ExerciseFamily> parsedFamilies = new ArrayList<>();
-        for (String[] row : rows(families, 4, "family_id\\tname\\tcategory\\tpattern", 120)) {
+        for (String[] row : rows(families, 4, "family_id\\tname\\tcategory\\tpattern", 200)) {
             parsedFamilies.add(new ExerciseFamily(row[0], row[1], row[2], row[3]));
         }
         List<ExerciseType> parsedTypes = new ArrayList<>();
@@ -51,7 +57,20 @@ public final class ExerciseCatalogLoader {
                 }
             }
         }
-        return new ExerciseCatalog(parsedFamilies, parsedTypes, parsedVariants,tags);
+        Map<String,List<String>> sportTags=new HashMap<>();
+        Map<String,String> roles=new HashMap<>();
+        if(disciplines!=null) {
+            for(String[] row:rows(disciplines,3,
+                    "type_id\\tdisciplines\\trole",500)) {
+                if(!row[1].matches("[a-z][a-z0-9_+]{1,300}"))
+                    throw new IllegalArgumentException("Etiquetas deportivas inválidas");
+                if(sportTags.putIfAbsent(row[0],List.of(row[1].split("\\\\+",-1)))!=null)
+                    throw new IllegalArgumentException("Tipo deportivo duplicado: "+row[0]);
+                roles.put(row[0],row[2]);
+            }
+        }
+        return new ExerciseCatalog(parsedFamilies,parsedTypes,parsedVariants,
+                tags,sportTags,roles);
     }
 
     private static List<String[]> rows(Reader input, int columns, String header, int max)
