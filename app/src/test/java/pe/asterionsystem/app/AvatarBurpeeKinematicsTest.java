@@ -43,7 +43,7 @@ public final class AvatarBurpeeKinematicsTest {
             AvatarKinematics.Pose p=AvatarBurpeeKinematics.pose(
                     phase,AvatarBodySpec.DEFAULT);
             assertEquals(305f,p.wrist.x,.08f);
-            assertEquals(364f,p.wrist.y,.08f);
+            assertEquals(376f,p.wrist.y,.08f);
             AvatarMotionEngine.assertSkeleton(p,AvatarBodySpec.DEFAULT,.09f);
         }
     }

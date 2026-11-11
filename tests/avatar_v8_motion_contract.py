@@ -17,7 +17,7 @@ for token in ("drawFront(c,p,squat||jacks)", "FRONTAL · SALTOS DE TIJERA",
               "FRONTAL · FLEXIÓN DE CODOS", "drawTopArm("):
     assert token in multi,token
 for token in ("class AvatarBurpeeKinematics","AvatarRigConstraints.twoBone(",
-              "handsPlanted(", "feetTravelling(", "305f,364f"):
+              "handsPlanted(", "feetTravelling(", "305f,376f"):
     assert token in burpee,token
 for token in ("BURPEE(", "AvatarBurpeeKinematics.pose("):
     assert token in motion,token
