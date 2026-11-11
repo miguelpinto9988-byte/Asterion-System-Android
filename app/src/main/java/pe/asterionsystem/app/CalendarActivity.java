@@ -134,9 +134,8 @@ public final class CalendarActivity extends ComponentActivity {
         Button today=button("Ir a hoy");
         today.setOnClickListener(v->{selected=LocalDate.now();month=YearMonth.from(selected);render();});
         root.addView(today,new LinearLayout.LayoutParams(-1,dp(48)));
-        Button back=button("Volver");
-        back.setOnClickListener(v->finish());
-        root.addView(back,new LinearLayout.LayoutParams(-1,dp(48)));
+        root.addView(SimpleBottomNav.create(this,SimpleBottomNav.CALENDAR),
+                new LinearLayout.LayoutParams(-1,dp(62)));
     }
 
     private void shift(int delta) {
