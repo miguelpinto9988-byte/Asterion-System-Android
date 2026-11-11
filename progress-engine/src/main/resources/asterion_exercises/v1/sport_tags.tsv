@@ -99,3 +99,28 @@ dep_042_esprint_en_silla_de_ruedas	baloncesto+rugby+tenis+atletismo+adaptado+bal
 dep_016_escaladores_mountain_climbers	running+trail_running+triatlon+calistenia+parkour+escalada+funcional	resistencia, potencia del core	https://www.acefitness.org/resources/everyone/exercise-library/258/mountain-climbers/	American Council on Exercise (ACE Fitness)	1
 dep_burpee_tecnico	funcional+calistenia+gimnasio	coordinación global y resistencia	https://www.acefitness.org/resources/everyone/exercise-library/306/burpee/	ACE Fitness	1
 dep_carrera_ida_vuelta	baloncesto+futbol+futsal+hockey_cesped+balonmano+lacrosse	desplazamientos y cambios de dirección	https://youthsportsortho.com/pdf/11plus-workbook-updated.pdf	FIFA 11+	1
+sentadilla_bilateral	futbol+futsal+baloncesto+voleibol+rugby+gimnasio+calistenia+esqui+snowboard+atletismo	fuerza general de tren inferior	https://www.acefitness.org/resources/everyone/exercise-library/135/bodyweight-squat/	ACE Fitness	0
+sentadilla_unilateral	atletismo+running+futbol+gimnasio+esqui	control unilateral de piernas	https://www.acefitness.org/resources/everyone/exercise-library/94/forward-lunge/	ACE Fitness	0
+sentadilla_lateral	hockey_hielo+tenis+padel+baloncesto+balonmano	control lateral de piernas	https://www.acefitness.org/resources/everyone/exercise-library/364/lateral-lunge/	ACE Fitness	0
+zancada_estatica	futbol+running+gimnasio+baloncesto+triatlon	estabilidad y fuerza de piernas	https://www.acefitness.org/resources/everyone/exercise-library/94/forward-lunge/	ACE Fitness	0
+zancada_dinamica	futbol+atletismo+balonmano+running	desplazamiento y control unilateral	https://www.acefitness.org/resources/everyone/exercise-library/94/forward-lunge/	ACE Fitness	0
+zancada_lateral	tenis+padel+hockey_hielo+voleibol	movimiento lateral de piernas	https://www.acefitness.org/resources/everyone/exercise-library/364/lateral-lunge/	ACE Fitness	0
+puente_gluteo	pilates+atletismo+running+natacion+gimnasio	control de extensión de cadera	https://www.acefitness.org/resources/everyone/exercise-library/145/glute-bridge-single-leg-progression/	ACE Fitness	0
+step_up	trail_running+senderismo+atletismo+gimnasio+esqui	control de subida funcional	https://www.acefitness.org/resources/everyone/exercise-library/28/step-up/	ACE Fitness	0
+elevacion_gemelos	atletismo+running+gimnasio+triatlon+voleibol	control de tobillos y pantorrillas	https://www.nhs.uk/live-well/exercise/strength-exercises/	NHS	0
+dorsiflexion_tibial	running+atletismo+senderismo+gimnasio	control funcional de tobillo	https://www.nhs.uk/live-well/exercise/strength-exercises/	NHS	0
+flexiones	calistenia+gimnasia+gimnasio+boxeo_sin_contacto+baloncesto+natacion	empuje horizontal de brazos	https://www.acefitness.org/resources/everyone/exercise-library/13/bent-knee-push-up/	ACE Fitness	0
+flexion_pica	calistenia+gimnasia+gimnasio	empuje de hombros y brazos	https://www.acefitness.org/resources/everyone/exercise-library/experience/advanced/	ACE Fitness	0
+remo	remo+gimnasio+natacion+escalada+kayak+canotaje	tracción horizontal de brazos	https://www.acefitness.org/resources/everyone/exercise-library/12/bent-over-row/	ACE Fitness	0
+remo_invertido	calistenia+gimnasia+escalada+gimnasio	tracción horizontal del cuerpo	https://www.acefitness.org/resources/everyone/exercise-library/experience/beginner/	ACE Fitness	0
+dominadas	calistenia+gimnasia+escalada+gimnasio+parkour	tracción vertical y control escapular	https://www.acefitness.org/resources/everyone/exercise-library/experience/advanced/	ACE Fitness	0
+plancha_frontal	pilates+calistenia+natacion+futbol+baloncesto+gimnasio	estabilización del tronco	https://www.acefitness.org/resources/everyone/exercise-library/32/front-plank/	ACE Fitness	0
+plancha_lateral	pilates+futbol+remo+natacion+balonmano	estabilidad lateral central	https://youthsportsortho.com/pdf/11plus-workbook-updated.pdf	FIFA 11+	0
+equilibrio_unipodal	yoga+taichi+gimnasia+esqui+patinaje+escalada	equilibrio y coordinación	https://www.nhs.uk/live-well/exercise/balance-exercises/	NHS	0
+marcha	marcha_atletica+running+senderismo+triatlon+adaptado	actividad cardiovascular de marcha	https://www.nhs.uk/live-well/exercise/balance-exercises/	NHS	0
+remo_ergometro	remo+triatlon+gimnasio+adaptado	actividad cardiovascular de remo	https://www.nhs.uk/live-well/exercise/wheelchair-users-fitness-advice/	NHS	0
+gato_vaca	yoga+pilates+natacion+ciclismo	movilidad controlada de columna	https://www.acefitness.org/resources/everyone/exercise-library/15/cat-cow/	ACE Fitness	0
+rotacion_toracica	golf+tenis+padel+beisbol+tiro_arco	movilidad torácica funcional	https://www.nhs.uk/live-well/exercise/sitting-exercises/	NHS	0
+deslizamiento_pared	tiro_arco+natacion+voleibol+gimnasia	movilidad y control de hombro	https://www.nhs.uk/live-well/exercise/strength-exercises/	NHS	0
+dorsiflexion_tobillo	running+atletismo+esqui+patinaje	movilidad de tobillo	https://www.nhs.uk/live-well/exercise/sitting-exercises/	NHS	0
+paseo_granjero	gimnasio+atletismo+senderismo+funcional	traslado de peso y estabilización general	https://www.acefitness.org/resources/everyone/exercise-library/experience/beginner/	ACE Fitness	0
