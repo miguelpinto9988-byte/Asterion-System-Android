@@ -70,7 +70,7 @@ assert all(v["execution"]=="controlado" for v in variants_new)
 assert set(i["variant_id"] for i in intensity_new)==new_ids
 assert all(i["intensity"] in ("baja","moderada") for i in intensity_new)
 assert Counter(i["intensity"] for i in intensity)=={
-    "baja":233,"moderada":127,"variable":35,"alta":17}
+    "baja":281,"moderada":147,"variable":67,"alta":17}
 for category in group_count:
     assert sum(type_to_cat[t["type_id"]]==category for t in types_new)==10
     assert sum(type_to_cat[v["type_id"]]==category for v in variants_new)==20
