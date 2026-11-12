@@ -95,3 +95,21 @@ adb shell am instrument -w -e class "$RESET_TEST" \
   | tee "$OUT/volume-checkpoint-reset.txt"
 grep -q 'OK (3 tests)' "$OUT/volume-checkpoint-reset.txt"
 echo "PASS: checkpoint volume resets are persisted and historical records remain intact."
+
+echo "Android instrumentation: 1257 avatar command specs + 12 new-motion PNG frames"
+AVATAR_CATALOG_TEST="pe.asterionsystem.app.AvatarExerciseCommandCatalogInstrumentedTest"
+adb shell am instrument -w -e class "$AVATAR_CATALOG_TEST" \
+  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
+  | tee "$OUT/avatar-catalog-commands.txt"
+grep -q 'OK (2 tests)' "$OUT/avatar-catalog-commands.txt"
+REMOTE_NEW="/sdcard/Android/data/$PACKAGE/files/asterion-avatar-command-samples"
+LOCAL_NEW="$OUT/asterion-avatar-command-samples"
+mkdir -p "$LOCAL_NEW"
+adb shell ls "$REMOTE_NEW"
+adb pull "$REMOTE_NEW/." "$LOCAL_NEW/"
+NEW_COUNT="$(find "$LOCAL_NEW" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
+test "$NEW_COUNT" -eq 12 || {
+  echo "Expected 12 real new-motion PNG frames; found $NEW_COUNT"
+  exit 1
+}
+echo "PASS: catalog commands have exact IDs and 12 emulator images are preserved."
