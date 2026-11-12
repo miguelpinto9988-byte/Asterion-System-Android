@@ -55,7 +55,7 @@ buenos_dias_v05	HIP_HINGE	SIDE	NONE	SPEC_ONLY	tren_inferior	5	carga_externa	barr
 puente_gluteo_v01	HIP_EXTENSION	SIDE	GLUTE_BRIDGE_SHORT	ILLUSTRATIVE	tren_inferior	1	bilateral	colchoneta	0
 puente_gluteo_v02	HIP_EXTENSION	SIDE	GLUTE_BRIDGE_BASIC	ILLUSTRATIVE	tren_inferior	2	bilateral	colchoneta	0
 puente_gluteo_v03	GLUTE_BRIDGE_PAUSE	SIDE	GLUTE_BRIDGE_PAUSE	ILLUSTRATIVE	tren_inferior	2	isometrico	colchoneta	0
-puente_gluteo_v04	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	3	resistencia	banda+colchoneta	0
+puente_gluteo_v04	HIP_EXTENSION	SIDE	GLUTE_BRIDGE_BAND	ILLUSTRATIVE	tren_inferior	3	resistencia	banda+colchoneta	0
 puente_gluteo_v05	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	4	alterno	colchoneta	1
 puente_gluteo_v06	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	5	unilateral	colchoneta	1
 hip_thrust_v01	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	bilateral	colchoneta	0
@@ -74,7 +74,7 @@ step_down_v02	STEP_UP	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	escalon	0
 step_down_v03	STEP_UP	SIDE	NONE	SPEC_ONLY	tren_inferior	3	lateral	escalon	0
 step_down_v04	STEP_UP	SIDE	NONE	SPEC_ONLY	tren_inferior	4	controlado	escalon	1
 step_down_v05	STEP_UP	SIDE	NONE	SPEC_ONLY	tren_inferior	5	carga_externa	escalon+mancuerna	1
-elevacion_gemelos_v01	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	bilateral	silla	0
+elevacion_gemelos_v01	SEATED_HEEL_RAISE	SIDE	SEATED_HEEL_RAISE	ILLUSTRATIVE	tren_inferior	1	bilateral	silla	0
 elevacion_gemelos_v02	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	asistido	silla	0
 elevacion_gemelos_v03	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	bilateral	sin_equipo	0
 elevacion_gemelos_v04	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	3	bilateral	escalon	0
@@ -414,7 +414,7 @@ deslizamiento_pared_v02	SHOULDER_MOBILITY	SIDE	NONE	SPEC_ONLY	movilidad	2	movili
 deslizamiento_pared_v03	SHOULDER_MOBILITY	SIDE	NONE	SPEC_ONLY	movilidad	2	controlado	pared	0
 deslizamiento_pared_v04	SHOULDER_MOBILITY	SIDE	NONE	SPEC_ONLY	movilidad	3	resistencia	pared+banda	0
 deslizamiento_pared_v05	SHOULDER_MOBILITY	SIDE	NONE	SPEC_ONLY	movilidad	4	controlado	pared	1
-dorsiflexion_tobillo_v01	ANKLE_MOBILITY	SIDE	NONE	SPEC_ONLY	movilidad	1	movilidad	silla	0
+dorsiflexion_tobillo_v01	SEATED_TOE_RAISE_SINGLE	SIDE	SEATED_TOE_RAISE_SINGLE	ILLUSTRATIVE	movilidad	1	movilidad	silla	0
 dorsiflexion_tobillo_v02	ANKLE_MOBILITY	SIDE	NONE	SPEC_ONLY	movilidad	2	asistido	pared	0
 dorsiflexion_tobillo_v03	ANKLE_MOBILITY	SIDE	NONE	SPEC_ONLY	movilidad	2	movilidad	silla	0
 dorsiflexion_tobillo_v04	ANKLE_MOBILITY	SIDE	NONE	SPEC_ONLY	movilidad	3	movilidad	sin_equipo	0
@@ -864,7 +864,7 @@ paso_frente_y_retorno_v01	FOOTWORK	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlad
 paso_frente_y_retorno_v02	FOOTWORK	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	sin_equipo	0
 paso_lateral_y_retorno_v01	LATERAL_STEP	FRONT_SIDE_STEP	FRONT_SIDE_STEP	ILLUSTRATIVE	tren_inferior	1	controlado	sin_equipo	0
 paso_lateral_y_retorno_v02	FOOTWORK	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	sin_equipo	0
-balanceo_talon_punta_sentado_v01	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	silla	0
+balanceo_talon_punta_sentado_v01	SEATED_HEEL_RAISE_GENTLE	SIDE	SEATED_HEEL_RAISE_GENTLE	ILLUSTRATIVE	tren_inferior	1	controlado	silla	0
 balanceo_talon_punta_sentado_v02	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	silla	0
 circulo_pies_sentado_v01	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	silla	0
 circulo_pies_sentado_v02	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	silla	0
