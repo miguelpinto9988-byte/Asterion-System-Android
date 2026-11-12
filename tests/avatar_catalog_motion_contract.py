@@ -50,7 +50,8 @@ for row in rows:
     assert row["camera"] in ("SIDE","FRONT","TOP","FRONT_LATERAL",
                                "FRONT_BALANCE","FRONT_SIDE_STEP","FRONT_NECK_TILT","HIP_EXTENSION_STAND",
                                "GLUTE_BRIDGE_SHORT","GLUTE_BRIDGE_BASIC",
-                               "SEATED_KNEE_EXTENSION"),ident
+                               "SEATED_KNEE_EXTENSION","SEATED_TOE_RAISE",
+                               "SEATED_FORWARD_REACH"),ident
     assert row["status"] in ("ILLUSTRATIVE","SPEC_ONLY"),ident
     assert (row["status"]=="SPEC_ONLY")==(row["clip"]=="NONE"),ident
     if row["status"]=="ILLUSTRATIVE":
@@ -71,12 +72,13 @@ for row in rows:
                  "inclinacion_cervical_suave_v01","extension_cadera_bipeda_v01",
                  "paso_lateral_y_retorno_v01",
                  "puente_gluteo_v01","extension_rodilla_sin_carga_v01",
-                 "sentadilla_bilateral_v04","marcha_v02"):
+                 "sentadilla_bilateral_v04","marcha_v02",
+                 "dorsiflexion_tibial_v01","alcances_tronco_sentado_v02"):
         new_exercises.append(row)
 
 assert len(families_covered)==155
 assert sum(counts.values())==1257
-assert len(illustrated)==15
+assert len(illustrated)==17
 assert len({row["command"] for row in rows})>=49
 for string in ("postInvalidateOnAnimation()","AvatarMotionEngine.pose("):
     assert string in (base/"NativeAvatarView.java").read_text(encoding="utf-8")
@@ -112,6 +114,8 @@ for ident,clip,equipment in (
         ("puente_gluteo_v01","GLUTE_BRIDGE_SHORT","colchoneta"),
         ("puente_gluteo_v02","GLUTE_BRIDGE_BASIC","colchoneta"),
         ("extension_rodilla_sin_carga_v01","SEATED_KNEE_EXTENSION","silla"),
+        ("dorsiflexion_tibial_v01","SEATED_TOE_RAISE","silla"),
+        ("alcances_tronco_sentado_v02","SEATED_FORWARD_REACH","silla"),
         ("sentadilla_bilateral_v04","SQUAT","sin_equipo")):
     assert by_id[ident]["status"]=="ILLUSTRATIVE",ident
     assert by_id[ident]["clip"]==clip,ident
@@ -129,10 +133,10 @@ assert "avatar.setDedicatedScene(dedicated)" in viewer
 manifest=(base/"AvatarDemonstrationManifest.java").read_text(encoding="utf-8")
 assert "AvatarDemonstrationManifest.requireConsistent(e)" in catalog
 assert "requireConsistent(AvatarExerciseCommandCatalog.Entry entry)" in manifest
-assert len(re.findall(r'register\(rows,',manifest))==15
+assert len(re.findall(r'register\(rows,',manifest))==17
 
 
-assert len(new_exercises)==15
+assert len(new_exercises)==17
 
 if "--samples" in sys.argv:
     out=root/"build/avatar-command-samples/muestras_catalogo.json"
@@ -147,4 +151,4 @@ if "--samples" in sys.argv:
                  for x in new_exercises]
     },ensure_ascii=False,indent=2),encoding="utf-8")
     print("Saved",out)
-print("OK: 1257 variantes, 155 familias, 51 comandos definidos, 15 variantes ilustrativas registradas")
+print("OK: 1257 variantes, 155 familias, 51 comandos definidos, 17 variantes ilustrativas registradas")
