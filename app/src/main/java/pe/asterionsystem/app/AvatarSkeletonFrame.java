@@ -43,12 +43,17 @@ public final class AvatarSkeletonFrame {
 
     public static AvatarSkeletonFrame fromSide(AvatarPose p,AvatarBodySpec spec){
         if(p==null)throw new IllegalArgumentException("Side pose required");
+        float spineX=p.shoulder.x-p.hip.x;
+        float spineY=p.shoulder.y-p.hip.y;
+        AvatarOrientationRules.Posture posture=
+                Math.abs(spineX)>Math.abs(spineY)
+                ?AvatarOrientationRules.Posture.PRONE_GROUND_FACING
+                :AvatarOrientationRules.Posture.STANDING;
         AvatarSkeletonFrame frame=new AvatarSkeletonFrame(new AvatarKinematics.Point[]{
                 p.head,p.neck,p.shoulder,p.farShoulder,
                 p.elbow,p.farElbow,p.wrist,p.farWrist,
                 p.hip,p.farHip,p.knee,p.farKnee,p.ankle,p.farAnkle},
-                AvatarOrientationRules.Camera.SIDE,
-                AvatarOrientationRules.Posture.STANDING,spec);
+                AvatarOrientationRules.Camera.SIDE,posture,spec);
         frame.requireArmLengths(1f,.15f);
         frame.requireLegLengths(1f,.15f);
         return frame;
