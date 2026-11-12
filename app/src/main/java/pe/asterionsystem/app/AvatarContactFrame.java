@@ -52,6 +52,7 @@ public final class AvatarContactFrame {
         if(motion==null)throw new IllegalArgumentException("Motion required");
         switch(motion){
             case MARCH:
+            case KNEE_CURL:
                 return new AvatarContactFrame(
                         AvatarKinematics.depthAtPhase(phase)<.001f
                         ?Ground.SOLE:Ground.NONE,Ground.SOLE,
