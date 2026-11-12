@@ -228,6 +228,44 @@ public final class AvatarDedicatedSceneTest {
         assertEquals(0f,neutral.pose.farAnkle.distance(finish.pose.farAnkle),EPS);
     }
 
+    @Test public void standingHeelAndToeRaisesHaveDistinctFixedSupportContacts(){
+        AvatarDedicatedScene heelStart=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.STANDING_HEEL_RAISE,0f,BODY);
+        AvatarDedicatedScene heelPeak=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.STANDING_HEEL_RAISE,.49f,BODY);
+        AvatarDedicatedScene heelEnd=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.STANDING_HEEL_RAISE,1f,BODY);
+        assertTrue(heelPeak.standingFloorContact);
+        assertFalse(heelPeak.chairSeatContact);
+        assertFalse(heelPeak.floorBackContact);
+        assertEquals(18f,heelPeak.heelRaiseDegrees,.01f);
+        assertEquals(0f,heelPeak.toeRaiseDegrees,0f);
+        assertEquals(0f,heelStart.supportFoot.distance(heelPeak.supportFoot),EPS);
+        assertEquals(0f,heelStart.nearToeContact.distance(heelPeak.nearToeContact),EPS);
+        assertEquals(0f,heelStart.farToeContact.distance(heelPeak.farToeContact),EPS);
+        assertTrue(heelPeak.pose.ankle.y<heelStart.pose.ankle.y-8f);
+        assertTrue(heelPeak.pose.hip.y<heelStart.pose.hip.y-8f);
+        assertTrue(heelPeak.pose.head.y<heelStart.pose.head.y-8f);
+        assertEquals(0f,heelStart.pose.ankle.distance(heelEnd.pose.ankle),EPS);
+        assertEquals(0f,heelStart.pose.head.distance(heelEnd.pose.head),EPS);
+        AvatarDedicatedScene toeStart=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.STANDING_TOE_RAISE,0f,BODY);
+        AvatarDedicatedScene toePeak=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.STANDING_TOE_RAISE,.49f,BODY);
+        AvatarDedicatedScene toeEnd=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.STANDING_TOE_RAISE,1f,BODY);
+        assertTrue(toePeak.standingFloorContact);
+        assertFalse(toePeak.chairSeatContact);
+        assertEquals(16f,toePeak.toeRaiseDegrees,.01f);
+        assertEquals(0f,toePeak.heelRaiseDegrees,0f);
+        assertEquals(0f,toeStart.pose.ankle.distance(toePeak.pose.ankle),EPS);
+        assertEquals(0f,toeStart.pose.farAnkle.distance(toePeak.pose.farAnkle),EPS);
+        assertEquals(0f,toeStart.pose.hip.distance(toePeak.pose.hip),EPS);
+        assertEquals(0f,toeStart.supportFoot.distance(toePeak.supportFoot),EPS);
+        assertEquals(0f,toeStart.pose.ankle.distance(toeEnd.pose.ankle),EPS);
+        assertEquals(0f,toeStart.pose.head.distance(toeEnd.pose.head),EPS);
+    }
+
     @Test public void invalidSpecsAndPhasesCannotProduceFakeScenes(){
         assertThrows(IllegalArgumentException.class,()->
                 AvatarDedicatedScene.at(null,.5f,BODY));
