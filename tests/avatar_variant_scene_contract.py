@@ -16,7 +16,7 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--frames',type=Path)
     args=parser.parse_args()
     rows=recipes()
-    assert len(rows)==81
+    assert len(rows)==111
     assert len({r[0] for r in rows})==len(rows)
     def load(path):
         with path.open() as f:return {r['variant_id']:r for r in csv.DictReader(f,delimiter='\t')}
@@ -34,7 +34,7 @@ def main():
                   'BAND_FEET':'banda','BAND_ANCHOR':'banda','TOWEL':'toalla',
                   'HAMMER_DUMBBELLS':'mancuerna','KETTLEBELL':'kettlebell',
                   'BAND_SHOULDERS':'banda','BAND_KNEE':'banda','WALL':'pared',
-                  'CHAIR_SUPPORT':'silla'}
+                  'CHAIR_SUPPORT':'silla','STEP':'escalon','BAND_BACK':'banda'}
         material=set(equipment.split('+'))-{'sin_equipo'}
         if prop!='CHAIR_SUPPORT':
             material.discard('silla')
@@ -48,5 +48,5 @@ def main():
             data=(args.frames/name).read_bytes()
             assert data.startswith(b'\x89PNG\r\n\x1a\n') and len(data)>2000,name
     print(f'OK: {len(rows)} authored recipes, exact equipment/metadata'+
-          (', 810 native Android frames' if args.frames else ''))
+          (', 1110 native Android frames' if args.frames else ''))
 if __name__=='__main__':main()
