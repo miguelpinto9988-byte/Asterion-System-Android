@@ -117,12 +117,12 @@ public final class AvatarDedicatedSceneRenderer {
         }
         // Fixed virtual environment: stable chair seat/mat throughout motion.
         if(scene.chairSeatContact)chair(c,dark);
-        else mat(c,dark);
+        else if(scene.floorBackContact)mat(c,dark);
         if(scene.chairSeatContact)
             shape(c,20,407,376,411,3,dark?0xFF667086:0xFFD5DCE6);
         // Foot support surface is placed at neutral outsole height
         // in seated scenes, not at the arbitrary 407px canvas guide.
-        if(scene.chairSeatContact){
+        if(scene.chairSeatContact||scene.standingFloorContact){
             float y=scene.neutralNearAnkle.y+14f;
             shape(c,178f,y,324f,y+4f,2f,dark?0xFF556779:0xFFB7C4D0);
         }
@@ -156,6 +156,10 @@ public final class AvatarDedicatedSceneRenderer {
                 ?"PERFIL · TALONES SUAVES SENTADO":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_HEEL_TOE_ALTERNATION
                 ?"PERFIL · ALTERNAR TALÓN Y PUNTA":
+                scene.kind==AvatarDedicatedScene.Kind.STANDING_HEEL_RAISE
+                ?"PERFIL · TALONES DE PIE":
+                scene.kind==AvatarDedicatedScene.Kind.STANDING_TOE_RAISE
+                ?"PERFIL · PUNTAS DE PIE":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_FORWARD_REACH
                 ?"PERFIL · ALCANCE FRONTAL SENTADO":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE
