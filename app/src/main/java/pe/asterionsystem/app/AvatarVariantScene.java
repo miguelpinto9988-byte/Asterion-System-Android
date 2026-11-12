@@ -10,12 +10,14 @@ public final class AvatarVariantScene {
         SEATED_MARCH,ARM_SWING,HEEL_SLIDE,HINGE,SQUAT,LUNGE,
         HAMMER_CURL,DEADLIFT,TERMINAL_KNEE,STANDING_LEG_CURL,
         WALL_REACH,WALL_SLIDE,WALL_PRESS,MARCH_STABLE,ARM_ALTERNATION,
-        MARCH_KNEES,MARCH_ARMS,HEEL_TAP,HEEL_TAP_ARMS,BACK_STEP }
+        MARCH_KNEES,MARCH_ARMS,HEEL_TAP,HEEL_TAP_ARMS,BACK_STEP,
+        CALF_RAISE,CALF_HOLD,TOE_LIFT,ANKLE_KNEE_BEND,STEP_GROUND,
+        STEP_PLATFORM,WALK_STEPS,WALK_ARMS,CLAP_STEP,OVERHEAD_PRESS }
     public enum Posture { STANDING,SEATED }
     public enum Pattern { BOTH,NEAR,ALTERNATING }
     public enum Prop { NONE,DUMBBELLS,BAR,BAND_FEET,BAND_ANCHOR,TOWEL,
         GOBLET,FRONT_DUMBBELLS,BAR_FRONT,BAR_BACK,
-        HAMMER_DUMBBELLS,KETTLEBELL,BAND_SHOULDERS,BAND_KNEE,WALL,CHAIR_SUPPORT }
+        HAMMER_DUMBBELLS,KETTLEBELL,BAND_SHOULDERS,BAND_KNEE,WALL,CHAIR_SUPPORT,STEP,BAND_BACK }
     static final float WALL_X=264f; // Fixed in-scene support plane (virtual Canvas units).
     public static final class Recipe {
         public final String id,label,equipment,execution;
@@ -44,7 +46,7 @@ public final class AvatarVariantScene {
                     return AvatarJointTimeline.Command.SHOULDER_RAISE;
                 case REACH:case MARCH_STABLE:case ARM_ALTERNATION:
                     return AvatarJointTimeline.Command.TRUNK_REACH;
-                case PRESS:case WALL_PRESS:return AvatarJointTimeline.Command.PUSH;
+                case PRESS:case WALL_PRESS:case OVERHEAD_PRESS:return AvatarJointTimeline.Command.PUSH;
                 case ROW:return AvatarJointTimeline.Command.PULL;
                 case KNEE_EXTENSION:case TERMINAL_KNEE:return AvatarJointTimeline.Command.KNEE_EXTENSION;
                 case SEATED_MARCH:return AvatarJointTimeline.Command.HIP_MOBILITY;
@@ -52,8 +54,13 @@ public final class AvatarVariantScene {
                 case HINGE:case DEADLIFT:return AvatarJointTimeline.Command.HIP_HINGE;
                 case SQUAT:return AvatarJointTimeline.Command.SQUAT;
                 case LUNGE:return AvatarJointTimeline.Command.LUNGE;
+                case CALF_RAISE:case TOE_LIFT:return AvatarJointTimeline.Command.ANKLE_CONTROL;
+                case CALF_HOLD:return AvatarJointTimeline.Command.LOWER_HOLD;
+                case ANKLE_KNEE_BEND:return AvatarJointTimeline.Command.ANKLE_MOBILITY;
+                case WALK_STEPS:case WALK_ARMS:return AvatarJointTimeline.Command.WALK;
                 case MARCH_KNEES:case MARCH_ARMS:case HEEL_TAP:
-                case HEEL_TAP_ARMS:case BACK_STEP:
+                case HEEL_TAP_ARMS:case BACK_STEP:case STEP_GROUND:
+                case STEP_PLATFORM:case CLAP_STEP:
                     return AvatarJointTimeline.Command.AEROBIC_STEP;
                 default:throw new IllegalStateException("Unauthored movement");
             }
@@ -188,6 +195,36 @@ public final class AvatarVariantScene {
         add(rows,"paso_atras_bajoimpacto_v02","Pasos atrás alternos sin salto a ritmo cómodo","BACK_STEP","STANDING",18f,"ALTERNATING","NONE",false,"sin_equipo","controlado",2,false);
         add(rows,"remo_banda_pecho_v01","Retracción de brazos abiertos sin material","ROW","STANDING",40f,"BOTH","NONE",false,"sin_equipo","resistencia",1,false);
         add(rows,"remo_banda_pecho_v02","Remo a pecho con banda elástica","ROW","STANDING",55f,"BOTH","BAND_ANCHOR",false,"banda","resistencia",2,false);
+        add(rows,"elevacion_gemelos_v02","Elevación de talones de pie con apoyo","CALF_RAISE","STANDING",15f,"BOTH","CHAIR_SUPPORT",false,"silla","asistido",1,false);
+        add(rows,"elevacion_gemelos_v05","Elevación de talón unilateral con apoyo","CALF_RAISE","STANDING",22f,"NEAR","CHAIR_SUPPORT",false,"silla","asistido",3,false);
+        add(rows,"dorsiflexion_tibial_v02","Elevación de puntas de pie con apoyo","TOE_LIFT","STANDING",20f,"BOTH","WALL",false,"pared","asistido",2,false);
+        add(rows,"talones_estaticos_v03","Elevación sostenida de talones con ambos pies sin apoyo","CALF_HOLD","STANDING",18f,"BOTH","NONE",true,"sin_equipo","isometrico",3,false);
+        add(rows,"dorsiflexion_tobillo_v02","Dorsiflexión en pared con apoyo","ANKLE_KNEE_BEND","STANDING",14f,"BOTH","WALL",false,"pared","asistido",2,false);
+        add(rows,"dorsiflexion_tobillo_v03","Dorsiflexión de tobillo de pie con apoyo","ANKLE_KNEE_BEND","STANDING",18f,"BOTH","CHAIR_SUPPORT",false,"silla","movilidad",2,false);
+        add(rows,"dorsiflexion_tobillo_v04","Movilidad de dorsiflexión en posición dividida","ANKLE_KNEE_BEND","STANDING",22f,"BOTH","NONE",false,"sin_equipo","movilidad",3,false);
+        add(rows,"flexion_rodilla_sin_carga_pie_v01","Flexión corta de rodilla de pie con apoyo","ANKLE_KNEE_BEND","STANDING",12f,"BOTH","WALL",false,"pared","controlado",1,false);
+        add(rows,"flexion_rodilla_sin_carga_pie_v02","Flexión y retorno cómodo de rodilla con pared","ANKLE_KNEE_BEND","STANDING",20f,"BOTH","WALL",false,"pared","controlado",2,false);
+        add(rows,"step_cardio_v01","Paso en suelo sin elevación","STEP_GROUND","STANDING",18f,"ALTERNATING","NONE",false,"sin_equipo","aerobico",1,false);
+        add(rows,"step_cardio_v02","Paso alterno en escalón bajo","STEP_PLATFORM","STANDING",28f,"ALTERNATING","STEP",false,"escalon","alterno",2,false);
+        add(rows,"step_cardio_v04","Secuencia de pasos básica en escalón","STEP_PLATFORM","STANDING",35f,"ALTERNATING","STEP",false,"escalon","coordinacion",3,false);
+        add(rows,"talones_alternos_v02","Toques de talón con apoyo en pared","HEEL_TAP","STANDING",13f,"ALTERNATING","WALL",false,"pared","asistido",1,false);
+        add(rows,"elevaciones_rodillas_cardio_v02","Elevación de rodillas con apoyo en silla estable","MARCH_KNEES","STANDING",14f,"ALTERNATING","CHAIR_SUPPORT",false,"silla","asistido",1,false);
+        add(rows,"marcha_pasitos_sitio_v01","Marcha de pasos cortos a ritmo tranquilo","WALK_STEPS","STANDING",10f,"ALTERNATING","NONE",false,"sin_equipo","controlado",1,false);
+        add(rows,"marcha_pasitos_sitio_v02","Marcha alterna cómoda de pasos pequeños","WALK_STEPS","STANDING",18f,"ALTERNATING","NONE",false,"sin_equipo","controlado",2,false);
+        add(rows,"marcha_lenta_brazos_v01","Marcha lenta en sitio con brazos cerca del cuerpo","WALK_ARMS","STANDING",12f,"ALTERNATING","NONE",false,"sin_equipo","controlado",1,false);
+        add(rows,"marcha_lenta_brazos_v02","Marcha cómoda con balanceo suave de brazos","WALK_ARMS","STANDING",20f,"ALTERNATING","NONE",false,"sin_equipo","controlado",2,false);
+        add(rows,"marcha_v01","Marcha en el sitio con apoyo","WALK_STEPS","STANDING",12f,"ALTERNATING","CHAIR_SUPPORT",false,"silla","asistido",1,false);
+        add(rows,"palmada_paso_controlado_v01","Palmada suave acompañada de paso corto","CLAP_STEP","STANDING",12f,"ALTERNATING","NONE",false,"sin_equipo","controlado",1,false);
+        add(rows,"palmada_paso_controlado_v02","Palmadas alternas con pasos tranquilos","CLAP_STEP","STANDING",18f,"ALTERNATING","NONE",false,"sin_equipo","controlado",2,false);
+        add(rows,"press_hombros_v01","Empuje de hombros con banda ligera","OVERHEAD_PRESS","STANDING",58f,"BOTH","BAND_FEET",false,"banda","resistencia",1,false);
+        add(rows,"press_hombros_v02","Press de hombros sentado con mancuernas","OVERHEAD_PRESS","SEATED",64f,"BOTH","DUMBBELLS",false,"mancuerna+silla","carga_externa",2,false);
+        add(rows,"press_hombros_v03","Press de hombros de pie con mancuernas","OVERHEAD_PRESS","STANDING",70f,"BOTH","DUMBBELLS",false,"mancuerna","carga_externa",3,false);
+        add(rows,"press_pecho_v01","Press de pecho con banda de pie","PRESS","STANDING",62f,"BOTH","BAND_BACK",false,"banda","resistencia",1,false);
+        add(rows,"press_banda_pie_v01","Empuje de brazos sin banda de pie","PRESS","STANDING",50f,"BOTH","NONE",false,"sin_equipo","resistencia",1,false);
+        add(rows,"press_banda_pie_v02","Press de pecho bilateral con banda de pie","PRESS","STANDING",65f,"BOTH","BAND_BACK",false,"banda","resistencia",2,false);
+        add(rows,"press_banda_pie_v03","Press de pecho alterno con banda de pie","PRESS","STANDING",60f,"ALTERNATING","BAND_BACK",false,"banda","resistencia",3,false);
+        add(rows,"press_neutro_mancuernas_v01","Gesto de press con palmas enfrentadas sin carga","PRESS","STANDING",46f,"BOTH","NONE",false,"sin_equipo","resistencia",1,false);
+        add(rows,"remo_v05","Remo con dos mancuernas","ROW","STANDING",60f,"BOTH","DUMBBELLS",false,"mancuerna","carga_externa",3,false);
         RECIPES=Collections.unmodifiableMap(rows);
     }
     private static void add(Map<String,Recipe> rows,String id,String label,String movement,
@@ -312,7 +349,36 @@ public final class AvatarVariantScene {
                     farAnkle=translate(farRest,-r.amplitude*f,-1.3f*r.amplitude*f);
                     knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
                     farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
+                }else if(r.movement==Movement.CALF_RAISE||
+                         r.movement==Movement.CALF_HOLD){
+                    ankle=translate(rest,0f,-r.amplitude*n);
+                    farAnkle=translate(farRest,0f,-r.amplitude*f);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
+                }else if(r.movement==Movement.TOE_LIFT||
+                         r.movement==Movement.ANKLE_KNEE_BEND){
+                    float advance=r.movement==Movement.TOE_LIFT?
+                            .15f*r.amplitude*w:.35f*r.amplitude*w;
+                    // A divided stance is distinguished by the posterior shoe contact.
+                    if(r.id.equals("dorsiflexion_tobillo_v04")){
+                        hip=translate(hip,0f,8f);farHip=translate(farHip,0f,8f);
+                        farAnkle=translate(farRest,-12f,0f);farRest=farAnkle;
+                    }
+                    hip=translate(hip,advance,0f);farHip=translate(farHip,advance,0f);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
+                }else if(r.movement==Movement.STEP_GROUND||
+                         r.movement==Movement.STEP_PLATFORM||
+                         r.movement==Movement.CLAP_STEP){
+                    float advance=r.movement==Movement.STEP_PLATFORM?1.3f:1.1f;
+                    float rise=r.movement==Movement.STEP_PLATFORM?18f:6f;
+                    ankle=translate(rest,advance*r.amplitude*n,-rise*n);
+                    farAnkle=translate(farRest,advance*r.amplitude*f,-rise*f);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
                 }else if(r.movement==Movement.MARCH_STABLE||
+                         r.movement==Movement.WALK_STEPS||
+                         r.movement==Movement.WALK_ARMS||
                          r.movement==Movement.MARCH_KNEES||
                          r.movement==Movement.MARCH_ARMS){
                     ankle=translate(rest,.4f*r.amplitude*n,-1.8f*r.amplitude*n);
@@ -332,6 +398,10 @@ public final class AvatarVariantScene {
                     farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
                 }else if(r.movement==Movement.WALL_PRESS){
                     tilt=r.amplitude*w;
+                }else if(r.movement==Movement.ROW&&r.prop==Prop.DUMBBELLS){
+                    tilt=25f;hip=translate(hip,-8f,6f);farHip=translate(farHip,-8f,6f);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
                 }
                 if(r.movement==Movement.HINGE){
                     hip=translate(hip,-12f*w,7f*w);farHip=translate(farHip,-12f*w,7f*w);
@@ -342,8 +412,9 @@ public final class AvatarVariantScene {
                 farShoulder=polar(farHip,b.torso,-90f+tilt);
             }
         }
-        AvatarKinematics.Point[] arm=arm(r,shoulder,n,b);
-        AvatarKinematics.Point[] farArm=arm(r,farShoulder,f,b);
+        float clap=r.movement==Movement.CLAP_STEP?Math.max(n,f):0f;
+        AvatarKinematics.Point[] arm=arm(r,shoulder,r.movement==Movement.CLAP_STEP?clap:n,b);
+        AvatarKinematics.Point[] farArm=arm(r,farShoulder,r.movement==Movement.CLAP_STEP?clap:f,b);
         float axis=(float)Math.toDegrees(Math.atan2(shoulder.y-hip.y,shoulder.x-hip.x));
         AvatarKinematics.Point neck=polar(shoulder,8f,axis),head=polar(neck,27f,axis);
         AvatarKinematics.Pose p=new AvatarKinematics.Pose(ankle,farAnkle,knee,farKnee,
@@ -366,8 +437,22 @@ public final class AvatarVariantScene {
                         b.upperArm,b.forearm,1);
                 return new AvatarKinematics.Point[]{a.joint,a.end};
             }
-            case ARM_ALTERNATION:case MARCH_ARMS:case HEEL_TAP_ARMS:
+            case ARM_ALTERNATION:case MARCH_ARMS:case HEEL_TAP_ARMS:case WALK_ARMS:
                 upper=87f-r.amplitude*w*1.5f;lower=upper-3f;break;
+            case OVERHEAD_PRESS:{
+                AvatarKinematics.Point hand=translate(shoulder,
+                        34f-18f*w,30f-1.25f*r.amplitude*w);
+                AvatarRigConstraints.TwoBone a=solve(shoulder,hand,b.upperArm,b.forearm,1);
+                return new AvatarKinematics.Point[]{a.joint,a.end};
+            }
+            case CLAP_STEP:{
+                AvatarKinematics.Point neutral=translate(shoulder,40f,40f);
+                AvatarKinematics.Point shared=pt(228f,110f);
+                AvatarKinematics.Point hand=pt(neutral.x+(shared.x-neutral.x)*w,
+                        neutral.y+(shared.y-neutral.y)*w);
+                AvatarRigConstraints.TwoBone a=solve(shoulder,hand,b.upperArm,b.forearm,1);
+                return new AvatarKinematics.Point[]{a.joint,a.end};
+            }
             case ROW:case PRESS:case REACH:{
                 float action=r.movement==Movement.ROW?1f-w:w;
                 AvatarKinematics.Point hand=translate(shoulder,
@@ -376,6 +461,10 @@ public final class AvatarVariantScene {
                 return new AvatarKinematics.Point[]{arm.joint,arm.end};
             }
             default:break;
+        }
+        if(r.prop==Prop.WALL){
+            AvatarRigConstraints.TwoBone a=solve(shoulder,pt(WALL_X,112f),b.upperArm,b.forearm,1);
+            return new AvatarKinematics.Point[]{a.joint,a.end};
         }
         if(r.prop==Prop.CHAIR_SUPPORT){
             AvatarRigConstraints.TwoBone a=solve(shoulder,pt(246f,128f),
