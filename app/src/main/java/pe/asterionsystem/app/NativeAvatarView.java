@@ -2,7 +2,6 @@ package pe.asterionsystem.app;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.SystemClock;
 import android.view.View;
 
@@ -19,7 +18,7 @@ public final class NativeAvatarView extends View {
     private static final float LOOP_MS=4200f;
     private final AvatarRenderer renderer=new AvatarRenderer();
     private final AvatarMultiViewRenderer multiRenderer=new AvatarMultiViewRenderer();
-    private final Paint fallbackPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final AvatarSafePlaceholder safePlaceholder=new AvatarSafePlaceholder();
     private boolean lastFrameRejected=false;
     private AvatarMultiViewKinematics.ViewMode viewMode=AvatarMultiViewKinematics.ViewMode.SIDE;
     private AvatarPalette palette=AvatarPalette.BLUE;
@@ -191,19 +190,7 @@ public final class NativeAvatarView extends View {
             // Invalid user-supplied proportions or a corrupt joint must not
             // crash the surrounding app or display disconnected body pieces.
             lastFrameRejected=true;
-            fallbackPaint.setShader(null);
-            fallbackPaint.setStyle(Paint.Style.FILL);
-            fallbackPaint.setColor(dark?0xFF1C2A40:0xFFF1F5FA);
-            canvas.drawRoundRect(24f,30f,376f,446f,17f,17f,fallbackPaint);
-            fallbackPaint.setColor(dark?0xFFDFE9F7:0xFF344766);
-            fallbackPaint.setTextSize(16f);
-            fallbackPaint.setFakeBoldText(true);
-            canvas.drawText("Vista temporalmente no disponible",52f,231f,
-                    fallbackPaint);
-            fallbackPaint.setFakeBoldText(false);
-            fallbackPaint.setTextSize(12f);
-            canvas.drawText("Postura fuera del rango permitido",63f,254f,
-                    fallbackPaint);
+            safePlaceholder.draw(canvas,dark);
         } finally {
             // Restore the caller's matrix and clip state after every draw.
             canvas.restore();
