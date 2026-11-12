@@ -10,7 +10,7 @@ public final class AvatarVariantSceneTest {
                 p.knee,p.farKnee,p.ankle,p.farAnkle,p.elbow,p.farElbow,p.wrist,p.farWrist,p.neck,p.head};
     }
     @Test public void everyAuthoredCyclePreservesRigContactsAndContinuity(){
-        assertEquals(51,AvatarVariantScene.all().size());
+        assertEquals(81,AvatarVariantScene.all().size());
         for(AvatarVariantScene.Recipe r:AvatarVariantScene.all().values()){
             AvatarVariantScene.Frame start=AvatarVariantScene.at(r,0,BODY),last=start;
             float travelled=0f;
@@ -28,8 +28,24 @@ public final class AvatarVariantSceneTest {
                     assertTrue(r.id+" viewport y="+now[j].y,now[j].y>-30&&now[j].y<420);
                 }
                 if(r.posture==AvatarVariantScene.Posture.STANDING){
-                    assertEquals(r.id,0f,p.ankle.distance(start.pose.ankle),.001f);
-                    assertEquals(r.id,0f,p.farAnkle.distance(start.pose.farAnkle),.001f);
+                    boolean movingFoot=r.movement==AvatarVariantScene.Movement.STANDING_LEG_CURL||
+                            r.movement==AvatarVariantScene.Movement.MARCH_STABLE||
+                            r.movement==AvatarVariantScene.Movement.MARCH_KNEES||
+                            r.movement==AvatarVariantScene.Movement.MARCH_ARMS||
+                            r.movement==AvatarVariantScene.Movement.HEEL_TAP||
+                            r.movement==AvatarVariantScene.Movement.HEEL_TAP_ARMS||
+                            r.movement==AvatarVariantScene.Movement.BACK_STEP;
+                    if(movingFoot){
+                        assertTrue(r.id+" near foot never passes through ground",
+                                p.ankle.y<=start.pose.ankle.y+.001f);
+                        assertTrue(r.id+" far foot never passes through ground",
+                                p.farAnkle.y<=start.pose.farAnkle.y+.001f);
+                        if(r.pattern==AvatarVariantScene.Pattern.NEAR)
+                            assertEquals(r.id,0f,p.farAnkle.distance(start.pose.farAnkle),.001f);
+                    }else{
+                        assertEquals(r.id,0f,p.ankle.distance(start.pose.ankle),.001f);
+                        assertEquals(r.id,0f,p.farAnkle.distance(start.pose.farAnkle),.001f);
+                    }
                 }else{
                     assertEquals(r.id,0f,p.hip.distance(start.pose.hip),.001f);
                     assertEquals(r.id,0f,p.farHip.distance(start.pose.farHip),.001f);
@@ -43,6 +59,29 @@ public final class AvatarVariantSceneTest {
             assertTrue(r.id+" actually moves",travelled>10f);
             AvatarKinematics.Point[] a=joints(start.pose),z=joints(last.pose);
             for(int j=0;j<a.length;j++)assertEquals(r.id+" closed loop",0,a[j].distance(z[j]),.001f);
+        }
+    }
+    @Test public void firstBatchContainsExactlyThirtyNewIDsAndDifferentContactTypes(){
+        String[] ids={"curl_martillo_v01","curl_martillo_v02","curl_martillo_v03",
+                "buenos_dias_v03","peso_muerto_v03","peso_muerto_v04","peso_muerto_v06",
+                "extension_cuadriceps_v02","flexion_rodilla_bipeda_v01","flexion_rodilla_bipeda_v02",
+                "alcance_pared_brazo_v01","alcance_pared_brazo_v02",
+                "deslizamiento_manos_vertical_v01","deslizamiento_manos_vertical_v02",
+                "apoyo_manos_pared_v01","apoyo_manos_pared_v02",
+                "marcha_estable_tronco_v01","marcha_estable_tronco_v02",
+                "alternancia_hombros_pie_v01","alternancia_hombros_pie_v02",
+                "elevaciones_rodillas_cardio_v01","elevaciones_rodillas_cardio_v03",
+                "talones_alternos_v01","talones_alternos_v03",
+                "brazos_ritmicos_caminando_v01","brazos_ritmicos_caminando_v02",
+                "paso_atras_bajoimpacto_v01","paso_atras_bajoimpacto_v02",
+                "remo_banda_pecho_v01","remo_banda_pecho_v02"};
+        assertEquals(30,ids.length);
+        for(String id:ids)assertNotNull(id,AvatarVariantScene.find(id));
+        AvatarVariantScene.Recipe wall=AvatarVariantScene.find("deslizamiento_manos_vertical_v02");
+        for(float phase:new float[]{0f,.25f,.5f,.75f,1f}){
+            AvatarPose p=AvatarVariantScene.at(wall,phase,BODY).pose;
+            assertEquals(AvatarVariantScene.WALL_X,p.wrist.x,.001f);
+            assertEquals(AvatarVariantScene.WALL_X,p.farWrist.x,.001f);
         }
     }
     @Test public void alternatingSidesNeverExecuteSimultaneously(){
