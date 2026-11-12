@@ -169,9 +169,11 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
             view.setViewMode(AvatarMultiViewKinematics.ViewMode.SIDE);
             AvatarMotionEngine.Motion[] motions={
                     AvatarMotionEngine.Motion.ARM_CURL,
-                    AvatarMotionEngine.Motion.KNEE_CURL
+                    AvatarMotionEngine.Motion.KNEE_CURL,
+                    AvatarMotionEngine.Motion.HIP_EXTENSION_STAND
             };
-            String[] ids={"curl_biceps_v01","flexion_rodilla_bipeda_v03"};
+            String[] ids={"curl_biceps_v01","flexion_rodilla_bipeda_v03",
+                    "extension_cadera_bipeda_v01"};
             for(boolean purple:new boolean[]{false,true}){
                 view.setFemale(purple);
                 for(int m=0;m<motions.length;m++){
@@ -197,6 +199,6 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
         });
         File[] frames=folder.listFiles((parent,name)->name.endsWith(".png"));
         assertNotNull(frames);
-        assertEquals(12,frames.length);
+        assertEquals(18,frames.length);
     }
 }
