@@ -50,8 +50,8 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
                 assertEquals(AvatarExerciseCommandCatalog.Clip.NONE,e.clip);
             }
         }
-        assertEquals(108,illustrated);
-        assertEquals(1149,unreviewed);
+        assertEquals(138,illustrated);
+        assertEquals(1119,unreviewed);
         for(String id:new String[]{"flexion_rodilla_bipeda_v03",
                 "equilibrio_unipodal_v04","caminata_banda_v01","elevacion_lateral_v01",
                 "inclinacion_cervical_suave_v01",
