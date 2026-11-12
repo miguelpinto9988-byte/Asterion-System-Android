@@ -80,7 +80,7 @@ elevacion_gemelos_v03	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	bilatera
 elevacion_gemelos_v04	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	3	bilateral	escalon	0
 elevacion_gemelos_v05	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	3	asistido	silla	0
 elevacion_gemelos_v06	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	4	carga_externa	mancuerna	1
-dorsiflexion_tibial_v01	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	bilateral	silla	0
+dorsiflexion_tibial_v01	ANKLE_CONTROL	SIDE	SEATED_TOE_RAISE	ILLUSTRATIVE	tren_inferior	1	bilateral	silla	0
 dorsiflexion_tibial_v02	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	asistido	pared	0
 dorsiflexion_tibial_v03	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	bilateral	sin_equipo	0
 dorsiflexion_tibial_v04	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	3	resistencia	banda	0
@@ -466,7 +466,7 @@ alineacion_tronco_sentado_v01	CORE_BRACE	SIDE	NONE	SPEC_ONLY	tren_central	1	isom
 alineacion_tronco_sentado_v02	CORE_BRACE	SIDE	NONE	SPEC_ONLY	tren_central	1	isometrico	silla	0
 alineacion_tronco_sentado_v03	CORE_BRACE	SIDE	NONE	SPEC_ONLY	tren_central	2	controlado	sin_equipo	0
 alcances_tronco_sentado_v01	CORE_BRACE	SIDE	NONE	SPEC_ONLY	tren_central	1	controlado	sin_equipo	0
-alcances_tronco_sentado_v02	CORE_BRACE	SIDE	NONE	SPEC_ONLY	tren_central	1	controlado	silla	0
+alcances_tronco_sentado_v02	TRUNK_REACH	SIDE	SEATED_FORWARD_REACH	ILLUSTRATIVE	tren_central	1	controlado	silla	0
 alcances_tronco_sentado_v03	CORE_BRACE	SIDE	NONE	SPEC_ONLY	tren_central	2	lateral	sin_equipo	0
 separacion_dedos_pies_v01	FOOT_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	sin_equipo	0
 separacion_dedos_pies_v02	FOOT_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	alterno	sin_equipo	0
