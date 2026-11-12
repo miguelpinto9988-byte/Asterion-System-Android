@@ -31,7 +31,7 @@ public final class AvatarJointTimeline {
         TRUNK_REACH,BREATHING,LATERAL_BRACE,BALANCE,COORDINATION,HIP_MOBILITY,
         SPINE_MOBILITY,SHOULDER_MOBILITY,ANKLE_MOBILITY,NECK_MOBILITY,STRETCH,
         WALK,RUN,BIKE,ROW,ELLIPTICAL,AEROBIC_STEP,DANCE,SWIM,CARDIO_SPORT,
-        LATERAL_STEP,NECK_SIDE_TILT
+        LATERAL_STEP,NECK_SIDE_TILT,SEATED_TOE_RAISE,SEATED_FORWARD_REACH
     }
     private final Command command;
     private final EnumMap<Joint,Float> targets=new EnumMap<>(Joint.class);
@@ -108,6 +108,10 @@ public final class AvatarJointTimeline {
                 one(Joint.RIGHT_HIP_SIDE,25);one(Joint.RIGHT_KNEE,20);
                 one(Joint.RIGHT_ANKLE,8);break;
             case NECK_SIDE_TILT:one(Joint.NECK_SIDE,12);break;
+            case SEATED_TOE_RAISE:
+                pair(Joint.LEFT_ANKLE,Joint.RIGHT_ANKLE,22);break;
+            case SEATED_FORWARD_REACH:
+                one(Joint.SPINE_BEND,21);arms(64,0,0);break;
             default:throw new IllegalStateException("Comando sin trayectoria");
         }
     }
