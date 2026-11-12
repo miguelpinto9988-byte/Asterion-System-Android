@@ -33,7 +33,8 @@ public final class AvatarJointTimeline {
         WALK,RUN,BIKE,ROW,ELLIPTICAL,AEROBIC_STEP,DANCE,SWIM,CARDIO_SPORT,
         LATERAL_STEP,NECK_SIDE_TILT,SEATED_TOE_RAISE,SEATED_FORWARD_REACH,
         GLUTE_BRIDGE_PAUSE,SEATED_KNEE_EXTENSION_SINGLE,
-        SEATED_KNEE_EXTENSION_PAUSE,SEATED_KNEE_EXTENSION_ALTERNATING
+        SEATED_KNEE_EXTENSION_PAUSE,SEATED_KNEE_EXTENSION_ALTERNATING,
+        SEATED_TOE_RAISE_SINGLE,SEATED_HEEL_RAISE,SEATED_HEEL_RAISE_GENTLE
     }
     private final Command command;
     private final EnumMap<Joint,Float> targets=new EnumMap<>(Joint.class);
@@ -121,6 +122,11 @@ public final class AvatarJointTimeline {
                 one(Joint.LEFT_KNEE,65);break;
             case SEATED_KNEE_EXTENSION_ALTERNATING:
                 pair(Joint.LEFT_KNEE,Joint.RIGHT_KNEE,65);break;
+            case SEATED_TOE_RAISE_SINGLE:one(Joint.LEFT_ANKLE,22);break;
+            case SEATED_HEEL_RAISE:
+                pair(Joint.LEFT_ANKLE,Joint.RIGHT_ANKLE,-22);break;
+            case SEATED_HEEL_RAISE_GENTLE:
+                pair(Joint.LEFT_ANKLE,Joint.RIGHT_ANKLE,-12);break;
             default:throw new IllegalStateException("Comando sin trayectoria");
         }
     }
