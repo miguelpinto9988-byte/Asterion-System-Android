@@ -48,25 +48,28 @@ for row in rows:
     assert row["supervision"]==v["supervision"],ident
     assert row["command"] in supported,ident
     assert row["camera"] in ("SIDE","FRONT","TOP","FRONT_LATERAL",
-                               "FRONT_BALANCE","FRONT_SIDE_STEP"),ident
+                               "FRONT_BALANCE","FRONT_SIDE_STEP","FRONT_NECK_TILT"),ident
     assert row["status"] in ("ILLUSTRATIVE","SPEC_ONLY"),ident
     assert (row["status"]=="SPEC_ONLY")==(row["clip"]=="NONE"),ident
     if row["status"]=="ILLUSTRATIVE":
         assert int(row["level"])<=3 and row["supervision"]=="0"
         assert row["clip"] in ("SQUAT","LUNGE","HIP_HINGE",
                                "ARM_RAISE","ARM_CURL","KNEE_CURL","MARCH","FRONT",
-                               "FRONT_LATERAL","FRONT_BALANCE","FRONT_SIDE_STEP")
+                               "FRONT_LATERAL","FRONT_BALANCE","FRONT_SIDE_STEP",
+                               "FRONT_NECK_TILT")
         illustrated.append(row)
     counts[(row["category"],row["status"])]+=1
     families_covered.add(family)
     if ident in ("curl_biceps_v01","flexion_rodilla_bipeda_v03",
                  "puente_gluteo_v02","rotacion_cervical_suave_v02",
-                 "equilibrio_unipodal_v04","alcance_unipodal_v01"):
+                 "equilibrio_unipodal_v04","alcance_unipodal_v01",
+                 "elevacion_lateral_v01","caminata_banda_v01",
+                 "inclinacion_cervical_suave_v01"):
         new_exercises.append(row)
 
 assert len(families_covered)==155
 assert sum(counts.values())==1257
-assert len(illustrated)==10
+assert len(illustrated)==11
 assert len({row["command"] for row in rows})>=48
 for string in ("postInvalidateOnAnimation()","AvatarMotionEngine.pose("):
     assert string in (base/"NativeAvatarView.java").read_text(encoding="utf-8")
@@ -80,7 +83,7 @@ for symbol in ("ARM_CURL","KNEE_CURL","SQUAT","LUNGE","BURPEE"):
     assert symbol in motion
 assert "ILLUSTRATIVE" in catalog and "SPEC_ONLY" in catalog
 assert "status==Status.SPEC_ONLY" in catalog
-assert len(new_exercises)==6
+assert len(new_exercises)==9
 
 if "--samples" in sys.argv:
     out=root/"build/avatar-command-samples/muestras_catalogo.json"
@@ -95,4 +98,4 @@ if "--samples" in sys.argv:
                  for x in new_exercises]
     },ensure_ascii=False,indent=2),encoding="utf-8")
     print("Saved",out)
-print("OK: 1257 variantes, 155 familias, 49 comandos definidos, 10 escenas ilustrativas validadas")
+print("OK: 1257 variantes, 155 familias, 49 comandos definidos, 11 escenas ilustrativas validadas")
