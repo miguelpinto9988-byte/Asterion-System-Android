@@ -254,3 +254,27 @@ Se exportan ahora **18 capturas laterales** del emulador: los dos clips
 `HIP_EXTENSION_STAND`; cada uno con dos colores y tres fases.
 Sumadas a las 24 capturas frontales y las 24 capturas de mapas
 articulares, la batería de la extensión actual recopila **66 PNG**.
+
+### Avatares esqueléticos animados para todos los comandos
+
+`AvatarCommandFigurePose` transforma los 51 programas articulares
+existentes en un **esqueleto esquemático móvil**: cabeza y cuello,
+ambos hombros, codos, manos, pelvis, caderas, rodillas, tobillos y
+puntas de pie. Las rotaciones se calculan respecto a articulaciones
+padre; longitudes de brazos, antebrazos, muslos, piernas y cuello
+permanecen constantes en todo momento. La capa de visualización
+`AvatarJointCommandView` mantiene los arcos que identifican cada
+eje activo, pero ahora dibuja también los segmentos articulados
+en movimiento durante el ciclo, con dos paletas y 24 ejes.
+
+**Ámbito de validez:** el esqueleto de referencia NO contiene suelo,
+contactos comprobados, paredes, silla, aparatos ni reconstrucción 3D.
+Los desplazamientos son proyecciones ilustrativas 2D. No reemplaza
+las demostraciones corporales de cada variante. Una técnica con
+equipamiento o suelo sigue requiriendo un rig y una escena específicos.
+
+`AvatarCommandFigurePoseTest` recorre los 51 comandos durante
+361 fases cada uno, comprueba integridad y longitud de enlaces,
+ausencia de saltos de cabeza/rodillas/muñecas y coincidencia exacta
+de la pose del comienzo con la del cierre. También verifica
+que flexión de rodilla y elevación de hombro afectan regiones distintas.
