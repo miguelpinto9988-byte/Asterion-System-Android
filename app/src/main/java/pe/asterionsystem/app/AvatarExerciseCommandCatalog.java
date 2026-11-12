@@ -23,7 +23,8 @@ public final class AvatarExerciseCommandCatalog {
     public enum Clip {
         NONE, SQUAT,HIP_HINGE,LUNGE,ARM_RAISE,ARM_CURL,KNEE_CURL,MARCH,
         FRONT,FRONT_SQUAT,FRONT_JACKS,FRONT_ELBOW,TOP,
-        FRONT_LATERAL,FRONT_BALANCE,FRONT_SIDE_STEP,FRONT_NECK_TILT;
+        FRONT_LATERAL,FRONT_BALANCE,FRONT_SIDE_STEP,FRONT_NECK_TILT,
+        HIP_EXTENSION_STAND;
         public AvatarMotionEngine.Motion sideMotion() {
             switch(this) {
                 case SQUAT:return AvatarMotionEngine.Motion.SQUAT;
@@ -32,6 +33,7 @@ public final class AvatarExerciseCommandCatalog {
                 case ARM_RAISE:return AvatarMotionEngine.Motion.ARM_RAISE;
                 case ARM_CURL:return AvatarMotionEngine.Motion.ARM_CURL;
                 case KNEE_CURL:return AvatarMotionEngine.Motion.KNEE_CURL;
+                case HIP_EXTENSION_STAND:return AvatarMotionEngine.Motion.HIP_EXTENSION_STAND;
                 case MARCH:return AvatarMotionEngine.Motion.MARCH;
                 default:throw new IllegalStateException("No hay escena lateral: "+this);
             }
