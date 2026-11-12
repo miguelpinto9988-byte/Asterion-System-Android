@@ -131,6 +131,10 @@ public final class NativeAvatarView extends View {
                         ?"elevación suave de talones sentado sobre silla":
                         dedicatedScene==AvatarDedicatedScene.Kind.SEATED_HEEL_TOE_ALTERNATION
                         ?"alternancia de talones y puntas sentado sobre silla":
+                        dedicatedScene==AvatarDedicatedScene.Kind.STANDING_HEEL_RAISE
+                        ?"elevación bilateral de talones de pie sin material":
+                        dedicatedScene==AvatarDedicatedScene.Kind.STANDING_TOE_RAISE
+                        ?"elevación bilateral de puntas de pie sin material":
                         dedicatedScene==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE
                         ?"extensión de rodilla sentado con pausa":
                         dedicatedScene==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING
