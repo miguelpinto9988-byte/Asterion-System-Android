@@ -124,7 +124,8 @@ public final class AvatarDedicatedSceneRenderer {
         // in seated scenes, not at the arbitrary 407px canvas guide.
         if(scene.chairSeatContact||scene.standingFloorContact){
             float y=scene.neutralNearAnkle.y+14f;
-            shape(c,178f,y,324f,y+4f,2f,dark?0xFF556779:0xFFB7C4D0);
+            shape(c,scene.standingFloorContact?130f:178f,y,324f,y+4f,2f,
+                    dark?0xFF556779:0xFFB7C4D0);
         }
         drawBody(c,scene,b,palette);
         if(scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BAND){
