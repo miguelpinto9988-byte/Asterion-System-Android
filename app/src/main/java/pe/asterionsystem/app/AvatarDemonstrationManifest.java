@@ -64,6 +64,12 @@ public final class AvatarDemonstrationManifest {
         register(rows,"extension_rodilla_sin_carga_v01",
                 AvatarExerciseCommandCatalog.Clip.SEATED_KNEE_EXTENSION,
                 "silla","controlado");
+        register(rows,"dorsiflexion_tibial_v01",
+                AvatarExerciseCommandCatalog.Clip.SEATED_TOE_RAISE,
+                "silla","bilateral");
+        register(rows,"alcances_tronco_sentado_v02",
+                AvatarExerciseCommandCatalog.Clip.SEATED_FORWARD_REACH,
+                "silla","controlado");
         REVIEWED=Collections.unmodifiableMap(rows);
     }
     private static void register(Map<String,Signature> target,String id,
