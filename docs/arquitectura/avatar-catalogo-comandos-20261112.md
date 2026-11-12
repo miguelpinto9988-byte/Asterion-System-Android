@@ -433,3 +433,78 @@ completo» mientras esas demostraciones sigan sin validación visual.
 inicio, centro y fin. `tests/avatar_catalog_motion_contract.py`
 exige **53 programas**, mantiene los 1.257 IDs e impide usar un
 comando distinto al específico para estas dos demostraciones.
+
+## Fase 7 — secuencias de rodilla alternadas y pausas comprobables
+
+**Avance implementado:** 20 de 1.257 variantes (**1,59 %**) tienen
+escenas corporales ilustrativas declaradas en
+`AvatarDemonstrationManifest`. Quedan **1.237** sin escena corporal
+específica. Los 1.257 siguen disponiendo de sus fichas y mapa de
+comandos, que **no cuenta como demostración corporal**.
+
+### Tres variantes nuevas
+
+| ID exacto | Posición y apoyos | Inicio | Movimiento / mantenimiento | Retorno y final |
+|---|---|---|---|---|
+| `puente_gluteo_v03` | Supino sobre colchoneta; cabeza, hombros y ambas plantas mantienen su apoyo | Pelvis apoyada | Pelvis sube 42 unidades de dibujo con torso y huesos rígidos; se mantiene entre 27 y 73 % del ciclo | Desciende gradualmente y vuelve al apoyo inicial |
+| `extension_rodilla_sin_carga_v02` | Silla estable; pelvis y ambas rodillas fijas; pie contrario como apoyo | Dos piernas flexionadas | Pierna próxima se extiende en el primer medio ciclo y vuelve a neutral; la otra se extiende en el segundo medio ciclo, **sin elevar ambas juntas** | Las dos piernas y pies vuelven a neutral en la fase final |
+| `extension_rodilla_sin_carga_v03` | Silla, pelvis y rodilla fijas; pierna opuesta conserva apoyo | Rodilla flexionada | Una rodilla se extiende según el ángulo ilustrativo de ~65°, con fase de mantenimiento del 27–73 % del ciclo | Tibia retorna por la misma trayectoria; termina sentado |
+
+### Corrección de fidelidad articular
+
+Se introduce `SEATED_KNEE_EXTENSION_SINGLE` en lugar de usar
+`KNEE_EXTENSION` genérico en
+`extension_rodilla_sin_carga_v01`: solo una rodilla se extiende;
+la otra conserva apoyo.
+
+Los 53 comandos anteriores permanecen. Se suman cuatro programas:
+`GLUTE_BRIDGE_PAUSE`,
+`SEATED_KNEE_EXTENSION_SINGLE`,
+`SEATED_KNEE_EXTENSION_PAUSE` y
+`SEATED_KNEE_EXTENSION_ALTERNATING`.
+**Total: 57 comandos.**
+
+`AvatarJointTimeline.heldWeight(t)` crea una trayectoria
+suave C² con mantenimiento entre el 27 y el 73 % del ciclo.
+La alternancia utiliza dos semiciclos continuos: codo y hombro
+sin movimientos añadidos, cadera y rodilla de asiento estáticas,
+tibia móvil con longitud constante, pie contrario estable y
+neutralidad en el 50 % y el 100 %. Todos los valores se usan para
+el render 2D; **no son medidas clínicas ni instrucciones de ejercicio**.
+
+### Pruebas y porcentajes
+
+- `AvatarDedicatedSceneTest` recorre 301 fases de **ocho
+  escenas dedicadas** y valida longitudes constantes, contactos,
+  pausas prolongadas, secuencia alternada y cierre de bucle.
+- `AvatarJointTimelineTest` valida 57 comandos, dos picos
+  de alternancia en los cuartos del ciclo y posición neutra en
+  el medio y al cerrar; también los mantenimientos.
+- La prueba instrumental Android 16 exporta **50 PNG** de las
+  ocho escenas dedicadas: 7 escenas × 3 fases × 2 paletas, más
+  1 escena alternada × 4 fases × 2 paletas.
+- `tests/avatar_completion_progress.py` calcula el porcentaje
+  desde `avatar_motion_commands.tsv`, coteja los IDs
+  `ILLUSTRATIVE` con `AvatarDemonstrationManifest` y
+  ofrece formato JSON para informes automáticos.
+- El manifiesto incluye además el comando exacto por ID, cámara,
+  ejecución y equipamiento para impedir sustituciones visuales
+  engañosas.
+
+Los porcentajes representan **cobertura declarada e implementada**
+en la rama, no certificación de corrección biomecánica individual.
+La compilación Android, el emulador y la inspección de las nuevas
+capturas deben aprobarse antes de promover la fase a validada.
+
+### Pendientes por categoría tras esta ampliación
+
+| Categoría | Demostraciones corporales pendientes |
+|---|---:|
+| Tren inferior | 279 |
+| Tren superior | 279 |
+| Tren central | 229 |
+| Movilidad | 241 |
+| Cardio | 209 |
+| **Total** | **1.237** |
+
+Seguimiento: [issue #37](https://github.com/miguelpinto9988-byte/Asterion-System-Android/issues/37).
