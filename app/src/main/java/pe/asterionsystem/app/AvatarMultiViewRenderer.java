@@ -52,7 +52,8 @@ public final class AvatarMultiViewRenderer {
                 ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW
                 ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_LATERAL
                 ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_BALANCE
-                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP) {
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT) {
             boolean squat=camera==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT;
             boolean jacks=camera==AvatarMultiViewKinematics.ViewMode.FRONT_JACKS;
             drawFront(c,p,squat||jacks);
@@ -66,6 +67,8 @@ public final class AvatarMultiViewRenderer {
                     ?"FRONTAL · EQUILIBRIO SOBRE UN PIE":
                     camera==AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP
                     ?"FRONTAL · PASO LATERAL":
+                    camera==AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT
+                    ?"FRONTAL · INCLINACIÓN DE CABEZA":
                     "FRONTAL · ELEVACIÓN DE BRAZOS";
             text(c,scene,34,447,11,
                     dark?0xFFC0CCE0:0xFF536987);
