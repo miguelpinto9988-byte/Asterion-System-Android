@@ -54,7 +54,7 @@ buenos_dias_v04	HIP_HINGE	SIDE	NONE	SPEC_ONLY	tren_inferior	4	carga_externa	manc
 buenos_dias_v05	HIP_HINGE	SIDE	NONE	SPEC_ONLY	tren_inferior	5	carga_externa	barra	1
 puente_gluteo_v01	HIP_EXTENSION	SIDE	GLUTE_BRIDGE_SHORT	ILLUSTRATIVE	tren_inferior	1	bilateral	colchoneta	0
 puente_gluteo_v02	HIP_EXTENSION	SIDE	GLUTE_BRIDGE_BASIC	ILLUSTRATIVE	tren_inferior	2	bilateral	colchoneta	0
-puente_gluteo_v03	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	isometrico	colchoneta	0
+puente_gluteo_v03	GLUTE_BRIDGE_PAUSE	SIDE	GLUTE_BRIDGE_PAUSE	ILLUSTRATIVE	tren_inferior	2	isometrico	colchoneta	0
 puente_gluteo_v04	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	3	resistencia	banda+colchoneta	0
 puente_gluteo_v05	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	4	alterno	colchoneta	1
 puente_gluteo_v06	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	5	unilateral	colchoneta	1
@@ -654,9 +654,9 @@ talon_deslizante_sentado_v03	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	3	co
 talon_deslizante_supino_v01	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	colchoneta	0
 talon_deslizante_supino_v02	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	colchoneta	0
 talon_deslizante_supino_v03	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	3	controlado	colchoneta+toalla	0
-extension_rodilla_sin_carga_v01	KNEE_EXTENSION	SIDE	SEATED_KNEE_EXTENSION	ILLUSTRATIVE	tren_inferior	1	controlado	silla	0
-extension_rodilla_sin_carga_v02	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	silla	0
-extension_rodilla_sin_carga_v03	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	3	controlado	silla	0
+extension_rodilla_sin_carga_v01	SEATED_KNEE_EXTENSION_SINGLE	SIDE	SEATED_KNEE_EXTENSION	ILLUSTRATIVE	tren_inferior	1	controlado	silla	0
+extension_rodilla_sin_carga_v02	SEATED_KNEE_EXTENSION_ALTERNATING	SIDE	SEATED_KNEE_EXTENSION_ALTERNATING	ILLUSTRATIVE	tren_inferior	2	controlado	silla	0
+extension_rodilla_sin_carga_v03	SEATED_KNEE_EXTENSION_PAUSE	SIDE	SEATED_KNEE_EXTENSION_PAUSE	ILLUSTRATIVE	tren_inferior	3	controlado	silla	0
 flexion_rodilla_bipeda_v01	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	pared	0
 flexion_rodilla_bipeda_v02	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	silla	0
 flexion_rodilla_bipeda_v03	KNEE_FLEXION	SIDE	KNEE_CURL	ILLUSTRATIVE	tren_inferior	3	controlado	sin_equipo	0
