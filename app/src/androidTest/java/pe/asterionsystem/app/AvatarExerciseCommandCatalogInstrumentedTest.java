@@ -48,11 +48,12 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
                 assertEquals(AvatarExerciseCommandCatalog.Clip.NONE,e.clip);
             }
         }
-        assertEquals(11,illustrated);
-        assertEquals(1246,unreviewed);
+        assertEquals(13,illustrated);
+        assertEquals(1244,unreviewed);
         for(String id:new String[]{"curl_biceps_v01","flexion_rodilla_bipeda_v03",
                 "equilibrio_unipodal_v04","caminata_banda_v01","elevacion_lateral_v01",
-                "inclinacion_cervical_suave_v01"}){
+                "inclinacion_cervical_suave_v01",
+                "extension_cadera_bipeda_v01","paso_lateral_y_retorno_v01"}){
             assertTrue(profiles.require(id).canIllustrate());
         }
         for(String id:new String[]{"puente_gluteo_v02","rotacion_cervical_suave_v02",
@@ -107,6 +108,52 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
         File[] output=folder.listFiles((dir,name)->name.endsWith(".png"));
         assertNotNull(output);
         assertEquals(24,output.length);
+    }
+
+
+    @Test public void exportTwentyFourRealCommandMapFramesForUnreviewedVariants(){
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        AvatarExerciseCommandCatalog catalog=load();
+        File base=context.getExternalFilesDir(null);
+        assertNotNull(base);
+        File folder=new File(base,"asterion-avatar-command-map-samples");
+        assertTrue(folder.isDirectory()||folder.mkdirs());
+        String[] ids={
+                "puente_gluteo_v02",
+                "rotacion_cervical_suave_v02",
+                "alcance_unipodal_v01",
+                "nado_crol_recreativo_v03"
+        };
+        for(String id:ids)assertFalse(catalog.require(id).canIllustrate());
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            AvatarJointCommandView view=new AvatarJointCommandView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            for(boolean purple:new boolean[]{false,true}){
+                view.setFemale(purple);
+                for(String id:ids){
+                    view.setEntry(catalog.require(id));
+                    for(int phase=0;phase<3;phase++){
+                        view.setPhase(phase==0?0f:phase==1?.49f:1f);
+                        Bitmap image=Bitmap.createBitmap(400,480,Bitmap.Config.ARGB_8888);
+                        try{
+                            view.draw(new Canvas(image));
+                            File dest=new File(folder,
+                                    (purple?"morado_":"azul_")+id+"_"+phase+".png");
+                            try(FileOutputStream output=new FileOutputStream(dest)){
+                                assertTrue(image.compress(Bitmap.CompressFormat.PNG,100,output));
+                            }catch(java.io.IOException err){
+                                throw new IllegalStateException(err);
+                            }
+                            assertTrue("Missing schematic "+id,dest.length()>2000);
+                        }finally{image.recycle();}
+                    }
+                }
+            }
+        });
+        File[] frames=folder.listFiles((dir,name)->name.endsWith(".png"));
+        assertNotNull(frames);
+        assertEquals(24,frames.length);
     }
 
     @Test public void exportRealAndroidFramesForTwoPreviouslyUnanimatedJointMotions(){
