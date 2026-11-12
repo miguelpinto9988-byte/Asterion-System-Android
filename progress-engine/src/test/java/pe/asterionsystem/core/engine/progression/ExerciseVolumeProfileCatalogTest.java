@@ -66,15 +66,34 @@ public final class ExerciseVolumeProfileCatalogTest {
     }
 
     @Test public void raisedBaselineExamplesRemainExerciseSpecific() {
-        assertEquals(10,get("sentadilla_bilateral_v01").initialValue);
-        assertEquals(8,get("sentadilla_bilateral_v03").initialValue);
-        assertEquals(7,get("sentadilla_bilateral_v04").initialValue);
-        assertEquals(6,get("sentadilla_bilateral_v07").initialValue);
-        assertEquals(10,get("flexiones_v02").initialValue);
-        assertEquals(15,get("plancha_frontal_v01").initialValue);
-        assertEquals(20,get("equilibrio_unipodal_v01").initialValue);
-        assertEquals(75,get("marcha_v02").initialValue);
-        assertEquals(75,get("ciclo_estatico_v01").initialValue);
+        assertEquals(12,get("sentadilla_bilateral_v01").initialValue);
+        assertEquals(10,get("sentadilla_bilateral_v03").initialValue);
+        assertEquals(8,get("sentadilla_bilateral_v04").initialValue);
+        assertEquals(7,get("sentadilla_bilateral_v07").initialValue);
+        assertEquals(12,get("flexiones_v02").initialValue);
+        assertEquals(20,get("plancha_frontal_v01").initialValue);
+        assertEquals(25,get("equilibrio_unipodal_v01").initialValue);
+        assertEquals(85,get("marcha_v02").initialValue);
+        assertEquals(85,get("ciclo_estatico_v01").initialValue);
+    }
+
+    @Test public void secondIncreasePreservesLimitsAndOneInitialSetForAllVariants() {
+        int repetitions=0;
+        int seconds=0;
+        for(ExerciseVariant variant:catalog.variants()) {
+            ExerciseVolumeProfileCatalog.Profile p=profiles.require(variant);
+            assertEquals(1,p.initialSets);
+            assertTrue(p.initialValue<=p.maximumValue);
+            if(p.unit==ExerciseVolumeProfileCatalog.Unit.REPETITIONS) {
+                repetitions++;
+                assertTrue("Repetitions after second recalibration",p.initialValue>=5);
+            } else {
+                seconds++;
+                assertTrue("Seconds after second recalibration",p.initialValue>=11);
+            }
+        }
+        assertEquals(924,repetitions);
+        assertEquals(333,seconds);
     }
 
     @Test public void squatsAreCountedByRepetitions() {
