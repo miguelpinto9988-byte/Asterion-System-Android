@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import pe.asterionsystem.app.data.AssetExerciseCatalogRepository;
+import pe.asterionsystem.app.data.AssetExerciseVolumeProfileRepository;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 import pe.asterionsystem.core.engine.exercises.ExerciseIntensity;
 import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
@@ -37,6 +38,7 @@ import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
 import pe.asterionsystem.core.engine.progression.CoordinatedTrainingEngine;
 import pe.asterionsystem.core.engine.progression.VolumeProgressionEngine;
+import pe.asterionsystem.core.engine.progression.ExerciseVolumeProfileCatalog;
 import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
 
 /**
@@ -53,6 +55,7 @@ public final class MissionsActivity extends ComponentActivity {
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private String section=SECTION_DAILY;
     private ExerciseCatalog catalog;
+    private ExerciseVolumeProfileCatalog volumeProfiles;
     private MissionPlanner planner;
     private MissionPlanner.Profile profile;
     private LinearLayout content;
@@ -90,12 +93,15 @@ public final class MissionsActivity extends ComponentActivity {
         worker.execute(()-> {
             try {
                 ExerciseCatalog fetched=new AssetExerciseCatalogRepository(this).load();
+                ExerciseVolumeProfileCatalog references=
+                        new AssetExerciseVolumeProfileRepository(this).load(fetched);
                 MissionPlanner engine=new MissionPlanner(fetched);
                 MissionPlanner.Profile preferences=
                         MissionProfileAdapter.fromRegistration(ProfileStore.getRegistration(this));
                 runOnUiThread(()->{
                     if(destroyed || isFinishing())return;
                     catalog=fetched;
+                    volumeProfiles=references;
                     planner=engine;
                     profile=preferences;
                     show(section);
@@ -219,7 +225,8 @@ public final class MissionsActivity extends ComponentActivity {
             proposal=new CoordinatedTrainingEngine(planner).daily(
                     profile,today,previousRating,previousVariants,recentCompleted,
                     weekly!=null && weekly.rotateEquivalentVariant(),
-                    levelState.phase,volumeHistory,recentlyInterrupted).mission;
+                    levelState.phase,volumeHistory,recentlyInterrupted,
+                    volumeProfiles).mission;
             if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
                 DailyMissionStore.write(this,today,profile,catalog,
                         proposal.candidates());
@@ -282,32 +289,35 @@ public final class MissionsActivity extends ComponentActivity {
         // now share the same exact, final list of variants.
         Map<String,VolumeProgressionEngine.Suggestion> numericForSelection=
                 CoordinatedTrainingEngine.reviewSelected(
-                        dayProposal,category,today,numericHistory,recentlyInterrupted);
+                        dayProposal,category,today,numericHistory,recentlyInterrupted,
+                        volumeProfiles);
         int index=1;
         for(ExerciseVariant entry:dayProposal.candidates()) {
             dailyExerciseRow(index++,entry,today,category,dayProposal);
             VolumeProgressionEngine.Suggestion volume=
                     numericForSelection.get(entry.id());
             if(volume.previousSets>0) {
-                String comparison=volume.previousSets+" series × "
-                        +volume.previousRepetitions+" repeticiones registradas";
+                String comparison=volume.previousSets+" serie(s) × "
+                        +volume.previousQuantity+" "+volume.unit.label
+                        +" registrados";
                 if(volume.offeredSets!=volume.previousSets
-                        || volume.offeredRepetitions!=volume.previousRepetitions) {
-                    comparison+="; siguiente referencia calculada: "
-                            +volume.offeredSets+" series × "
-                            +volume.offeredRepetitions+" repeticiones "
-                            +"(no obligatoria).";
+                        || volume.offeredQuantity!=volume.previousQuantity) {
+                    comparison+="; próxima referencia calculada: "
+                            +volume.offeredSets+" serie(s) × "
+                            +volume.offeredQuantity+" "+volume.unit.label
+                            +" (no obligatoria).";
                 } else comparison+="; se mantiene la referencia.";
                 paragraph(comparison+" "+volume.explanation);
-            } else if(VolumeProgressStore.restartedOn(
-                    this,category,entry.id(),today)) {
-                paragraph("Nuevo bloque técnico: volumen reiniciado para esta "
-                        +"variante. Se define un punto de partida propio, "
-                        +"sin trasladar las series o repeticiones acumuladas.");
-            } else if(volume.status==VolumeProgressionEngine.Status.NO_HISTORY) {
-                paragraph("Volumen inicial sin registrar para esta variante: "
-                        +"no se heredan objetivos de otros ejercicios.");
-            } else if(volume.status==VolumeProgressionEngine.Status.RECOVERY_PRIORITY) {
+            } else if(volume.offeredSets>0) {
+                paragraph("Referencia inicial de "+entry.name()+": "
+                        +volume.offeredSets+" serie(s) × "
+                        +volume.offeredQuantity+" "+volume.unit.label
+                        +". "+(VolumeProgressStore.restartedOn(
+                                this,category,entry.id(),today)
+                          ?"Nueva etapa tras cambio técnico; no se hereda volumen. ":"")
+                        +volume.explanation);
+            } else if(volume.status==VolumeProgressionEngine.Status.RECOVERY_PRIORITY
+                    || volume.status==VolumeProgressionEngine.Status.PAUSED) {
                 paragraph(volume.explanation);
             }
         }
