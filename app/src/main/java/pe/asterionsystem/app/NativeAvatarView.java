@@ -18,10 +18,12 @@ public final class NativeAvatarView extends View {
     private static final float LOOP_MS=4200f;
     private final AvatarRenderer renderer=new AvatarRenderer();
     private final AvatarMultiViewRenderer multiRenderer=new AvatarMultiViewRenderer();
+    private final AvatarDedicatedSceneRenderer dedicatedRenderer=new AvatarDedicatedSceneRenderer();
     private AvatarMultiViewKinematics.ViewMode viewMode=AvatarMultiViewKinematics.ViewMode.SIDE;
     private AvatarPalette palette=AvatarPalette.BLUE;
     private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
     private AvatarMotionEngine.Motion motion=AvatarMotionEngine.Motion.SQUAT;
+    private AvatarDedicatedScene.Kind dedicatedScene;
 
     private boolean female=false;
     private boolean playing=true;
@@ -48,10 +50,20 @@ public final class NativeAvatarView extends View {
     }
     public boolean isFemale(){return female;}
     public AvatarMotionEngine.Motion getMotion(){return motion;}
+    public AvatarDedicatedScene.Kind getDedicatedScene(){return dedicatedScene;}
+    public void setDedicatedScene(AvatarDedicatedScene.Kind scene){
+        if(scene==null)throw new IllegalArgumentException("Escena de apoyo requerida");
+        dedicatedScene=scene;
+        viewMode=AvatarMultiViewKinematics.ViewMode.SIDE;
+        phase=0f;
+        lastFrameMs=SystemClock.uptimeMillis();
+        updateAccessibilityDescription();invalidate();
+    }
     public AvatarMultiViewKinematics.ViewMode getViewMode(){return viewMode;}
     public void setViewMode(AvatarMultiViewKinematics.ViewMode value){
         if(value==null)throw new IllegalArgumentException("Vista requerida");
         viewMode=value;
+        if(value!=AvatarMultiViewKinematics.ViewMode.SIDE)dedicatedScene=null;
         phase=0f;
         lastFrameMs=SystemClock.uptimeMillis();
         updateAccessibilityDescription();
@@ -60,6 +72,7 @@ public final class NativeAvatarView extends View {
     public void setMotion(AvatarMotionEngine.Motion value){
         if(value==null)throw new IllegalArgumentException("Movimiento obligatorio");
         motion=value;
+        dedicatedScene=null;
         phase=0f;
         lastFrameMs=SystemClock.uptimeMillis();
         updateAccessibilityDescription();
@@ -96,7 +109,14 @@ public final class NativeAvatarView extends View {
     private void updateAccessibilityDescription() {
         String activity;
         switch(viewMode) {
-            case SIDE: activity=motion.label;break;
+            case SIDE:
+                activity=dedicatedScene==null?motion.label:
+                        dedicatedScene==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_SHORT
+                        ?"puente corto de glúteos sobre colchoneta":
+                        dedicatedScene==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BASIC
+                        ?"puente de glúteos sobre colchoneta":
+                        "extensión de rodilla sentado sobre silla";
+                break;
             case FRONT: activity="elevación frontal de brazos";break;
             case FRONT_SQUAT: activity="sentadilla abierta en cámara frontal";break;
             case FRONT_JACKS: activity="saltos de tijera en cámara frontal";break;
@@ -150,7 +170,12 @@ public final class NativeAvatarView extends View {
                 (getHeight()-DESIGN_HEIGHT*scale)*0.5f);
         canvas.scale(scale,scale);
 
-        if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE) {
+        if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE
+                &&dedicatedScene!=null){
+            AvatarDedicatedScene posture=AvatarDedicatedScene.at(
+                    dedicatedScene,phase,bodySpec);
+            dedicatedRenderer.draw(canvas,posture,bodySpec,palette,dark);
+        }else if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE) {
             // Contact flags are authored by motion, never guessed from
             // the visible 2D ankle-to-knee segment.
             AvatarContactFrame.forSide(motion,phase);
