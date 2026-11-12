@@ -278,3 +278,74 @@ equipamiento o suelo sigue requiriendo un rig y una escena específicos.
 ausencia de saltos de cabeza/rodillas/muñecas y coincidencia exacta
 de la pose del comienzo con la del cierre. También verifica
 que flexión de rodilla y elevación de hombro afectan regiones distintas.
+
+## Fase 5 — correspondencia por ejercicio, apoyos y equipo
+
+**Registro actual: 15 variantes con demostración corporal ilustrativa
+y 1.242 pendientes de demostración individual.** Las 1.257 variantes
+conservan visualización animada de comandos y los 51 comandos previos.
+
+La ampliación implementa tres escenas físicas diferenciadas del avatar
+de pie:
+
+| ID | Pose representada | Equipo presente | Trayectoria y contactos |
+|---|---|---|---|
+| `puente_gluteo_v01` | Decúbito supino; puente corto | Colchoneta | Hombros/cabeza sobre colchoneta, ambos pies fijos y pelvis de elevación corta, retorno |
+| `puente_gluteo_v02` | Decúbito supino; puente básico | Colchoneta | Mismos apoyos, elevación mayor de pelvis, retorno |
+| `extension_rodilla_sin_carga_v01` | Sedente en silla | Silla | Pelvis y rodilla fija; una pierna extiende mientras la otra conserva apoyo y ambas retornan a inicio |
+
+Además, `sentadilla_bilateral_v04` utiliza el ciclo específico de
+sentadilla con fase sostenida en el punto central; sin implementos.
+
+**Correcciones contra falsas equivalencias:**
+
+- `curl_biceps_v01` usa banda, que el clip anterior no mostraba; dejó
+  de figurar como demostración corporal hasta disponer de banda anclada
+  y movimiento representativo.
+- `marcha_v02` es caminata sobre terreno plano y antes reutilizaba una
+  marcha en el sitio. Se retiró la demostración corporal: caminar no es
+  elevar la rodilla sin desplazamiento.
+
+El control `AvatarDemonstrationManifest` limita las 15 ilustraciones
+a IDs, cámara, equipamiento y ejecución expresamente identificados.
+Cualquier asignación sin constancia, cambio de material o cambio de
+posición se rechaza en la lectura del catálogo. No se habilita en bloque
+ninguna de las otras 1.242 variantes.
+
+### Pruebas de la fase 5
+
+- `AvatarDedicatedSceneTest` comprueba en 301 puntos por ciclo que
+  fémur, tibia, brazos y torso no cambian longitud; asimismo prueba la
+  fijación de la silla, la rodilla de referencia, los hombros y pies en
+  colchoneta, amplitudes diferentes y cierre exacto del bucle.
+- `AvatarDedicatedSceneInstrumentedTest` genera **18 PNG nativos**
+  (3 escenas × 3 fases × 2 paletas) del render de Android 16.
+- El script `ci/android_daily_instrumented_smoke.sh` ejecuta esa
+  instrumentación y exige exactamente las 18 imágenes en artefactos de
+  diagnóstico, además del muestreo anterior.
+- La prueba contractual de Python exige 1.257 registros, 15
+  ilustraciones, correspondencia de implementos y la retirada de las
+  dos sustituciones engañosas.
+
+El cierre de compilación no equivale a verificación profesional de
+biomecánica. Ni estas ilustraciones son capturas de movimiento 3D
+ni garantizan un gesto clínicamente exacto.
+
+### Pendientes de demostración corporal verificada
+
+| Categoría | Ejercicios que aún requieren escena propia |
+|---|---:|
+| Tren inferior | 283 |
+| Tren superior | 279 |
+| Movilidad | 241 |
+| Tren central | 230 |
+| Cardio | 209 |
+| **Total** | **1.242** |
+
+Por equipamiento, 143 requieren silla, 131 colchoneta, 65 banda,
+62 pared y 370 no requieren aparatos; el resto usa implementos y
+situaciones heterogéneas (máquinas, piscina, deportes, etc.).
+Para considerar terminado el catálogo, cada variante debe disponer
+de su postura adecuada, contactos, implementos, articulaciones,
+trayectoria desde inicio hasta fin y revisión visual específica;
+los mapas esqueléticos actuales no son sustitutos certificados.
