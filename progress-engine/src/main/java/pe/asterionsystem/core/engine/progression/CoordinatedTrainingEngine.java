@@ -92,7 +92,7 @@ public final class CoordinatedTrainingEngine {
         for (ExerciseVariant variant : mission.candidates()) {
             proposed.put(variant.id(), VolumeProgressionEngine.review(
                     variant, category, today, volumeHistory,
-                    recentInterruption || decision.preferSimplerTechnique));
+                    recentInterruption));
         }
         return new Plan(mission, decision, proposed);
     }
