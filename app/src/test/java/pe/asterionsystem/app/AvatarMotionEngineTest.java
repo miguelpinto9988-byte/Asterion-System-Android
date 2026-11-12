@@ -25,7 +25,7 @@ public final class AvatarMotionEngineTest {
         }
     }
 
-    @Test public void plantedFeetStayLockedUnlessMarchFootIsLifted(){
+    @Test public void plantedFeetStayLockedUnlessMotionExplicitlyLiftsFoot(){
         for(AvatarMotionEngine.Motion m:AvatarMotionEngine.Motion.values()){
             AvatarKinematics.Pose start=AvatarMotionEngine.pose(
                     m,0f,AvatarBodySpec.DEFAULT);
@@ -35,6 +35,7 @@ public final class AvatarMotionEngineTest {
                 if(m!=AvatarMotionEngine.Motion.BURPEE)
                     assertEquals(0f,p.farAnkle.distance(start.farAnkle),EPS);
                 if(m!=AvatarMotionEngine.Motion.MARCH
+                        &&m!=AvatarMotionEngine.Motion.KNEE_CURL
                         &&m!=AvatarMotionEngine.Motion.BURPEE)
                     assertEquals(0f,p.ankle.distance(start.ankle),EPS);
             }
@@ -94,7 +95,7 @@ public final class AvatarMotionEngineTest {
     }
 
     @Test public void allExerciseLabelsExistAndNullIsRejected(){
-        assertEquals(6,AvatarMotionEngine.Motion.values().length);
+        assertEquals(8,AvatarMotionEngine.Motion.values().length);
         for(AvatarMotionEngine.Motion m:AvatarMotionEngine.Motion.values())
             assertTrue(m.label.length()>4);
         assertThrows(IllegalArgumentException.class,()->
