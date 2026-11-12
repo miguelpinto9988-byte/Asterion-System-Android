@@ -25,7 +25,7 @@ public final class AvatarVariantCatalogTest {
     @Test public void allIdsLoadAndEveryNewRecipeHasAnExactSignature() throws Exception{
         AvatarExerciseCommandCatalog c=AvatarExerciseCommandCatalog.load(new StringReader(catalog()),taxonomy());
         assertEquals(1257,c.size());
-        assertEquals(78,c.all().values().stream().filter(e->e.canIllustrate()).count());
+        assertEquals(108,c.all().values().stream().filter(e->e.canIllustrate()).count());
         for(AvatarVariantScene.Recipe r:AvatarVariantScene.all().values())r.requireConsistent(c.require(r.id));
         assertTrue(c.require("curl_biceps_v06").supervision);
         assertTrue(c.require("curl_biceps_v06").safeDescription().contains("supervisada"));
