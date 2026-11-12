@@ -36,6 +36,10 @@ public final class AvatarVariantSceneRenderer {
             line(c,AvatarVariantScene.WALL_X,20,AvatarVariantScene.WALL_X,frame.floorY,
                     7,metal);
         }
+        if(r.prop==AvatarVariantScene.Prop.STEP){
+            rect(c,207,frame.floorY-18,278,frame.floorY+8,metal);
+            rect(c,216,frame.floorY+8,226,frame.floorY+18,metal);
+        }
         if(r.prop==AvatarVariantScene.Prop.CHAIR_SUPPORT){
             rect(c,232,128,267,139,metal);
             rect(c,235,138,241,frame.floorY,metal);
@@ -59,6 +63,10 @@ public final class AvatarVariantSceneRenderer {
                     frame.nearRestFoot.y+10f));
             band(c,p.farShoulder,new AvatarKinematics.Point(frame.farRestFoot.x,
                     frame.farRestFoot.y+10f));
+        }else if(r.prop==AvatarVariantScene.Prop.BAND_BACK){
+            AvatarKinematics.Point anchor=new AvatarKinematics.Point(
+                    p.shoulder.x-55,p.shoulder.y+24);
+            band(c,p.wrist,anchor);band(c,p.farWrist,anchor);
         }else if(r.prop==AvatarVariantScene.Prop.BAND_KNEE){
             line(c,272,p.knee.y-12,272,frame.floorY,5,metal);
             band(c,p.knee,new AvatarKinematics.Point(272,p.knee.y));
@@ -67,6 +75,20 @@ public final class AvatarVariantSceneRenderer {
             rect(c,p.farAnkle.x-16,frame.floorY-3,p.farAnkle.x+44,frame.floorY+2,0xFFA0C7CA);
         }
         avatar.drawFigure(c,p,b,palette);
+        // Foot cues accompany, but do not replace, the dressed articulated rig.
+        if(r.movement==AvatarVariantScene.Movement.CALF_RAISE||
+                r.movement==AvatarVariantScene.Movement.CALF_HOLD){
+            line(c,p.ankle.x,p.ankle.y+9,p.ankle.x+25,frame.floorY,4,metal);
+            line(c,p.farAnkle.x,p.farAnkle.y+9,p.farAnkle.x+25,frame.floorY,4,metal);
+        }
+        if(r.movement==AvatarVariantScene.Movement.TOE_LIFT){
+            float n=AvatarVariantScene.sideWeight(r,frame.phase,false);
+            float f=AvatarVariantScene.sideWeight(r,frame.phase,true);
+            line(c,p.ankle.x,p.ankle.y+12,p.ankle.x+27,
+                    p.ankle.y+12-r.amplitude*n,4,metal);
+            line(c,p.farAnkle.x,p.farAnkle.y+12,p.farAnkle.x+27,
+                    p.farAnkle.y+12-r.amplitude*f,4,metal);
+        }
         switch(r.prop){
             case HAMMER_DUMBBELLS:
                 c.save();c.rotate(90,p.farWrist.x,p.farWrist.y);
