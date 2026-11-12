@@ -2,6 +2,7 @@ package pe.asterionsystem.app;
 
 import static org.junit.Assert.*;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public final class AvatarVariantCatalogTest {
         }
     }
     private String catalog() throws Exception{
-        return Files.readString(root().resolve("app/src/main/assets/asterion_exercises/v1/avatar_motion_commands.tsv"));
+        return new String(Files.readAllBytes(root().resolve("app/src/main/assets/asterion_exercises/v1/avatar_motion_commands.tsv")), StandardCharsets.UTF_8);
     }
     @Test public void allIdsLoadAndEveryNewRecipeHasAnExactSignature() throws Exception{
         AvatarExerciseCommandCatalog c=AvatarExerciseCommandCatalog.load(new StringReader(catalog()),taxonomy());
