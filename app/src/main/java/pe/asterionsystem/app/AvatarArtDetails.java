@@ -46,11 +46,18 @@ public final class AvatarArtDetails {
         c.translate(knee.x,knee.y);
         c.rotate((float)Math.toDegrees(Math.atan2(
                 ankle.y-knee.y,ankle.x-knee.x)));
-        fill(far?0xFF26374F:0xFF43536C);
-        c.drawRoundRect(-9f,-11f,12f,11f,6f,6f,paint);
-        line(c,-6f,-7f,6f,-7f,0x998CA1C0,1.1f);
-        line(c,-6f,7f,6f,7f,0x998CA1C0,1.1f);
-        line(c,1f,-2f,6f,-2f,0x99D5E0EE,.9f);
+        // Single organic denim knee panel, contained within the two
+        // adjoining leg contours. No rigid rectangular pad or extra orb.
+        fill(far?0xB526374F:0xB543536C);
+        path.rewind();
+        path.moveTo(-8f,-4.8f);
+        path.cubicTo(-10f,-2f,-9.7f,2.8f,-6f,5.5f);
+        path.cubicTo(-1f,7.1f,5.2f,6.2f,9.3f,3.8f);
+        path.cubicTo(10.7f,1.4f,9.3f,-3.5f,5f,-5.9f);
+        path.cubicTo(.7f,-7.2f,-5.1f,-6.3f,-8f,-4.8f);
+        path.close();c.drawPath(path,paint);
+        line(c,-5.7f,-3.3f,6f,-3.1f,0x779DB5CF,.8f);
+        line(c,-4.6f,3.5f,5.8f,3.2f,0x729DB5CF,.8f);
         c.restore();
     }
 
@@ -78,11 +85,12 @@ public final class AvatarArtDetails {
         line(c,length*.20f,width*.27f,length*.58f,width*.21f,
                 0x66869AB7,.6f);
         if(calf) {
-            fill(0xFF172840);
-            c.drawRoundRect(length*.84f,-width*.32f,length*.99f,
-                    width*.31f,3f,3f,paint);
-            line(c,length*.88f,width*.19f,length*.96f,width*.19f,
-                    0xCC92A8C8,1.1f);
+            // A narrow hem follows the bone instead of a dark geometric
+            // block extending out from the ankle in bent poses.
+            line(c,length*.87f,-width*.19f,
+                    length*.94f,-width*.16f,0x8C23344C,1f);
+            line(c,length*.87f,width*.19f,
+                    length*.94f,width*.16f,0x8C23344C,1f);
         } else {
             line(c,length*.33f,-width*.09f,length*.49f,-width*.09f,
                     0x8899A9BF,1f);
