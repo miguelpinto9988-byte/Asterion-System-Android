@@ -119,6 +119,12 @@ public final class NativeAvatarView extends View {
                         ?"elevación bilateral de puntas sentado sobre silla":
                         dedicatedScene==AvatarDedicatedScene.Kind.SEATED_FORWARD_REACH
                         ?"alcance frontal sentado sobre silla":
+                        dedicatedScene==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_PAUSE
+                        ?"puente de glúteos sobre colchoneta con pausa":
+                        dedicatedScene==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE
+                        ?"extensión de rodilla sentado con pausa":
+                        dedicatedScene==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING
+                        ?"extensión alternada de rodillas sentado":
                         "extensión de rodilla sentado sobre silla";
                 break;
             case FRONT: activity="elevación frontal de brazos";break;
