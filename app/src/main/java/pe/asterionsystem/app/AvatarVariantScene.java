@@ -7,11 +7,16 @@ import java.util.Map;
 /** Explicit per-ID recipes. No catch-all, fuzzy name matching or fallback pose. */
 public final class AvatarVariantScene {
     public enum Movement { CURL,RAISE,REACH,PRESS,ROW,KNEE_EXTENSION,
-        SEATED_MARCH,ARM_SWING,HEEL_SLIDE,HINGE,SQUAT,LUNGE }
+        SEATED_MARCH,ARM_SWING,HEEL_SLIDE,HINGE,SQUAT,LUNGE,
+        HAMMER_CURL,DEADLIFT,TERMINAL_KNEE,STANDING_LEG_CURL,
+        WALL_REACH,WALL_SLIDE,WALL_PRESS,MARCH_STABLE,ARM_ALTERNATION,
+        MARCH_KNEES,MARCH_ARMS,HEEL_TAP,HEEL_TAP_ARMS,BACK_STEP }
     public enum Posture { STANDING,SEATED }
     public enum Pattern { BOTH,NEAR,ALTERNATING }
     public enum Prop { NONE,DUMBBELLS,BAR,BAND_FEET,BAND_ANCHOR,TOWEL,
-        GOBLET,FRONT_DUMBBELLS,BAR_FRONT,BAR_BACK }
+        GOBLET,FRONT_DUMBBELLS,BAR_FRONT,BAR_BACK,
+        HAMMER_DUMBBELLS,KETTLEBELL,BAND_SHOULDERS,BAND_KNEE,WALL,CHAIR_SUPPORT }
+    static final float WALL_X=264f; // Fixed in-scene support plane (virtual Canvas units).
     public static final class Recipe {
         public final String id,label,equipment,execution;
         public final Movement movement;
@@ -34,17 +39,22 @@ public final class AvatarVariantScene {
         }
         public AvatarJointTimeline.Command command(){
             switch(movement){
-                case CURL:return AvatarJointTimeline.Command.ELBOW_FLEXION;
-                case RAISE:case ARM_SWING:return AvatarJointTimeline.Command.SHOULDER_RAISE;
-                case REACH:return AvatarJointTimeline.Command.TRUNK_REACH;
-                case PRESS:return AvatarJointTimeline.Command.PUSH;
+                case CURL:case HAMMER_CURL:return AvatarJointTimeline.Command.ELBOW_FLEXION;
+                case RAISE:case ARM_SWING:case WALL_REACH:case WALL_SLIDE:
+                    return AvatarJointTimeline.Command.SHOULDER_RAISE;
+                case REACH:case MARCH_STABLE:case ARM_ALTERNATION:
+                    return AvatarJointTimeline.Command.TRUNK_REACH;
+                case PRESS:case WALL_PRESS:return AvatarJointTimeline.Command.PUSH;
                 case ROW:return AvatarJointTimeline.Command.PULL;
-                case KNEE_EXTENSION:return AvatarJointTimeline.Command.KNEE_EXTENSION;
+                case KNEE_EXTENSION:case TERMINAL_KNEE:return AvatarJointTimeline.Command.KNEE_EXTENSION;
                 case SEATED_MARCH:return AvatarJointTimeline.Command.HIP_MOBILITY;
-                case HEEL_SLIDE:return AvatarJointTimeline.Command.KNEE_FLEXION;
-                case HINGE:return AvatarJointTimeline.Command.HIP_HINGE;
+                case HEEL_SLIDE:case STANDING_LEG_CURL:return AvatarJointTimeline.Command.KNEE_FLEXION;
+                case HINGE:case DEADLIFT:return AvatarJointTimeline.Command.HIP_HINGE;
                 case SQUAT:return AvatarJointTimeline.Command.SQUAT;
                 case LUNGE:return AvatarJointTimeline.Command.LUNGE;
+                case MARCH_KNEES:case MARCH_ARMS:case HEEL_TAP:
+                case HEEL_TAP_ARMS:case BACK_STEP:
+                    return AvatarJointTimeline.Command.AEROBIC_STEP;
                 default:throw new IllegalStateException("Unauthored movement");
             }
         }
@@ -148,6 +158,36 @@ public final class AvatarVariantScene {
         add(rows,"zancada_estatica_v04","Zancada estática con pausa","LUNGE","STANDING",1f,"BOTH","NONE",true,"sin_equipo","controlado",3,false);
         add(rows,"zancada_estatica_v05","Zancada estática con mancuernas","LUNGE","STANDING",1f,"BOTH","DUMBBELLS",false,"mancuerna","carga_externa",4,true);
         add(rows,"zancada_estatica_v06","Zancada estática con barra","LUNGE","STANDING",1f,"BOTH","BAR_BACK",false,"barra","carga_externa",5,true);
+        add(rows,"curl_martillo_v01","Curl neutro con banda","HAMMER_CURL","STANDING",65f,"BOTH","BAND_FEET",false,"banda","resistencia",1,false);
+        add(rows,"curl_martillo_v02","Curl martillo sentado alterno","HAMMER_CURL","SEATED",65f,"ALTERNATING","HAMMER_DUMBBELLS",false,"mancuerna+silla","alterno",2,false);
+        add(rows,"curl_martillo_v03","Curl martillo de pie","HAMMER_CURL","STANDING",65f,"BOTH","HAMMER_DUMBBELLS",false,"mancuerna","bilateral",2,false);
+        add(rows,"buenos_dias_v03","Buenos días con banda","HINGE","STANDING",30f,"BOTH","BAND_SHOULDERS",false,"banda","resistencia",3,false);
+        add(rows,"peso_muerto_v03","Peso muerto con mancuerna","DEADLIFT","STANDING",36f,"BOTH","DUMBBELLS",false,"mancuerna","carga_externa",3,false);
+        add(rows,"peso_muerto_v04","Peso muerto sumo con kettlebell","DEADLIFT","STANDING",38f,"BOTH","KETTLEBELL",false,"kettlebell","carga_externa",3,false);
+        add(rows,"peso_muerto_v06","Peso muerto convencional con barra","DEADLIFT","STANDING",40f,"BOTH","BAR",false,"barra","carga_externa",5,true);
+        add(rows,"extension_cuadriceps_v02","Extensión terminal de rodilla con banda","TERMINAL_KNEE","STANDING",12f,"NEAR","BAND_KNEE",false,"banda","resistencia",2,false);
+        add(rows,"flexion_rodilla_bipeda_v01","Flexión mínima de una rodilla con apoyo en pared","STANDING_LEG_CURL","STANDING",13f,"NEAR","WALL",false,"pared","controlado",1,false);
+        add(rows,"flexion_rodilla_bipeda_v02","Flexión alterna de rodilla de pie cerca de silla","STANDING_LEG_CURL","STANDING",24f,"ALTERNATING","CHAIR_SUPPORT",false,"silla","controlado",2,false);
+        add(rows,"alcance_pared_brazo_v01","Alcance bajo de mano en pared","WALL_REACH","STANDING",24f,"NEAR","WALL",false,"pared","controlado",1,false);
+        add(rows,"alcance_pared_brazo_v02","Alcance de mano en pared a altura cómoda","WALL_REACH","STANDING",44f,"NEAR","WALL",false,"pared","controlado",2,false);
+        add(rows,"deslizamiento_manos_vertical_v01","Deslizamiento corto de manos por pared","WALL_SLIDE","STANDING",22f,"BOTH","WALL",false,"pared","controlado",1,false);
+        add(rows,"deslizamiento_manos_vertical_v02","Deslizamiento vertical cómodo de ambas manos","WALL_SLIDE","STANDING",44f,"BOTH","WALL",false,"pared","controlado",2,false);
+        add(rows,"apoyo_manos_pared_v01","Apoyo de manos en pared con codos flexibles","WALL_PRESS","STANDING",6f,"BOTH","WALL",false,"pared","controlado",1,false);
+        add(rows,"apoyo_manos_pared_v02","Apoyo de manos en pared con traslado leve de peso","WALL_PRESS","STANDING",12f,"BOTH","WALL",false,"pared","controlado",2,false);
+        add(rows,"marcha_estable_tronco_v01","Marcha muy suave manteniendo tronco erguido","MARCH_STABLE","STANDING",10f,"ALTERNATING","NONE",false,"sin_equipo","controlado",1,false);
+        add(rows,"marcha_estable_tronco_v02","Marcha alterna en el sitio con tronco estable","MARCH_STABLE","STANDING",20f,"ALTERNATING","NONE",false,"sin_equipo","controlado",2,false);
+        add(rows,"alternancia_hombros_pie_v01","Alternar brazos cortos con tronco quieto","ARM_ALTERNATION","STANDING",12f,"ALTERNATING","NONE",false,"sin_equipo","controlado",1,false);
+        add(rows,"alternancia_hombros_pie_v02","Alternar alcances de hombros con tronco estable","ARM_ALTERNATION","STANDING",25f,"ALTERNATING","NONE",false,"sin_equipo","controlado",2,false);
+        add(rows,"elevaciones_rodillas_cardio_v01","Elevación suave alterna de rodillas","MARCH_KNEES","STANDING",15f,"ALTERNATING","NONE",false,"sin_equipo","aerobico",1,false);
+        add(rows,"elevaciones_rodillas_cardio_v03","Elevación alterna de rodilla con brazos coordinados","MARCH_ARMS","STANDING",24f,"ALTERNATING","NONE",false,"sin_equipo","coordinacion",2,false);
+        add(rows,"talones_alternos_v01","Toques de talón adelante sin salto","HEEL_TAP","STANDING",13f,"ALTERNATING","NONE",false,"sin_equipo","aerobico",1,false);
+        add(rows,"talones_alternos_v03","Toques alternos de talón con brazos suaves","HEEL_TAP_ARMS","STANDING",22f,"ALTERNATING","NONE",false,"sin_equipo","coordinacion",2,false);
+        add(rows,"brazos_ritmicos_caminando_v01","Movimiento corto de brazos durante marcha lenta","MARCH_ARMS","STANDING",10f,"ALTERNATING","NONE",false,"sin_equipo","controlado",1,false);
+        add(rows,"brazos_ritmicos_caminando_v02","Alternancia suave de brazos con marcha cómoda","MARCH_ARMS","STANDING",18f,"ALTERNATING","NONE",false,"sin_equipo","controlado",2,false);
+        add(rows,"paso_atras_bajoimpacto_v01","Paso atrás pequeño y retorno estable","BACK_STEP","STANDING",10f,"NEAR","NONE",false,"sin_equipo","controlado",1,false);
+        add(rows,"paso_atras_bajoimpacto_v02","Pasos atrás alternos sin salto a ritmo cómodo","BACK_STEP","STANDING",18f,"ALTERNATING","NONE",false,"sin_equipo","controlado",2,false);
+        add(rows,"remo_banda_pecho_v01","Retracción de brazos abiertos sin material","ROW","STANDING",40f,"BOTH","NONE",false,"sin_equipo","resistencia",1,false);
+        add(rows,"remo_banda_pecho_v02","Remo a pecho con banda elástica","ROW","STANDING",55f,"BOTH","BAND_ANCHOR",false,"banda","resistencia",2,false);
         RECIPES=Collections.unmodifiableMap(rows);
     }
     private static void add(Map<String,Recipe> rows,String id,String label,String movement,
@@ -254,6 +294,45 @@ public final class AvatarVariantScene {
                 farShoulder=polar(farHip,b.torso,-83f+6f*w*r.amplitude);
             }else{
                 float tilt=r.movement==Movement.HINGE?r.amplitude*w:0f;
+                if(r.movement==Movement.DEADLIFT){
+                    float depth=r.amplitude*w/45f;
+                    hip=translate(hip,-15f*depth,28f*depth);
+                    farHip=translate(farHip,-15f*depth,28f*depth);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
+                    tilt=22f*depth;
+                }else if(r.movement==Movement.TERMINAL_KNEE){
+                    // Band tension is shown behind the knee; the sole remains planted.
+                    hip=translate(hip,-.30f*r.amplitude*w,.65f*r.amplitude*w);
+                    farHip=translate(farHip,-.30f*r.amplitude*w,.65f*r.amplitude*w);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
+                }else if(r.movement==Movement.STANDING_LEG_CURL){
+                    ankle=translate(rest,-r.amplitude*n,-1.3f*r.amplitude*n);
+                    farAnkle=translate(farRest,-r.amplitude*f,-1.3f*r.amplitude*f);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
+                }else if(r.movement==Movement.MARCH_STABLE||
+                         r.movement==Movement.MARCH_KNEES||
+                         r.movement==Movement.MARCH_ARMS){
+                    ankle=translate(rest,.4f*r.amplitude*n,-1.8f*r.amplitude*n);
+                    farAnkle=translate(farRest,.4f*r.amplitude*f,-1.8f*r.amplitude*f);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
+                }else if(r.movement==Movement.HEEL_TAP||
+                         r.movement==Movement.HEEL_TAP_ARMS){
+                    ankle=translate(rest,1.6f*r.amplitude*n,-3f*n);
+                    farAnkle=translate(farRest,1.6f*r.amplitude*f,-3f*f);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
+                }else if(r.movement==Movement.BACK_STEP){
+                    ankle=translate(rest,-2f*r.amplitude*n,-.35f*r.amplitude*n);
+                    farAnkle=translate(farRest,-2f*r.amplitude*f,-.35f*r.amplitude*f);
+                    knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
+                    farKnee=solve(farHip,farAnkle,b.upperLeg,b.lowerLeg,-1).joint;
+                }else if(r.movement==Movement.WALL_PRESS){
+                    tilt=r.amplitude*w;
+                }
                 if(r.movement==Movement.HINGE){
                     hip=translate(hip,-12f*w,7f*w);farHip=translate(farHip,-12f*w,7f*w);
                     knee=solve(hip,ankle,b.upperLeg,b.lowerLeg,-1).joint;
@@ -277,9 +356,18 @@ public final class AvatarVariantScene {
             float w,AvatarBodySpec b){
         float upper=87f,lower=84f;
         switch(r.movement){
-            case CURL:lower=84f-r.amplitude*w;break;
+            case CURL:case HAMMER_CURL:lower=84f-r.amplitude*w;break;
             case RAISE:upper=87f-r.amplitude*w;lower=upper-3f;break;
             case ARM_SWING:upper=87f-r.amplitude*w;lower=upper-3f;break;
+            case WALL_REACH:case WALL_SLIDE:case WALL_PRESS:{
+                float height=r.movement==Movement.WALL_PRESS?112f:
+                        (r.movement==Movement.WALL_REACH?125f:135f)-r.amplitude*w;
+                AvatarRigConstraints.TwoBone a=solve(shoulder,pt(WALL_X,height),
+                        b.upperArm,b.forearm,1);
+                return new AvatarKinematics.Point[]{a.joint,a.end};
+            }
+            case ARM_ALTERNATION:case MARCH_ARMS:case HEEL_TAP_ARMS:
+                upper=87f-r.amplitude*w*1.5f;lower=upper-3f;break;
             case ROW:case PRESS:case REACH:{
                 float action=r.movement==Movement.ROW?1f-w:w;
                 AvatarKinematics.Point hand=translate(shoulder,
@@ -288,6 +376,11 @@ public final class AvatarVariantScene {
                 return new AvatarKinematics.Point[]{arm.joint,arm.end};
             }
             default:break;
+        }
+        if(r.prop==Prop.CHAIR_SUPPORT){
+            AvatarRigConstraints.TwoBone a=solve(shoulder,pt(246f,128f),
+                    b.upperArm,b.forearm,1);
+            return new AvatarKinematics.Point[]{a.joint,a.end};
         }
         if(r.prop==Prop.GOBLET||r.prop==Prop.FRONT_DUMBBELLS||r.prop==Prop.BAR_FRONT){
             AvatarKinematics.Point grip=translate(shoulder,35f,18f);
