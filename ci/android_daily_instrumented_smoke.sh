@@ -101,7 +101,7 @@ AVATAR_CATALOG_TEST="pe.asterionsystem.app.AvatarExerciseCommandCatalogInstrumen
 adb shell am instrument -w -e class "$AVATAR_CATALOG_TEST" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
   | tee "$OUT/avatar-catalog-commands.txt"
-grep -q 'OK (2 tests)' "$OUT/avatar-catalog-commands.txt"
+grep -q 'OK (3 tests)' "$OUT/avatar-catalog-commands.txt"
 REMOTE_NEW="/sdcard/Android/data/$PACKAGE/files/asterion-avatar-command-samples"
 LOCAL_NEW="$OUT/asterion-avatar-command-samples"
 mkdir -p "$LOCAL_NEW"
@@ -113,3 +113,16 @@ test "$NEW_COUNT" -eq 12 || {
   exit 1
 }
 echo "PASS: catalog commands have exact IDs and 12 emulator images are preserved."
+
+echo "Android avatar framing: export 18 additional frontal movement PNGs"
+FRONT_REMOTE="/sdcard/Android/data/$PACKAGE/files/asterion-avatar-new-front-samples"
+FRONT_LOCAL="$OUT/asterion-avatar-new-front-samples"
+mkdir -p "$FRONT_LOCAL"
+adb shell ls "$FRONT_REMOTE"
+adb pull "$FRONT_REMOTE/." "$FRONT_LOCAL/"
+FRONT_COUNT="$(find "$FRONT_LOCAL" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
+test "$FRONT_COUNT" -eq 18 || {
+  echo "Expected 18 native new frontal PNGs; found $FRONT_COUNT"
+  exit 1
+}
+echo "PASS: new frontal balance/lateral raise/side step produce 18 real Canvas frames."
