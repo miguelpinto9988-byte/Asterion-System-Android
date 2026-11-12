@@ -1,4 +1,4 @@
-# Asterion — progresión de volumen coordinada (v4, valores iniciales recalibrados)
+# Asterion — progresión de volumen coordinada (v5, segunda recalibración inicial)
 
 ## Objetivo y alcance
 
@@ -155,10 +155,10 @@ verificada por ID, para **cada una de las 1.257 variantes existentes**:
 
 | Variante | Unidad del motor | Referencia inicial de ejemplo |
 |---|---|---|
-| Sentadilla libre | Repeticiones | 1 serie, 8 repeticiones |
-| Flexión inclinada | Repeticiones | 1 serie, 10 repeticiones |
-| Plancha de pared | Segundos | 1 serie, 15 segundos |
-| Marcha exterior cómoda | Segundos | 1 serie, 75 segundos |
+| Sentadilla libre | Repeticiones | 1 serie, 10 repeticiones |
+| Flexión inclinada | Repeticiones | 1 serie, 12 repeticiones |
+| Plancha de pared | Segundos | 1 serie, 20 segundos |
+| Marcha exterior cómoda | Segundos | 1 serie, 85 segundos |
 
 El mismo algoritmo de esfuerzo opera sobre el **valor de la unidad**, nunca
 sobre un número ambiguo: en repeticiones el factor de escala es 1, y en
@@ -215,6 +215,33 @@ La recalibración se aplica cuando el sistema necesita una **nueva referencia**
 anteriormente. Quien entrena puede hacer menos, descansar o cancelar sin
 penalización. Estos valores son ajustes generales de la configuración,
 **no recomendaciones individualizadas**.
+
+## Segunda recalibración de valores iniciales · versión 5
+
+Sobre los valores de inicio de la versión 4, se aplicó otro incremento a
+**las 1.257 variantes**, manteniendo exactamente sus unidades,
+mínimos/máximos, límites de complejidad y una sola serie inicial:
+
+- **924 ejercicios por repeticiones:** +2 repeticiones en niveles 1–2
+  (641 variantes) y +1 repetición en niveles 3–5 (283 variantes).
+- **333 ejercicios por segundos:** +10 segundos en 191 actividades
+  continuas; +5 segundos en 101 ejercicios temporizados de nivel 1–2;
+  +3 segundos en otros 41 ejercicios temporizados de nivel 3–5.
+- Todos los 1.257 valores aumentaron y ninguno superó el máximo
+  individual de su perfil. Ninguna fila del historial realizado fue
+  reescrita. La progresión posterior según el esfuerzo 1–10 no cambió.
+- Ejemplos: sentadilla libre 8 → 10 repeticiones; flexión inclinada
+  10 → 12 repeticiones; plancha de pared 15 → 20 segundos; equilibrio
+  con apoyo 20 → 25 segundos; caminata cómoda 75 → 85 segundos.
+- Los reinicios de volumen por cambio de ejercicio o técnica en los días
+  7, 14 y 21 usan estas nuevas referencias específicas por variante;
+  nunca transfieren los objetivos antiguos de otro ejercicio.
+
+Los valores son **referencias modificables de software**, no
+prescripciones ni tareas de realización obligatoria. Las personas pueden
+registrar su actividad real, descansar o detenerse sin penalización.
+Subir simultáneamente las series iniciales y la cantidad por serie
+supondría un salto mayor, por lo que se conservó una serie inicial.
 
 ## Pruebas
 
