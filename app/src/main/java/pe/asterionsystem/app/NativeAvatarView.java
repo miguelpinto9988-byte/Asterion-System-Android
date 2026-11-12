@@ -101,6 +101,9 @@ public final class NativeAvatarView extends View {
             case FRONT_SQUAT: activity="sentadilla abierta en cámara frontal";break;
             case FRONT_JACKS: activity="saltos de tijera en cámara frontal";break;
             case FRONT_ELBOW: activity="flexión de codos en cámara frontal";break;
+            case FRONT_LATERAL: activity="separación lateral de brazos en cámara frontal";break;
+            case FRONT_BALANCE: activity="equilibrio sobre una pierna en cámara frontal";break;
+            case FRONT_SIDE_STEP: activity="paso lateral sin banda en cámara frontal";break;
             case TOP: activity="flexión en diamante desde arriba, con detalle de manos";break;
             default: activity="movimiento ilustrativo";
         }
@@ -169,6 +172,15 @@ public final class NativeAvatarView extends View {
                     break;
                 case FRONT_ELBOW:
                     pose=AvatarMultiViewKinematics.frontElbowFlex(phase,bodySpec);
+                    break;
+                case FRONT_LATERAL:
+                    pose=AvatarMultiViewKinematics.frontLateralRaise(phase,bodySpec);
+                    break;
+                case FRONT_BALANCE:
+                    pose=AvatarMultiViewKinematics.frontSingleLegBalance(phase,bodySpec);
+                    break;
+                case FRONT_SIDE_STEP:
+                    pose=AvatarMultiViewKinematics.frontSideStep(phase,bodySpec);
                     break;
                 case TOP:
                     pose=AvatarMultiViewKinematics.diamondTop(phase,bodySpec);
