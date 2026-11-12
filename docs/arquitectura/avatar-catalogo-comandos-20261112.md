@@ -349,3 +349,68 @@ Para considerar terminado el catálogo, cada variante debe disponer
 de su postura adecuada, contactos, implementos, articulaciones,
 trayectoria desde inicio hasta fin y revisión visual específica;
 los mapas esqueléticos actuales no son sustitutos certificados.
+
+## Fase 6 — dorsiflexión bilateral sentada y alcance frontal sentado
+
+Se amplía el manifiesto de ilustraciones a **17 variantes**. Las **1.240**
+restantes conservan el esquema articular móvil; no se consideran
+demostraciones exactas. Los **51 comandos originales** permanecen en vigor.
+
+### Especificación mecánica y temporal de nuevas escenas
+
+Las dos escenas comparten el ciclo `depthAtPhase(t)`: 0–0,08
+preparación inmóvil; 0,08–0,42 recorrido suave C¹; 0,42–0,55
+mantenimiento; 0,55–0,92 retorno suave; 0,92–1 fin neutro.
+Los límites de fase son valores de animación, no recomendaciones de
+tiempo, duración ni intensidad para usuarios.
+
+| Articulación / elemento | `dorsiflexion_tibial_v01` (silla) | `alcances_tronco_sentado_v02` (silla) |
+|---|---|---|
+| Pelvis / asiento | Centro fijo en la silla | Centro fijo en la silla |
+| Tronco | Longitud y orientación neutras | Rota hacia delante sobre caderas, longitud pelvis-hombro constante; retorno inverso |
+| Cabeza / cuello | Orientación neutra | Centro de cabeza acompaña el tronco conservando distancia al cuello |
+| Escápulas / hombros | Posición inicial inalterada | Ambos hombros acompañan al tronco |
+| Codos / muñecas | Estables | Extensión ilustrativa bilateral hacia el frente, dos segmentos de longitud fija |
+| Caderas / muslos | Sentados; muslos y rodillas estáticos | Sentados; muslos y rodillas estáticos |
+| Rodillas / tibias | Permanecen en su lugar | Permanecen en su lugar |
+| Tobillos / zapatos | Zapatos giran hasta 22° alrededor del talón como pivote visual; **talones fijos**, elevación de puntas y retorno | Sin rotación, pies permanecen apoyados |
+| Implementos | Silla dibujada detrás del avatar, sin banda ni mancuerna | Silla dibujada detrás del avatar, sin implementos |
+| Inicio / final | Coinciden: puntas apoyadas, tronco neutral | Coinciden: tronco erguido y brazos de reposo |
+
+`AvatarDedicatedScene` modela las poses con segmentos rígidos y
+contactos declarados; `AvatarDedicatedSceneRenderer` dibuja silla,
+zapatos y ropa. `AvatarDemonstrationManifest` comprueba
+`variant_id`, cámara, ejecución y equipamiento. La prueba
+`AvatarDedicatedSceneTest` recorre 301 fases por escena, y Android
+exporta **30 PNG** para las cinco escenas de silla/colchoneta, tres
+fases y dos paletas.
+
+**Límites:** los 22° se aplican como grados de dibujo en Canvas; no
+son rango fisiológico medido. La inclinación del tronco y las
+extensiones de brazos representan cinemática 2D educativa. No existe
+captura de movimiento, geometría 3D personalizada ni evaluación
+clínica individual para estas escenas.
+
+**Referencias técnicas de comparación:**
+- Android Developers, optimización de vistas personalizadas:
+  https://developer.android.com/develop/ui/views/layout/custom-views/optimizing-view
+- NHS, ejercicios en silla:
+  https://www.nhs.uk/live-well/exercise/sitting-exercises/
+- University Hospitals Sussex NHS, guía de elevación de puntas en
+  posición sentada:
+  https://www.uhsussex.nhs.uk/wp-content/uploads/2026/09/2759-Chair-exercises-with-seated-arm-exercises-2026.pdf
+
+### Estado pendiente por categoría
+
+| Categoría | Variantes sin ilustración corporal |
+|---|---:|
+| Tren inferior | 282 |
+| Tren superior | 279 |
+| Movilidad | 241 |
+| Tren central | 229 |
+| Cardio | 209 |
+| **Total** | **1.240** |
+
+Las tareas de implementación y revisión continúan documentadas en el
+issue #37. La PR #36 no debe cerrarse ni fusionarse como «catálogo
+completo» mientras esas demostraciones sigan sin validación visual.
