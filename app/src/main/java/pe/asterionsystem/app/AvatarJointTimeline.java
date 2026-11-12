@@ -121,7 +121,11 @@ public final class AvatarJointTimeline {
         if(phase<=.58f)return 1;
         return 1-smooth((phase-.58f)/.36f);
     }
-    private float smooth(float x){x=Math.max(0,Math.min(1,x));return x*x*x*(x*(x*6-15)+10);}
+    private float smooth(float x){
+        x=Math.max(0,Math.min(1,x));
+        float result=x*x*x*(x*(x*6f-15f)+10f);
+        return Math.max(0f,Math.min(1f,result));
+    }
     public float offset(Joint joint,float phase){
         if(joint==null)throw new IllegalArgumentException("Articulación requerida");
         return targets.getOrDefault(joint,0f)*weight(phase);
