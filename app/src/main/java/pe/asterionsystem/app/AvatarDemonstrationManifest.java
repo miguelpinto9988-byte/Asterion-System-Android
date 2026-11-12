@@ -118,6 +118,10 @@ public final class AvatarDemonstrationManifest {
                 AvatarExerciseCommandCatalog.Clip.SEATED_HEEL_RAISE_GENTLE,
                 "silla","controlado",
                 AvatarJointTimeline.Command.SEATED_HEEL_RAISE_GENTLE);
+        register(rows,"balanceo_talon_punta_sentado_v02",
+                AvatarExerciseCommandCatalog.Clip.SEATED_HEEL_TOE_ALTERNATION,
+                "silla","controlado",
+                AvatarJointTimeline.Command.SEATED_HEEL_TOE_ALTERNATION);
         REVIEWED=Collections.unmodifiableMap(rows);
     }
     private static void register(Map<String,Signature> target,String id,
