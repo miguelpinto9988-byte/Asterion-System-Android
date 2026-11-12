@@ -58,7 +58,9 @@ for row in rows:
         assert row["clip"] in ("SQUAT","LUNGE","HIP_HINGE",
                                "ARM_RAISE","ARM_CURL","KNEE_CURL","MARCH","FRONT",
                                "FRONT_LATERAL","FRONT_BALANCE","FRONT_SIDE_STEP",
-                               "FRONT_NECK_TILT","HIP_EXTENSION_STAND")
+                               "FRONT_NECK_TILT","HIP_EXTENSION_STAND",
+                               "GLUTE_BRIDGE_SHORT","GLUTE_BRIDGE_BASIC",
+                               "SEATED_KNEE_EXTENSION")
         illustrated.append(row)
     counts[(row["category"],row["status"])]+=1
     families_covered.add(family)
