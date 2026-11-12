@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.progression.VolumeProgressionEngine;
+import pe.asterionsystem.core.engine.progression.VolumeResetPolicy;
 
 /**
  * Opt-in, device-local, per-day exercise volume. Separate from legacy SQLite,
@@ -17,6 +20,11 @@ import pe.asterionsystem.core.engine.progression.VolumeProgressionEngine;
 final class VolumeProgressStore {
     private static final String FILE = "asterion_volume_progress_v1";
     private static final String PREFIX = "vol_";
+    // Metadata only; neither the original volume log nor category effort is deleted.
+    private static final String LAST_SELECTION = "selection_category_";
+    private static final String LAST_CHECKPOINT = "checkpoint_category_";
+    private static final String EXPERIENCE_ENTRY = "level_entry_category_";
+    private static final String VOLUME_RESTART = "volume_restart_";
 
     private VolumeProgressStore() { }
 
@@ -94,6 +102,90 @@ final class VolumeProgressStore {
             }
         }
         if (changed) cleanup.apply();
+    }
+
+
+    /** 
+     * Called after daily mission pinning, before publishing new volume references.
+     * The prior selection is category-local. At the first 7/14/21 review after
+     * that category was seen, changed variants begin a new numeric history.
+     * The same-day call is idempotent, including when reopening the screen.
+     * The old observations remain stored for non-numeric historical analysis.
+     */
+    static VolumeResetPolicy.Decision observeCheckpointSelection(
+            Context context, int category, LocalDate today,
+            LocalDate experienceEntered, int checkpoint,
+            List<ExerciseVariant> selected) {
+        if (category < 0 || category > 4 || today == null
+                || experienceEntered == null || selected == null) {
+            throw new IllegalArgumentException("Selección o categoría inválida");
+        }
+        SharedPreferences sp = prefs(context);
+        String priorText = sp.getString(LAST_SELECTION + category, "");
+        List<String> prior = priorText.isEmpty()
+                ? Collections.emptyList() : Arrays.asList(priorText.split(",", -1));
+        String initialEntry = sp.getString(EXPERIENCE_ENTRY + category, "");
+        boolean experienceChanged = !initialEntry.isEmpty()
+                && !experienceEntered.toString().equals(initialEntry);
+        int previousCheckpoint = experienceChanged ? 0
+                : sp.getInt(LAST_CHECKPOINT + category, 0);
+        VolumeResetPolicy.Decision result = VolumeResetPolicy.evaluate(
+                previousCheckpoint, checkpoint, prior, selected);
+        SharedPreferences.Editor editor = sp.edit()
+                .putString(LAST_SELECTION + category,
+                        String.join(",", VolumeResetPolicy.snapshot(selected)))
+                .putString(EXPERIENCE_ENTRY + category, experienceEntered.toString())
+                .putInt(LAST_CHECKPOINT + category,
+                        Math.max(previousCheckpoint, checkpoint));
+        if (experienceChanged) {
+            // A new technical-experience profile cannot silently reuse an old
+            // higher numeric target even before the first weekly checkpoint.
+            for (ExerciseVariant entry : selected) {
+                editor.putString(restartKey(category, entry.id()), today.toString());
+            }
+        } else {
+            for (String id : result.restartVariantIds) {
+                editor.putString(restartKey(category, id), today.toString());
+            }
+        }
+        if (!editor.commit()) {
+            throw new IllegalStateException("No se pudo registrar el nuevo bloque de volumen");
+        }
+        return result;
+    }
+
+    private static String restartKey(int category, String variantId) {
+        return VOLUME_RESTART + category + "_" + variantId;
+    }
+
+    private static LocalDate parseDate(String raw) {
+        try { return LocalDate.parse(raw); }
+        catch (RuntimeException invalid) { return null; }
+    }
+
+    static boolean restartedOn(Context context, int category,
+                               String variantId, LocalDate today) {
+        if (today == null || category < 0 || category > 4) return false;
+        return today.equals(parseDate(prefs(context).getString(
+                restartKey(category, variantId), "")));
+    }
+
+    /**
+     * Only the NUMERIC progression is restarted. The selector's earlier
+     * category effort reports continue to work as safety signals.
+     */
+    static List<VolumeProgressionEngine.Observation> progressionHistoryForCategory(
+            Context context, int category, LocalDate before) {
+        List<VolumeProgressionEngine.Observation> full =
+                previousForCategory(context, category, before);
+        SharedPreferences sp = prefs(context);
+        ArrayList<VolumeProgressionEngine.Observation> recent = new ArrayList<>();
+        for (VolumeProgressionEngine.Observation item : full) {
+            LocalDate restart = parseDate(sp.getString(
+                    restartKey(category, item.variantId), ""));
+            if (restart == null || !item.day.isBefore(restart)) recent.add(item);
+        }
+        return Collections.unmodifiableList(recent);
     }
 
     /** Read only prior days of this same category; today's display stays pinned. */
