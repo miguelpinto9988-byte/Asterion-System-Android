@@ -10,7 +10,7 @@ public final class AvatarVariantSceneTest {
                 p.knee,p.farKnee,p.ankle,p.farAnkle,p.elbow,p.farElbow,p.wrist,p.farWrist,p.neck,p.head};
     }
     @Test public void everyAuthoredCyclePreservesRigContactsAndContinuity(){
-        assertEquals(81,AvatarVariantScene.all().size());
+        assertEquals(111,AvatarVariantScene.all().size());
         for(AvatarVariantScene.Recipe r:AvatarVariantScene.all().values()){
             AvatarVariantScene.Frame start=AvatarVariantScene.at(r,0,BODY),last=start;
             float travelled=0f;
@@ -28,7 +28,14 @@ public final class AvatarVariantSceneTest {
                     assertTrue(r.id+" viewport y="+now[j].y,now[j].y>-30&&now[j].y<420);
                 }
                 if(r.posture==AvatarVariantScene.Posture.STANDING){
-                    boolean movingFoot=r.movement==AvatarVariantScene.Movement.STANDING_LEG_CURL||
+                    boolean movingFoot=r.movement==AvatarVariantScene.Movement.CALF_RAISE||
+                            r.movement==AvatarVariantScene.Movement.CALF_HOLD||
+                            r.movement==AvatarVariantScene.Movement.STEP_GROUND||
+                            r.movement==AvatarVariantScene.Movement.STEP_PLATFORM||
+                            r.movement==AvatarVariantScene.Movement.CLAP_STEP||
+                            r.movement==AvatarVariantScene.Movement.WALK_STEPS||
+                            r.movement==AvatarVariantScene.Movement.WALK_ARMS||
+                            r.movement==AvatarVariantScene.Movement.STANDING_LEG_CURL||
                             r.movement==AvatarVariantScene.Movement.MARCH_STABLE||
                             r.movement==AvatarVariantScene.Movement.MARCH_KNEES||
                             r.movement==AvatarVariantScene.Movement.MARCH_ARMS||
@@ -83,6 +90,33 @@ public final class AvatarVariantSceneTest {
             assertEquals(AvatarVariantScene.WALL_X,p.wrist.x,.001f);
             assertEquals(AvatarVariantScene.WALL_X,p.farWrist.x,.001f);
         }
+    }
+    @Test public void secondBatchContainsThirtySpecificRecipesAndContacts(){
+        String[] ids={"elevacion_gemelos_v02","elevacion_gemelos_v05",
+                "dorsiflexion_tibial_v02","talones_estaticos_v03",
+                "dorsiflexion_tobillo_v02","dorsiflexion_tobillo_v03",
+                "dorsiflexion_tobillo_v04","flexion_rodilla_sin_carga_pie_v01",
+                "flexion_rodilla_sin_carga_pie_v02","step_cardio_v01",
+                "step_cardio_v02","step_cardio_v04","talones_alternos_v02",
+                "elevaciones_rodillas_cardio_v02","marcha_pasitos_sitio_v01",
+                "marcha_pasitos_sitio_v02","marcha_lenta_brazos_v01",
+                "marcha_lenta_brazos_v02","marcha_v01",
+                "palmada_paso_controlado_v01","palmada_paso_controlado_v02",
+                "press_hombros_v01","press_hombros_v02","press_hombros_v03",
+                "press_pecho_v01","press_banda_pie_v01","press_banda_pie_v02",
+                "press_banda_pie_v03","press_neutro_mancuernas_v01","remo_v05"};
+        assertEquals(30,ids.length);
+        java.util.Set<String> unique=new java.util.HashSet<>();
+        for(String id:ids){assertTrue(id,unique.add(id));assertNotNull(AvatarVariantScene.find(id));}
+        AvatarVariantScene.Recipe platform=AvatarVariantScene.find("step_cardio_v02");
+        AvatarPose peak=AvatarVariantScene.at(platform,.25f,BODY).pose;
+        AvatarPose start=AvatarVariantScene.at(platform,0f,BODY).pose;
+        assertTrue("Foot reaches raised step",peak.ankle.y<start.ankle.y);
+        AvatarVariantScene.Recipe chair=AvatarVariantScene.find("marcha_v01");
+        assertEquals(246f,AvatarVariantScene.at(chair,.25f,BODY).pose.wrist.x,.01f);
+        AvatarVariantScene.Recipe clap=AvatarVariantScene.find("palmada_paso_controlado_v02");
+        AvatarPose contact=AvatarVariantScene.at(clap,.25f,BODY).pose;
+        assertEquals(0f,contact.wrist.distance(contact.farWrist),.01f);
     }
     @Test public void alternatingSidesNeverExecuteSimultaneously(){
         for(AvatarVariantScene.Recipe r:AvatarVariantScene.all().values()){
