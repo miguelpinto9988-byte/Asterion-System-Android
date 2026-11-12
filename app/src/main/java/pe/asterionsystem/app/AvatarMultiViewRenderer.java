@@ -56,7 +56,8 @@ public final class AvatarMultiViewRenderer {
                 ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT) {
             boolean squat=camera==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT;
             boolean jacks=camera==AvatarMultiViewKinematics.ViewMode.FRONT_JACKS;
-            drawFront(c,p,squat||jacks);
+            drawFront(c,p,squat||jacks,
+                    camera==AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT);
             String scene=squat?"FRONTAL · SENTADILLA ABIERTA":
                     jacks?"FRONTAL · SALTOS DE TIJERA":
                     camera==AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW
@@ -150,7 +151,7 @@ public final class AvatarMultiViewRenderer {
     /** Frontal anatomy follows the actual hip/shoulder pair, not fixed pixels.
      * A deliberate short neck is visible above the close jersey collar. */
     private void drawFront(Canvas c,AvatarMultiViewKinematics.Pose p,
-                           boolean squat) {
+                           boolean squat,boolean neckTilt) {
         AvatarOrientationRules.requireUprightFrontPose(p);
         c.save();
         // Frontal silhouette has the same on-screen head/leg presence as
@@ -214,7 +215,16 @@ public final class AvatarMultiViewRenderer {
         rr(c,190f,sy-11f,210f,sy-1f,5f,palette.top);
         line(c,191f,sy-10f,209f,sy-10f,
                 palette.female?0xFFCDB7EF:0xFF9FD1F4,1.4f);
-        drawFaceFront(c,p.head.x,p.head.y);
+        if(neckTilt){
+            // Head rotates about its own reference centre. The joint line
+            // stays fixed at 27 virtual units; only this scene rotates it.
+            float degrees=(float)Math.toDegrees(Math.atan2(
+                    p.head.x-p.neck.x,p.neck.y-p.head.y));
+            c.save();
+            c.rotate(degrees,p.head.x,p.head.y);
+            drawFaceFront(c,p.head.x,p.head.y);
+            c.restore();
+        }else drawFaceFront(c,p.head.x,p.head.y);
         text(c,"A",215f,sy+42f,11f,0xFFCCE7FA);
         c.restore();
     }
