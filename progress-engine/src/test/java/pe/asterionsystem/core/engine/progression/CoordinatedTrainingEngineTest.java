@@ -85,6 +85,26 @@ public class CoordinatedTrainingEngineTest {
                 v->v.id().equals(previouslySelected.id())));
     }
 
+
+    @Test public void postCheckpointRecalculationDoesNotInheritOldVariantVolume() {
+        CoordinatedTrainingEngine engine=new CoordinatedTrainingEngine(planner);
+        CoordinatedTrainingEngine.Plan selected=engine.daily(
+                profile,monday,0,List.of(),List.of(),false,0,List.of(),false);
+        ExerciseVariant same=selected.mission.candidates().get(0);
+        VolumeProgressionEngine.Observation old=new VolumeProgressionEngine.Observation(
+                monday.minusDays(3),2,same.id(),same.typeId(),
+                same.difficulty(),2,8,2,true,false);
+        assertEquals(VolumeProgressionEngine.Status.CALCULATED_INCREASE,
+                CoordinatedTrainingEngine.reviewSelected(
+                        selected.mission,2,monday,List.of(old),false)
+                        .get(same.id()).status);
+        // The checkpoint store exposes NO old numeric observations after reset.
+        assertEquals(VolumeProgressionEngine.Status.NO_HISTORY,
+                CoordinatedTrainingEngine.reviewSelected(
+                        selected.mission,2,monday,List.of(),false)
+                        .get(same.id()).status);
+    }
+
     @Test public void restDayCannotAcquireExercisesFromVolumeHistory() {
         MissionPlanner.Profile rest = new MissionPlanner.Profile("avanzado","bienestar",
                 Arrays.asList(5,5,5,5,5,5,5),Set.of("sin_equipo"),3);
