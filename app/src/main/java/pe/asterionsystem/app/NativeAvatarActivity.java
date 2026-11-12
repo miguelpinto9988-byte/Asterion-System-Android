@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.activity.ComponentActivity;
@@ -26,6 +27,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
  */
 public final class NativeAvatarActivity extends ComponentActivity {
     private NativeAvatarView avatar;
+    private AvatarJointCommandView commandDiagram;
     private final AvatarPlaybackController playback=new AvatarPlaybackController();
     private Button play;
     private SeekBar timeline;
@@ -55,7 +57,13 @@ public final class NativeAvatarActivity extends ComponentActivity {
                 +"No requiere Godot, conexión ni archivos MP4.",12,false));
         avatar=new NativeAvatarView(this);
         avatar.setDark(!light);
-        root.addView(avatar,new LinearLayout.LayoutParams(-1,0,1));
+        FrameLayout visualArea=new FrameLayout(this);
+        visualArea.addView(avatar,new FrameLayout.LayoutParams(-1,-1));
+        commandDiagram=new AvatarJointCommandView(this);
+        commandDiagram.setDark(!light);
+        commandDiagram.setVisibility(View.GONE);
+        visualArea.addView(commandDiagram,new FrameLayout.LayoutParams(-1,-1));
+        root.addView(visualArea,new LinearLayout.LayoutParams(-1,0,1));
         // NativeAvatarView owns its live, motion-specific accessibility text.
         if(getIntent().hasExtra("variant_id"))avatar.setVisibility(View.INVISIBLE);
 
@@ -65,8 +73,8 @@ public final class NativeAvatarActivity extends ComponentActivity {
         Button purple=button("Chica morada");
         genders.addView(blue,new LinearLayout.LayoutParams(0,dp(52),1));
         genders.addView(purple,new LinearLayout.LayoutParams(0,dp(52),1));
-        blue.setOnClickListener(v->{avatar.setFemale(false);updatePlay();});
-        purple.setOnClickListener(v->{avatar.setFemale(true);updatePlay();});
+        blue.setOnClickListener(v->{avatar.setFemale(false);commandDiagram.setFemale(false);updatePlay();});
+        purple.setOnClickListener(v->{avatar.setFemale(true);commandDiagram.setFemale(true);updatePlay();});
         root.addView(genders);
 
         // The catalog is not mapped automatically: only authored and reviewed
@@ -125,7 +133,10 @@ public final class NativeAvatarActivity extends ComponentActivity {
         timeline.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override public void onProgressChanged(SeekBar seek,int progress,
                                                     boolean fromUser) {
-                if(fromUser)avatar.setPhase(progress/1000f);
+                if(fromUser){
+                    avatar.setPhase(progress/1000f);
+                    if(commandDiagram!=null)commandDiagram.setPhase(progress/1000f);
+                }
             }
             @Override public void onStartTrackingTouch(SeekBar seek) {
                 scrubbing=true;
@@ -139,6 +150,9 @@ public final class NativeAvatarActivity extends ComponentActivity {
             }
         });
         avatar.setFrameListener(value->{
+            if(!scrubbing)timeline.setProgress(Math.round(value*1000f));
+        });
+        commandDiagram.setFrameListener(value->{
             if(!scrubbing)timeline.setProgress(Math.round(value*1000f));
         });
 
@@ -155,10 +169,13 @@ public final class NativeAvatarActivity extends ComponentActivity {
             playback.toggleRequested();
             applyPlayback();
         });
-        reset.setOnClickListener(v->{avatar.reset();timeline.setProgress(0);});
+        reset.setOnClickListener(v->{avatar.reset();commandDiagram.reset();timeline.setProgress(0);});
         speed.setOnClickListener(v->{
-            float next=avatar.getSpeed()>=1f?.5f:1f;
+            float current=selectedEntry!=null&&!selectedEntry.canIllustrate()
+                    ?commandDiagram.getSpeed():avatar.getSpeed();
+            float next=current>=1f?.5f:1f;
             avatar.setSpeed(next);
+            commandDiagram.setSpeed(next);
             speed.setText(next==1f?"Velocidad 1×":"Velocidad 0,5×");
         });
         root.addView(text("Cámaras ilustrativas independientes: lateral, frontal y "
@@ -169,7 +186,7 @@ public final class NativeAvatarActivity extends ComponentActivity {
             specification.setText("Cargando comando del catálogo…");
             root.addView(specification);
         }
-        Button joints=button("Ver fases y las 23 articulaciones");
+        Button joints=button("Ver fases y los 24 ejes articulares");
         if(getIntent().hasExtra("variant_id")){
             root.addView(joints,new LinearLayout.LayoutParams(-1,dp(52)));
             joints.setOnClickListener(v->showJointStages());
@@ -180,8 +197,11 @@ public final class NativeAvatarActivity extends ComponentActivity {
 
         if(state!=null) {
             avatar.setFemale(state.getBoolean("female",false));
+            commandDiagram.setFemale(state.getBoolean("female",false));
             avatar.setSpeed(state.getFloat("speed",1f));
+            commandDiagram.setSpeed(state.getFloat("speed",1f));
             avatar.setPhase(state.getFloat("phase",0f));
+            commandDiagram.setPhase(state.getFloat("phase",0f));
             playback.setPlaybackRequested(state.getBoolean("playing",true));
             String restored=state.getString("motion","SQUAT");
             try {
@@ -228,6 +248,8 @@ public final class NativeAvatarActivity extends ComponentActivity {
                     motionPicker.setEnabled(false);
                     scenePicker.setEnabled(false);
                     if(entry.canIllustrate()){
+                        commandDiagram.setPlaying(false);
+                        commandDiagram.setVisibility(View.GONE);
                         if(entry.camera==AvatarMultiViewKinematics.ViewMode.SIDE){
                             AvatarMotionEngine.Motion motion=entry.clip.sideMotion();
                             avatar.setMotion(motion);
@@ -241,13 +263,19 @@ public final class NativeAvatarActivity extends ComponentActivity {
                         avatar.setVisibility(View.VISIBLE);
                         applyPlayback();
                     }else{
+                        // SPEC_ONLY is an animated map of the authored joint
+                        // commands, NOT a rendered exercise or invented prop.
+                        // Preserve pause, scrub, speed and palette controls.
                         avatar.setPlaying(false);
                         avatar.setVisibility(View.GONE);
-                        genderControls.setVisibility(View.GONE);
-                        playbackControls.setVisibility(View.GONE);
-                        timeline.setVisibility(View.GONE);
+                        commandDiagram.setEntry(entry);
+                        commandDiagram.setFemale(avatar.isFemale());
+                        commandDiagram.setSpeed(avatar.getSpeed());
+                        commandDiagram.setVisibility(View.VISIBLE);
+                        commandDiagram.setPlaying(playback.shouldPlay());
                         motionPicker.setVisibility(View.GONE);
                         scenePicker.setVisibility(View.GONE);
+                        timeline.setContentDescription("Fase del mapa de comandos articulares");
                     }
                     updatePlay();
                 });
@@ -255,6 +283,8 @@ public final class NativeAvatarActivity extends ComponentActivity {
                 runOnUiThread(()->{
                     if(isDestroyed())return;
                     avatar.setPlaying(false);
+                    commandDiagram.setPlaying(false);
+                    commandDiagram.setVisibility(View.GONE);
                     avatar.setVisibility(View.GONE);
                     specification.setText("No hay una ficha visual fiable para el ID solicitado. "+
                             "El visor no mostrará un ejercicio distinto como sustituto.");
@@ -287,7 +317,8 @@ public final class NativeAvatarActivity extends ComponentActivity {
         state.putString("motion",avatar.getMotion().name());
         state.putString("camera",avatar.getViewMode().name());
         state.putBoolean("playing",playback.isPlaybackRequested());
-        state.putFloat("phase",avatar.getPhase());
+        state.putFloat("phase",selectedEntry!=null&&!selectedEntry.canIllustrate()
+                ?commandDiagram.getPhase():avatar.getPhase());
         state.putFloat("speed",avatar.getSpeed());
         super.onSaveInstanceState(state);
     }
@@ -306,16 +337,22 @@ public final class NativeAvatarActivity extends ComponentActivity {
     @Override protected void onDestroy(){
         commandWorker.shutdownNow();
         if(avatar!=null)avatar.setFrameListener(null);
+        if(commandDiagram!=null)commandDiagram.setFrameListener(null);
         super.onDestroy();
     }
     private void applyPlayback(){
-        if(avatar!=null)avatar.setPlaying(playback.shouldPlay());
+        if(avatar!=null)avatar.setPlaying(playback.shouldPlay()&&
+                (selectedEntry==null||selectedEntry.canIllustrate()));
+        if(commandDiagram!=null)commandDiagram.setPlaying(playback.shouldPlay()&&
+                selectedEntry!=null&&!selectedEntry.canIllustrate());
         updatePlay();
     }
     private void updatePlay(){
         if(avatar==null)return;
         if(selectedEntry!=null&&!selectedEntry.canIllustrate()){
-            if(status!=null)status.setText("Comandos del catálogo · sin animación específica revisada");
+            if(play!=null)play.setText(commandDiagram.isPlaying()?"Pausar":"Reproducir");
+            if(status!=null)status.setText(selectedEntry.variantId+
+                    " · mapa articular animado · NO es una demostración");
             return;
         }
         if(play!=null)play.setText(avatar.isPlaying()?"Pausar":"Reproducir");
