@@ -105,6 +105,55 @@ public final class AvatarDedicatedSceneTest {
                 max.pose.hip.distance(max.pose.shoulder),EPS);
         assertEquals(0f,max.toeRaiseDegrees,EPS);
     }
+    @Test public void heldBridgeRetainsMatContactsAndPersistsAtItsApex(){
+        AvatarDedicatedScene initial=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.GLUTE_BRIDGE_PAUSE,0f,BODY);
+        AvatarDedicatedScene firstHold=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.GLUTE_BRIDGE_PAUSE,.35f,BODY);
+        AvatarDedicatedScene lastHold=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.GLUTE_BRIDGE_PAUSE,.65f,BODY);
+        AvatarDedicatedScene end=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.GLUTE_BRIDGE_PAUSE,1f,BODY);
+        assertTrue(firstHold.floorBackContact);
+        assertEquals(0f,firstHold.pose.hip.distance(lastHold.pose.hip),EPS);
+        assertTrue(initial.pose.hip.y-firstHold.pose.hip.y>40f);
+        assertEquals(0f,initial.pose.head.distance(firstHold.pose.head),EPS);
+        assertEquals(0f,initial.pose.ankle.distance(firstHold.pose.ankle),EPS);
+        assertEquals(0f,initial.pose.hip.distance(end.pose.hip),EPS);
+    }
+    @Test public void pausedSeatedExtensionUsesLongerHoldWithStableSupportFoot(){
+        AvatarDedicatedScene start=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE,0f,BODY);
+        AvatarDedicatedScene held1=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE,.35f,BODY);
+        AvatarDedicatedScene held2=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE,.65f,BODY);
+        assertEquals(0f,held1.pose.ankle.distance(held2.pose.ankle),EPS);
+        assertTrue(held1.pose.ankle.x>start.pose.ankle.x+70f);
+        assertEquals(0f,start.pose.knee.distance(held1.pose.knee),EPS);
+        assertEquals(0f,start.pose.farAnkle.distance(held1.pose.farAnkle),EPS);
+        assertTrue(held1.chairSeatContact);
+    }
+    @Test public void alternatingKneeExtensionNeverLiftsBothLegsAtOnce(){
+        AvatarDedicatedScene start=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING,0f,BODY);
+        AvatarDedicatedScene first=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING,.25f,BODY);
+        AvatarDedicatedScene middle=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING,.5f,BODY);
+        AvatarDedicatedScene second=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING,.75f,BODY);
+        AvatarDedicatedScene end=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING,1f,BODY);
+        assertTrue(first.chairSeatContact);
+        assertTrue(first.pose.ankle.x>start.pose.ankle.x+70f);
+        assertEquals(0f,start.pose.farAnkle.distance(first.pose.farAnkle),EPS);
+        assertEquals(0f,start.pose.ankle.distance(middle.pose.ankle),EPS);
+        assertEquals(0f,start.pose.farAnkle.distance(middle.pose.farAnkle),EPS);
+        assertTrue(second.pose.farAnkle.x>start.pose.farAnkle.x+70f);
+        assertEquals(0f,start.pose.ankle.distance(second.pose.ankle),EPS);
+        assertEquals(0f,start.pose.farAnkle.distance(end.pose.farAnkle),EPS);
+    }
     @Test public void invalidSpecsAndPhasesCannotProduceFakeScenes(){
         assertThrows(IllegalArgumentException.class,()->
                 AvatarDedicatedScene.at(null,.5f,BODY));
