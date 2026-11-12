@@ -14,7 +14,9 @@ public final class AvatarMotionEngine {
         ARM_RAISE("Elevación de brazos"),
         MARCH("Marcha"),
         LUNGE("Zancada"),
-        BURPEE("Burpee · perfil");
+        BURPEE("Burpee · perfil"),
+        ARM_CURL("Flexión de codos sin implemento"),
+        KNEE_CURL("Flexión de rodilla de pie");
         public final String label;
         Motion(String label){this.label=label;}
     }
@@ -46,6 +48,11 @@ public final class AvatarMotionEngine {
                 ankle=new AvatarKinematics.Point(182f+24f*s,364f-45f*s);
                 hy+=2f*s;
                 hx+=3f*s;
+                break;
+            case KNEE_CURL:
+                // Only the near foot moves; the far sole stays fixed.
+                // Analytic two-link IK keeps both knee segments constant.
+                ankle=new AvatarKinematics.Point(182f-30f*s,364f-47f*s);
                 break;
             case LUNGE:
                 // Wide planted stance, illustrated in a single side view.
@@ -83,6 +90,12 @@ public final class AvatarMotionEngine {
         // changes smoothly without pulling the wrists towards the shoulders.
         float nearAngle=.055f,farAngle=.015f;
         switch(motion) {
+            case ARM_CURL:
+                // Elbow flexion shortens shoulder-to-wrist distance; the
+                // elbow joint remains solved at fixed anatomical link lengths.
+                nearAngle+=.35f*s;
+                farAngle+=.30f*s;
+                break;
             case ARM_RAISE:
                 nearAngle+=(float)Math.PI*s;
                 farAngle+=(float)Math.PI*s;
@@ -103,6 +116,7 @@ public final class AvatarMotionEngine {
                 break;
         }
         float reach=spec.upperArm+spec.forearm-.015f;
+        if(motion==Motion.ARM_CURL)reach-=46f*s;
         AvatarKinematics.Point wrist=AvatarKinematics.wristOnArc(
                 shoulder,reach,nearAngle);
         AvatarKinematics.Point farWrist=AvatarKinematics.wristOnArc(
