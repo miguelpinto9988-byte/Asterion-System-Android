@@ -383,6 +383,9 @@ public final class NativeAvatarRenderTest {
                         Bitmap bitmap=Bitmap.createBitmap(400,480,
                                 Bitmap.Config.ARGB_8888);
                         view.draw(new Canvas(bitmap));
+                        assertFalse("Frame rejected: "+scene+"/"+phaseIndex,
+                                view.getContentDescription().toString()
+                                        .contains("geométrica inválida"));
                         String name=(purple?"morado":"azul")+"_"
                                 +(scene==0?"lateral_sentadilla":scene==1?"lateral_burpee":
                                   view.getViewMode().name().toLowerCase(java.util.Locale.ROOT))
