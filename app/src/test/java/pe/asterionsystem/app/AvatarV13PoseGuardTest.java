@@ -32,6 +32,9 @@ public final class AvatarV13PoseGuardTest {
                     case FRONT_JACKS:p=AvatarMultiViewKinematics.frontJumpingJack(t,SPEC);break;
                     case FRONT_ELBOW:p=AvatarMultiViewKinematics.frontElbowFlex(t,SPEC);break;
                     case TOP:p=AvatarMultiViewKinematics.diamondTop(t,SPEC);break;
+                    case FRONT_LATERAL:p=AvatarMultiViewKinematics.frontLateralRaise(t,SPEC);break;
+                    case FRONT_BALANCE:p=AvatarMultiViewKinematics.frontSingleLegBalance(t,SPEC);break;
+                    case FRONT_SIDE_STEP:p=AvatarMultiViewKinematics.frontSideStep(t,SPEC);break;
                     default:throw new AssertionError();
                 }
                 AvatarSkeletonFrame frame=AvatarSkeletonFrame.fromCamera(p,mode,SPEC);
