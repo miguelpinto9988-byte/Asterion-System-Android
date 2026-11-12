@@ -143,11 +143,18 @@ public final class AvatarJointCommandView extends View {
                 skeleton,5);
         line(c,p.neck.x,p.neck.y,p.head.x,p.head.y,accent,5);
         style(accent,3,true);c.drawCircle(p.head.x,p.head.y,17f,paint);
-        for(AvatarKinematics.Point joint:new AvatarKinematics.Point[]{
-                p.leftShoulder,p.rightShoulder,p.leftElbow,p.rightElbow,
-                p.leftWrist,p.rightWrist,p.leftHip,p.rightHip,
-                p.leftKnee,p.rightKnee,p.leftAnkle,p.rightAnkle})
-            dot(c,joint.x,joint.y,3.5f,skeleton);
+        dot(c,p.leftShoulder.x,p.leftShoulder.y,3.5f,skeleton);
+        dot(c,p.rightShoulder.x,p.rightShoulder.y,3.5f,skeleton);
+        dot(c,p.leftElbow.x,p.leftElbow.y,3.5f,skeleton);
+        dot(c,p.rightElbow.x,p.rightElbow.y,3.5f,skeleton);
+        dot(c,p.leftWrist.x,p.leftWrist.y,3.5f,skeleton);
+        dot(c,p.rightWrist.x,p.rightWrist.y,3.5f,skeleton);
+        dot(c,p.leftHip.x,p.leftHip.y,3.5f,skeleton);
+        dot(c,p.rightHip.x,p.rightHip.y,3.5f,skeleton);
+        dot(c,p.leftKnee.x,p.leftKnee.y,3.5f,skeleton);
+        dot(c,p.rightKnee.x,p.rightKnee.y,3.5f,skeleton);
+        dot(c,p.leftAnkle.x,p.leftAnkle.y,3.5f,skeleton);
+        dot(c,p.rightAnkle.x,p.rightAnkle.y,3.5f,skeleton);
     }
     @Override protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
