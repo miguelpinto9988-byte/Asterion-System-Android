@@ -88,6 +88,51 @@ se revisa en su siguiente aparición. No se alteran días de descanso.
 La revisión es automática en el software. **No se obliga a realizar** los
 ejercicios, las repeticiones ni las series sugeridas.
 
+## Reinicio de volumen al cambiar ejercicio o técnica (hitos 7/14/21)
+
+**Regla:** la progresión numérica pertenece a un **bloque de volumen** de una
+variante concreta, no a una categoría en general. Tras una revisión técnica
+se comparan las variantes de la categoría actualmente programada con la
+selección anterior de esa misma categoría.
+
+- **Mismo ID y nivel técnico:** conserva el volumen histórico de su bloque.
+- **ID distinto o cambio de complejidad técnica:** la variante seleccionada
+  recibe una **nueva fecha de inicio de bloque**. Los registros anteriores a
+  esa fecha ya no alimentan sus propuestas de series o repeticiones.
+- **Variante antigua que vuelve a aparecer:** si no estaba en la selección
+  anterior, también empieza un bloque nuevo; **no reutiliza** metas acumuladas
+  en una etapa previa.
+- **Si el usuario cambia el nivel de experiencia:** se reinician también las
+  referencias numéricas de las variantes seleccionadas, incluso antes del
+  siguiente hito de siete días.
+- **Misma fecha, reapertura de pantalla:** no dispara un segundo reinicio.
+- **Descanso y otras categorías:** no alteran el historial de otras zonas.
+- **Historial completado:** no se borra. El selector puede seguir utilizando
+  valoraciones anteriores para proteger recuperación y reportes históricos,
+  pero el motor **numérico** filtra lo anterior al inicio del nuevo bloque.
+
+La primera referencia del nuevo bloque se registra a partir de lo que la
+persona realmente realice en esa variante; **no existe hoy una cifra inicial
+universal configurada en el perfil**. Por ello el motor deja series y
+repeticiones **sin referencia**, en lugar de copiar el valor alto del
+movimiento anterior o inventar una nueva prescripción.
+
+Ejemplo técnico (datos ilustrativos, no recomendación de ejercicio):
+
+| Fase | Selección | Registro numérico y resultado |
+|---|---|---|
+| Antes del hito 7 | Variante A, nivel 1 | Existían 2×8, luego 2×11 |
+| Hito 7 | Variante B, nivel 2 | Reinicio: B sin volumen previo propio |
+| Primera sesión con B | Variante B, nivel 2 | Se registra su propio punto de partida |
+| Hito 14 sin cambio de variante | Variante B, nivel 2 | Continúa su historia desde el inicio con B |
+| Hito 21 con vuelta a A | Variante A, nivel 1 | Reinicio: NO hereda el antiguo 2×11 |
+
+**Implementación y pruebas:** `VolumeResetPolicy` (motor puro),
+`VolumeProgressStore.observeCheckpointSelection` (persistencia Android),
+`progressionHistoryForCategory` (filtro por fecha e ID), y
+`VolumeProgressResetPersistenceTest` (instrumentación Android real) además de
+pruebas JUnit y un contrato Python en CI.
+
 ## Pruebas
 
 `progress-engine/src/test/java/.../VolumeProgressionEngineTest.java` cubre ausencia de historial, una sesión fácil, dos sesiones comparables, separación temporal, sesiones incompletas, esfuerzo alto, aislamiento de categoría, ausencia de transferencia entre variantes, pausa y revisión de series.
