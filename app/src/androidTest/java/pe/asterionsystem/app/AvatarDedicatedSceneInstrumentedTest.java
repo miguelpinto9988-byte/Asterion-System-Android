@@ -29,7 +29,9 @@ public final class AvatarDedicatedSceneInstrumentedTest {
                 "extension_rodilla_sin_carga_v01",
                 "dorsiflexion_tibial_v01","alcances_tronco_sentado_v02",
                 "puente_gluteo_v03","extension_rodilla_sin_carga_v02",
-                "extension_rodilla_sin_carga_v03"};
+                "extension_rodilla_sin_carga_v03",
+                "puente_gluteo_v04","dorsiflexion_tobillo_v01",
+                "elevacion_gemelos_v01","balanceo_talon_punta_sentado_v01"};
         for(String id:ids){
             AvatarExerciseCommandCatalog.Entry entry=commands.require(id);
             assertTrue(entry.canIllustrate());
@@ -70,6 +72,6 @@ public final class AvatarDedicatedSceneInstrumentedTest {
         });
         File[] files=dir.listFiles((p,name)->name.endsWith(".png"));
         assertNotNull(files);
-        assertEquals(50,files.length);
+        assertEquals(74,files.length);
     }
 }
