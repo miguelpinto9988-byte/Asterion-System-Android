@@ -6,7 +6,7 @@ import org.junit.Test;
 /** Screen-space timeline continuity; not a biomechanical validation. */
 public final class AvatarJointTimelineTest {
     @Test public void all57CommandsHaveFiniteJointTargetsAndCloseTheirLoop(){
-        assertEquals(57,AvatarJointTimeline.Command.values().length);
+        assertEquals(60,AvatarJointTimeline.Command.values().length);
         assertEquals(24,AvatarJointTimeline.Joint.values().length);
         for(AvatarJointTimeline.Command command:AvatarJointTimeline.Command.values()){
             AvatarJointTimeline line=new AvatarJointTimeline(command);
@@ -117,6 +117,22 @@ public final class AvatarJointTimelineTest {
         assertTrue(pausedBridge.offset(AvatarJointTimeline.Joint.LEFT_HIP,.65f)<-18f);
         assertTrue(single.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.5f)>60f);
         assertEquals(0f,single.offset(AvatarJointTimeline.Joint.RIGHT_KNEE,.5f),0f);
+    }
+
+    @Test public void unilateralToeAndTwoHeelRaiseProgramsAreDistinct(){
+        AvatarJointTimeline single=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.SEATED_TOE_RAISE_SINGLE);
+        assertEquals(22f,single.offset(AvatarJointTimeline.Joint.LEFT_ANKLE,.49f),.1f);
+        assertEquals(0f,single.offset(AvatarJointTimeline.Joint.RIGHT_ANKLE,.49f),0f);
+        AvatarJointTimeline heel=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.SEATED_HEEL_RAISE);
+        AvatarJointTimeline gentle=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.SEATED_HEEL_RAISE_GENTLE);
+        assertEquals(-22f,heel.offset(AvatarJointTimeline.Joint.LEFT_ANKLE,.49f),.1f);
+        assertEquals(-22f,heel.offset(AvatarJointTimeline.Joint.RIGHT_ANKLE,.49f),.1f);
+        assertEquals(-12f,gentle.offset(AvatarJointTimeline.Joint.LEFT_ANKLE,.49f),.1f);
+        assertEquals(0f,heel.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.49f),0f);
+        assertEquals(0f,heel.offset(AvatarJointTimeline.Joint.RIGHT_HIP,.49f),0f);
     }
 
     @Test public void invalidPhaseAndNullJointFailClosed(){
