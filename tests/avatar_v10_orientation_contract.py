@@ -19,7 +19,7 @@ for v in ('drawProneTopSneaker(', 'ShoeSurface.UPPER',
     assert v in a,v
 assert 'AvatarOrientationRules.requireProneTopPose(p);' in m
 assert 'AvatarOrientationRules.requireUprightFrontPose(p);' in m
-assert 'details.drawProneTopSneaker(c,a,k,palette);' in m
+assert 'details.drawProneTopSneaker(c,foot,palette);' in m
 assert 'details.drawProjectedSneaker(c,a,palette,true);' not in m
 assert 'canvas.rotate(AvatarOrientationRules.sideFacingDegrees(' in l
 t=(r/'app/src/test/java/pe/asterionsystem/app/AvatarOrientationRulesTest.java').read_text()

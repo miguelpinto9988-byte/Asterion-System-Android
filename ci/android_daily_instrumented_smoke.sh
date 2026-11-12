@@ -68,8 +68,21 @@ adb shell am instrument -w -e class \
   "pe.asterionsystem.app.NativeAvatarRenderTest" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
   | tee "$OUT/native-avatar-render.txt"
-grep -q 'OK (11 tests)' "$OUT/native-avatar-render.txt"
-echo "PASS: native avatar palettes, resolutions, themes and accessibility (11 tests)."
+grep -q 'OK (12 tests)' "$OUT/native-avatar-render.txt"
+echo "PASS: native avatar palettes, resolutions, themes and accessibility (12 tests)."
 
 
 
+
+
+echo "Android instrumentation 8/8: export screenshots from real Canvas renderer"
+REMOTE="/sdcard/Android/data/$PACKAGE/files/asterion-v11-evidence"
+LOCAL="$OUT/asterion-v11-evidence"
+mkdir -p "$LOCAL"
+adb shell ls "$REMOTE"
+adb pull "$REMOTE/." "$LOCAL/"
+COUNT="$(find "$LOCAL" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
+test "$COUNT" -eq 42 || { echo "Expected 42 real emulator PNGs; found $COUNT"; exit 1; }
+test -s "$LOCAL/azul_top_1.png"
+test -s "$LOCAL/morado_top_1.png"
+echo "PASS: 42 real Android renderer screenshots from seven scenes × three phases × two palettes."
