@@ -197,26 +197,25 @@ public final class VolumeProgressionEngine {
         }
 
         ArrayList<LocalDate> easyDays = new ArrayList<>();
-        boolean sameVolume = true;
+        boolean sameSetsAndEasy = true;
         LocalDate oldest = recent.day;
         for (Observation obs : matching) {
-            if (obs.effort > 3 || obs.sets != recent.sets
-                    || obs.repetitions != recent.repetitions)
-                sameVolume = false;
+            if (obs.effort > 3 || obs.sets != recent.sets)
+                sameSetsAndEasy = false;
             if (obs.effort <= 3 && !easyDays.contains(obs.day))
                 easyDays.add(obs.day);
             if (obs.day.isBefore(oldest)) oldest = obs.day;
         }
         boolean eligibleSeries = matching.size() >= 3
                 && easyDays.size() >= 3
-                && sameVolume
+                && sameSetsAndEasy
                 && ChronoUnit.DAYS.between(oldest, recent.day) >= 7
                 && recent.sets < 3;
         if (eligibleSeries) {
             return new Suggestion(Status.CALCULATED_EXTRA_SERIES,
                     recent.sets, recent.repetitions,
                     recent.sets + 1, recent.repetitions,
-                    "Tres sesiones fáciles comparables: el motor calcula una serie "
+                    "Tres sesiones fáciles en la misma variante y con igual número de series: el motor calcula una serie "
                     + "adicional como opción revisable, sin imponerla.");
         }
 
