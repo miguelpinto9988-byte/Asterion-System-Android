@@ -88,7 +88,7 @@ public final class NativeAvatarView extends View {
         phase=0f;lastFrameMs=SystemClock.uptimeMillis();invalidate();
     }
     public void setPhase(float value){
-        phase=Float.isNaN(value)?0f:Math.max(0f,Math.min(1f,value));
+        phase=!Float.isFinite(value)?0f:Math.max(0f,Math.min(1f,value));
         lastFrameMs=SystemClock.uptimeMillis();
         invalidate();
     }
@@ -142,16 +142,18 @@ public final class NativeAvatarView extends View {
         if(getWidth()<=0||getHeight()<=0)return;
         float scale=Math.min(getWidth()/DESIGN_WIDTH,getHeight()/DESIGN_HEIGHT);
         canvas.save();
-        canvas.translate((getWidth()-DESIGN_WIDTH*scale)*0.5f,
-                (getHeight()-DESIGN_HEIGHT*scale)*0.5f);
-        canvas.scale(scale,scale);
+        try {
+            canvas.translate((getWidth()-DESIGN_WIDTH*scale)*0.5f,
+                    (getHeight()-DESIGN_HEIGHT*scale)*0.5f);
+            canvas.scale(scale,scale);
 
         if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE) {
             // Contact flags are authored by motion, never guessed from
             // the visible 2D ankle-to-knee segment.
-            AvatarContactFrame.forSide(motion,phase);
-            renderer.draw(canvas,AvatarMotionEngine.pose(motion,phase,bodySpec),
-                    bodySpec,palette,dark,motion.label);
+            AvatarContactFrame contact=AvatarContactFrame.forSide(motion,phase);
+            AvatarPose pose=AvatarMotionEngine.pose(motion,phase,bodySpec);
+            AvatarFrameSafety.requireSide(pose,contact);
+            renderer.draw(canvas,pose,bodySpec,palette,dark,motion.label);
         } else {
             AvatarContactFrame contact=AvatarContactFrame.forCamera(viewMode,phase);
             if(viewMode==AvatarMultiViewKinematics.ViewMode.TOP)
@@ -176,9 +178,14 @@ public final class NativeAvatarView extends View {
                 default:
                     throw new IllegalStateException("Camera not implemented");
             }
+            AvatarFrameSafety.requireCamera(pose,viewMode,contact);
             multiRenderer.draw(canvas,pose,viewMode,palette,dark,bodySpec);
         }
-        canvas.restore();
+        } finally {
+            // Restore the caller's drawing state even if a rig invariant
+            // rejects an invalid pose. Never leak a transformed Canvas.
+            canvas.restore();
+        }
         if(playing&&isAttachedToWindow()&&isShown())postInvalidateOnAnimation();
     }
 
