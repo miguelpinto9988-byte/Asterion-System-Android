@@ -123,6 +123,7 @@ jobs:
           python3 tests/volume_checkpoint_reset_contract.py
           python3 tests/volume_all_variants_contract.py
           python3 tests/avatar_catalog_motion_contract.py
+          python3 tests/avatar_variant_scene_contract.py
           python3 tests/consolidation_baseline_contract.py
           python3 tests/phase16_preflight_static.py
           python3 tests/phase03_visual_source_contract.py
@@ -191,7 +192,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/avatar-completion
-          python3 tests/avatar_completion_progress.py --format json > build/avatar-completion/progreso.json
+          python3 tests/avatar_completion_progress.py --pending-csv build/avatar-completion/pendientes.csv --format json > build/avatar-completion/progreso.json
           python3 tests/avatar_completion_progress.py
           python3 - <<'PY'
           import json,os
@@ -209,7 +210,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: asterion-avatar-progreso
-          path: build/avatar-completion/progreso.json
+          path: build/avatar-completion/
           if-no-files-found: error
           retention-days: 14
 

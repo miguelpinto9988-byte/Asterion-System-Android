@@ -157,3 +157,16 @@ test "$SUP_COUNT" -eq 94 || {
   exit 1
 }
 echo "PASS: 94 native Android scenes with validated ground, chair, mat and alternating shoe pivots."
+
+# Every newly authored ID, not a hand-picked subset; both palettes and both
+# halves of alternating motion. The artifact remains a reviewable preview.
+adb shell am instrument -w -e class \
+  "pe.asterionsystem.app.AvatarVariantSceneInstrumentedTest" \
+  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
+  | tee "$OUT/avatar-variant-scenes.txt"
+grep -q 'OK (1 test)' "$OUT/avatar-variant-scenes.txt"
+VAR_REMOTE="/sdcard/Android/data/$PACKAGE/files/asterion-avatar-variant-scenes"
+VAR_LOCAL="$OUT/asterion-avatar-variant-scenes"
+mkdir -p "$VAR_LOCAL"
+adb pull "$VAR_REMOTE/." "$VAR_LOCAL/"
+python3 tests/avatar_variant_scene_contract.py --frames "$VAR_LOCAL"

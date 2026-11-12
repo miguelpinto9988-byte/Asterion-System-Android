@@ -21,7 +21,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 public final class AvatarExerciseCommandCatalog {
     public enum Status { ILLUSTRATIVE,SPEC_ONLY }
     public enum Clip {
-        NONE, SQUAT,HIP_HINGE,LUNGE,ARM_RAISE,ARM_CURL,KNEE_CURL,MARCH,
+        NONE, AUTHORED_VARIANT, SQUAT,HIP_HINGE,LUNGE,ARM_RAISE,ARM_CURL,KNEE_CURL,MARCH,
         FRONT,FRONT_SQUAT,FRONT_JACKS,FRONT_ELBOW,TOP,
         FRONT_LATERAL,FRONT_BALANCE,FRONT_SIDE_STEP,FRONT_NECK_TILT,
         HIP_EXTENSION_STAND,GLUTE_BRIDGE_SHORT,GLUTE_BRIDGE_BASIC,
@@ -91,11 +91,17 @@ public final class AvatarExerciseCommandCatalog {
         public String phaseLabel(float progress){
             if(!Float.isFinite(progress)||progress<0||progress>1)
                 throw new IllegalArgumentException("Fase inválida");
+            AvatarVariantScene.Recipe recipe=AvatarVariantScene.find(variantId);
+            if(recipe!=null)return recipe.phaseLabel(progress);
             if(progress<.08f)return "Preparación y apoyo";
             if(progress<.42f)return "Movimiento controlado";
             if(progress<.58f)return "Posición ilustrativa central";
             if(progress<.94f)return "Retorno controlado";
             return "Fin en posición neutral";
+        }
+        public String describePhase(float phase){
+            AvatarVariantScene.Recipe recipe=AvatarVariantScene.find(variantId);
+            return recipe==null?timeline.describe(phase):recipe.describe(phase);
         }
         public String safeDescription(){
             return "Ejercicio "+variantId+" · comando "+command+
@@ -179,7 +185,7 @@ public final class AvatarExerciseCommandCatalog {
             if((status==Status.SPEC_ONLY)!=(clip==Clip.NONE))
                 throw new IllegalArgumentException("Estado/escena inconsistente: "+p[0]);
             if(status==Status.ILLUSTRATIVE){
-                if(level>=4||supervision)throw new IllegalArgumentException(
+                if(clip!=Clip.AUTHORED_VARIANT&&(level>=4||supervision))throw new IllegalArgumentException(
                         "Prohibida demostración automática técnica avanzada: "+p[0]);
                 if((camera==AvatarMultiViewKinematics.ViewMode.SIDE) !=
                         (clip!=Clip.FRONT&&clip!=Clip.FRONT_SQUAT&&

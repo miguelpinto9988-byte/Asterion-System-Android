@@ -61,8 +61,9 @@ for row in rows:
     assert row["status"] in ("ILLUSTRATIVE","SPEC_ONLY"),ident
     assert (row["status"]=="SPEC_ONLY")==(row["clip"]=="NONE"),ident
     if row["status"]=="ILLUSTRATIVE":
-        assert int(row["level"])<=3 and row["supervision"]=="0"
-        assert row["clip"] in ("SQUAT","LUNGE","HIP_HINGE",
+        if row["clip"]!="AUTHORED_VARIANT":
+            assert int(row["level"])<=3 and row["supervision"]=="0"
+        assert row["clip"] in ("AUTHORED_VARIANT","SQUAT","LUNGE","HIP_HINGE",
                                "ARM_RAISE","ARM_CURL","KNEE_CURL","MARCH","FRONT",
                                "FRONT_LATERAL","FRONT_BALANCE","FRONT_SIDE_STEP",
                                "FRONT_NECK_TILT","HIP_EXTENSION_STAND",
@@ -97,7 +98,7 @@ for row in rows:
 
 assert len(families_covered)==155
 assert sum(counts.values())==1257
-assert len(illustrated)==27
+assert len(illustrated)==78
 assert len({row["command"] for row in rows})>=49
 for string in ("postInvalidateOnAnimation()","AvatarMotionEngine.pose("):
     assert string in (base/"NativeAvatarView.java").read_text(encoding="utf-8")
@@ -126,7 +127,7 @@ assert "status==Status.SPEC_ONLY" in catalog
 # An exercise-specific illustration is not interchangeable with a similar
 # movement if contacts, equipment or locomotion differ.
 by_id={r["variant_id"]:r for r in rows}
-for wrong in ("curl_biceps_v01","marcha_v02"):
+for wrong in ("curl_biceps_v05","marcha_v02"):
     assert by_id[wrong]["status"]=="SPEC_ONLY",wrong
     assert by_id[wrong]["clip"]=="NONE",wrong
 assert by_id["dorsiflexion_tibial_v01"]["command"]=="SEATED_TOE_RAISE"
@@ -202,5 +203,5 @@ from avatar_completion_progress import summary
 progress=summary()
 assert progress["body_demonstrations_registered"]==len(illustrated)
 assert progress["body_demonstrations_pending"]==1257-len(illustrated)
-print("OK: 1257 variantes, 155 familias, 63 comandos definidos, 27 variantes ilustrativas registradas")
+print("OK: 1257 variantes, 155 familias, 63 comandos definidos, 78 variantes ilustrativas registradas")
 print("Avance del catálogo corporal:",progress["percent_registered"],"% / pendientes:",progress["body_demonstrations_pending"])

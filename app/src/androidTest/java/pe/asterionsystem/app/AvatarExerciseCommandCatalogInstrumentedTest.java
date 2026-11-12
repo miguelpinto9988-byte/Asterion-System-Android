@@ -41,15 +41,17 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
                     e.status==AvatarExerciseCommandCatalog.Status.ILLUSTRATIVE);
             if(e.canIllustrate()) {
                 illustrated++;
-                assertTrue(exercise.difficulty()<=3);
+                if(e.clip!=AvatarExerciseCommandCatalog.Clip.AUTHORED_VARIANT)
+                    assertTrue(exercise.difficulty()<=3);
+                else AvatarVariantScene.find(e.variantId).requireConsistent(e);
                 assertNotEquals(AvatarExerciseCommandCatalog.Clip.NONE,e.clip);
             }else{
                 unreviewed++;
                 assertEquals(AvatarExerciseCommandCatalog.Clip.NONE,e.clip);
             }
         }
-        assertEquals(27,illustrated);
-        assertEquals(1230,unreviewed);
+        assertEquals(78,illustrated);
+        assertEquals(1179,unreviewed);
         for(String id:new String[]{"flexion_rodilla_bipeda_v03",
                 "equilibrio_unipodal_v04","caminata_banda_v01","elevacion_lateral_v01",
                 "inclinacion_cervical_suave_v01",
@@ -65,7 +67,7 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
                 "elevacion_gemelos_v03","dorsiflexion_tibial_v03"}){
             assertTrue(profiles.require(id).canIllustrate());
         }
-        for(String id:new String[]{"curl_biceps_v01","marcha_v02",
+        for(String id:new String[]{"curl_biceps_v05","marcha_v02",
                 "rotacion_cervical_suave_v02",
                 "alcance_unipodal_v01"}){
             assertFalse("No substitute animation for "+id,profiles.require(id).canIllustrate());
@@ -187,7 +189,8 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
             for(boolean purple:new boolean[]{false,true}){
                 view.setFemale(purple);
                 for(int m=0;m<motions.length;m++){
-                    view.setMotion(motions[m]);
+                    if(m==0)view.setVariantScene(AvatarVariantScene.find(ids[m]));
+                    else view.setMotion(motions[m]);
                     for(int f=0;f<3;f++){
                         view.setPhase(f==0?0f:f==1?.49f:1f);
                         Bitmap image=Bitmap.createBitmap(400,480,Bitmap.Config.ARGB_8888);

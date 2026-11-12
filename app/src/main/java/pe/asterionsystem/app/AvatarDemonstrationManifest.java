@@ -150,6 +150,8 @@ public final class AvatarDemonstrationManifest {
             throw new IllegalStateException("Duplicated illustrated ID "+id);
     }
     static void requireConsistent(AvatarExerciseCommandCatalog.Entry entry){
+        AvatarVariantScene.Recipe recipe=AvatarVariantScene.find(entry.variantId);
+        if(recipe!=null){recipe.requireConsistent(entry);return;}
         Signature record=REVIEWED.get(entry.variantId);
         if(record==null){
             if(entry.canIllustrate())throw new IllegalArgumentException(
@@ -166,5 +168,5 @@ public final class AvatarDemonstrationManifest {
                     "La escena no coincide con postura, material o ejecución de "+
                     entry.variantId);
     }
-    static int reviewedCount(){return REVIEWED.size();}
+    static int reviewedCount(){return REVIEWED.size()+AvatarVariantScene.all().size();}
 }

@@ -29,7 +29,9 @@ def summary():
     if illustrated|pending!=set(ids) or illustrated&pending:
         raise ValueError("Estado visual desconocido")
     source=MANIFEST.read_text(encoding="utf-8")
-    registered=re.findall(r'register\(rows,"([^"]+)"',source)
+    recipes=(MANIFEST.parent/"AvatarVariantScene.java").read_text(encoding="utf-8")
+    authored=re.findall(r'add\(rows,"([^"]+)"',recipes)
+    registered=re.findall(r'register\(rows,"([^"]+)"',source)+authored
     if len(set(registered))!=len(registered) or set(registered)!=illustrated:
         raise ValueError("Manifiesto visual y TSV tienen coberturas diferentes")
     if "entry.command!=record.command" not in source:
@@ -51,8 +53,22 @@ def summary():
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--format",choices=("json","text"),default="text")
+    parser.add_argument("--pending-csv",type=Path,help="Export every remaining ID with catalog metadata")
     args=parser.parse_args()
     result=summary()
+    if args.pending_csv:
+        taxonomy=ROOT/"progress-engine/src/main/resources/asterion_exercises/v1"
+        with (taxonomy/"variants.tsv").open(encoding="utf-8") as f:
+            variants={r["variant_id"]:r for r in csv.DictReader(f,delimiter="\t")}
+        with TSV.open(encoding="utf-8") as f:
+            pending=[r for r in csv.DictReader(f,delimiter="\t") if r["status"]=="SPEC_ONLY"]
+        args.pending_csv.parent.mkdir(parents=True,exist_ok=True)
+        with args.pending_csv.open("w",encoding="utf-8",newline="") as f:
+            columns=["variant_id","type_id","name","equipment","execution","level","supervision","command","status"]
+            writer=csv.DictWriter(f,fieldnames=columns);writer.writeheader()
+            for row in pending:
+                merged={**variants[row["variant_id"]],**row}
+                writer.writerow({c:merged[c] for c in columns})
     if args.format=="json":
         print(json.dumps(result,ensure_ascii=False,indent=2))
     else:

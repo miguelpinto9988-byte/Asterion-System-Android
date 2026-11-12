@@ -256,7 +256,9 @@ public final class NativeAvatarActivity extends ComponentActivity {
                     if(entry.canIllustrate()){
                         commandDiagram.setPlaying(false);
                         commandDiagram.setVisibility(View.GONE);
-                        if(entry.camera==AvatarMultiViewKinematics.ViewMode.SIDE){
+                        if(entry.clip==AvatarExerciseCommandCatalog.Clip.AUTHORED_VARIANT){
+                            avatar.setVariantScene(AvatarVariantScene.find(entry.variantId));
+                        }else if(entry.camera==AvatarMultiViewKinematics.ViewMode.SIDE){
                             AvatarDedicatedScene.Kind dedicated=entry.clip.dedicatedScene();
                             if(dedicated!=null){
                                 avatar.setViewMode(entry.camera);
@@ -309,17 +311,20 @@ public final class NativeAvatarActivity extends ComponentActivity {
 
     private void showJointStages(){
         if(selectedEntry==null)return;
-        AvatarJointTimeline timelineData=selectedEntry.timeline();
         String message="Referencia 2D ilustrativa, no amplitud clínica. "+
                 "Cada articulación se define, incluso si permanece neutra.\n\n"+
                 "INICIO · "+selectedEntry.phaseLabel(0f)+"\n"+
-                timelineData.describe(0f)+"\n\n"+
+                selectedEntry.describePhase(0f)+"\n\n"+
+                "PRIMER TRAMO · "+selectedEntry.phaseLabel(.25f)+"\n"+
+                selectedEntry.describePhase(.25f)+"\n\n"+
                 "DURANTE · "+selectedEntry.phaseLabel(.5f)+"\n"+
-                timelineData.describe(.5f)+"\n\n"+
+                selectedEntry.describePhase(.5f)+"\n\n"+
+                "SEGUNDO TRAMO · "+selectedEntry.phaseLabel(.75f)+"\n"+
+                selectedEntry.describePhase(.75f)+"\n\n"+
                 "RETORNO · "+selectedEntry.phaseLabel(.79f)+"\n"+
-                timelineData.describe(.79f)+"\n\n"+
+                selectedEntry.describePhase(.79f)+"\n\n"+
                 "FINAL · "+selectedEntry.phaseLabel(1f)+"\n"+
-                timelineData.describe(1f);
+                selectedEntry.describePhase(1f);
         new AlertDialog.Builder(this)
                 .setTitle("Comando "+selectedEntry.command)
                 .setMessage(message).setPositiveButton("Cerrar",null).show();

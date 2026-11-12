@@ -45,8 +45,6 @@ public final class AvatarRenderer {
         AvatarPose p=pose;
         final int bg=dark?0xFF13131D:0xFFF8F9FD;
         final int grid=dark?0xFF272838:0xFFEAECF4;
-        final int top=palette.top;
-        final int hi=palette.accent;
         drawRoundedRect(canvas,10,8,390,468,20,bg,0);
         color(grid);
         paint.setStrokeWidth(1f);
@@ -66,6 +64,30 @@ public final class AvatarRenderer {
                 ?.78f:.94f;
         canvas.scale(cameraScale,cameraScale,200f,364f);
 
+        drawFigure(canvas,p,body,palette);
+        canvas.restore();
+
+        if(dark) {
+            paint.setColor(0xFFADB4CE);
+        }else{
+            paint.setColor(0xFF63718C);
+        }
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(12);
+        paint.setTypeface(LABEL_FACE);
+        canvas.drawText(palette.female?"AVATAR MORADO":"AVATAR AZUL",38,436,paint);
+        String display=motionLabel==null?"MOVIMIENTO":motionLabel.toUpperCase(
+                java.util.Locale.ROOT);
+        if(display.length()>19)display=display.substring(0,19);
+        canvas.drawText(display+" · ILUSTRACIÓN 2D",38,453,paint);
+
+    }
+
+    /** Render the existing avatar in world coordinates; environments own framing. */
+    public void drawFigure(Canvas canvas,AvatarPose p,AvatarBodySpec body,AvatarPalette palette){
+        AvatarPoseGuard.requireRig(AvatarSkeletonFrame.fromSide(p,body));
+        this.body=body;this.palette=palette;
+        final int top=palette.top,hi=palette.accent;
         // Far limbs first. Rounded pieces overlap at each hinge; joints do
         // not display a separate dark ring when the skeleton bends.
         details.drawSneaker(canvas,p.farAnkle,palette,true);
@@ -123,22 +145,6 @@ public final class AvatarRenderer {
         organicJoints.draw(canvas,p.shoulder,p.elbow,p.wrist,body.upperArmWidth*.66f,body.forearmWidth*.83f,palette.skin);
         details.drawForearm(canvas,p.elbow,p.wrist,palette);
         details.drawHand(canvas,p.wrist,palette.skin);
-        canvas.restore();
-
-        if(dark) {
-            paint.setColor(0xFFADB4CE);
-        }else{
-            paint.setColor(0xFF63718C);
-        }
-        paint.setStyle(Paint.Style.FILL);
-        paint.setTextSize(12);
-        paint.setTypeface(LABEL_FACE);
-        canvas.drawText(palette.female?"AVATAR MORADO":"AVATAR AZUL",38,436,paint);
-        String display=motionLabel==null?"MOVIMIENTO":motionLabel.toUpperCase(
-                java.util.Locale.ROOT);
-        if(display.length()>19)display=display.substring(0,19);
-        canvas.drawText(display+" · ILUSTRACIÓN 2D",38,453,paint);
-
     }
 
     private AvatarKinematics.Point interp(AvatarKinematics.Point a,

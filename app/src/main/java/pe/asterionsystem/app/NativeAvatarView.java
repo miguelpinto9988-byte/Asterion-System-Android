@@ -24,6 +24,17 @@ public final class NativeAvatarView extends View {
     private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
     private AvatarMotionEngine.Motion motion=AvatarMotionEngine.Motion.SQUAT;
     private AvatarDedicatedScene.Kind dedicatedScene;
+    private AvatarVariantScene.Recipe variantScene;
+    private final AvatarVariantSceneRenderer variantRenderer=new AvatarVariantSceneRenderer();
+    public void setVariantScene(AvatarVariantScene.Recipe recipe){
+        if(recipe==null)throw new IllegalArgumentException("Recipe required");
+        variantScene=recipe;dedicatedScene=null;
+        viewMode=AvatarMultiViewKinematics.ViewMode.SIDE;
+        phase=0f;lastFrameMs=SystemClock.uptimeMillis();
+        updateAccessibilityDescription();invalidate();
+    }
+    public AvatarVariantScene.Recipe getVariantScene(){return variantScene;}
+
 
     private boolean female=false;
     private boolean playing=true;
@@ -53,6 +64,7 @@ public final class NativeAvatarView extends View {
     public AvatarDedicatedScene.Kind getDedicatedScene(){return dedicatedScene;}
     public void setDedicatedScene(AvatarDedicatedScene.Kind scene){
         if(scene==null)throw new IllegalArgumentException("Escena de apoyo requerida");
+        variantScene=null;
         dedicatedScene=scene;
         viewMode=AvatarMultiViewKinematics.ViewMode.SIDE;
         phase=0f;
@@ -62,6 +74,7 @@ public final class NativeAvatarView extends View {
     public AvatarMultiViewKinematics.ViewMode getViewMode(){return viewMode;}
     public void setViewMode(AvatarMultiViewKinematics.ViewMode value){
         if(value==null)throw new IllegalArgumentException("Vista requerida");
+        variantScene=null;
         viewMode=value;
         if(value!=AvatarMultiViewKinematics.ViewMode.SIDE)dedicatedScene=null;
         phase=0f;
@@ -71,6 +84,7 @@ public final class NativeAvatarView extends View {
     }
     public void setMotion(AvatarMotionEngine.Motion value){
         if(value==null)throw new IllegalArgumentException("Movimiento obligatorio");
+        variantScene=null;
         motion=value;
         dedicatedScene=null;
         phase=0f;
@@ -107,6 +121,11 @@ public final class NativeAvatarView extends View {
     }
 
     private void updateAccessibilityDescription() {
+        if(variantScene!=null){
+            setContentDescription((female?"Avatar morado":"Avatar azul")+" · "+variantScene.label+
+                    " · "+variantScene.equipment+" · ilustración corporal 2D. "+
+                    (playing?"En reproducción.":"Pausada."));return;
+        }
         String activity;
         switch(viewMode) {
             case SIDE:
@@ -194,7 +213,10 @@ public final class NativeAvatarView extends View {
                 (getHeight()-DESIGN_HEIGHT*scale)*0.5f);
         canvas.scale(scale,scale);
 
-        if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE
+        if(variantScene!=null){
+            variantRenderer.draw(canvas,AvatarVariantScene.at(variantScene,phase,bodySpec),
+                    bodySpec,palette,dark);
+        }else if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE
                 &&dedicatedScene!=null){
             AvatarDedicatedScene posture=AvatarDedicatedScene.at(
                     dedicatedScene,phase,bodySpec);
