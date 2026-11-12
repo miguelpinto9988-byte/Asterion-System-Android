@@ -339,8 +339,9 @@ public final class RoutineStepActivity extends ComponentActivity {
                 addText("Volumen anterior: "+suggestion.previousSets+" series × "
                         +suggestion.previousRepetitions+" repeticiones. "
                         +suggestion.explanation,13);
-                if(suggestion.requiresConsent()) {
-                    addText("Opción para considerar, NO obligatoria: "
+                if(suggestion.offeredSets!=suggestion.previousSets
+                        || suggestion.offeredRepetitions!=suggestion.previousRepetitions) {
+                    addText("Siguiente referencia calculada (NO obligatoria): "
                             +suggestion.offeredSets+" series × "
                             +suggestion.offeredRepetitions+" repeticiones.",13);
                 }
