@@ -544,3 +544,42 @@ tren superior 279; tren central 229; movilidad 240; cardio 209.
 Total: **1.233**. El issue #37 conserva los criterios de aceptación
 individuales. No declarar 100 %, ni fusionar la PR como catálogo
 completo, hasta que haya una escena específica revisada para cada ID.
+
+## Lote adicional: balanceo de talón y punta sentado — versión del 12-11-2026
+
+Se ha añadido una vigesimoquinta demostración corporal ilustrativa,
+`balanceo_talon_punta_sentado_v02`, con silla real en el lienzo,
+comando específico `SEATED_HEEL_TOE_ALTERNATION`, y sin reutilizar
+una elevación unilateral ni una escena de pie.
+
+**Dos mitades diferentes de la animación:**
+
+- Fases 0,00 a 0,50: el antepié es el apoyo fijo y ambos talones
+  ascienden mediante rotación sobre los puntos de punta. El tobillo
+  sigue una trayectoria circular y el solucionador IK mantiene las
+  longitudes fémur-tibia.
+- Fases 0,50 a 1,00: los talones permanecen anclados y las puntas
+  ascienden mediante rotación del zapato; rodillas, tibias y caderas
+  no se trasladan. Cada mitad tiene preparación, fase activa,
+  mantenimiento, retorno y posición neutra.
+- Centro del ciclo 0,50: ambas plantas retornan a la neutralidad
+  antes de cambiar el punto de apoyo; cierre 1,00 = apertura 0,00.
+
+La ficha, el render y el `AvatarDemonstrationManifest` exigen el
+mismo ID, cámara `SIDE`, comando, equipamiento `silla` y ejecución
+`controlado`. Las pruebas instrumentales suman 8 fotogramas Android
+específicos de esta escena (dos paletas × cuatro fases), para un total
+de **82 capturas de escenas de colchoneta y silla**. Las pruebas JVM
+verifican los apoyos, no deformación de segmentos, ambos máximos,
+pivotes opuestos, retorno y continuidad de 301 fases.
+
+**Cobertura del catálogo en esta revisión: 25 / 1.257 = 1,99 %**,
+con **1.232 variantes** todavía sin demostración corporal específica.
+El mapa esquemático articular de esas 1.232 variantes continúa
+disponible, pero no cuenta como demostración exacta. El número
+refleja escenas registradas, sujetas a CI, y NO una evaluación
+biomecánica clínica ni una certificación de ejecución.
+
+Referencia pública para diferenciar elevación de talones y puntas:
+University Hospitals Sussex NHS Foundation Trust,
+https://www.uhsussex.nhs.uk/resources/chair-exercises-with-seated-arm-exercises/
