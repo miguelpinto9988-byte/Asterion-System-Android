@@ -16,7 +16,8 @@ public final class AvatarMotionEngine {
         LUNGE("Zancada"),
         BURPEE("Burpee · perfil"),
         ARM_CURL("Flexión de codos sin implemento"),
-        KNEE_CURL("Flexión de rodilla de pie");
+        KNEE_CURL("Flexión de rodilla de pie"),
+        HIP_EXTENSION_STAND("Extensión de cadera de pie sin carga");
         public final String label;
         Motion(String label){this.label=label;}
     }
@@ -51,6 +52,11 @@ public final class AvatarMotionEngine {
                 ankle=new AvatarKinematics.Point(182f+24f*s,364f-45f*s);
                 hy+=2f*s;
                 hx+=3f*s;
+                break;
+            case HIP_EXTENSION_STAND:
+                // Unloaded rear-leg hip extension in profile. The far sole is
+                // planted and the near foot moves backward and upward.
+                ankle=new AvatarKinematics.Point(182f-26f*s,364f-18f*s);
                 break;
             case KNEE_CURL:
                 // Only the near foot moves; the far sole stays fixed.
