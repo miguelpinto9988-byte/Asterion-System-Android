@@ -71,12 +71,12 @@ public final class CoordinatedTrainingEngine {
         // treated as an automatic 14-day "avoid" candidate. Weekly rotation
         // and safety filters still win when applicable.
         ArrayList<String> selectionAvoid = new ArrayList<>(recentCompleted);
-        if (!recentInterruption && combinedEffort <= 6
+        if (!recentInterruption && combinedEffort <= 7
                 && category != CategoryEffortPolicy.REST) {
             for (VolumeProgressionEngine.Observation entry : volumeHistory) {
                 if (entry != null && entry.category == category
                         && entry.completed && !entry.interrupted
-                        && entry.effort <= 6
+                        && entry.effort <= 7
                         && entry.day.isBefore(today)
                         && !entry.day.isBefore(today.minusDays(14))
                         && previousCompleted.contains(entry.variantId)) {
