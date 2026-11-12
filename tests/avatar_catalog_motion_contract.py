@@ -125,7 +125,7 @@ for marker in ("chair(c,dark)","mat(c,dark)","AvatarSkeletonFrame.fromSide"):
 assert "dedicatedRenderer.draw" in native
 assert "avatar.setDedicatedScene(dedicated)" in viewer
 
-assert len(new_exercises)==14
+assert len(new_exercises)==15
 
 if "--samples" in sys.argv:
     out=root/"build/avatar-command-samples/muestras_catalogo.json"
