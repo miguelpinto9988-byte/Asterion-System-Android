@@ -57,7 +57,7 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
                 "puente_gluteo_v01","puente_gluteo_v02",
                 "extension_rodilla_sin_carga_v01","sentadilla_bilateral_v04",
                 "dorsiflexion_tibial_v01","alcances_tronco_sentado_v02",
-                "puente_gluteo_v04","extension_rodilla_sin_carga_v02",
+                "puente_gluteo_v03","extension_rodilla_sin_carga_v02",
                 "extension_rodilla_sin_carga_v03"}){
             assertTrue(profiles.require(id).canIllustrate());
         }
@@ -125,7 +125,7 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
         File folder=new File(base,"asterion-avatar-command-map-samples");
         assertTrue(folder.isDirectory()||folder.mkdirs());
         String[] ids={
-                "puente_gluteo_v03",
+                "puente_gluteo_v04",
                 "rotacion_cervical_suave_v02",
                 "alcance_unipodal_v01",
                 "nado_crol_recreativo_v03"
