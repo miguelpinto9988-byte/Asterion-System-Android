@@ -9,9 +9,9 @@ ilustrativo y no evalúa técnica humana ni tolerancia del usuario.
 - **1.257 variantes** vinculadas por ID a un comando y cámara sugerida.
 - **155 familias** y **474 tipos**; clases y etiquetas desde el catálogo real,
   no desde coincidencias por nombre durante la ejecución.
-- **49 programas de comando** definidos en
+- **51 programas de comando** definidos en
   `AvatarJointTimeline.Command`, con cobertura semántica para las cinco
-  categorías y **23 ejes articulares de referencia 2D**.
+  categorías y **24 ejes articulares de referencia 2D**.
 - **Once variantes con ilustración esquemática** activada y validable.
   Las otras **1.246** disponen de especificación de comandos, pero tienen
   estado `SPEC_ONLY`: **no hay animación específica terminada**. En lugar
@@ -47,7 +47,7 @@ La carga se hace fuera del hilo principal mediante
 
 ## Especificación geométrica y temporal
 
-La referencia técnica representa los movimientos en el plano 2D con 23
+La referencia técnica representa los movimientos en el plano 2D con 24
 ejes: inclinación y giro del cuello; flexión y abducción de ambos hombros;
 flexión de ambos codos; ambas muñecas; dos escápulas; inclinación y giro
 del tronco; pelvis; flexión y abducción de ambas caderas; flexión de ambas
@@ -68,7 +68,7 @@ de dibujo, **no grados clínicos de articulación ni consejos de amplitud**.
 Se utiliza la curva `6t^5 - 15t^4 + 10t^3`: velocidad y aceleración
 continuas en las uniones. `AvatarJointTimeline.offset(joint,phase)` permite
 inspeccionar **cada articulación en preparación, fase central, retorno y final**.
-La prueba `AvatarJointTimelineTest` recorre las 49 instrucciones, verifica
+La prueba `AvatarJointTimelineTest` recorre las 51 instrucciones, verifica
 todos los ejes, cierre de bucle, continuidad y ausencia de NaN.
 
 **Distinción importante:** esta trayectoria es una **especificación
@@ -123,9 +123,9 @@ el muestreo de los nueve IDs con sus estados verdaderos.
 ## Pruebas y protección de calidad
 
 - `tests/avatar_catalog_motion_contract.py`: cobertura exacta de 1.257
-  IDs, 155 familias, 49 comandos, cinco categorías, tipado, supervisión,
+  IDs, 155 familias, 51 comandos, cinco categorías, tipado, supervisión,
   estado visual y mecanismo de fallback sin escenas incorrectas.
-- `AvatarJointTimelineTest`: 49 × 23 ejes, fases y continuidad.
+- `AvatarJointTimelineTest`: 49 × 24 ejes, fases y continuidad.
 - `AvatarMotionEngineTest`: ocho clips laterales, preservación de
   longitud, apoyos y comienzo/fin sin salto.
 - `AvatarExerciseCommandCatalogInstrumentedTest`: carga real desde
@@ -163,7 +163,7 @@ sentadas siguen como `SPEC_ONLY` hasta contar con postura y apoyos fieles.
 
 La cobertura ilustrativa resulta en **11 variantes del catálogo** y **1.246
 especificaciones sin animación validada**. El contador de comandos permanece en
-49 y el catálogo en 1.257. Se conservan los controles de cámara y paleta.
+51 y el catálogo en 1.257. Se conservan los controles de cámara y paleta.
 
 Pruebas añadidas: `AvatarNewFrontalMotionsTest` recorre 361 puntos por escena,
 verifica brazos/piernas de longitud constante, cabeza/cuello, cierre sin saltos,
@@ -171,3 +171,20 @@ contactos y posiciones. `AvatarV13PoseGuardTest` valida también los cuatro
 nuevos modos. La prueba instrumental exporta **24 PNG** (4 escenas × 3 fases ×
 2 avatares) en `build/runtime-diagnostics/asterion-avatar-new-front-samples/`,
 publicados como artefacto de ejecución de GitHub Actions.
+
+## Dos comandos articulares adicionales para las nuevas escenas
+
+Se preservan los **49 comandos anteriores** y se introducen dos nuevos:
+
+- `LATERAL_STEP`: desplazamiento unilateral del pie derecho; cadera,
+  rodilla y tobillo derechos cambian durante la trayectoria. La pierna
+  izquierda y su apoyo permanecen neutros. Se asigna a
+  `caminata_banda_v01`, que no requiere equipo.
+- `NECK_SIDE_TILT`: inclinación lateral del cuello, eje
+  `NECK_SIDE`; no marca flexión sagital ni rotación axial. Se asigna
+  a las tres variantes de `inclinacion_cervical_suave`, aunque solo la
+  variante de pie sin equipo está habilitada para render.
+
+Con estas extensiones hay **51 comandos** y **24 ejes ilustrativos**.
+La interpolación C², el cierre de bucle y las limitaciones clínicas
+siguen inalterados.
