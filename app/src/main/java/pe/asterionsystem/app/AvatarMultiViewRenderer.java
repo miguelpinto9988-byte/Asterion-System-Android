@@ -49,14 +49,24 @@ public final class AvatarMultiViewRenderer {
         if(camera==AvatarMultiViewKinematics.ViewMode.FRONT
                 ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT
                 ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_JACKS
-                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW) {
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_LATERAL
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_BALANCE
+                ||camera==AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP) {
             boolean squat=camera==AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT;
             boolean jacks=camera==AvatarMultiViewKinematics.ViewMode.FRONT_JACKS;
             drawFront(c,p,squat||jacks);
             String scene=squat?"FRONTAL · SENTADILLA ABIERTA":
                     jacks?"FRONTAL · SALTOS DE TIJERA":
                     camera==AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW
-                    ?"FRONTAL · FLEXIÓN DE CODOS":"FRONTAL · ELEVACIÓN DE BRAZOS";
+                    ?"FRONTAL · FLEXIÓN DE CODOS":
+                    camera==AvatarMultiViewKinematics.ViewMode.FRONT_LATERAL
+                    ?"FRONTAL · SEPARACIÓN DE BRAZOS":
+                    camera==AvatarMultiViewKinematics.ViewMode.FRONT_BALANCE
+                    ?"FRONTAL · EQUILIBRIO SOBRE UN PIE":
+                    camera==AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP
+                    ?"FRONTAL · PASO LATERAL":
+                    "FRONTAL · ELEVACIÓN DE BRAZOS";
             text(c,scene,34,447,11,
                     dark?0xFFC0CCE0:0xFF536987);
         } else if(camera==AvatarMultiViewKinematics.ViewMode.TOP) {
