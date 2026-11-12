@@ -244,6 +244,8 @@ public final class MissionsActivity extends ComponentActivity {
         paragraph(dayProposal.explanation());
         paragraph(MissionDifficultyMixPolicy.explanation(
                 profile.experience,levelState.phase));
+        paragraph("Punto de revisión técnica (7/14/21 días, por categoría): "
+                +levelState.technicalReview.explanation);
         if(dayProposal.empty()) {
             paragraph("Sin propuestas de ejercicio para hoy. Se respeta el descanso.");
             return;
