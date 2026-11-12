@@ -312,6 +312,37 @@ public final class NativeAvatarRenderTest {
         });
     }
 
+    @Test public void invalidProportionsUseSafePlaceholderAndCanRecover() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            AvatarBodySpec b=AvatarBodySpec.DEFAULT;
+            AvatarBodySpec impossible=new AvatarBodySpec(
+                    .1f,.1f,b.torso,b.upperArm,b.forearm,
+                    b.waistHalfWidth,b.chestHalfWidth,b.shoulderHalfWidth,
+                    b.thighWidth,b.calfWidth,b.upperArmWidth,
+                    b.forearmWidth,b.headScale);
+            view.setBodySpec(impossible);
+            Bitmap bitmap=Bitmap.createBitmap(400,480,Bitmap.Config.ARGB_8888);
+            Canvas canvas=new Canvas(bitmap);
+            int saves=canvas.getSaveCount();
+            view.draw(canvas);
+            assertEquals(saves,canvas.getSaveCount());
+            assertTrue("No broken avatar should be painted",
+                    view.wasLastFrameRejected());
+            assertNotEquals(0,bitmap.getPixel(200,230));
+            bitmap.recycle();
+            view.setBodySpec(AvatarBodySpec.DEFAULT);
+            Bitmap recovered=Bitmap.createBitmap(400,480,Bitmap.Config.ARGB_8888);
+            view.draw(new Canvas(recovered));
+            assertFalse("Valid proportions should restore the avatar",
+                    view.wasLastFrameRejected());
+            recovered.recycle();
+        });
+    }
+
     @Test public void softHingesHaveNoProtrudingJointBalls() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
