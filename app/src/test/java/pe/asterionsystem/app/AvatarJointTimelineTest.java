@@ -5,8 +5,8 @@ import org.junit.Test;
 
 /** Screen-space timeline continuity; not a biomechanical validation. */
 public final class AvatarJointTimelineTest {
-    @Test public void all49CommandsHaveFiniteJointTargetsAndCloseTheirLoop(){
-        assertEquals(53,AvatarJointTimeline.Command.values().length);
+    @Test public void all57CommandsHaveFiniteJointTargetsAndCloseTheirLoop(){
+        assertEquals(57,AvatarJointTimeline.Command.values().length);
         assertEquals(24,AvatarJointTimeline.Joint.values().length);
         for(AvatarJointTimeline.Command command:AvatarJointTimeline.Command.values()){
             AvatarJointTimeline line=new AvatarJointTimeline(command);
@@ -15,8 +15,23 @@ public final class AvatarJointTimelineTest {
                 assertEquals("Initial "+command+" "+joint,0f,line.offset(joint,0f),.0001f);
                 assertEquals("Final "+command+" "+joint,0f,line.offset(joint,1f),.0001f);
                 assertTrue(Float.isFinite(line.offset(joint,.5f)));
-                assertEquals(line.peakOffsets().getOrDefault(joint,0f),
-                        line.offset(joint,.5f),.0001f);
+                if(command==AvatarJointTimeline.Command.SEATED_KNEE_EXTENSION_ALTERNATING){
+                    // In a truly alternating sequence both knees are neutral
+                    // at 50%, rather than reaching peak together.
+                    float expected=joint==AvatarJointTimeline.Joint.LEFT_KNEE
+                            ?line.peakOffsets().getOrDefault(joint,0f):0f;
+                    assertEquals("first knee at quarter-cycle",expected,
+                            line.offset(joint,.25f),.0001f);
+                    expected=joint==AvatarJointTimeline.Joint.RIGHT_KNEE
+                            ?line.peakOffsets().getOrDefault(joint,0f):0f;
+                    assertEquals("second knee at three-quarter-cycle",expected,
+                            line.offset(joint,.75f),.0001f);
+                    assertEquals("neutral midpoint",0f,
+                            line.offset(joint,.5f),.0001f);
+                }else{
+                    assertEquals(line.peakOffsets().getOrDefault(joint,0f),
+                            line.offset(joint,.5f),.0001f);
+                }
             }
             assertEquals(24,line.describe(.5f).split("\n").length);
         }
@@ -82,6 +97,26 @@ public final class AvatarJointTimelineTest {
             assertEquals(0f,toes.offset(AvatarJointTimeline.Joint.LEFT_ANKLE,t),.001f);
             assertEquals(0f,reach.offset(AvatarJointTimeline.Joint.SPINE_BEND,t),.001f);
         }
+    }
+
+    @Test public void dedicatedSeatedAndBridgeProgramsMatchTheirTwoStageOrHeldScenes(){
+        AvatarJointTimeline alternate=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.SEATED_KNEE_EXTENSION_ALTERNATING);
+        assertEquals(65f,alternate.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.25f),.001f);
+        assertEquals(0f,alternate.offset(AvatarJointTimeline.Joint.RIGHT_KNEE,.25f),.001f);
+        assertEquals(0f,alternate.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.75f),.001f);
+        assertEquals(65f,alternate.offset(AvatarJointTimeline.Joint.RIGHT_KNEE,.75f),.001f);
+        AvatarJointTimeline pausedKnee=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.SEATED_KNEE_EXTENSION_PAUSE);
+        AvatarJointTimeline pausedBridge=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.GLUTE_BRIDGE_PAUSE);
+        AvatarJointTimeline single=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.SEATED_KNEE_EXTENSION_SINGLE);
+        assertEquals(65f,pausedKnee.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.35f),.001f);
+        assertEquals(65f,pausedKnee.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.65f),.001f);
+        assertTrue(pausedBridge.offset(AvatarJointTimeline.Joint.LEFT_HIP,.65f)<-18f);
+        assertTrue(single.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.5f)>60f);
+        assertEquals(0f,single.offset(AvatarJointTimeline.Joint.RIGHT_KNEE,.5f),0f);
     }
 
     @Test public void invalidPhaseAndNullJointFailClosed(){
