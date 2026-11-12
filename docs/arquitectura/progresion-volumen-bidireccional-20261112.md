@@ -1,4 +1,4 @@
-# Asterion — progresión de volumen coordinada (v6, calibración por categoría y unidad)
+# Asterion — progresión de volumen coordinada (v7, catálogo completamente calibrado)
 
 ## Objetivo y alcance
 
@@ -283,6 +283,54 @@ omitirlas o detenerse sin sanción.
 
 Las secciones anteriores v4 y v5 documentan revisiones previas y quedan
 **supeditadas a esta versión 6** para los valores iniciales vigentes.
+
+## Calibración completa del catálogo · versión 7 (vigente)
+
+El ajuste aprobado para tren inferior (+5 repeticiones), tren superior
+(+3 repeticiones) y ejercicios temporizados (+5 a +10 segundos) ya cubría
+**877 variantes**. Esta versión completa las **380 variantes por repeticiones**
+de las otras tres categorías. No vuelve a aumentar ninguna de las 877
+variantes anteriormente ajustadas.
+
+| Categoría | Unidad | Cantidad de variantes | Ajuste adicional en v7 |
+|---|---|---:|---|
+| Tren inferior | Repeticiones | 268 | Ya adaptadas en v6 (+5) |
+| Tren superior | Repeticiones | 276 | Ya adaptadas en v6 (+3) |
+| Tren central | Repeticiones | 165 | **+3 repeticiones** |
+| Movilidad | Repeticiones | 197 | **+2 repeticiones** |
+| Cardio por conteo | Repeticiones | 18 | **+2 repeticiones** |
+| Cualquier categoría | Segundos | 333 | Ya adaptadas en v6 (+5 a +10 segundos) |
+
+**Cobertura total: 1.257 de 1.257 variantes.** Se usan los IDs y las
+categorías de los archivos reales `variants.tsv`, `types.tsv` y
+`families.tsv` para determinar la unidad y el volumen inicial por
+ejercicio. Ningún valor inicial supera su máximo individual.
+
+Ejemplos de nuevos perfiles de esta revisión:
+
+- Superman dinámico (tren central): 11 → **14 repeticiones**.
+- Alcance unipodal (movilidad): 10 → **12 repeticiones**.
+- Talones alternos (cardio por conteo): 11 → **13 repeticiones**.
+
+Los perfiles previamente adaptados se mantienen: sentadilla libre en
+15 repeticiones, flexión inclinada en 15 repeticiones, plancha en 25
+segundos y caminata en 95 segundos como referencias iniciales de
+software. Se conserva **una serie inicial**, el historial real y el
+reinicio de volumen por cambio de variante o técnica en los días 7/14/21.
+Las revisiones automáticas por esfuerzo no transforman registros previos
+de repeticiones en segundos ni viceversa.
+
+Estas cantidades son **puntos de partida ajustables**, no tareas que
+el usuario deba cumplir. Un aumento del software no justifica aumentar
+la actividad física si existe dificultad, incomodidad o falta de
+supervisión adecuada; siguen disponibles descanso, registro de
+cantidades menores y cancelación sin penalización.
+
+**Control de calidad:** `ExerciseVolumeProfileCatalogTest` valida las
+referencias y `volume_all_variants_contract.py` verifica las cinco
+categorías, ambas unidades, los conteos y las filas individuales.
+Las versiones anteriores quedan documentadas como histórico; **v7 es la
+configuración vigente**.
 
 ## Pruebas
 
