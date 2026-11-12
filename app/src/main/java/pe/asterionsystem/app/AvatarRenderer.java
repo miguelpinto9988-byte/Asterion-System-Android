@@ -103,7 +103,9 @@ public final class AvatarRenderer {
         details.drawHead(canvas,p.head,body,palette);
         canvas.restore();
         if(!palette.female) {
-            drawLimb(canvas,interp(p.shoulder,p.elbow,.095f),
+            // Start the sleeve inside the jersey instead of leaving a
+            // visible gap between the root shoulder and the cloth.
+            drawLimb(canvas,interp(p.shoulder,p.elbow,.025f),
                     interp(p.shoulder,p.elbow,.34f),
                     body.upperArmWidth*.91f,body.upperArmWidth*.79f,top);
             details.drawSleeve(canvas,p.shoulder,p.elbow,palette);
