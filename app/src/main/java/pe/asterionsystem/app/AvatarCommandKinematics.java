@@ -136,6 +136,52 @@ public final class AvatarCommandKinematics {
                 nearArm.joint,nearArm.end,farArm.joint,farArm.end);
     }
 
+    /**
+     * Projected coordinates are computed from the SAME rig drawn by Canvas.
+     * They are expressed in virtual 400x480 units, not anatomical degrees,
+     * user measurements or a claim that an exercise is technically correct.
+     */
+    public static String projectedJointTrace(AvatarCommandCatalog.Entry entry,
+                                              AvatarBodySpec body) {
+        if(entry==null||body==null||!entry.canAnimate()
+                ||entry.camera!=AvatarMultiViewKinematics.ViewMode.SIDE)
+            return "\nSin coordenadas 2D verificadas para esta proyección.";
+        AvatarKinematics.Pose start=pose(entry,0f,body);
+        AvatarKinematics.Pose active=pose(entry,.49f,body);
+        AvatarKinematics.Pose end=pose(entry,1f,body);
+        StringBuilder out=new StringBuilder(
+                "\n\nCoordenadas exactas del dibujo, inicio → acción → final "
+                +"(unidades virtuales de Canvas):");
+        trace(out,"Cabeza",start.head,active.head,end.head);
+        trace(out,"Cuello",start.neck,active.neck,end.neck);
+        trace(out,"Hombro",start.shoulder,active.shoulder,end.shoulder);
+        trace(out,"Codo",start.elbow,active.elbow,end.elbow);
+        trace(out,"Muñeca",start.wrist,active.wrist,end.wrist);
+        trace(out,"Cadera",start.hip,active.hip,end.hip);
+        trace(out,"Rodilla",start.knee,active.knee,end.knee);
+        trace(out,"Tobillo",start.ankle,active.ankle,end.ankle);
+        trace(out,"Hombro opuesto",start.farShoulder,
+                active.farShoulder,end.farShoulder);
+        trace(out,"Codo opuesto",start.farElbow,active.farElbow,end.farElbow);
+        trace(out,"Muñeca opuesta",start.farWrist,active.farWrist,end.farWrist);
+        trace(out,"Cadera opuesta",start.farHip,active.farHip,end.farHip);
+        trace(out,"Rodilla opuesta",start.farKnee,active.farKnee,end.farKnee);
+        trace(out,"Tobillo opuesto",start.farAnkle,active.farAnkle,end.farAnkle);
+        return out.toString();
+    }
+
+    private static void trace(StringBuilder out,String name,
+                              AvatarKinematics.Point a,AvatarKinematics.Point b,
+                              AvatarKinematics.Point c) {
+        out.append("\n").append(name).append(": ");
+        coord(out,a);out.append(" → ");coord(out,b);
+        out.append(" → ");coord(out,c);
+    }
+    private static void coord(StringBuilder out,AvatarKinematics.Point point) {
+        out.append("(").append(Math.round(point.x)).append(",")
+                .append(Math.round(point.y)).append(")");
+    }
+
     public static AvatarMotionEngine.Motion legacy(AvatarCommandCatalog.Command command) {
         switch(command) {
             case SQUAT:return AvatarMotionEngine.Motion.SQUAT;
