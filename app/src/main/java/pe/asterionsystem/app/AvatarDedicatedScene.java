@@ -14,12 +14,12 @@ public final class AvatarDedicatedScene {
         SEATED_KNEE_EXTENSION_ALTERNATING,SEATED_TOE_RAISE,
         SEATED_TOE_RAISE_SINGLE,SEATED_FORWARD_REACH,
         SEATED_HEEL_RAISE,SEATED_HEEL_RAISE_GENTLE,
-        SEATED_HEEL_TOE_ALTERNATION
+        SEATED_HEEL_TOE_ALTERNATION,STANDING_HEEL_RAISE,STANDING_TOE_RAISE
     }
     public final Kind kind;
     public final AvatarKinematics.Pose pose;
     public final AvatarKinematics.Point supportFoot,nearShoulder,nearHip;
-    public final boolean floorBackContact,chairSeatContact;
+    public final boolean floorBackContact,chairSeatContact,standingFloorContact;
     /** Foot hinge used only for seated bilateral toe raise; heels remain planted. */
     public final float toeRaiseDegrees;
     public final float heelRaiseDegrees;
@@ -37,15 +37,19 @@ public final class AvatarDedicatedScene {
         floorBackContact=kind==Kind.GLUTE_BRIDGE_SHORT||
                 kind==Kind.GLUTE_BRIDGE_BASIC||kind==Kind.GLUTE_BRIDGE_PAUSE||
                 kind==Kind.GLUTE_BRIDGE_BAND;
-        chairSeatContact=!floorBackContact;
+        standingFloorContact=kind==Kind.STANDING_HEEL_RAISE||
+                kind==Kind.STANDING_TOE_RAISE;
+        chairSeatContact=!floorBackContact&&!standingFloorContact;
         // A dedicated ankle command is rendered around each shoe heel,
         // not interpreted as hip or knee motion.
         this.toeRaiseDegrees=(kind==Kind.SEATED_TOE_RAISE||
                 kind==Kind.SEATED_TOE_RAISE_SINGLE||
-                kind==Kind.SEATED_HEEL_TOE_ALTERNATION)?toeRaiseDegrees:0f;
+                kind==Kind.SEATED_HEEL_TOE_ALTERNATION||
+                kind==Kind.STANDING_TOE_RAISE)?toeRaiseDegrees:0f;
         this.heelRaiseDegrees=(kind==Kind.SEATED_HEEL_RAISE||
                 kind==Kind.SEATED_HEEL_RAISE_GENTLE||
-                kind==Kind.SEATED_HEEL_TOE_ALTERNATION)?heelRaiseDegrees:0f;
+                kind==Kind.SEATED_HEEL_TOE_ALTERNATION||
+                kind==Kind.STANDING_HEEL_RAISE)?heelRaiseDegrees:0f;
         this.neutralNearAnkle=neutralNearAnkle;
         this.neutralFarAnkle=neutralFarAnkle;
         this.nearToeContact=neutralNearAnkle==null?null:
@@ -64,6 +68,9 @@ public final class AvatarDedicatedScene {
                 sin=(float)Math.sin(a),x=origin.x-pivot.x,y=origin.y-pivot.y;
         return pt(pivot.x+x*cos-y*sin,pivot.y+x*sin+y*cos);
     }
+    private static AvatarKinematics.Point shift(AvatarKinematics.Point p,float dx,float dy){
+        return pt(p.x+dx,p.y+dy);
+    }
     public static AvatarDedicatedScene at(Kind kind,float phase,AvatarBodySpec b){
         if(kind==null||b==null||!Float.isFinite(phase)||phase<0f||phase>1f)
             throw new IllegalArgumentException("Escena, cuerpo y fase válidos requeridos");
@@ -72,6 +79,42 @@ public final class AvatarDedicatedScene {
         AvatarKinematics.Point hip,farHip,shoulder,farShoulder,ankle,farAnkle;
         AvatarRigConstraints.TwoBone leg,farLeg,arm,farArm;
         AvatarKinematics.Point neck,head,hand,farHand;
+        if(kind==Kind.STANDING_HEEL_RAISE||kind==Kind.STANDING_TOE_RAISE){
+            // Standing is a separate scene: no chair or mat. Entire rigid
+            // chain follows a planted forefoot for a bilateral heel lift;
+            // a bilateral toe lift keeps the body and heels fixed.
+            AvatarKinematics.Pose neutral=AvatarMotionEngine.pose(
+                    AvatarMotionEngine.Motion.ARM_RAISE,0f,b);
+            float heelAngle=kind==Kind.STANDING_HEEL_RAISE?18f*d:0f;
+            float toeAngle=kind==Kind.STANDING_TOE_RAISE?16f*d:0f;
+            AvatarKinematics.Point toe=pt(
+                    neutral.ankle.x+42f,neutral.ankle.y+10f);
+            AvatarKinematics.Point heel=pt(
+                    neutral.ankle.x-12f,neutral.ankle.y+10f);
+            AvatarKinematics.Point raised=rotateAbout(
+                    neutral.ankle,toe,heelAngle);
+            float dx=raised.x-neutral.ankle.x,dy=raised.y-neutral.ankle.y;
+            AvatarKinematics.Pose standing=new AvatarKinematics.Pose(
+                    shift(neutral.ankle,dx,dy),
+                    shift(neutral.farAnkle,dx,dy),
+                    shift(neutral.knee,dx,dy),
+                    shift(neutral.farKnee,dx,dy),
+                    shift(neutral.hip,dx,dy),
+                    shift(neutral.farHip,dx,dy),
+                    shift(neutral.shoulder,dx,dy),
+                    shift(neutral.farShoulder,dx,dy),
+                    shift(neutral.neck,dx,dy),
+                    shift(neutral.head,dx,dy),
+                    shift(neutral.elbow,dx,dy),
+                    shift(neutral.wrist,dx,dy),
+                    shift(neutral.farElbow,dx,dy),
+                    shift(neutral.farWrist,dx,dy));
+            AvatarMotionEngine.assertSkeleton(standing,b,.12f);
+            return new AvatarDedicatedScene(kind,standing,
+                    kind==Kind.STANDING_HEEL_RAISE?toe:heel,
+                    standing.shoulder,standing.hip,toeAngle,heelAngle,
+                    neutral.ankle,neutral.farAnkle);
+        }
         if(kind==Kind.GLUTE_BRIDGE_SHORT||kind==Kind.GLUTE_BRIDGE_BASIC||
                 kind==Kind.GLUTE_BRIDGE_PAUSE||kind==Kind.GLUTE_BRIDGE_BAND){
             // The shoulder and head remain on the mat; the pelvis follows
