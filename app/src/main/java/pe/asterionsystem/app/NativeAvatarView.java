@@ -121,6 +121,14 @@ public final class NativeAvatarView extends View {
                         ?"alcance frontal sentado sobre silla":
                         dedicatedScene==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_PAUSE
                         ?"puente de glúteos sobre colchoneta con pausa":
+                        dedicatedScene==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BAND
+                        ?"puente de glúteos sobre colchoneta con banda visible":
+                        dedicatedScene==AvatarDedicatedScene.Kind.SEATED_TOE_RAISE_SINGLE
+                        ?"dorsiflexión de un pie sentado sobre silla":
+                        dedicatedScene==AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE
+                        ?"elevación de talones sentado sobre silla":
+                        dedicatedScene==AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE_GENTLE
+                        ?"elevación suave de talones sentado sobre silla":
                         dedicatedScene==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE
                         ?"extensión de rodilla sentado con pausa":
                         dedicatedScene==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING
