@@ -20,7 +20,7 @@ for token in ('details.drawHeadFront(', 'details.drawHeadTop(',
               'private void tapered(', 'bodySpec.thighWidth',
               'bodySpec.upperArmWidth', 'bodySpec.forearmWidth',
               'palette.legColor',
-              'drawFront(c,p,squat||jacks)', 'drawHandsInset(',
+              'drawFront(c,p,squat||jacks,', 'drawHandsInset(',
               'drawPushupSideInset('):
     assert token in multi, token
 assert 'details.drawForearm(canvas,p.elbow,p.wrist,palette)' in side
