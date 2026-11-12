@@ -168,6 +168,8 @@ ejercicio de conteo, +3 segundos en una postura o +9 segundos en un ejercicio
 de tiempo continuo, siempre limitado por la referencia máxima del ejercicio.
 Los rangos 4–7 mantienen, y 8–10 reducen la referencia.
 
+El registro permite introducir hasta **3600 segundos reales por serie** para actividades prolongadas. Este límite de captura es distinto del **máximo conservador de referencia inicial/progresiva**, que sigue siendo específico de cada variante y no prescribe el tiempo que la persona deba realizar.
+
 La persistencia incorpora un campo de unidad y conserva compatibilidad con
 los registros históricos de diez campos, interpretados explícitamente como
 repeticiones. **Nunca se convierten registros de repeticiones antiguas en
