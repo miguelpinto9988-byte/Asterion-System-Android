@@ -19,7 +19,7 @@ for expected in ("hy=174.4f","hy=181f+42f*s",
     assert expected in engine,expected
 for expected in ("cameraScale,cameraScale,200f,364f",
                  "?.78f:.94f",
-                 "interp(p.shoulder,p.elbow,.095f)",
+                 "interp(p.shoulder,p.elbow,.025f)",
                  "Side-profile torso", "shoulderFront"):
     assert expected in view,expected
 assert "two eyes" not in details
