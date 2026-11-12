@@ -31,7 +31,8 @@ public final class AvatarDedicatedSceneInstrumentedTest {
                 "puente_gluteo_v03","extension_rodilla_sin_carga_v02",
                 "extension_rodilla_sin_carga_v03",
                 "puente_gluteo_v04","dorsiflexion_tobillo_v01",
-                "elevacion_gemelos_v01","balanceo_talon_punta_sentado_v01"};
+                "elevacion_gemelos_v01","balanceo_talon_punta_sentado_v01",
+                "balanceo_talon_punta_sentado_v02"};
         for(String id:ids){
             AvatarExerciseCommandCatalog.Entry entry=commands.require(id);
             assertTrue(entry.canIllustrate());
@@ -48,8 +49,10 @@ public final class AvatarDedicatedSceneInstrumentedTest {
                     view.setDedicatedScene(entry.clip.dedicatedScene());
                     // Alternating knees need two middle frames: first leg at
                     // 25% and the opposite leg at 75%, not a neutral 50%.
-                    float[] phases=entry.clip.dedicatedScene()==
+                    AvatarDedicatedScene.Kind kind=entry.clip.dedicatedScene();
+                    float[] phases=kind==
                             AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING
+                            ||kind==AvatarDedicatedScene.Kind.SEATED_HEEL_TOE_ALTERNATION
                             ?new float[]{0f,.25f,.75f,1f}
                             :new float[]{0f,.49f,1f};
                     for(int i=0;i<phases.length;i++){
@@ -72,6 +75,6 @@ public final class AvatarDedicatedSceneInstrumentedTest {
         });
         File[] files=dir.listFiles((p,name)->name.endsWith(".png"));
         assertNotNull(files);
-        assertEquals(74,files.length);
+        assertEquals(82,files.length);
     }
 }
