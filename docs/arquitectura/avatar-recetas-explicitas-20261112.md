@@ -2,8 +2,8 @@
 
 ## Alcance y estado real
 
-Esta ampliación incorpora **51 escenas nuevas** al avatar Canvas existente:
-**78 IDs registrados de 1.257 (6,21 %)**, **1.179 pendientes**. No completa la
+Esta ampliación incorpora **81 escenas nuevas** (51 anteriores y lote incremental de 30) al avatar Canvas existente:
+**108 IDs registrados de 1.257 (8,59 %)**, **1.149 pendientes**. No completa la
 solicitud de todas las demostraciones. El porcentaje cuenta implementaciones
 registradas; no es una certificación clínica ni una aprobación visual independiente.
 Los mapas de comandos de los IDs pendientes siguen identificados como tales.
@@ -43,6 +43,20 @@ El panel de fases de estas escenas calcula cambios angulares desde la geometría
 real de la receta; añade instantes de ambos semiciclos para que las alternancias
 no parezcan inmóviles al consultar solamente el 50 %.
 
+## Lote incremental 01 (30 variantes nuevas)
+- Curl martillo con banda / mancuernas (3): agarre vertical del implemento.
+- Bisagra con banda en hombros y peso muerto con mancuerna, kettlebell o barra (4).
+- Extensión terminal con banda y flexión de rodilla de pie con pared / silla (3).
+- Alcance, deslizamiento y apoyo de manos con contacto fijo en pared (6).
+- Marcha con tronco estable, alternancia de brazos, elevación de rodillas,
+  toques de talón y pasos hacia atrás con ciclo de dos lados (12).
+- Retracción de brazos sin implemento y remo con banda anclada (2).
+
+En todos los casos el identificador y material deben coincidir con el TSV.
+Esta es cobertura **implementada / registrada**, no validación de técnica.
+Las escenas necesitan capturas y comprobación individual en Android antes de
+cerrar su seguimiento. Los recursos y el rig oficial se conservan.
+
 ## Verificación reproducible
 
 - `AvatarVariantSceneTest`: 601 fotogramas por receta, longitudes rígidas,
@@ -53,7 +67,7 @@ no parezcan inmóviles al consultar solamente el 50 %.
 - `avatar_variant_scene_contract.py`: firma exacta respecto al catálogo,
   implementos presentes y cobertura de archivos exportados.
 - `AvatarVariantSceneInstrumentedTest`: Android dibuja cada receta en ambos
-  colores y cinco fases (0, 25, 50, 75 y 100 %): **510 PNG esperados**.
+  colores y cinco fases (0, 25, 50, 75 y 100 %): **810 PNG esperados**.
   Los archivos son evidencia para revisar, no una aprobación automática del dibujo.
 - Los contratos y pruebas anteriores se conservan. El artefacto CI
   `asterion-runtime-diagnostics/asterion-avatar-variant-scenes` contiene la
@@ -77,7 +91,7 @@ https://www.performancehealth.com/thera-band-instr-manual
 
 ## Pendiente
 
-Faltan 1.179 escenas, incluidas posturas de suelo, transiciones, movimientos
+Faltan 1.149 escenas, incluidas posturas de suelo, transiciones, movimientos
 tridimensionales, manos/pies, máquinas y gestos deportivos. Cada una requiere
 implementación y revisión de su ejecución concreta. No se habilitan por renombrar
 un mapa articular ni por asignarles un clip de otra variante.
