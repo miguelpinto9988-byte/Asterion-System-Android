@@ -6,7 +6,7 @@ import org.junit.Test;
 /** Screen-space timeline continuity; not a biomechanical validation. */
 public final class AvatarJointTimelineTest {
     @Test public void all57CommandsHaveFiniteJointTargetsAndCloseTheirLoop(){
-        assertEquals(60,AvatarJointTimeline.Command.values().length);
+        assertEquals(61,AvatarJointTimeline.Command.values().length);
         assertEquals(24,AvatarJointTimeline.Joint.values().length);
         for(AvatarJointTimeline.Command command:AvatarJointTimeline.Command.values()){
             AvatarJointTimeline line=new AvatarJointTimeline(command);
@@ -15,7 +15,14 @@ public final class AvatarJointTimelineTest {
                 assertEquals("Initial "+command+" "+joint,0f,line.offset(joint,0f),.0001f);
                 assertEquals("Final "+command+" "+joint,0f,line.offset(joint,1f),.0001f);
                 assertTrue(Float.isFinite(line.offset(joint,.5f)));
-                if(command==AvatarJointTimeline.Command.SEATED_KNEE_EXTENSION_ALTERNATING){
+                if(command==AvatarJointTimeline.Command.SEATED_HEEL_TOE_ALTERNATION){
+                    assertEquals("Neutral half-cycle",0f,line.offset(joint,.5f),.0001f);
+                    if(joint==AvatarJointTimeline.Joint.LEFT_ANKLE||
+                            joint==AvatarJointTimeline.Joint.RIGHT_ANKLE){
+                        assertEquals(-16f,line.offset(joint,.25f),.001f);
+                        assertEquals(16f,line.offset(joint,.75f),.001f);
+                    }
+                }else if(command==AvatarJointTimeline.Command.SEATED_KNEE_EXTENSION_ALTERNATING){
                     // In a truly alternating sequence both knees are neutral
                     // at 50%, rather than reaching peak together.
                     float expected=joint==AvatarJointTimeline.Joint.LEFT_KNEE
@@ -133,6 +140,22 @@ public final class AvatarJointTimelineTest {
         assertEquals(-12f,gentle.offset(AvatarJointTimeline.Joint.LEFT_ANKLE,.49f),.1f);
         assertEquals(0f,heel.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.49f),0f);
         assertEquals(0f,heel.offset(AvatarJointTimeline.Joint.RIGHT_HIP,.49f),0f);
+    }
+
+    @Test public void heelAndToeHaveSeparateFixedContactPhases(){
+        AvatarJointTimeline t=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.SEATED_HEEL_TOE_ALTERNATION);
+        for(AvatarJointTimeline.Joint j:new AvatarJointTimeline.Joint[]{
+                AvatarJointTimeline.Joint.LEFT_ANKLE,
+                AvatarJointTimeline.Joint.RIGHT_ANKLE}){
+            assertEquals(0f,t.offset(j,0f),0f);
+            assertEquals(-16f,t.offset(j,.25f),.001f);
+            assertEquals(0f,t.offset(j,.5f),0f);
+            assertEquals(16f,t.offset(j,.75f),.001f);
+            assertEquals(0f,t.offset(j,1f),0f);
+        }
+        assertEquals(0f,t.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.25f),0f);
+        assertEquals(0f,t.offset(AvatarJointTimeline.Joint.LEFT_HIP,.75f),0f);
     }
 
     @Test public void invalidPhaseAndNullJointFailClosed(){
