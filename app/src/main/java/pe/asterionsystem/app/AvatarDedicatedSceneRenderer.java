@@ -57,18 +57,27 @@ public final class AvatarDedicatedSceneRenderer {
         label(c,"COLCHONETA",40,433,dark?0xFFAFC5DD:0xFF587493,10);
     }
     private void drawBody(Canvas c,AvatarPose p,AvatarBodySpec b,
-                          AvatarPalette palette,boolean supine){
+                          AvatarPalette palette,boolean supine,
+                          float toeRaiseDegrees){
         // Render far leg then far arm, trunk, near leg and near arm.
         limb(c,p.farHip,p.farKnee,b.thighWidth*.64f,palette.farLegColor);
         limb(c,p.farKnee,p.farAnkle,b.calfWidth*.60f,palette.farLegColor);
+        // Rotate the forefoot about the fixed HEEL contact, rather than
+        // moving the whole leg or allowing the heel to float.
+        c.save();
+        c.rotate(-toeRaiseDegrees,p.farAnkle.x-12f,p.farAnkle.y+10f);
         details.drawSneaker(c,p.farAnkle,palette,true);
+        c.restore();
         limb(c,p.farShoulder,p.farElbow,b.upperArmWidth*.70f,palette.skinShade);
         limb(c,p.farElbow,p.farWrist,b.forearmWidth*.67f,palette.skinShade);
 
         torso(c,p.hip,p.shoulder,b.chestHalfWidth*1.3f,palette.top);
         limb(c,p.hip,p.knee,b.thighWidth*.81f,palette.legColor);
         limb(c,p.knee,p.ankle,b.calfWidth*.73f,palette.legColor);
+        c.save();
+        c.rotate(-toeRaiseDegrees,p.ankle.x-12f,p.ankle.y+10f);
         details.drawSneaker(c,p.ankle,palette,false);
+        c.restore();
         fill(palette.shorts);c.drawCircle(p.hip.x,p.hip.y,b.waistHalfWidth*.83f,paint);
         limb(c,p.shoulder,p.elbow,b.upperArmWidth*.82f,palette.skin);
         limb(c,p.elbow,p.wrist,b.forearmWidth*.78f,palette.skin);
@@ -101,11 +110,16 @@ public final class AvatarDedicatedSceneRenderer {
         else mat(c,dark);
         if(scene.chairSeatContact)
             shape(c,20,407,376,411,3,dark?0xFF667086:0xFFD5DCE6);
-        drawBody(c,scene.pose,b,palette,scene.floorBackContact);
+        drawBody(c,scene.pose,b,palette,scene.floorBackContact,
+                scene.toeRaiseDegrees);
         String name=scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_SHORT
                 ?"PERFIL · PUENTE CORTO":
                 scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BASIC
                 ?"PERFIL · PUENTE DE GLÚTEOS":
+                scene.kind==AvatarDedicatedScene.Kind.SEATED_TOE_RAISE
+                ?"PERFIL · ELEVACIÓN DE PUNTAS SENTADO":
+                scene.kind==AvatarDedicatedScene.Kind.SEATED_FORWARD_REACH
+                ?"PERFIL · ALCANCE FRONTAL SENTADO":
                 "PERFIL · EXTENSIÓN DE RODILLA SENTADO";
         label(c,name,27,453,dark?0xFFCBD9E7:0xFF4F6B89,11);
     }
