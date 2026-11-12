@@ -56,7 +56,7 @@ for row in rows:
         assert row["clip"] in ("SQUAT","LUNGE","HIP_HINGE",
                                "ARM_RAISE","ARM_CURL","KNEE_CURL","MARCH","FRONT",
                                "FRONT_LATERAL","FRONT_BALANCE","FRONT_SIDE_STEP",
-                               "FRONT_NECK_TILT")
+                               "FRONT_NECK_TILT","HIP_EXTENSION_STAND")
         illustrated.append(row)
     counts[(row["category"],row["status"])]+=1
     families_covered.add(family)
@@ -78,11 +78,16 @@ for string in ('putExtra("variant_id",current.id())',
                "Ver comandos y avatar del ejercicio"):
     assert string in guided
 for string in ("selectedEntry.canIllustrate()","avatar.setVisibility(View.GONE)",
+               "commandDiagram.setEntry(entry)","commandDiagram.setVisibility(View.VISIBLE)",
                "showJointStages()","commandWorker.execute"):
     assert string in viewer,string
 for symbol in ("ARM_CURL","KNEE_CURL","HIP_EXTENSION_STAND",
                "SQUAT","LUNGE","BURPEE"):
     assert symbol in motion
+diagram=(base/"AvatarJointCommandView.java").read_text(encoding="utf-8")
+for symbol in ("postInvalidateOnAnimation()","timeline.offset(joint,phase)",
+               "No demuestra la ejecución del ejercicio","setFrameListener"):
+    assert symbol in diagram,symbol
 assert "ILLUSTRATIVE" in catalog and "SPEC_ONLY" in catalog
 assert "status==Status.SPEC_ONLY" in catalog
 assert len(new_exercises)==11
