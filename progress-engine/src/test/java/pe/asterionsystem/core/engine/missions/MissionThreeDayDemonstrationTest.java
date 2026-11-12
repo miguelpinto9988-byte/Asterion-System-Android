@@ -158,11 +158,14 @@ public final class MissionThreeDayDemonstrationTest {
     }
 
     @Test public void actualThreeDayFeedbackScenarios(){
-        threeDays("facil_2",2,2);
-        threeDays("moderado_5",5,5);
-        threeDays("dificil_8",8,8);
-        threeDays("muy_dificil_9",9,9);
-        threeDays("facil_luego_muy_dificil",2,9);
+        // All 4 × 4 response classes (easy, moderate, high, very high).
+        // A user may freely change BOTH day-1 and day-2 ratings in the
+        // HTML without fabricating any exercise names or random selections.
+        for(int first:new int[]{2,5,8,9}) {
+            for(int second:new int[]{2,5,8,9}) {
+                threeDays("rpe_"+first+"_"+second,first,second);
+            }
+        }
     }
 
     @Test public void genuineWeeklyGateAndTechnicalPhaseTargets(){
