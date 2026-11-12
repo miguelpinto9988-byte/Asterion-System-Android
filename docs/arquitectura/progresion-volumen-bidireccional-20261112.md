@@ -1,9 +1,9 @@
-# Asterion — progresión de volumen coordinada (v1, revisión)
+# Asterion — progresión de volumen coordinada (v3, cobertura total del catálogo)
 
 ## Objetivo y alcance
 
 El selector existente `MissionPlanner` sigue decidiendo **qué ejercicios** sugerir.
-`VolumeProgressionEngine` revisa **cuántas series y repeticiones se registraron realmente**.
+`VolumeProgressionEngine` revisa **cuántas series y repeticiones o segundos se registraron realmente**.
 `CoordinatedTrainingEngine` une ambos; no prescribe entrenamientos obligatorios.
 
 ```text
@@ -111,21 +111,22 @@ selección anterior de esa misma categoría.
   valoraciones anteriores para proteger recuperación y reportes históricos,
   pero el motor **numérico** filtra lo anterior al inicio del nuevo bloque.
 
-La primera referencia del nuevo bloque se registra a partir de lo que la
-persona realmente realice en esa variante; **no existe hoy una cifra inicial
-universal configurada en el perfil**. Por ello el motor deja series y
-repeticiones **sin referencia**, en lugar de copiar el valor alto del
-movimiento anterior o inventar una nueva prescripción.
+La primera referencia del nuevo bloque se obtiene del archivo **versionado,
+específico para esa variante** `volume_profiles.tsv` (1.257 filas
+validadas). No se copia ninguna cantidad anterior de otro ejercicio.
+Al completar una sesión, los datos realmente realizados pasan a ser la
+evidencia para los cálculos posteriores. El valor inicial se presenta como
+referencia opcional revisable, nunca como obligación.
 
 Ejemplo técnico (datos ilustrativos, no recomendación de ejercicio):
 
 | Fase | Selección | Registro numérico y resultado |
 |---|---|---|
 | Antes del hito 7 | Variante A, nivel 1 | Existían 2×8, luego 2×11 |
-| Hito 7 | Variante B, nivel 2 | Reinicio: B sin volumen previo propio |
+| Hito 7 | Variante B, nivel 2 | Reinicio: B usa exclusivamente su referencia inicial específica |
 | Primera sesión con B | Variante B, nivel 2 | Se registra su propio punto de partida |
 | Hito 14 sin cambio de variante | Variante B, nivel 2 | Continúa su historia desde el inicio con B |
-| Hito 21 con vuelta a A | Variante A, nivel 1 | Reinicio: NO hereda el antiguo 2×11 |
+| Hito 21 con vuelta a A | Variante A, nivel 1 | Reinicio: vuelve a su referencia inicial, NO hereda el antiguo 2×11 |
 
 **Implementación y pruebas:** `VolumeResetPolicy` (motor puro),
 `VolumeProgressStore.observeCheckpointSelection` (persistencia Android),
@@ -133,16 +134,71 @@ Ejemplo técnico (datos ilustrativos, no recomendación de ejercicio):
 `VolumeProgressResetPersistenceTest` (instrumentación Android real) además de
 pruebas JUnit y un contrato Python en CI.
 
+## Cobertura total de ejercicios: repeticiones y segundos
+
+`asterion_exercises/v1/volume_profiles.tsv` contiene una fila explícita,
+verificada por ID, para **cada una de las 1.257 variantes existentes**:
+
+- **924 variantes** expresadas en `REPETITIONS`.
+- **333 variantes** expresadas en `SECONDS`, incluidas posturas sostenidas,
+  equilibrio, desplazamientos continuos y actividad cardiovascular.
+- Cada fila especifica: **ID de variante, unidad, series iniciales, valor
+  inicial por serie, mínimo, máximo y factor de cambio**.
+- Los valores iniciales se elaboraron mediante clasificación semántica del
+  catálogo por tipo, nombre, ejecución, dificultad técnica y categoría. Son
+  **referencias de interfaz revisables, no prescripciones clínicas**: los casos
+  ambiguos requieren revisión manual de su clasificación.
+- Las variantes de mayor complejidad o supervisión tienen perfil explícito
+  para registrar información pero **no** habilitan progresión automática.
+
+**Ejemplos informáticos, no instrucciones para entrenar:**
+
+| Variante | Unidad del motor | Referencia inicial de ejemplo |
+|---|---|---|
+| Sentadilla libre | Repeticiones | 1 serie, 6 repeticiones |
+| Flexión inclinada | Repeticiones | 1 serie, 7 repeticiones |
+| Plancha de pared | Segundos | 1 serie, 10 segundos |
+| Marcha exterior cómoda | Segundos | 1 serie, 60 segundos |
+
+El mismo algoritmo de esfuerzo opera sobre el **valor de la unidad**, nunca
+sobre un número ambiguo: en repeticiones el factor de escala es 1, y en
+segundos puede ser 1 para una postura o 3 para un movimiento continuo. Por
+tanto, una valoración de esfuerzo 2/10 significa +3 repeticiones en un
+ejercicio de conteo, +3 segundos en una postura o +9 segundos en un ejercicio
+de tiempo continuo, siempre limitado por la referencia máxima del ejercicio.
+Los rangos 4–7 mantienen, y 8–10 reducen la referencia.
+
+La persistencia incorpora un campo de unidad y conserva compatibilidad con
+los registros históricos de diez campos, interpretados explícitamente como
+repeticiones. **Nunca se convierten registros de repeticiones antiguas en
+segundos**. Dos ejercicios pueden compartir categoría sin compartir unidad
+ni referencia numérica.
+
+`RoutineStepActivity` muestra la **referencia inicial propia** cuando aún
+no existe historial o tras reinicio; deja registrar el número de series y
+la cantidad realizada en repeticiones o segundos. Cuando la variante se
+mide en segundos, presenta un **contador de ejercicio opcional e
+independiente del temporizador de descanso**. El contador no marca el
+ejercicio como completado, no inicia nuevas rondas ni otorga XP.
+
+`MissionsActivity` integra el selector con `CoordinatedTrainingEngine`
+y **recalcula el volumen después** de la aplicación de los reinicios 7/14/21,
+siempre con el perfil exacto de la variante seleccionada.
+
+**Regla de mantenimiento:** si se añade cualquier variante al catálogo sin
+una fila correspondiente, falla la validación de referencias en vez de
+inventar un volumen genérico.
+
 ## Pruebas
 
 `progress-engine/src/test/java/.../VolumeProgressionEngineTest.java` cubre ausencia de historial, una sesión fácil, dos sesiones comparables, separación temporal, sesiones incompletas, esfuerzo alto, aislamiento de categoría, ausencia de transferencia entre variantes, pausa y revisión de series.
 
-`.../CoordinatedTrainingEngineTest.java` usa el catálogo real de 1257 variantes, comprueba que volumen alto simplifica la selección, que la selección configura las sugerencias del otro motor, que el volumen moderado permite conservar una variante comparable y que un día de descanso no adquiere actividades.
+`.../ExerciseVolumeProfileCatalogTest.java` cubre las 1.257 referencias y unidades, `TimedVolumeProgressionTest.java` prueba progresión de segundos y los datos anteriores, y `VolumeProgressResetPersistenceTest.java` verifica la persistencia Android. `.../CoordinatedTrainingEngineTest.java` usa el catálogo real de 1257 variantes, comprueba que volumen alto simplifica la selección, que la selección configura las sugerencias del otro motor, que el volumen moderado permite conservar una variante comparable y que un día de descanso no adquiere actividades.
 
 Gradle: `./gradlew :progress-engine:test` (o `gradle :progress-engine:test` en la CI configurada); resultados JUnit XML en `progress-engine/build/test-results/test/`.
 
 ## Separación de responsabilidades y próximos incrementos
 
-La v2 **calcula referencias numéricas** de manera automática pero no las impone: falta aprobación guardada explícitamente de una referencia futura, historial visible de propuestas, transferencia entre modalidades comparables y ajustes de movimientos por duración (p. ej., cardio o planchas). Para la siguiente fase, solicitar revisión del registro/objetivo por parte del usuario y habilitar reversión antes de incrementar las propuestas.
+La v2 **calcula referencias numéricas** de manera automática pero no las impone: falta aprobación guardada explícitamente de una referencia futura, historial visible de propuestas, revisión humana de unidades ambiguas y transferencia controlada entre modalidades comparables. Para la siguiente fase, solicitar revisión del registro/objetivo por parte del usuario y habilitar reversión antes de incrementar las propuestas.
 
 Este módulo no sustituye la evaluación profesional de la técnica, las necesidades individuales ni las pausas por malestar. La AAP subraya importancia de supervisión adecuada y evitar sobreentrenamiento en programas de fuerza de jóvenes: [HealthyChildren](https://www.healthychildren.org/English/news/Pages/Guidance-on-Resistance-Training-for-Children.aspx); [informe sobre sobreuso](https://publications.aap.org/pediatrics/article/153/2/e2023065129/196435/Overuse-Injuries-Overtraining-and-Burnout-in-Young).
