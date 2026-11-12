@@ -147,9 +147,15 @@ public final class NativeAvatarView extends View {
         canvas.scale(scale,scale);
 
         if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE) {
+            // Contact flags are authored by motion, never guessed from
+            // the visible 2D ankle-to-knee segment.
+            AvatarContactFrame.forSide(motion,phase);
             renderer.draw(canvas,AvatarMotionEngine.pose(motion,phase,bodySpec),
                     bodySpec,palette,dark,motion.label);
         } else {
+            AvatarContactFrame contact=AvatarContactFrame.forCamera(viewMode,phase);
+            if(viewMode==AvatarMultiViewKinematics.ViewMode.TOP)
+                contact.assertProneUpperCamera();
             AvatarMultiViewKinematics.Pose pose;
             switch(viewMode) {
                 case FRONT:
