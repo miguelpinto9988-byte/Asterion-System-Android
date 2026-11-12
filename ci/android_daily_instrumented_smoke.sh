@@ -63,13 +63,13 @@ adb shell am instrument -w -e class "$CUSTOM_TEST#verifyAfterProcessRestart" \
 grep -q 'OK (1 test)' "$OUT/custom-routine-restart.txt"
 echo "PASS: custom routine persistence and once-per-day XP."
 
-echo "Android instrumentation 7/7: native Canvas paints eight multiview and articulated motion tests"
+echo "Android instrumentation 7/7: native Canvas paints catalog previews and existing multiview tests"
 adb shell am instrument -w -e class \
   "pe.asterionsystem.app.NativeAvatarRenderTest" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
   | tee "$OUT/native-avatar-render.txt"
-grep -q 'OK (13 tests)' "$OUT/native-avatar-render.txt"
-echo "PASS: native avatar palettes, resolutions, themes and accessibility (13 tests)."
+grep -q 'OK (14 tests)' "$OUT/native-avatar-render.txt"
+echo "PASS: native avatar palettes, catalog preview examples and accessibility (14 tests)."
 
 
 
@@ -86,6 +86,19 @@ test "$COUNT" -eq 42 || { echo "Expected 42 real emulator PNGs; found $COUNT"; e
 test -s "$LOCAL/azul_top_1.png"
 test -s "$LOCAL/morado_top_1.png"
 echo "PASS: 42 real Android renderer screenshots from seven scenes × three phases × two palettes."
+
+echo "Android instrumentation: verify 24 newly mapped catalog preview screenshots"
+CATALOG_REMOTE="/sdcard/Android/data/$PACKAGE/files/asterion-avatar-catalog-preview"
+CATALOG_LOCAL="$OUT/asterion-avatar-catalog-preview"
+mkdir -p "$CATALOG_LOCAL"
+adb shell ls "$CATALOG_REMOTE"
+adb pull "$CATALOG_REMOTE/." "$CATALOG_LOCAL/"
+CATALOG_COUNT="$(find "$CATALOG_LOCAL" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
+test "$CATALOG_COUNT" -eq 24 || { echo "Expected 24 new real emulator PNGs; found $CATALOG_COUNT"; exit 1; }
+test -s "$CATALOG_LOCAL/azul_curl_biceps_v03_1.png"
+test -s "$CATALOG_LOCAL/morado_equilibrio_unipodal_v04_1.png"
+echo "PASS: 24 real Android Canvas previews for four newly mapped exercises."
+
 
 
 echo "Android instrumentation 9/9: checkpoint resets retain prior logs without inheriting old volume"

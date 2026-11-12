@@ -105,6 +105,7 @@ jobs:
           python3 tests/avatar_v11_rig_and_shoes_contract.py
           python3 tests/avatar_v12_rear_heel_contract.py
           python3 tests/avatar_v13_organic_rig_contract.py
+          python3 tests/avatar_command_catalog_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
@@ -128,6 +129,21 @@ jobs:
 
       - name: Ejecutar pruebas de core, pruebas debug, lint y ensamblado debug
         run: gradle --no-daemon --stacktrace --continue :core:test :progress-engine:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
+
+      - name: Diagnóstico JUnit si falla un comando del catálogo
+        if: failure()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import glob
+          import xml.etree.ElementTree as ET
+          for path in glob.glob("app/build/test-results/testDebugUnitTest/*.xml"):
+              root=ET.parse(path).getroot()
+              for case in root.iter("testcase"):
+                  for failure in case.findall("failure"):
+                      print(path,case.attrib.get("name"),failure.attrib.get("message"))
+                      print((failure.text or "")[:1200])
+          PY
 
       - name: Exportar demostración reproducible del generador real
         shell: bash

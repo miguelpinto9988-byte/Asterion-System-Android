@@ -406,6 +406,63 @@ public final class NativeAvatarRenderTest {
         assertEquals("2 palettes × 7 scenes × 3 phases",42,images.length);
     }
 
+    /**
+     * Real Android Canvas previews for four previously unmapped catalog exercises,
+     * covering begin/active/return in both palettes. The rig is deliberately 2D
+     * and illustrations do not certify correct physical exercise technique.
+     */
+    @Test public void exportNewCatalogMotionSamplesAtThreePhases() throws Exception {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        AvatarCommandCatalog catalog;
+        try(java.io.InputStreamReader input=new java.io.InputStreamReader(
+                context.getAssets().open(
+                        "asterion_exercises/v1/avatar_command_profiles.tsv"),
+                java.nio.charset.StandardCharsets.UTF_8)) {
+            catalog=AvatarCommandCatalog.load(input);
+        }
+        String[] sampleIds={"curl_biceps_v03","flexion_rodilla_bipeda_v03",
+                "extension_cadera_bipeda_v01","equilibrio_unipodal_v04"};
+        for(String id:sampleIds)assertTrue(id,catalog.require(id).canAnimate());
+        File root=context.getExternalFilesDir(null);
+        assertNotNull(root);
+        File directory=new File(root,"asterion-avatar-catalog-preview");
+        assertTrue(directory.isDirectory()||directory.mkdirs());
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setDark(false);
+            for(String variantId:sampleIds) {
+                AvatarCommandCatalog.Entry entry=catalog.require(variantId);
+                view.setCatalogEntry(entry);
+                view.setPlaying(false);
+                for(boolean purple:new boolean[]{false,true}) {
+                    view.setFemale(purple);
+                    for(int phaseIndex=0;phaseIndex<3;phaseIndex++) {
+                        float phase=phaseIndex==0?0f:phaseIndex==1?.49f:1f;
+                        view.setPhase(phase);
+                        Bitmap bitmap=Bitmap.createBitmap(400,480,
+                                Bitmap.Config.ARGB_8888);
+                        view.draw(new Canvas(bitmap));
+                        File output=new File(directory,
+                                (purple?"morado_":"azul_")+variantId
+                                        +"_"+phaseIndex+".png");
+                        try(FileOutputStream file=new FileOutputStream(output)) {
+                            assertTrue(bitmap.compress(
+                                    Bitmap.CompressFormat.PNG,100,file));
+                        }catch(java.io.IOException error) {
+                            throw new IllegalStateException(
+                                    "Failed to export real avatar sample",error);
+                        }finally {bitmap.recycle();}
+                        assertTrue(output.length()>2000);
+                    }
+                }
+            }
+        });
+        File[] result=directory.listFiles((dir,name)->name.endsWith(".png"));
+        assertNotNull(result);
+        assertEquals(24,result.length);
+    }
+
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
