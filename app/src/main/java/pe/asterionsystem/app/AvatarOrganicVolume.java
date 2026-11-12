@@ -77,21 +77,35 @@ public final class AvatarOrganicVolume {
         else {mx/=ml;my/=ml;}
         float ra=proximalWidth*.5f,rb=distalWidth*.5f;
         float r=m.bridgeRadius;
-        float upperHandle=Math.min(m.upperLength*.24f,jointWidth*.75f);
-        float lowerHandle=Math.min(m.lowerLength*.24f,jointWidth*.75f);
+        // Round the bend over a *finite arc* rather than placing one
+        // Bézier endpoint at the outside of the elbow. A single endpoint
+        // there made a visible triangular tip in highly flexed poses.
+        float fillet1=Math.min(m.upperLength*.31f,jointWidth*.98f);
+        float fillet2=Math.min(m.lowerLength*.31f,jointWidth*.98f);
+        float preLx=joint.x-u1x*fillet1+n1x*r;
+        float preLy=joint.y-u1y*fillet1+n1y*r;
+        float postLx=joint.x+u2x*fillet2+n2x*r;
+        float postLy=joint.y+u2y*fillet2+n2y*r;
+        float preRx=joint.x-u1x*fillet1-n1x*r;
+        float preRy=joint.y-u1y*fillet1-n1y*r;
+        float postRx=joint.x+u2x*fillet2-n2x*r;
+        float postRy=joint.y+u2y*fillet2-n2y*r;
+
         contour.rewind();
         contour.moveTo(root.x+n1x*ra,root.y+n1y*ra);
         contour.cubicTo(
-                root.x+u1x*m.upperLength*.30f+n1x*ra,
-                root.y+u1y*m.upperLength*.30f+n1y*ra,
-                joint.x-u1x*upperHandle+n1x*r,
-                joint.y-u1y*upperHandle+n1y*r,
-                joint.x+mx*r,joint.y+my*r);
+                root.x+u1x*m.upperLength*.29f+n1x*ra,
+                root.y+u1y*m.upperLength*.29f+n1y*ra,
+                preLx-u1x*fillet1*.42f,
+                preLy-u1y*fillet1*.42f,
+                preLx,preLy);
+        contour.quadTo(joint.x+mx*r*.94f,joint.y+my*r*.94f,
+                postLx,postLy);
         contour.cubicTo(
-                joint.x+u2x*lowerHandle+n2x*r,
-                joint.y+u2y*lowerHandle+n2y*r,
-                end.x-u2x*m.lowerLength*.24f+n2x*rb,
-                end.y-u2y*m.lowerLength*.24f+n2y*rb,
+                postLx+u2x*fillet2*.44f,
+                postLy+u2y*fillet2*.44f,
+                end.x-u2x*m.lowerLength*.25f+n2x*rb,
+                end.y-u2y*m.lowerLength*.25f+n2y*rb,
                 end.x+n2x*rb,end.y+n2y*rb);
         contour.cubicTo(
                 end.x+u2x*rb*.55f+n2x*rb*.65f,
@@ -100,16 +114,18 @@ public final class AvatarOrganicVolume {
                 end.y+u2y*rb*.55f-n2y*rb*.65f,
                 end.x-n2x*rb,end.y-n2y*rb);
         contour.cubicTo(
-                end.x-u2x*m.lowerLength*.24f-n2x*rb,
-                end.y-u2y*m.lowerLength*.24f-n2y*rb,
-                joint.x+u2x*lowerHandle-n2x*r,
-                joint.y+u2y*lowerHandle-n2y*r,
-                joint.x-mx*r,joint.y-my*r);
+                end.x-u2x*m.lowerLength*.25f-n2x*rb,
+                end.y-u2y*m.lowerLength*.25f-n2y*rb,
+                postRx+u2x*fillet2*.44f,
+                postRy+u2y*fillet2*.44f,
+                postRx,postRy);
+        contour.quadTo(joint.x-mx*r*.94f,joint.y-my*r*.94f,
+                preRx,preRy);
         contour.cubicTo(
-                joint.x-u1x*upperHandle-n1x*r,
-                joint.y-u1y*upperHandle-n1y*r,
-                root.x+u1x*m.upperLength*.30f-n1x*ra,
-                root.y+u1y*m.upperLength*.30f-n1y*ra,
+                preRx-u1x*fillet1*.42f,
+                preRy-u1y*fillet1*.42f,
+                root.x+u1x*m.upperLength*.29f-n1x*ra,
+                root.y+u1y*m.upperLength*.29f-n1y*ra,
                 root.x-n1x*ra,root.y-n1y*ra);
         contour.cubicTo(
                 root.x-u1x*ra*.50f-n1x*ra*.65f,
