@@ -46,7 +46,7 @@ public final class VolumeProgressionEngine {
             this.unit = Objects.requireNonNull(unit, "unit");
             if (category < 0 || category > 4 || technicalLevel < 1 || technicalLevel > 5
                     || sets < 1 || sets > 12 || quantity < 1
-                    || quantity > (unit==ExerciseVolumeProfileCatalog.Unit.SECONDS?180:60)
+                    || quantity > (unit==ExerciseVolumeProfileCatalog.Unit.SECONDS?3600:60)
                     || effort < 1 || effort > 10) {
                 throw new IllegalArgumentException("Registro de volumen fuera de rango");
             }
