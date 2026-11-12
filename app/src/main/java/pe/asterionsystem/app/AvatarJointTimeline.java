@@ -31,7 +31,9 @@ public final class AvatarJointTimeline {
         TRUNK_REACH,BREATHING,LATERAL_BRACE,BALANCE,COORDINATION,HIP_MOBILITY,
         SPINE_MOBILITY,SHOULDER_MOBILITY,ANKLE_MOBILITY,NECK_MOBILITY,STRETCH,
         WALK,RUN,BIKE,ROW,ELLIPTICAL,AEROBIC_STEP,DANCE,SWIM,CARDIO_SPORT,
-        LATERAL_STEP,NECK_SIDE_TILT,SEATED_TOE_RAISE,SEATED_FORWARD_REACH
+        LATERAL_STEP,NECK_SIDE_TILT,SEATED_TOE_RAISE,SEATED_FORWARD_REACH,
+        GLUTE_BRIDGE_PAUSE,SEATED_KNEE_EXTENSION_SINGLE,
+        SEATED_KNEE_EXTENSION_PAUSE,SEATED_KNEE_EXTENSION_ALTERNATING
     }
     private final Command command;
     private final EnumMap<Joint,Float> targets=new EnumMap<>(Joint.class);
@@ -112,6 +114,13 @@ public final class AvatarJointTimeline {
                 pair(Joint.LEFT_ANKLE,Joint.RIGHT_ANKLE,22);break;
             case SEATED_FORWARD_REACH:
                 one(Joint.SPINE_BEND,21);arms(64,0,0);break;
+            case GLUTE_BRIDGE_PAUSE:
+                pair(Joint.LEFT_HIP,Joint.RIGHT_HIP,-20);break;
+            case SEATED_KNEE_EXTENSION_SINGLE:
+            case SEATED_KNEE_EXTENSION_PAUSE:
+                one(Joint.LEFT_KNEE,65);break;
+            case SEATED_KNEE_EXTENSION_ALTERNATING:
+                pair(Joint.LEFT_KNEE,Joint.RIGHT_KNEE,65);break;
             default:throw new IllegalStateException("Comando sin trayectoria");
         }
     }
@@ -126,18 +135,45 @@ public final class AvatarJointTimeline {
     public float weight(float phase){
         if(!Float.isFinite(phase)||phase<0||phase>1)
             throw new IllegalArgumentException("Fase 0..1 requerida");
+        if(command==Command.GLUTE_BRIDGE_PAUSE||
+                command==Command.SEATED_KNEE_EXTENSION_PAUSE)
+            return heldWeight(phase);
         if(phase<=.08f||phase>=.94f)return 0;
         if(phase<.42f)return smooth((phase-.08f)/.34f);
         if(phase<=.58f)return 1;
         return 1-smooth((phase-.58f)/.36f);
     }
-    private float smooth(float x){
+    /** Long hold for explicitly paused scenes, shared with the body engine. */
+    public static float heldWeight(float phase){
+        if(!Float.isFinite(phase)||phase<0f||phase>1f)
+            throw new IllegalArgumentException("Fase 0..1 requerida");
+        if(phase<=.08f||phase>=.94f)return 0f;
+        if(phase<.27f)return smooth((phase-.08f)/.19f);
+        if(phase<=.73f)return 1f;
+        return 1f-smooth((phase-.73f)/.21f);
+    }
+    private static float smooth(float x){
         x=Math.max(0,Math.min(1,x));
         float result=x*x*x*(x*(x*6f-15f)+10f);
         return Math.max(0f,Math.min(1f,result));
     }
     public float offset(Joint joint,float phase){
         if(joint==null)throw new IllegalArgumentException("Articulación requerida");
+        if(command==Command.SEATED_KNEE_EXTENSION_ALTERNATING){
+            if(!Float.isFinite(phase)||phase<0f||phase>1f)
+                throw new IllegalArgumentException("Fase 0..1 requerida");
+            // Two distinct knee actions in the same loop: no simultaneous
+            // near/far extension; both are neutral at the half-cycle seam.
+            if(joint==Joint.LEFT_KNEE)
+                return 65f*(phase<=.5f
+                        ?AvatarKinematics.depthAtPhase(2f*phase):0f);
+            if(joint==Joint.RIGHT_KNEE)
+                return 65f*(phase>=.5f
+                        ?AvatarKinematics.depthAtPhase(2f*(phase-.5f)):0f);
+            return 0f;
+        }
+        if(command==Command.SEATED_KNEE_EXTENSION_SINGLE)
+            return targets.getOrDefault(joint,0f)*AvatarKinematics.depthAtPhase(phase);
         return targets.getOrDefault(joint,0f)*weight(phase);
     }
     public String describe(float phase){
