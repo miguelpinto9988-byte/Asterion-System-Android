@@ -1,6 +1,7 @@
 package pe.asterionsystem.core.engine.progression;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -63,12 +64,30 @@ public final class CoordinatedTrainingEngine {
                         decision.preferSimplerTechnique ? "principiante" : profile.experience,
                         Math.max(1, decision.suggestedActivities))
                 : profile;
+        Objects.requireNonNull(previousCompleted, "previousCompleted");
+        Objects.requireNonNull(recentCompleted, "recentCompleted");
+        // Volume -> selector, second signal: a voluntarily logged, moderate
+        // completed variant may be kept for comparison instead of being
+        // treated as an automatic 14-day "avoid" candidate. Weekly rotation
+        // and safety filters still win when applicable.
+        ArrayList<String> selectionAvoid = new ArrayList<>(recentCompleted);
+        if (!recentInterruption && combinedEffort <= 6
+                && category != CategoryEffortPolicy.REST) {
+            for (VolumeProgressionEngine.Observation entry : volumeHistory) {
+                if (entry != null && entry.category == category
+                        && entry.completed && !entry.interrupted
+                        && entry.effort <= 6
+                        && entry.day.isBefore(today)
+                        && !entry.day.isBefore(today.minusDays(14))
+                        && previousCompleted.contains(entry.variantId)) {
+                    selectionAvoid.remove(entry.variantId);
+                }
+            }
+        }
         MissionPlanner.Proposal mission = selector.daily(
-                adapted, today, decision,
-                Objects.requireNonNull(previousCompleted, "previousCompleted"),
+                adapted, today, decision, previousCompleted,
                 allowWeeklyRotation && !recentInterruption,
-                Objects.requireNonNull(recentCompleted, "recentCompleted"),
-                technicalPhase);
+                selectionAvoid, technicalPhase);
         Map<String, VolumeProgressionEngine.Suggestion> proposed = new LinkedHashMap<>();
         for (ExerciseVariant variant : mission.candidates()) {
             proposed.put(variant.id(), VolumeProgressionEngine.review(
