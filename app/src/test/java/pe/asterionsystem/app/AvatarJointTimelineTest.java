@@ -6,8 +6,8 @@ import org.junit.Test;
 /** Screen-space timeline continuity; not a biomechanical validation. */
 public final class AvatarJointTimelineTest {
     @Test public void all49CommandsHaveFiniteJointTargetsAndCloseTheirLoop(){
-        assertEquals(49,AvatarJointTimeline.Command.values().length);
-        assertEquals(23,AvatarJointTimeline.Joint.values().length);
+        assertEquals(51,AvatarJointTimeline.Command.values().length);
+        assertEquals(24,AvatarJointTimeline.Joint.values().length);
         for(AvatarJointTimeline.Command command:AvatarJointTimeline.Command.values()){
             AvatarJointTimeline line=new AvatarJointTimeline(command);
             assertSame(command,line.command());
@@ -18,7 +18,7 @@ public final class AvatarJointTimelineTest {
                 assertEquals(line.peakOffsets().getOrDefault(joint,0f),
                         line.offset(joint,.5f),.0001f);
             }
-            assertEquals(23,line.describe(.5f).split("\n").length);
+            assertEquals(24,line.describe(.5f).split("\n").length);
         }
     }
 
@@ -53,6 +53,17 @@ public final class AvatarJointTimelineTest {
         AvatarJointTimeline neck=new AvatarJointTimeline(
                 AvatarJointTimeline.Command.NECK_MOBILITY);
         assertTrue(neck.offset(AvatarJointTimeline.Joint.NECK_TURN,.5f)>0);
+    }
+
+    @Test public void newUnilateralCommandsUseTheCorrectSideAndAxis(){
+        AvatarJointTimeline step=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.LATERAL_STEP);
+        assertTrue(step.offset(AvatarJointTimeline.Joint.RIGHT_HIP_SIDE,.5f)>0);
+        assertEquals(0f,step.offset(AvatarJointTimeline.Joint.LEFT_HIP_SIDE,.5f),0);
+        AvatarJointTimeline neck=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.NECK_SIDE_TILT);
+        assertEquals(12f,neck.offset(AvatarJointTimeline.Joint.NECK_SIDE,.5f),.001f);
+        assertEquals(0f,neck.offset(AvatarJointTimeline.Joint.NECK_TURN,.5f),0);
     }
 
     @Test public void invalidPhaseAndNullJointFailClosed(){
