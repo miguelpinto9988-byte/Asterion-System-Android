@@ -140,7 +140,7 @@ test "$MAP_COUNT" -eq 24 || {
 }
 echo "PASS: representative non-illustrated variants have honest animated commands."
 
-echo "Android mat and chair: 82 real frames for thirteen authored floor/chair scenes"
+echo "Android avatar: 94 real frames for fifteen authored floor, chair and standing scenes"
 SUPPORTED_TEST="pe.asterionsystem.app.AvatarDedicatedSceneInstrumentedTest"
 adb shell am instrument -w -e class "$SUPPORTED_TEST" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
@@ -152,8 +152,8 @@ mkdir -p "$SUP_LOCAL"
 adb shell ls "$SUP_REMOTE"
 adb pull "$SUP_REMOTE/." "$SUP_LOCAL/"
 SUP_COUNT="$(find "$SUP_LOCAL" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
-test "$SUP_COUNT" -eq 82 || {
-  echo "Expected 82 mat/chair scene PNG frames; found $SUP_COUNT"
+test "$SUP_COUNT" -eq 94 || {
+  echo "Expected 94 dedicated exercise scene PNG frames; found $SUP_COUNT"
   exit 1
 }
-echo "PASS: 82 native Android chair/mat frames with alternating heels and toes on separate support pivots."
+echo "PASS: 94 native Android scenes with validated ground, chair, mat and alternating shoe pivots."
