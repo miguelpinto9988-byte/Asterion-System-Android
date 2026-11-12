@@ -86,8 +86,14 @@ for symbol in ("ARM_CURL","KNEE_CURL","HIP_EXTENSION_STAND",
     assert symbol in motion
 diagram=(base/"AvatarJointCommandView.java").read_text(encoding="utf-8")
 for symbol in ("postInvalidateOnAnimation()","timeline.offset(joint,phase)",
-               "No demuestra la ejecución del ejercicio","setFrameListener"):
+               "No demuestra la ejecución del ejercicio","setFrameListener",
+               "AvatarCommandFigurePose.from(timeline,phase)"):
     assert symbol in diagram,symbol
+figure=(base/"AvatarCommandFigurePose.java").read_text(encoding="utf-8")
+for symbol in ("requireFixedLengths","AvatarRigConstraints.requireFixedLength",
+               "leftShoulder","rightShoulder","leftKnee","rightKnee",
+               "AvatarJointTimeline.Joint.NECK_SIDE"):
+    assert symbol in figure,symbol
 assert "ILLUSTRATIVE" in catalog and "SPEC_ONLY" in catalog
 assert "status==Status.SPEC_ONLY" in catalog
 assert len(new_exercises)==11
