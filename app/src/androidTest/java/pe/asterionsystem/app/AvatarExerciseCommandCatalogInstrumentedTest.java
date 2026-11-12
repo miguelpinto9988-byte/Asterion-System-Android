@@ -48,8 +48,8 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
                 assertEquals(AvatarExerciseCommandCatalog.Clip.NONE,e.clip);
             }
         }
-        assertEquals(20,illustrated);
-        assertEquals(1237,unreviewed);
+        assertEquals(24,illustrated);
+        assertEquals(1233,unreviewed);
         for(String id:new String[]{"flexion_rodilla_bipeda_v03",
                 "equilibrio_unipodal_v04","caminata_banda_v01","elevacion_lateral_v01",
                 "inclinacion_cervical_suave_v01",
@@ -58,7 +58,9 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
                 "extension_rodilla_sin_carga_v01","sentadilla_bilateral_v04",
                 "dorsiflexion_tibial_v01","alcances_tronco_sentado_v02",
                 "puente_gluteo_v03","extension_rodilla_sin_carga_v02",
-                "extension_rodilla_sin_carga_v03"}){
+                "extension_rodilla_sin_carga_v03",
+                "puente_gluteo_v04","dorsiflexion_tobillo_v01",
+                "elevacion_gemelos_v01","balanceo_talon_punta_sentado_v01"}){
             assertTrue(profiles.require(id).canIllustrate());
         }
         for(String id:new String[]{"curl_biceps_v01","marcha_v02",
@@ -125,7 +127,7 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
         File folder=new File(base,"asterion-avatar-command-map-samples");
         assertTrue(folder.isDirectory()||folder.mkdirs());
         String[] ids={
-                "puente_gluteo_v04",
+                "puente_gluteo_v05",
                 "rotacion_cervical_suave_v02",
                 "alcance_unipodal_v01",
                 "nado_crol_recreativo_v03"
