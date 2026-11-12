@@ -62,6 +62,7 @@ public final class AvatarContactFrame {
         switch(motion){
             case MARCH:
             case KNEE_CURL:
+            case HIP_EXTENSION_STAND:
                 return new AvatarContactFrame(
                         AvatarKinematics.depthAtPhase(phase)<.001f
                         ?Ground.SOLE:Ground.NONE,Ground.SOLE,
