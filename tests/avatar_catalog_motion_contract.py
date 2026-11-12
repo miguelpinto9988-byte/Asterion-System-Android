@@ -123,7 +123,6 @@ assert by_id["puente_gluteo_v03"]["command"]=="GLUTE_BRIDGE_PAUSE"
 assert by_id["extension_rodilla_sin_carga_v01"]["command"]=="SEATED_KNEE_EXTENSION_SINGLE"
 assert by_id["extension_rodilla_sin_carga_v02"]["command"]=="SEATED_KNEE_EXTENSION_ALTERNATING"
 assert by_id["extension_rodilla_sin_carga_v03"]["command"]=="SEATED_KNEE_EXTENSION_PAUSE"
-assert "entry.command!=record.command" in manifest
 
 for ident,clip,equipment in (
         ("puente_gluteo_v01","GLUTE_BRIDGE_SHORT","colchoneta"),
@@ -151,6 +150,7 @@ for marker in ("chair(c,dark)","mat(c,dark)","AvatarSkeletonFrame.fromSide"):
 assert "dedicatedRenderer.draw" in native
 assert "avatar.setDedicatedScene(dedicated)" in viewer
 manifest=(base/"AvatarDemonstrationManifest.java").read_text(encoding="utf-8")
+assert "entry.command!=record.command" in manifest
 assert "AvatarDemonstrationManifest.requireConsistent(e)" in catalog
 assert "requireConsistent(AvatarExerciseCommandCatalog.Entry entry)" in manifest
 assert len(re.findall(r'register\(rows,',manifest))==20
