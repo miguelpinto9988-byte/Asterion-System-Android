@@ -35,7 +35,10 @@ def main():
                   'HAMMER_DUMBBELLS':'mancuerna','KETTLEBELL':'kettlebell',
                   'BAND_SHOULDERS':'banda','BAND_KNEE':'banda','WALL':'pared',
                   'CHAIR_SUPPORT':'silla'}
-        assert set(equipment.split('+'))-{'sin_equipo','silla'}==({required[prop]} if prop!='NONE' else set()),id
+        material=set(equipment.split('+'))-{'sin_equipo'}
+        if prop!='CHAIR_SUPPORT':
+            material.discard('silla')
+        assert material==({required[prop]} if prop!='NONE' else set()),id
     if args.frames:
         expected={f'{palette}_{r[0]}_{phase}.png' for r in rows
                   for palette in ('azul','morado') for phase in range(5)}
