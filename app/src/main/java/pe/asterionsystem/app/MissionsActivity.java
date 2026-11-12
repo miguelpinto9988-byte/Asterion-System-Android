@@ -238,7 +238,7 @@ public final class MissionsActivity extends ComponentActivity {
             }
             if(weekly!=null && weekly.rotateEquivalentVariant()) {
                 paragraph("El motor buscó automáticamente una alternativa equivalente "
-                        +"del catálogo. No se añadieron repeticiones ni series.");
+                        +"del catálogo. La progresión numérica se calcula de manera independiente.");
             }
         }
         paragraph(dayProposal.explanation());
@@ -272,10 +272,13 @@ public final class MissionsActivity extends ComponentActivity {
             if(volume.previousSets>0) {
                 String comparison=volume.previousSets+" series × "
                         +volume.previousRepetitions+" repeticiones registradas";
-                if(volume.requiresConsent()) {
-                    comparison+="; opción voluntaria: "+volume.offeredSets
-                            +" series × "+volume.offeredRepetitions+" repeticiones.";
-                } else comparison+="; sin aumento automático.";
+                if(volume.offeredSets!=volume.previousSets
+                        || volume.offeredRepetitions!=volume.previousRepetitions) {
+                    comparison+="; siguiente referencia calculada: "
+                            +volume.offeredSets+" series × "
+                            +volume.offeredRepetitions+" repeticiones "
+                            +"(no obligatoria).";
+                } else comparison+="; se mantiene la referencia.";
                 paragraph(comparison+" "+volume.explanation);
             } else if(volume.status==VolumeProgressionEngine.Status.RECOVERY_PRIORITY) {
                 paragraph(volume.explanation);
