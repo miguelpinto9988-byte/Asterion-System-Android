@@ -37,7 +37,7 @@ for text in ('"day_effort_"', '"monarch_done_"', '"day_done_"',
              'effort<1||effort>10', "SharedPreferences"):
     assert text in tracking,text
 for text in ("day >=21 ?21", "day>=14 ?14", "day>=7 ?7",
-             "if (average>=7.0)", "no se aumentará", "sin aumentar automáticamente"):
+             "if (average>=8.0)", "no se aumentará", "sin aumentar automáticamente"):
     assert text in domain,text
 assert "highEffortCanSuggestReducingAtDayTwentyOne" in tests
 assert "lowEffortDoesNotTriggerAutomaticIncrease" in tests
