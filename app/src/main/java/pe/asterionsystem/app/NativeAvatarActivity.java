@@ -1,5 +1,6 @@
 package pe.asterionsystem.app;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -7,12 +8,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.activity.ComponentActivity;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Educational 2D animation viewer, executed entirely in the Android APK.
@@ -26,6 +33,10 @@ public final class NativeAvatarActivity extends ComponentActivity {
     private Spinner motionPicker;
     private Spinner scenePicker;
     private TextView status;
+    private AvatarCommandCatalog commands;
+    private AvatarCommandCatalog.Entry activeCommand;
+    private Button commandDetails;
+    private final Map<String,String> commandOptions=new HashMap<>();
     private boolean light;
     private boolean scrubbing;
     private float density;
@@ -57,8 +68,8 @@ public final class NativeAvatarActivity extends ComponentActivity {
         purple.setOnClickListener(v->{avatar.setFemale(true);updatePlay();});
         root.addView(genders);
 
-        // The catalog is not mapped automatically: only authored and reviewed
-        // 2D examples appear here, each with explicit anchors and targets.
+        // Keep all existing preview commands, and add the complete catalog separately.
+        // Non-representable variants show technical text, not invented movement.
         motionPicker=new Spinner(this);
         AvatarMotionEngine.Motion[] choices=AvatarMotionEngine.Motion.values();
         String[] labels=new String[choices.length];
@@ -106,6 +117,15 @@ public final class NativeAvatarActivity extends ComponentActivity {
 
         status=text("Avatar azul · Sentadilla",13,true);
         root.addView(status);
+        LinearLayout catalogActions=row();
+        Button chooseCatalog=button("Buscar ejercicio");
+        commandDetails=button("Comandos articulares");
+        commandDetails.setEnabled(false);
+        catalogActions.addView(chooseCatalog,new LinearLayout.LayoutParams(0,dp(52),1));
+        catalogActions.addView(commandDetails,new LinearLayout.LayoutParams(0,dp(52),1));
+        root.addView(catalogActions);
+        chooseCatalog.setOnClickListener(v->showCatalogPicker());
+        commandDetails.setOnClickListener(v->showCommandDetails());
         timeline=new SeekBar(this);
         timeline.setMax(1000);
         timeline.setContentDescription("Posición en el ciclo del ejercicio ilustrado");
@@ -184,11 +204,18 @@ public final class NativeAvatarActivity extends ComponentActivity {
             speed.setText(avatar.getSpeed()==1f?"Velocidad 1×":"Velocidad 0,5×");
         }
         applyPlayback();
+        final String requestedVariant=state!=null
+                ?state.getString("selected_variant_id",
+                        getIntent().getStringExtra("variant_id"))
+                :getIntent().getStringExtra("variant_id");
+        loadCommandCatalog(requestedVariant);
     }
 
     @Override protected void onSaveInstanceState(Bundle state) {
         state.putBoolean("female",avatar.isFemale());
         state.putString("motion",avatar.getMotion().name());
+        if(activeCommand!=null)
+            state.putString("selected_variant_id",activeCommand.variantId);
         state.putString("camera",avatar.getViewMode().name());
         state.putBoolean("playing",playback.isPlaybackRequested());
         state.putFloat("phase",avatar.getPhase());
@@ -212,18 +239,98 @@ public final class NativeAvatarActivity extends ComponentActivity {
         super.onDestroy();
     }
     private void applyPlayback(){
-        if(avatar!=null)avatar.setPlaying(playback.shouldPlay());
+        if(avatar!=null)avatar.setPlaying(playback.shouldPlay()
+                &&(activeCommand==null||activeCommand.canAnimate()));
+        if(play!=null)play.setEnabled(activeCommand==null||activeCommand.canAnimate());
         updatePlay();
     }
     private void updatePlay(){
         if(avatar==null)return;
         if(play!=null)play.setText(avatar.isPlaying()?"Pausar":"Reproducir");
-        String scene=avatar.getViewMode()==AvatarMultiViewKinematics.ViewMode.SIDE
-                ?avatar.getMotion().label:avatar.getViewMode().title;
+        String scene=activeCommand!=null?activeCommand.name
+                :(avatar.getViewMode()==AvatarMultiViewKinematics.ViewMode.SIDE
+                ?avatar.getMotion().label:avatar.getViewMode().title);
         if(status!=null)status.setText((avatar.isFemale()?"Avatar morado":"Avatar azul")
                 +" · "+scene+" · "
-                +(avatar.isPlaying()?"Reproduciendo":"En pausa"));
+                +(activeCommand!=null&&!activeCommand.canAnimate()
+                ?"Referencia textual, sin animación precisa":
+                (avatar.isPlaying()?"Reproduciendo":"En pausa")));
     }
+    private void loadCommandCatalog(String requestedVariant) {
+        new Thread(()->{
+            try(InputStreamReader reader=new InputStreamReader(
+                    getAssets().open("asterion_exercises/v1/avatar_command_profiles.tsv"),
+                    StandardCharsets.UTF_8)) {
+                AvatarCommandCatalog loaded=AvatarCommandCatalog.load(reader);
+                runOnUiThread(()->{
+                    if(isFinishing()||isDestroyed())return;
+                    commands=loaded;
+                    commandOptions.clear();
+                    for(AvatarCommandCatalog.Entry entry:commands.all()) {
+                        commandOptions.put(entry.name+" · "+entry.variantId,
+                                entry.variantId);
+                    }
+                    if(requestedVariant!=null) {
+                        AvatarCommandCatalog.Entry selected=commands.find(requestedVariant);
+                        if(selected!=null)selectCatalogEntry(selected);
+                    }
+                });
+            }catch(Exception invalid) {
+                runOnUiThread(()->{
+                    if(!isFinishing()&&!isDestroyed()&&status!=null)
+                        status.setText("No se pudo verificar el catálogo de comandos.");
+                });
+            }
+        },"asterion-avatar-catalog").start();
+    }
+
+    private void showCatalogPicker() {
+        if(commands==null) {
+            new AlertDialog.Builder(this).setMessage(
+                    "Catálogo de comandos aún no disponible.")
+                    .setPositiveButton("Aceptar",null).show();
+            return;
+        }
+        AutoCompleteTextView input=new AutoCompleteTextView(this);
+        input.setHint("Nombre del ejercicio");
+        input.setSingleLine(true);
+        input.setThreshold(1);
+        input.setPadding(dp(18),dp(14),dp(18),dp(14));
+        ArrayList<String> options=new ArrayList<>(commandOptions.keySet());
+        java.util.Collections.sort(options);
+        input.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line,options));
+        AlertDialog dialog=new AlertDialog.Builder(this)
+                .setTitle("Buscar entre 1.257 ejercicios")
+                .setView(input)
+                .setNegativeButton("Cancelar",null).create();
+        input.setOnItemClickListener((parent,view,position,id)->{
+            String label=(String)parent.getItemAtPosition(position);
+            String variantId=commandOptions.get(label);
+            if(variantId!=null)selectCatalogEntry(commands.require(variantId));
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
+    private void selectCatalogEntry(AvatarCommandCatalog.Entry entry) {
+        activeCommand=entry;
+        avatar.setCatalogEntry(entry);
+        motionPicker.setEnabled(false);
+        scenePicker.setEnabled(false);
+        if(timeline!=null)timeline.setProgress(0);
+        if(commandDetails!=null)commandDetails.setEnabled(true);
+        applyPlayback();
+    }
+
+    private void showCommandDetails() {
+        if(activeCommand==null)return;
+        new AlertDialog.Builder(this)
+                .setTitle("Inicio · movimiento · retorno")
+                .setMessage(activeCommand.technicalDescription())
+                .setPositiveButton("Cerrar",null).show();
+    }
+
     private TextView text(String value,int sp,boolean prominent){
         TextView label=new TextView(this);
         label.setText(value);
