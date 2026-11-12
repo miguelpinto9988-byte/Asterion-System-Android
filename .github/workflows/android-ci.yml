@@ -122,6 +122,7 @@ jobs:
           python3 tests/mission_level_mix_contract.py
           python3 tests/volume_checkpoint_reset_contract.py
           python3 tests/volume_all_variants_contract.py
+          python3 tests/avatar_catalog_motion_contract.py
           python3 tests/consolidation_baseline_contract.py
           python3 tests/phase16_preflight_static.py
           python3 tests/phase03_visual_source_contract.py
@@ -171,6 +172,17 @@ jobs:
         with:
           name: asterion-misiones-tres-dias-reales
           path: build/mission-generator-demo/tres_dias_generador_real.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Exportar muestras por ID real del registro de avatares
+        run: python3 tests/avatar_catalog_motion_contract.py --samples
+
+      - name: Publicar muestreo de comandos de 6 ejercicios
+        uses: actions/upload-artifact@v4
+        with:
+          name: asterion-avatar-catalogo-muestreo
+          path: build/avatar-command-samples/muestras_catalogo.json
           if-no-files-found: error
           retention-days: 14
 
