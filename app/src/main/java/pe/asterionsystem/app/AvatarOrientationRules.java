@@ -74,7 +74,7 @@ public final class AvatarOrientationRules {
             DOWN,new Vector3(0f,0f,-1f));
     private static final BodyFrame PRONE_FRAME=new BodyFrame(
             Posture.PRONE_GROUND_FACING,new Vector3(0f,0f,-1f),
-            DOWN,DOWN,DOWN,DOWN,new Vector3(0f,0f,1f));
+            DOWN,DOWN,DOWN,DOWN,new Vector3(0f,0f,-1f));
 
     public static BodyFrame forPosture(Posture posture) {
         if(posture==null)throw new IllegalArgumentException("Posture required");
@@ -112,8 +112,9 @@ public final class AvatarOrientationRules {
         }
     }
 
-    /** Sign for the shoe tip in the overhead projection. The toe axis
-     * must point toward the feet, not back to the face. */
+    /** Sign for the shoe tip in the overhead projection. In a prone
+     * toe-supported pose the toes bend TOWARDS the head (screen -Y),
+     * independently of the knee-to-ankle shin direction. */
     public static float topToeSign(BodyFrame frame){
         if(frame==null)throw new IllegalArgumentException("Frame required");
         float y=project(frame.toeAxis,Camera.TOP).y;
@@ -165,7 +166,7 @@ public final class AvatarOrientationRules {
                 frame.palmNormal.dot(DOWN)<.999f||
                 visibleSurface(frame.palmNormal,Camera.TOP)||
                 visibleShoeSurface(Camera.TOP,frame)!=ShoeSurface.UPPER||
-                topToeSign(frame)<0f||
+                topToeSign(frame)>0f||
                 !(p.head.y<p.neck.y&&p.neck.y<p.leftHip.y&&
                   p.neck.y<p.rightHip.y&&p.leftKnee.y<p.leftAnkle.y&&
                   p.rightKnee.y<p.rightAnkle.y&&
