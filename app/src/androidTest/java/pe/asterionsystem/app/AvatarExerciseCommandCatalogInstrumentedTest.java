@@ -35,7 +35,7 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
             assertEquals(exercise.id(),e.variantId);
             assertEquals(exercise.difficulty(),e.level);
             assertNotNull(e.timeline());
-            assertEquals(23,e.timeline().describe(.5f).split("\n").length);
+            assertEquals(24,e.timeline().describe(.5f).split("\n").length);
             assertTrue(e.safeDescription().contains(exercise.id()));
             assertEquals(e.canIllustrate(),
                     e.status==AvatarExerciseCommandCatalog.Status.ILLUSTRATIVE);
