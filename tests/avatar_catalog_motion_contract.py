@@ -32,10 +32,10 @@ motion=(base/"AvatarMotionEngine.java").read_text(encoding="utf-8")
 match=re.search(r"public enum Command\s*\{(.*?)\}",timeline,re.S)
 assert match
 supported={x.strip() for x in match.group(1).replace("\n","").split(",") if x.strip()}
-assert len(supported)==49,sorted(supported)
+assert len(supported)==51,sorted(supported)
 for cmd in supported:
     assert f"case {cmd}:" in timeline,cmd
-assert len(re.findall(r'\(".*?"\)',timeline.split("public enum Command")[0]))>=23
+assert len(re.findall(r'\(".*?"\)',timeline.split("public enum Command")[0]))>=24
 
 counts=Counter();illustrated=[];families_covered=set();new_exercises=[]
 for row in rows:
@@ -70,7 +70,7 @@ for row in rows:
 assert len(families_covered)==155
 assert sum(counts.values())==1257
 assert len(illustrated)==11
-assert len({row["command"] for row in rows})>=48
+assert len({row["command"] for row in rows})>=49
 for string in ("postInvalidateOnAnimation()","AvatarMotionEngine.pose("):
     assert string in (base/"NativeAvatarView.java").read_text(encoding="utf-8")
 for string in ('putExtra("variant_id",current.id())',
@@ -98,4 +98,4 @@ if "--samples" in sys.argv:
                  for x in new_exercises]
     },ensure_ascii=False,indent=2),encoding="utf-8")
     print("Saved",out)
-print("OK: 1257 variantes, 155 familias, 49 comandos definidos, 11 escenas ilustrativas validadas")
+print("OK: 1257 variantes, 155 familias, 51 comandos definidos, 11 escenas ilustrativas validadas")
