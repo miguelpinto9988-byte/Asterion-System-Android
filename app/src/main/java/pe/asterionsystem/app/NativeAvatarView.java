@@ -88,7 +88,7 @@ public final class NativeAvatarView extends View {
         phase=0f;lastFrameMs=SystemClock.uptimeMillis();invalidate();
     }
     public void setPhase(float value){
-        phase=!Float.isFinite(value)?0f:Math.max(0f,Math.min(1f,value));
+        phase=Float.isNaN(value)?0f:Math.max(0f,Math.min(1f,value));
         lastFrameMs=SystemClock.uptimeMillis();
         invalidate();
     }
