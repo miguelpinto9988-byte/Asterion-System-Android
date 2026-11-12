@@ -108,7 +108,7 @@ aduccion_v03	HIP_ABDUCTION	FRONT	NONE	SPEC_ONLY	tren_inferior	2	isometrico	pelot
 aduccion_v04	HIP_ABDUCTION	FRONT	NONE	SPEC_ONLY	tren_inferior	3	resistencia	banda	0
 aduccion_v05	HIP_ABDUCTION	FRONT	NONE	SPEC_ONLY	tren_inferior	4	carga_externa	polea	1
 aduccion_v06	HIP_ABDUCTION	FRONT	NONE	SPEC_ONLY	tren_inferior	4	maquina	maquina	1
-caminata_banda_v01	HIP_ABDUCTION	FRONT	NONE	SPEC_ONLY	tren_inferior	1	lateral	sin_equipo	0
+caminata_banda_v01	HIP_ABDUCTION	FRONT_SIDE_STEP	FRONT_SIDE_STEP	ILLUSTRATIVE	tren_inferior	1	lateral	sin_equipo	0
 caminata_banda_v02	HIP_ABDUCTION	FRONT	NONE	SPEC_ONLY	tren_inferior	2	lateral	banda	0
 caminata_banda_v03	HIP_ABDUCTION	FRONT	NONE	SPEC_ONLY	tren_inferior	3	resistencia	banda	0
 caminata_banda_v04	HIP_ABDUCTION	FRONT	NONE	SPEC_ONLY	tren_inferior	4	resistencia	banda	1
@@ -205,7 +205,7 @@ curl_martillo_v03	ELBOW_FLEXION	FRONT	NONE	SPEC_ONLY	tren_superior	2	bilateral	m
 curl_martillo_v04	ELBOW_FLEXION	FRONT	NONE	SPEC_ONLY	tren_superior	3	alterno	mancuerna	0
 curl_martillo_v05	ELBOW_FLEXION	FRONT	NONE	SPEC_ONLY	tren_superior	4	controlado	mancuerna+banco	1
 curl_martillo_v06	ELBOW_FLEXION	FRONT	NONE	SPEC_ONLY	tren_superior	5	unilateral	polea	1
-elevacion_lateral_v01	SHOULDER_ABDUCTION	FRONT	FRONT	ILLUSTRATIVE	tren_superior	1	controlado	sin_equipo	0
+elevacion_lateral_v01	SHOULDER_ABDUCTION	FRONT_LATERAL	FRONT_LATERAL	ILLUSTRATIVE	tren_superior	1	controlado	sin_equipo	0
 elevacion_lateral_v02	SHOULDER_RAISE	FRONT	NONE	SPEC_ONLY	tren_superior	2	resistencia	banda	0
 elevacion_lateral_v03	SHOULDER_RAISE	FRONT	NONE	SPEC_ONLY	tren_superior	2	carga_externa	mancuerna	0
 elevacion_lateral_v04	SHOULDER_RAISE	FRONT	NONE	SPEC_ONLY	tren_superior	3	carga_externa	mancuerna+silla	0
@@ -307,7 +307,7 @@ rotacion_polea_v05	TRUNK_ROTATION	FRONT	NONE	SPEC_ONLY	tren_central	5	rotacion	p
 equilibrio_unipodal_v01	BALANCE	FRONT	NONE	SPEC_ONLY	movilidad	1	asistido	silla	0
 equilibrio_unipodal_v02	BALANCE	FRONT	NONE	SPEC_ONLY	movilidad	1	equilibrio	sin_equipo	0
 equilibrio_unipodal_v03	BALANCE	FRONT	NONE	SPEC_ONLY	movilidad	2	asistido	silla	0
-equilibrio_unipodal_v04	BALANCE	FRONT	NONE	SPEC_ONLY	movilidad	3	equilibrio	sin_equipo	0
+equilibrio_unipodal_v04	BALANCE	FRONT_BALANCE	FRONT_BALANCE	ILLUSTRATIVE	movilidad	3	equilibrio	sin_equipo	0
 equilibrio_unipodal_v05	BALANCE	FRONT	NONE	SPEC_ONLY	movilidad	4	equilibrio	sin_equipo	1
 equilibrio_unipodal_v06	BALANCE	FRONT	NONE	SPEC_ONLY	movilidad	5	equilibrio	sin_equipo	1
 alcance_unipodal_v01	BALANCE	FRONT	NONE	SPEC_ONLY	movilidad	1	asistido	silla	0
