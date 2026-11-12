@@ -48,10 +48,11 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
                 assertEquals(AvatarExerciseCommandCatalog.Clip.NONE,e.clip);
             }
         }
-        assertEquals(10,illustrated);
-        assertEquals(1247,unreviewed);
+        assertEquals(11,illustrated);
+        assertEquals(1246,unreviewed);
         for(String id:new String[]{"curl_biceps_v01","flexion_rodilla_bipeda_v03",
-                "equilibrio_unipodal_v04","caminata_banda_v01","elevacion_lateral_v01"}){
+                "equilibrio_unipodal_v04","caminata_banda_v01","elevacion_lateral_v01",
+                "inclinacion_cervical_suave_v01"}){
             assertTrue(profiles.require(id).canIllustrate());
         }
         for(String id:new String[]{"puente_gluteo_v02","rotacion_cervical_suave_v02",
@@ -61,7 +62,7 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
     }
 
 
-    /** Eighteen authentic Canvas frames: three distinct front movements,
+    /** Twenty-four authentic Canvas frames: four distinct front movements,
      * both retained palettes and complete beginning/peak/end states. */
     @Test public void exportFrontalLateralBalanceAndSideStepFrames(){
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
@@ -76,9 +77,10 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
             AvatarMultiViewKinematics.ViewMode[] scenes={
                     AvatarMultiViewKinematics.ViewMode.FRONT_LATERAL,
                     AvatarMultiViewKinematics.ViewMode.FRONT_BALANCE,
-                    AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP};
+                    AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP,
+                    AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT};
             String[] ids={"elevacion_lateral_v01","equilibrio_unipodal_v04",
-                    "caminata_banda_v01"};
+                    "caminata_banda_v01","inclinacion_cervical_suave_v01"};
             for(boolean purple:new boolean[]{false,true}){
                 view.setFemale(purple);
                 for(int i=0;i<scenes.length;i++){
@@ -104,7 +106,7 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
         });
         File[] output=folder.listFiles((dir,name)->name.endsWith(".png"));
         assertNotNull(output);
-        assertEquals(18,output.length);
+        assertEquals(24,output.length);
     }
 
     @Test public void exportRealAndroidFramesForTwoPreviouslyUnanimatedJointMotions(){
