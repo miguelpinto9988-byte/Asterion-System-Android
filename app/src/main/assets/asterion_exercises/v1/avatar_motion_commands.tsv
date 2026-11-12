@@ -76,13 +76,13 @@ step_down_v04	STEP_UP	SIDE	NONE	SPEC_ONLY	tren_inferior	4	controlado	escalon	1
 step_down_v05	STEP_UP	SIDE	NONE	SPEC_ONLY	tren_inferior	5	carga_externa	escalon+mancuerna	1
 elevacion_gemelos_v01	SEATED_HEEL_RAISE	SIDE	SEATED_HEEL_RAISE	ILLUSTRATIVE	tren_inferior	1	bilateral	silla	0
 elevacion_gemelos_v02	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	asistido	silla	0
-elevacion_gemelos_v03	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	bilateral	sin_equipo	0
+elevacion_gemelos_v03	STANDING_HEEL_RAISE	SIDE	STANDING_HEEL_RAISE	ILLUSTRATIVE	tren_inferior	2	bilateral	sin_equipo	0
 elevacion_gemelos_v04	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	3	bilateral	escalon	0
 elevacion_gemelos_v05	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	3	asistido	silla	0
 elevacion_gemelos_v06	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	4	carga_externa	mancuerna	1
 dorsiflexion_tibial_v01	SEATED_TOE_RAISE	SIDE	SEATED_TOE_RAISE	ILLUSTRATIVE	tren_inferior	1	bilateral	silla	0
 dorsiflexion_tibial_v02	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	asistido	pared	0
-dorsiflexion_tibial_v03	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	bilateral	sin_equipo	0
+dorsiflexion_tibial_v03	STANDING_TOE_RAISE	SIDE	STANDING_TOE_RAISE	ILLUSTRATIVE	tren_inferior	2	bilateral	sin_equipo	0
 dorsiflexion_tibial_v04	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	3	resistencia	banda	0
 dorsiflexion_tibial_v05	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	4	isometrico	pared	1
 curl_femoral_v01	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	asistido	silla	0
