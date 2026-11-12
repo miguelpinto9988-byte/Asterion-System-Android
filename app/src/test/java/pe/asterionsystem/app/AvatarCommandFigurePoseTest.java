@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- * Pure-Java regression: the 51 catalog commands drive a rigid 2D skeletal
+ * Pure-Java regression: the 53 catalog commands drive a rigid 2D skeletal
  * reference, NOT biomechanically validated exercise demonstrations.
  */
 public final class AvatarCommandFigurePoseTest {
