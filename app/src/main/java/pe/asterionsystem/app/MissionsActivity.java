@@ -268,7 +268,7 @@ public final class MissionsActivity extends ComponentActivity {
             dailyExerciseRow(index++,entry,today,category,dayProposal);
             VolumeProgressionEngine.Suggestion volume=VolumeProgressionEngine.review(
                     entry,category,today,volumeHistory,
-                    recentlyInterrupted || decision.preferSimplerTechnique);
+                    recentlyInterrupted);
             if(volume.previousSets>0) {
                 String comparison=volume.previousSets+" series × "
                         +volume.previousRepetitions+" repeticiones registradas";
