@@ -331,10 +331,12 @@ public final class RoutineStepActivity extends ComponentActivity {
         addText("Ejercicio "+(index+1)+" de "+exercises.size()
                 +(byRounds?" · Ronda "+round:" · Series registradas "+extraSeries),14);
         addText(current.name(),23);
-        if(current.name().toLowerCase(java.util.Locale.ROOT).contains("sentadilla")) {
-            addAction("Ver sentadilla con avatar 2D",()->startActivity(
-                    new Intent(this,NativeAvatarActivity.class)));
-        }
+        // Every catalog variant has an explicit, versioned avatar command
+        // entry. Unsupported 2D projections show technical text, never a
+        // visually incorrect exercise or an unrelated squat.
+        addAction("Ver avatar 2D y comandos de este ejercicio",()->startActivity(
+                new Intent(this,NativeAvatarActivity.class)
+                        .putExtra("variant_id",current.id())));
         addText("Material: "+String.join(", ",current.equipment()).replace("_"," ")
                 +" · Nivel técnico "+current.difficulty(),13);
         addText("Elige tu ritmo. Puedes parar, descansar o no terminar "
