@@ -142,6 +142,7 @@ public final class NativeAvatarView extends View {
         if(getWidth()<=0||getHeight()<=0)return;
         float scale=Math.min(getWidth()/DESIGN_WIDTH,getHeight()/DESIGN_HEIGHT);
         canvas.save();
+        try {
         canvas.translate((getWidth()-DESIGN_WIDTH*scale)*0.5f,
                 (getHeight()-DESIGN_HEIGHT*scale)*0.5f);
         canvas.scale(scale,scale);
@@ -180,7 +181,17 @@ public final class NativeAvatarView extends View {
             AvatarFrameSafety.camera(pose,viewMode,contact,bodySpec);
             multiRenderer.draw(canvas,pose,viewMode,palette,dark,bodySpec);
         }
-        canvas.restore();
+        } catch(IllegalArgumentException | IllegalStateException invalidPose) {
+            // Fail closed: don't draw dislocated limbs or keep scheduling a
+            // broken animation. Preserve the Android screen and let the
+            // user select another exercise or camera.
+            playing=false;
+            canvas.drawColor(dark?0xFF13131D:0xFFF8F9FD);
+            setContentDescription("Avatar pausado por postura geométrica inválida");
+            android.util.Log.w("AsterionAvatar","Se rechazó un fotograma inválido",invalidPose);
+        } finally {
+            canvas.restore();
+        }
         if(playing&&isAttachedToWindow()&&isShown())postInvalidateOnAnimation();
     }
 
