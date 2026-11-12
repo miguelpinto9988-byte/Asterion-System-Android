@@ -102,7 +102,10 @@ public final class AvatarNewFrontalMotionsTest {
                 AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT,0f);
         AvatarMultiViewKinematics.Pose peak=pose(
                 AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT,.49f);
-        assertTrue(peak.head.x>a.head.x+10f);
+        assertTrue(peak.head.x>a.head.x+5f);
+        float degrees=(float)Math.toDegrees(Math.atan2(peak.head.x-peak.neck.x,
+                peak.neck.y-peak.head.y));
+        assertEquals(12f,degrees,.1f);
         assertEquals(27f,peak.head.distance(peak.neck),.05f);
         assertEquals(0f,a.leftAnkle.distance(peak.leftAnkle),.001f);
         assertEquals(0f,a.rightAnkle.distance(peak.rightAnkle),.001f);
