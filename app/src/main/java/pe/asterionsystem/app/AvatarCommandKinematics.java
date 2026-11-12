@@ -27,7 +27,10 @@ public final class AvatarCommandKinematics {
 
         // Backward compatibility: keep the six authored motions intact.
         AvatarMotionEngine.Motion old=legacy(command);
-        if(old!=null)return AvatarMotionEngine.pose(old,phase,body);
+        if(old==AvatarMotionEngine.Motion.BURPEE)
+            return AvatarMotionEngine.pose(old,phase,body);
+        if(old!=null)
+            return AvatarMotionEngine.pose(old,scaledLegacyPhase(phase,amplitude),body);
         if(command.name().endsWith("_REFERENCE"))
             throw new IllegalArgumentException("Referencia sin animación aprobada");
 
@@ -134,6 +137,24 @@ public final class AvatarCommandKinematics {
                 ankle,farAnkle,nearLeg.joint,farLeg.joint,hip,farHip,
                 shoulder,farShoulder,neck,head,
                 nearArm.joint,nearArm.end,farArm.joint,farArm.end);
+    }
+
+    /**
+     * The original authored presets remain untouched. For five single-gesture
+     * movements, invert smoothstep to scale only the excursion of the copied
+     * catalog preview, keeping both ends and their zero-velocity boundaries.
+     * Multi-contact burpees keep their original full authored transition.
+     */
+    private static float scaledLegacyPhase(float phase,float amplitude) {
+        if(amplitude>=.999f)return phase;
+        float target=AvatarKinematics.depthAtPhase(phase)*amplitude;
+        float low=0f,high=1f;
+        for(int i=0;i<15;i++) {
+            float middle=(low+high)*.5f;
+            float smooth=middle*middle*(3f-2f*middle);
+            if(smooth<target)low=middle; else high=middle;
+        }
+        return .08f+.34f*(low+high)*.5f;
     }
 
     /**
