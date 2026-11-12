@@ -32,7 +32,7 @@ motion=(base/"AvatarMotionEngine.java").read_text(encoding="utf-8")
 match=re.search(r"public enum Command\s*\{(.*?)\}",timeline,re.S)
 assert match
 supported={x.strip() for x in match.group(1).replace("\n","").split(",") if x.strip()}
-assert len(supported)==57,sorted(supported)
+assert len(supported)==60,sorted(supported)
 for cmd in supported:
     assert f"case {cmd}:" in timeline,cmd
 assert len(re.findall(r'\(".*?"\)',timeline.split("public enum Command")[0]))>=24
@@ -53,7 +53,9 @@ for row in rows:
                                "SEATED_KNEE_EXTENSION","SEATED_TOE_RAISE",
                                "SEATED_FORWARD_REACH",
                                "GLUTE_BRIDGE_PAUSE","SEATED_KNEE_EXTENSION_PAUSE",
-                               "SEATED_KNEE_EXTENSION_ALTERNATING"),ident
+                               "SEATED_KNEE_EXTENSION_ALTERNATING",
+                               "GLUTE_BRIDGE_BAND","SEATED_TOE_RAISE_SINGLE",
+                               "SEATED_HEEL_RAISE","SEATED_HEEL_RAISE_GENTLE"),ident
     assert row["status"] in ("ILLUSTRATIVE","SPEC_ONLY"),ident
     assert (row["status"]=="SPEC_ONLY")==(row["clip"]=="NONE"),ident
     if row["status"]=="ILLUSTRATIVE":
@@ -80,12 +82,14 @@ for row in rows:
                  "sentadilla_bilateral_v04","marcha_v02",
                  "dorsiflexion_tibial_v01","alcances_tronco_sentado_v02",
                  "puente_gluteo_v03","extension_rodilla_sin_carga_v02",
-                 "extension_rodilla_sin_carga_v03"):
+                 "extension_rodilla_sin_carga_v03",
+                 "puente_gluteo_v04","dorsiflexion_tobillo_v01",
+                 "elevacion_gemelos_v01","balanceo_talon_punta_sentado_v01"):
         new_exercises.append(row)
 
 assert len(families_covered)==155
 assert sum(counts.values())==1257
-assert len(illustrated)==20
+assert len(illustrated)==24
 assert len({row["command"] for row in rows})>=49
 for string in ("postInvalidateOnAnimation()","AvatarMotionEngine.pose("):
     assert string in (base/"NativeAvatarView.java").read_text(encoding="utf-8")
@@ -123,6 +127,9 @@ assert by_id["puente_gluteo_v03"]["command"]=="GLUTE_BRIDGE_PAUSE"
 assert by_id["extension_rodilla_sin_carga_v01"]["command"]=="SEATED_KNEE_EXTENSION_SINGLE"
 assert by_id["extension_rodilla_sin_carga_v02"]["command"]=="SEATED_KNEE_EXTENSION_ALTERNATING"
 assert by_id["extension_rodilla_sin_carga_v03"]["command"]=="SEATED_KNEE_EXTENSION_PAUSE"
+assert by_id["dorsiflexion_tobillo_v01"]["command"]=="SEATED_TOE_RAISE_SINGLE"
+assert by_id["elevacion_gemelos_v01"]["command"]=="SEATED_HEEL_RAISE"
+assert by_id["balanceo_talon_punta_sentado_v01"]["command"]=="SEATED_HEEL_RAISE_GENTLE"
 
 for ident,clip,equipment in (
         ("puente_gluteo_v01","GLUTE_BRIDGE_SHORT","colchoneta"),
@@ -135,6 +142,11 @@ for ident,clip,equipment in (
                 "SEATED_KNEE_EXTENSION_ALTERNATING","silla"),
         ("extension_rodilla_sin_carga_v03",
                 "SEATED_KNEE_EXTENSION_PAUSE","silla"),
+        ("puente_gluteo_v04","GLUTE_BRIDGE_BAND","banda+colchoneta"),
+        ("dorsiflexion_tobillo_v01","SEATED_TOE_RAISE_SINGLE","silla"),
+        ("elevacion_gemelos_v01","SEATED_HEEL_RAISE","silla"),
+        ("balanceo_talon_punta_sentado_v01",
+                "SEATED_HEEL_RAISE_GENTLE","silla"),
         ("sentadilla_bilateral_v04","SQUAT","sin_equipo")):
     assert by_id[ident]["status"]=="ILLUSTRATIVE",ident
     assert by_id[ident]["clip"]==clip,ident
@@ -153,10 +165,10 @@ manifest=(base/"AvatarDemonstrationManifest.java").read_text(encoding="utf-8")
 assert "entry.command!=record.command" in manifest
 assert "AvatarDemonstrationManifest.requireConsistent(e)" in catalog
 assert "requireConsistent(AvatarExerciseCommandCatalog.Entry entry)" in manifest
-assert len(re.findall(r'register\(rows,',manifest))==20
+assert len(re.findall(r'register\(rows,',manifest))==24
 
 
-assert len(new_exercises)==20
+assert len(new_exercises)==24
 
 if "--samples" in sys.argv:
     out=root/"build/avatar-command-samples/muestras_catalogo.json"
@@ -175,5 +187,5 @@ from avatar_completion_progress import summary
 progress=summary()
 assert progress["body_demonstrations_registered"]==len(illustrated)
 assert progress["body_demonstrations_pending"]==1257-len(illustrated)
-print("OK: 1257 variantes, 155 familias, 57 comandos definidos, 20 variantes ilustrativas registradas")
+print("OK: 1257 variantes, 155 familias, 60 comandos definidos, 24 variantes ilustrativas registradas")
 print("Avance del catálogo corporal:",progress["percent_registered"],"% / pendientes:",progress["body_demonstrations_pending"])
