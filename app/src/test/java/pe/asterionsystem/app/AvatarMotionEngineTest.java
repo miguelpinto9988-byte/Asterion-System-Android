@@ -36,6 +36,7 @@ public final class AvatarMotionEngineTest {
                     assertEquals(0f,p.farAnkle.distance(start.farAnkle),EPS);
                 if(m!=AvatarMotionEngine.Motion.MARCH
                         &&m!=AvatarMotionEngine.Motion.KNEE_CURL
+                        &&m!=AvatarMotionEngine.Motion.HIP_EXTENSION_STAND
                         &&m!=AvatarMotionEngine.Motion.BURPEE)
                     assertEquals(0f,p.ankle.distance(start.ankle),EPS);
             }
@@ -43,6 +44,20 @@ public final class AvatarMotionEngineTest {
         AvatarKinematics.Pose raised=AvatarMotionEngine.pose(
                 AvatarMotionEngine.Motion.MARCH,.47f,AvatarBodySpec.DEFAULT);
         assertTrue(raised.ankle.y<360f);
+    }
+
+    @Test public void standingHipExtensionHasFreeRearFootAndPinnedSupport(){
+        AvatarPose first=AvatarMotionEngine.pose(
+                AvatarMotionEngine.Motion.HIP_EXTENSION_STAND,0f,AvatarBodySpec.DEFAULT);
+        AvatarPose center=AvatarMotionEngine.pose(
+                AvatarMotionEngine.Motion.HIP_EXTENSION_STAND,.49f,AvatarBodySpec.DEFAULT);
+        assertTrue(center.ankle.x<first.ankle.x-23f);
+        assertTrue(center.ankle.y<first.ankle.y-16f);
+        assertEquals(0f,first.farAnkle.distance(center.farAnkle),EPS);
+        assertEquals(AvatarContactFrame.Ground.NONE,AvatarContactFrame.forSide(
+                AvatarMotionEngine.Motion.HIP_EXTENSION_STAND,.49f).leftFoot);
+        assertEquals(AvatarContactFrame.Ground.SOLE,AvatarContactFrame.forSide(
+                AvatarMotionEngine.Motion.HIP_EXTENSION_STAND,.49f).rightFoot);
     }
 
     @Test public void eachMotionStartsAndFinishesWithoutPoseJump(){
@@ -95,7 +110,7 @@ public final class AvatarMotionEngineTest {
     }
 
     @Test public void allExerciseLabelsExistAndNullIsRejected(){
-        assertEquals(8,AvatarMotionEngine.Motion.values().length);
+        assertEquals(9,AvatarMotionEngine.Motion.values().length);
         for(AvatarMotionEngine.Motion m:AvatarMotionEngine.Motion.values())
             assertTrue(m.label.length()>4);
         assertThrows(IllegalArgumentException.class,()->
