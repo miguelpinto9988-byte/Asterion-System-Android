@@ -25,15 +25,28 @@ public final class VolumeProgressionEngine {
         public final LocalDate day;
         public final int category;
         public final String variantId, typeId;
-        public final int technicalLevel, sets, repetitions, effort;
+        public final int technicalLevel, sets, repetitions, quantity, effort;
         public final boolean completed, interrupted;
+        public final ExerciseVolumeProfileCatalog.Unit unit;
 
+        /** Legacy ten-field records are repetitions; never silently treat as seconds. */
         public Observation(LocalDate day, int category, String variantId, String typeId,
                            int technicalLevel, int sets, int repetitions, int effort,
                            boolean completed, boolean interrupted) {
+            this(day,category,variantId,typeId,technicalLevel,sets,repetitions,
+                    effort,completed,interrupted,
+                    ExerciseVolumeProfileCatalog.Unit.REPETITIONS);
+        }
+
+        public Observation(LocalDate day, int category, String variantId, String typeId,
+                           int technicalLevel, int sets, int quantity, int effort,
+                           boolean completed, boolean interrupted,
+                           ExerciseVolumeProfileCatalog.Unit unit) {
             this.day = Objects.requireNonNull(day, "day");
+            this.unit = Objects.requireNonNull(unit, "unit");
             if (category < 0 || category > 4 || technicalLevel < 1 || technicalLevel > 3
-                    || sets < 1 || sets > 12 || repetitions < 1 || repetitions > 60
+                    || sets < 1 || sets > 12 || quantity < 1
+                    || quantity > (unit==ExerciseVolumeProfileCatalog.Unit.SECONDS?180:60)
                     || effort < 1 || effort > 10) {
                 throw new IllegalArgumentException("Registro de volumen fuera de rango");
             }
@@ -45,7 +58,8 @@ public final class VolumeProgressionEngine {
             this.typeId = typeId;
             this.technicalLevel = technicalLevel;
             this.sets = sets;
-            this.repetitions = repetitions;
+            this.repetitions = quantity; // Historical alias for old callers.
+            this.quantity = quantity;
             this.effort = effort;
             this.completed = completed;
             this.interrupted = interrupted;
@@ -55,19 +69,31 @@ public final class VolumeProgressionEngine {
     public static final class Suggestion {
         public final Status status;
         /** Previous actually logged volume; zero when no comparable record. */
-        public final int previousSets, previousRepetitions;
+        public final int previousSets, previousRepetitions, previousQuantity;
         /** Automatically calculated next-session reference, not an obligation. */
-        public final int offeredSets, offeredRepetitions;
+        public final int offeredSets, offeredRepetitions, offeredQuantity;
+        public final ExerciseVolumeProfileCatalog.Unit unit;
         public final String explanation;
 
         private Suggestion(Status status, int previousSets, int previousRepetitions,
                            int offeredSets, int offeredRepetitions, String explanation) {
+            this(status,previousSets,previousRepetitions,offeredSets,
+                    offeredRepetitions,explanation,
+                    ExerciseVolumeProfileCatalog.Unit.REPETITIONS);
+        }
+
+        private Suggestion(Status status, int previousSets, int previousQuantity,
+                           int offeredSets, int offeredQuantity, String explanation,
+                           ExerciseVolumeProfileCatalog.Unit unit) {
             this.status = status;
             this.previousSets = previousSets;
-            this.previousRepetitions = previousRepetitions;
+            this.previousRepetitions = previousQuantity;
+            this.previousQuantity = previousQuantity;
             this.offeredSets = offeredSets;
-            this.offeredRepetitions = offeredRepetitions;
+            this.offeredRepetitions = offeredQuantity;
+            this.offeredQuantity = offeredQuantity;
             this.explanation = explanation;
+            this.unit = Objects.requireNonNull(unit,"unit");
         }
 
         public boolean requiresConsent() {
@@ -124,6 +150,115 @@ public final class VolumeProgressionEngine {
             case 10: return -3;
             default: throw new IllegalArgumentException("Esfuerzo fuera de 1..10");
         }
+    }
+
+
+    /**
+     * Typed next-session reference for every catalog variant. Time and repetition
+     * units cannot share numeric history. A changed exercise/technical block
+     * receives an empty numeric history and therefore its OWN initial baseline.
+     * This reference is displayed but NEVER executed or enforced automatically.
+     */
+    public static Suggestion review(ExerciseVariant selected, int category,
+                                    LocalDate nextDay, List<Observation> history,
+                                    boolean pausedOrInterrupted,
+                                    ExerciseVolumeProfileCatalog.Profile profile) {
+        Objects.requireNonNull(selected,"selected");
+        Objects.requireNonNull(nextDay,"nextDay");
+        Objects.requireNonNull(history,"history");
+        Objects.requireNonNull(profile,"profile");
+        if (!profile.variantId.equals(selected.id()))
+            throw new IllegalArgumentException("La referencia no corresponde al ejercicio");
+        if (category < 0 || category > 4)
+            throw new IllegalArgumentException("Categoría inválida");
+        if (pausedOrInterrupted)
+            return new Suggestion(Status.PAUSED,0,0,0,0,
+                    "Ejercicio en pausa; no se propone volumen.",profile.unit);
+
+        ArrayList<Observation> matching=new ArrayList<>();
+        boolean recentHard=false;
+        for(Observation obs:history) {
+            if(obs==null || obs.category!=category
+                    || !obs.day.isBefore(nextDay)
+                    || obs.day.isBefore(nextDay.minusDays(21)))continue;
+            if(!obs.day.isBefore(nextDay.minusDays(7))
+                    && (obs.effort>=8 || obs.interrupted))recentHard=true;
+            if(obs.completed && !obs.interrupted
+                    && obs.unit==profile.unit
+                    && obs.variantId.equals(selected.id())
+                    && obs.typeId.equals(selected.typeId())
+                    && obs.technicalLevel==selected.difficulty())matching.add(obs);
+        }
+        matching.sort(Comparator.comparing((Observation o)->o.day).reversed());
+        if(matching.isEmpty()) {
+            if(recentHard)
+                return new Suggestion(Status.RECOVERY_PRIORITY,0,0,0,0,
+                        "Esfuerzo elevado reciente en esta categoría: no se fija "
+                        +"un punto inicial hasta revisar la recuperación.",profile.unit);
+            return new Suggestion(Status.NO_HISTORY,0,0,
+                    profile.initialSets,profile.initialValue,
+                    "Punto inicial de referencia propio de este ejercicio: "
+                    +profile.display(profile.initialSets,profile.initialValue)
+                    +". No es obligatorio y no hereda otra variante.",profile.unit);
+        }
+
+        Observation recent=matching.get(0);
+        if(!profile.automaticEligible)
+            return new Suggestion(Status.MAINTAIN,recent.sets,recent.quantity,
+                    recent.sets,recent.quantity,
+                    "Movimiento que requiere revisión: sin progresión automática.",
+                    profile.unit);
+
+        int delta=repetitionDelta(recent.effort)*profile.increment;
+        if(delta<0)
+            return new Suggestion(Status.CALCULATED_DECREASE,
+                    recent.sets,recent.quantity,recent.sets,
+                    Math.max(profile.minimumValue,recent.quantity+delta),
+                    "Esfuerzo 8–10: la siguiente referencia se reduce en "
+                    +Math.abs(delta)+" "+profile.unit.label+" como máximo.",
+                    profile.unit);
+        if(recentHard)
+            return new Suggestion(Status.RECOVERY_PRIORITY,
+                    recent.sets,recent.quantity,recent.sets,recent.quantity,
+                    "Esfuerzo alto reciente: no se aumentan series ni tiempo "
+                    +"o repeticiones.",profile.unit);
+        if(delta==0)
+            return new Suggestion(Status.MAINTAIN,recent.sets,recent.quantity,
+                    recent.sets,recent.quantity,
+                    "Esfuerzo 4–7: mantener la referencia anterior.",
+                    profile.unit);
+
+        ArrayList<LocalDate> easyDays=new ArrayList<>();
+        boolean sameSetsAndEasy=true;
+        LocalDate earliest=recent.day;
+        for(Observation obs:matching) {
+            if(obs.effort>3 || obs.sets!=recent.sets)
+                sameSetsAndEasy=false;
+            if(obs.effort<=3 && !easyDays.contains(obs.day))
+                easyDays.add(obs.day);
+            if(obs.day.isBefore(earliest))earliest=obs.day;
+        }
+        if(matching.size()>=3 && easyDays.size()>=3 && sameSetsAndEasy
+                && ChronoUnit.DAYS.between(earliest,recent.day)>=7
+                && recent.sets<3) {
+            return new Suggestion(Status.CALCULATED_EXTRA_SERIES,
+                    recent.sets,recent.quantity,
+                    recent.sets+1,recent.quantity,
+                    "Tres sesiones fáciles separadas en el tiempo: referencia "
+                    +"de una serie adicional, sin subir a la vez la cantidad por serie.",
+                    profile.unit);
+        }
+        if(recent.quantity>=profile.maximumValue)
+            return new Suggestion(Status.REVIEW_SERIES_WITH_GUIDANCE,
+                    recent.sets,recent.quantity,
+                    recent.sets,recent.quantity,
+                    "Se alcanzó el límite de referencia propio de este ejercicio.",
+                    profile.unit);
+        return new Suggestion(Status.CALCULATED_INCREASE,
+                recent.sets,recent.quantity,recent.sets,
+                Math.min(profile.maximumValue,recent.quantity+delta),
+                "Esfuerzo 1–3: siguiente referencia calculada según la unidad "
+                +"de este ejercicio, sin obligación de completarla.",profile.unit);
     }
 
     /**
