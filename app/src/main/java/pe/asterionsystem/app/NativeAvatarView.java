@@ -2,6 +2,7 @@ package pe.asterionsystem.app;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.SystemClock;
 import android.view.View;
 
@@ -18,6 +19,8 @@ public final class NativeAvatarView extends View {
     private static final float LOOP_MS=4200f;
     private final AvatarRenderer renderer=new AvatarRenderer();
     private final AvatarMultiViewRenderer multiRenderer=new AvatarMultiViewRenderer();
+    private final Paint fallbackPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+    private boolean lastFrameRejected=false;
     private AvatarMultiViewKinematics.ViewMode viewMode=AvatarMultiViewKinematics.ViewMode.SIDE;
     private AvatarPalette palette=AvatarPalette.BLUE;
     private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
@@ -78,6 +81,8 @@ public final class NativeAvatarView extends View {
     }
     public float getSpeed(){return speed;}
     public float getPhase(){return phase;}
+    /** True when the last draw showed a safe placeholder, not a broken rig. */
+    public boolean wasLastFrameRejected(){return lastFrameRejected;}
     public boolean isPlaying(){return playing;}
     public void setPlaying(boolean value){
         playing=value;lastFrameMs=SystemClock.uptimeMillis();
@@ -142,6 +147,7 @@ public final class NativeAvatarView extends View {
         if(getWidth()<=0||getHeight()<=0)return;
         float scale=Math.min(getWidth()/DESIGN_WIDTH,getHeight()/DESIGN_HEIGHT);
         canvas.save();
+        lastFrameRejected=false;
         try {
             canvas.translate((getWidth()-DESIGN_WIDTH*scale)*0.5f,
                     (getHeight()-DESIGN_HEIGHT*scale)*0.5f);
@@ -181,9 +187,25 @@ public final class NativeAvatarView extends View {
             AvatarFrameSafety.requireCamera(pose,viewMode,contact);
             multiRenderer.draw(canvas,pose,viewMode,palette,dark,bodySpec);
         }
+        } catch(IllegalArgumentException | IllegalStateException invalidRig) {
+            // Invalid user-supplied proportions or a corrupt joint must not
+            // crash the surrounding app or display disconnected body pieces.
+            lastFrameRejected=true;
+            fallbackPaint.setShader(null);
+            fallbackPaint.setStyle(Paint.Style.FILL);
+            fallbackPaint.setColor(dark?0xFF1C2A40:0xFFF1F5FA);
+            canvas.drawRoundRect(24f,30f,376f,446f,17f,17f,fallbackPaint);
+            fallbackPaint.setColor(dark?0xFFDFE9F7:0xFF344766);
+            fallbackPaint.setTextSize(16f);
+            fallbackPaint.setFakeBoldText(true);
+            canvas.drawText("Vista temporalmente no disponible",52f,231f,
+                    fallbackPaint);
+            fallbackPaint.setFakeBoldText(false);
+            fallbackPaint.setTextSize(12f);
+            canvas.drawText("Postura fuera del rango permitido",63f,254f,
+                    fallbackPaint);
         } finally {
-            // Restore the caller's drawing state even if a rig invariant
-            // rejects an invalid pose. Never leak a transformed Canvas.
+            // Restore the caller's matrix and clip state after every draw.
             canvas.restore();
         }
         if(playing&&isAttachedToWindow()&&isShown())postInvalidateOnAnimation();
