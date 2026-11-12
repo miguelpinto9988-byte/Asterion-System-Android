@@ -116,10 +116,16 @@ public final class AvatarDedicatedSceneRenderer {
                 ?"PERFIL · PUENTE CORTO":
                 scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BASIC
                 ?"PERFIL · PUENTE DE GLÚTEOS":
+                scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_PAUSE
+                ?"PERFIL · PUENTE CON PAUSA":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_TOE_RAISE
                 ?"PERFIL · ELEVACIÓN DE PUNTAS SENTADO":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_FORWARD_REACH
                 ?"PERFIL · ALCANCE FRONTAL SENTADO":
+                scene.kind==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE
+                ?"PERFIL · EXTENSIÓN DE RODILLA CON PAUSA":
+                scene.kind==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING
+                ?"PERFIL · EXTENSIÓN ALTERNADA DE RODILLAS":
                 "PERFIL · EXTENSIÓN DE RODILLA SENTADO";
         label(c,name,27,453,dark?0xFFCBD9E7:0xFF4F6B89,11);
     }
