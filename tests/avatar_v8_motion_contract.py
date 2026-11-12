@@ -13,7 +13,7 @@ for token in ("FRONT_JACKS(", "FRONT_ELBOW(", "frontJumpingJack(",
               "frontElbowFlex(", "frontWideSquat(", "49f*d",
               "at(174f,244f+shift)", "at(127f,428f)"):
     assert token in rig,token
-for token in ("drawFront(c,p,squat||jacks)", "FRONTAL · SALTOS DE TIJERA",
+for token in ("drawFront(c,p,squat||jacks,", "FRONTAL · SALTOS DE TIJERA",
               "FRONTAL · FLEXIÓN DE CODOS", "drawTopArm("):
     assert token in multi,token
 for token in ("class AvatarBurpeeKinematics","AvatarRigConstraints.twoBone(",
