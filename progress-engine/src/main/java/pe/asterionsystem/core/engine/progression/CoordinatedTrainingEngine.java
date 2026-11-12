@@ -92,6 +92,43 @@ public final class CoordinatedTrainingEngine {
                 mission, category, today, volumeHistory, recentInterruption));
     }
 
+    /** Typed path used by Android: both engines cooperate with all 1257
+     * per-variant profiles. Automatic numerical references are not enforced. */
+    public Plan daily(MissionPlanner.Profile profile, LocalDate today,
+                      int categoryEffort, List<String> previousCompleted,
+                      List<String> recentCompleted, boolean allowWeeklyRotation,
+                      int technicalPhase, List<VolumeProgressionEngine.Observation> volumeHistory,
+                      boolean recentInterruption,
+                      ExerciseVolumeProfileCatalog volumeProfiles) {
+        Objects.requireNonNull(volumeProfiles,"volumeProfiles");
+        Plan selected=daily(profile,today,categoryEffort,previousCompleted,
+                recentCompleted,allowWeeklyRotation,technicalPhase,
+                volumeHistory,recentInterruption);
+        int category=profile.weekly.get(today.getDayOfWeek().getValue()-1);
+        if(category==CategoryEffortPolicy.REST) return selected;
+        return new Plan(selected.mission,selected.effortDecision,reviewSelected(
+                selected.mission,category,today,volumeHistory,
+                recentInterruption,volumeProfiles));
+    }
+
+    /** Typed post-checkpoint recomputation; this must be called after reset. */
+    public static Map<String, VolumeProgressionEngine.Suggestion> reviewSelected(
+            MissionPlanner.Proposal mission, int category, LocalDate today,
+            List<VolumeProgressionEngine.Observation> numericHistory,
+            boolean recentInterruption,ExerciseVolumeProfileCatalog profiles) {
+        Objects.requireNonNull(mission,"mission");
+        Objects.requireNonNull(today,"today");
+        Objects.requireNonNull(numericHistory,"numericHistory");
+        Objects.requireNonNull(profiles,"profiles");
+        Map<String,VolumeProgressionEngine.Suggestion> result=new LinkedHashMap<>();
+        for(ExerciseVariant variant:mission.candidates()) {
+            result.put(variant.id(),VolumeProgressionEngine.review(
+                    variant,category,today,numericHistory,recentInterruption,
+                    profiles.require(variant)));
+        }
+        return Collections.unmodifiableMap(result);
+    }
+
     /**
      * Re-evaluate the actual selected variants AFTER Android has applied the
      * checkpoint restart boundaries. Using the filtered history here avoids
