@@ -13,7 +13,8 @@ public final class AvatarDedicatedScene {
         SEATED_KNEE_EXTENSION,SEATED_KNEE_EXTENSION_PAUSE,
         SEATED_KNEE_EXTENSION_ALTERNATING,SEATED_TOE_RAISE,
         SEATED_TOE_RAISE_SINGLE,SEATED_FORWARD_REACH,
-        SEATED_HEEL_RAISE,SEATED_HEEL_RAISE_GENTLE
+        SEATED_HEEL_RAISE,SEATED_HEEL_RAISE_GENTLE,
+        SEATED_HEEL_TOE_ALTERNATION
     }
     public final Kind kind;
     public final AvatarKinematics.Pose pose;
@@ -40,9 +41,11 @@ public final class AvatarDedicatedScene {
         // A dedicated ankle command is rendered around each shoe heel,
         // not interpreted as hip or knee motion.
         this.toeRaiseDegrees=(kind==Kind.SEATED_TOE_RAISE||
-                kind==Kind.SEATED_TOE_RAISE_SINGLE)?toeRaiseDegrees:0f;
+                kind==Kind.SEATED_TOE_RAISE_SINGLE||
+                kind==Kind.SEATED_HEEL_TOE_ALTERNATION)?toeRaiseDegrees:0f;
         this.heelRaiseDegrees=(kind==Kind.SEATED_HEEL_RAISE||
-                kind==Kind.SEATED_HEEL_RAISE_GENTLE)?heelRaiseDegrees:0f;
+                kind==Kind.SEATED_HEEL_RAISE_GENTLE||
+                kind==Kind.SEATED_HEEL_TOE_ALTERNATION)?heelRaiseDegrees:0f;
         this.neutralNearAnkle=neutralNearAnkle;
         this.neutralFarAnkle=neutralFarAnkle;
         this.nearToeContact=neutralNearAnkle==null?null:
@@ -124,8 +127,16 @@ public final class AvatarDedicatedScene {
                     farKnee.y+b.lowerLeg*(float)Math.cos(farAngle));
             AvatarKinematics.Point neutralNearAnkle=ankle;
             AvatarKinematics.Point neutralFarAnkle=farAnkle;
+            // Each half of this cycle has its own planted pivot:
+            // first toes (heel lift), then heels (toe lift).
+            float alternatingHeel=kind==Kind.SEATED_HEEL_TOE_ALTERNATION
+                    &&phase<=.5f
+                    ?16f*AvatarKinematics.depthAtPhase(2f*phase):0f;
+            float alternatingToe=kind==Kind.SEATED_HEEL_TOE_ALTERNATION
+                    &&phase>=.5f
+                    ?16f*AvatarKinematics.depthAtPhase(2f*(phase-.5f)):0f;
             float heelAngle=(kind==Kind.SEATED_HEEL_RAISE_GENTLE?12f:
-                    kind==Kind.SEATED_HEEL_RAISE?22f:0f)*d;
+                    kind==Kind.SEATED_HEEL_RAISE?22f:0f)*d+alternatingHeel;
             if(heelAngle>0f){
                 // The shoebox rotates about its fixed toe contact; the
                 // ankle follows this arc, and IK adjusts the knee without
@@ -167,7 +178,8 @@ public final class AvatarDedicatedScene {
                     &&phase>=.5f?ankle:farAnkle;
             return new AvatarDedicatedScene(kind,p,planted,shoulder,hip,
                     kind==Kind.SEATED_TOE_RAISE||kind==Kind.SEATED_TOE_RAISE_SINGLE
-                    ?22f*d:0f,heelAngle,neutralNearAnkle,neutralFarAnkle);
+                    ?22f*d:alternatingToe,
+                    heelAngle,neutralNearAnkle,neutralFarAnkle);
         }
         AvatarKinematics.Pose p=new AvatarKinematics.Pose(
                 ankle,farAnkle,leg.joint,farLeg.joint,hip,farHip,
