@@ -115,21 +115,39 @@ public final class AvatarJointCommandView extends View {
             default:throw new IllegalStateException("Articulación sin mapa");
         }
     }
-    private void figure(Canvas c,int color){
-        line(c,151,135,200,121,color,7);
-        line(c,200,121,249,135,color,7);
-        line(c,200,121,200,245,color,6);
-        line(c,177,255,223,255,color,8);
-        line(c,151,135,125,196,color,8);
-        line(c,125,196,118,235,color,6);
-        line(c,249,135,275,196,color,8);
-        line(c,275,196,282,235,color,6);
-        line(c,177,255,176,323,color,11);
-        line(c,176,323,174,375,color,8);
-        line(c,223,255,224,323,color,11);
-        line(c,224,323,226,375,color,8);
-        line(c,200,121,200,101,color,5);
-        style(color,4,true);c.drawCircle(200,77,20,paint);
+    private void figure(Canvas c,AvatarCommandFigurePose p,int skeleton,int accent){
+        // This rigid-line figure moves according to axis commands, not
+        // recorded human kinematics. It intentionally has no ground plane.
+        line(c,(p.leftHip.x+p.rightHip.x)/2f,(p.leftHip.y+p.rightHip.y)/2f,
+                (p.leftShoulder.x+p.rightShoulder.x)/2f,
+                (p.leftShoulder.y+p.rightShoulder.y)/2f,skeleton,7);
+        line(c,p.leftShoulder.x,p.leftShoulder.y,
+                p.rightShoulder.x,p.rightShoulder.y,skeleton,6);
+        line(c,p.leftHip.x,p.leftHip.y,p.rightHip.x,p.rightHip.y,skeleton,8);
+        line(c,p.leftShoulder.x,p.leftShoulder.y,
+                p.leftElbow.x,p.leftElbow.y,accent,7);
+        line(c,p.leftElbow.x,p.leftElbow.y,p.leftWrist.x,p.leftWrist.y,accent,5);
+        line(c,p.leftWrist.x,p.leftWrist.y,p.leftHand.x,p.leftHand.y,accent,3);
+        line(c,p.rightShoulder.x,p.rightShoulder.y,
+                p.rightElbow.x,p.rightElbow.y,accent,7);
+        line(c,p.rightElbow.x,p.rightElbow.y,p.rightWrist.x,p.rightWrist.y,accent,5);
+        line(c,p.rightWrist.x,p.rightWrist.y,p.rightHand.x,p.rightHand.y,accent,3);
+        line(c,p.leftHip.x,p.leftHip.y,p.leftKnee.x,p.leftKnee.y,accent,9);
+        line(c,p.leftKnee.x,p.leftKnee.y,p.leftAnkle.x,p.leftAnkle.y,accent,6);
+        line(c,p.leftAnkle.x,p.leftAnkle.y,p.leftToe.x,p.leftToe.y,accent,3);
+        line(c,p.rightHip.x,p.rightHip.y,p.rightKnee.x,p.rightKnee.y,accent,9);
+        line(c,p.rightKnee.x,p.rightKnee.y,p.rightAnkle.x,p.rightAnkle.y,accent,6);
+        line(c,p.rightAnkle.x,p.rightAnkle.y,p.rightToe.x,p.rightToe.y,accent,3);
+        line(c,(p.leftShoulder.x+p.rightShoulder.x)/2f,
+                (p.leftShoulder.y+p.rightShoulder.y)/2f,p.neck.x,p.neck.y,
+                skeleton,5);
+        line(c,p.neck.x,p.neck.y,p.head.x,p.head.y,accent,5);
+        style(accent,3,true);c.drawCircle(p.head.x,p.head.y,17f,paint);
+        for(AvatarKinematics.Point joint:new AvatarKinematics.Point[]{
+                p.leftShoulder,p.rightShoulder,p.leftElbow,p.rightElbow,
+                p.leftWrist,p.rightWrist,p.leftHip,p.rightHip,
+                p.leftKnee,p.rightKnee,p.leftAnkle,p.rightAnkle})
+            dot(c,joint.x,joint.y,3.5f,skeleton);
     }
     @Override protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
@@ -162,7 +180,8 @@ public final class AvatarJointCommandView extends View {
             text(canvas,"Sin comandos cargados",44,236,16,fg);
             canvas.restore();return;
         }
-        figure(canvas,skeleton);
+        AvatarCommandFigurePose moving=AvatarCommandFigurePose.from(timeline,phase);
+        figure(canvas,moving,skeleton,accent);
         // Angular needles illustrate the selected joint offset, never a
         // complete full-body pose or a medically precise joint angle.
         for(AvatarJointTimeline.Joint joint:affected){
