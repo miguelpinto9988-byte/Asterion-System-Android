@@ -115,6 +115,10 @@ public final class NativeAvatarView extends View {
                         ?"puente corto de glúteos sobre colchoneta":
                         dedicatedScene==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BASIC
                         ?"puente de glúteos sobre colchoneta":
+                        dedicatedScene==AvatarDedicatedScene.Kind.SEATED_TOE_RAISE
+                        ?"elevación bilateral de puntas sentado sobre silla":
+                        dedicatedScene==AvatarDedicatedScene.Kind.SEATED_FORWARD_REACH
+                        ?"alcance frontal sentado sobre silla":
                         "extensión de rodilla sentado sobre silla";
                 break;
             case FRONT: activity="elevación frontal de brazos";break;
