@@ -6,7 +6,7 @@ java=root/"app/src/main/java/pe/asterionsystem/app"
 art=(java/"AvatarArtDetails.java").read_text(encoding="utf8")
 foot=(java/"AvatarFootOrientation.java").read_text(encoding="utf8")
 multi=(java/"AvatarMultiViewRenderer.java").read_text(encoding="utf8")
-start=art.index("public void drawProneTopSneaker(")
+start=art.index("REAR HEEL camera asset")
 end=art.index("public void drawProjectedHand(",start)
 rear=art[start:end]
 for token in ("REAR HEEL camera asset", "FootProjection foot",
