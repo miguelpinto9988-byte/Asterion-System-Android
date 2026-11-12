@@ -75,9 +75,11 @@ public final class AvatarCommandCatalogTest {
             AvatarKinematics.Pose start=AvatarCommandKinematics.pose(
                     entry,0f,AvatarBodySpec.DEFAULT);
             AvatarKinematics.Pose last=start;
-            for(int i=1;i<=30;i++) {
+            int samples=entry.command==AvatarCommandCatalog.Command.BURPEE
+                    ?300:60;
+            for(int i=1;i<=samples;i++) {
                 AvatarKinematics.Pose p=AvatarCommandKinematics.pose(
-                        entry,i/30f,AvatarBodySpec.DEFAULT);
+                        entry,i/(float)samples,AvatarBodySpec.DEFAULT);
                 AvatarMotionEngine.assertSkeleton(p,AvatarBodySpec.DEFAULT,.09f);
                 assertTrue("Hip discontinuity "+entry.variantId,
                         p.hip.distance(last.hip)<22f);
