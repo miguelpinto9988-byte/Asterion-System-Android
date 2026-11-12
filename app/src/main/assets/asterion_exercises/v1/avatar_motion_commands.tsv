@@ -2,7 +2,7 @@ variant_id	command	camera	clip	status	category	level	execution	equipment	supervi
 sentadilla_bilateral_v01	SQUAT	SIDE	NONE	SPEC_ONLY	tren_inferior	1	asistido	silla	0
 sentadilla_bilateral_v02	SQUAT	SIDE	NONE	SPEC_ONLY	tren_inferior	1	asistido	pared	0
 sentadilla_bilateral_v03	SQUAT	SIDE	SQUAT	ILLUSTRATIVE	tren_inferior	2	bilateral	sin_equipo	0
-sentadilla_bilateral_v04	SQUAT	SIDE	NONE	SPEC_ONLY	tren_inferior	3	controlado	sin_equipo	0
+sentadilla_bilateral_v04	SQUAT	SIDE	SQUAT	ILLUSTRATIVE	tren_inferior	3	controlado	sin_equipo	0
 sentadilla_bilateral_v05	SQUAT	SIDE	NONE	SPEC_ONLY	tren_inferior	3	carga_externa	mancuerna	0
 sentadilla_bilateral_v06	SQUAT	SIDE	NONE	SPEC_ONLY	tren_inferior	4	carga_externa	mancuerna	1
 sentadilla_bilateral_v07	SQUAT	SIDE	NONE	SPEC_ONLY	tren_inferior	5	carga_externa	barra	1
@@ -52,8 +52,8 @@ buenos_dias_v02	HIP_HINGE	SIDE	NONE	SPEC_ONLY	tren_inferior	2	bilateral	sin_equi
 buenos_dias_v03	HIP_HINGE	SIDE	NONE	SPEC_ONLY	tren_inferior	3	resistencia	banda	0
 buenos_dias_v04	HIP_HINGE	SIDE	NONE	SPEC_ONLY	tren_inferior	4	carga_externa	mancuerna	1
 buenos_dias_v05	HIP_HINGE	SIDE	NONE	SPEC_ONLY	tren_inferior	5	carga_externa	barra	1
-puente_gluteo_v01	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	bilateral	colchoneta	0
-puente_gluteo_v02	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	bilateral	colchoneta	0
+puente_gluteo_v01	HIP_EXTENSION	SIDE	GLUTE_BRIDGE_SHORT	ILLUSTRATIVE	tren_inferior	1	bilateral	colchoneta	0
+puente_gluteo_v02	HIP_EXTENSION	SIDE	GLUTE_BRIDGE_BASIC	ILLUSTRATIVE	tren_inferior	2	bilateral	colchoneta	0
 puente_gluteo_v03	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	isometrico	colchoneta	0
 puente_gluteo_v04	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	3	resistencia	banda+colchoneta	0
 puente_gluteo_v05	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	4	alterno	colchoneta	1
@@ -193,7 +193,7 @@ jalon_v03	PULL	SIDE	NONE	SPEC_ONLY	tren_superior	3	maquina	polea	1
 jalon_v04	PULL	SIDE	NONE	SPEC_ONLY	tren_superior	3	maquina	polea	1
 jalon_v05	PULL	SIDE	NONE	SPEC_ONLY	tren_superior	4	unilateral	polea	1
 jalon_v06	PULL	SIDE	NONE	SPEC_ONLY	tren_superior	4	controlado	polea	1
-curl_biceps_v01	ELBOW_FLEXION	SIDE	ARM_CURL	ILLUSTRATIVE	tren_superior	1	resistencia	banda	0
+curl_biceps_v01	ELBOW_FLEXION	SIDE	NONE	SPEC_ONLY	tren_superior	1	resistencia	banda	0
 curl_biceps_v02	ELBOW_FLEXION	FRONT	NONE	SPEC_ONLY	tren_superior	2	carga_externa	mancuerna+silla	0
 curl_biceps_v03	ELBOW_FLEXION	FRONT	NONE	SPEC_ONLY	tren_superior	2	alterno	mancuerna	0
 curl_biceps_v04	ELBOW_FLEXION	FRONT	NONE	SPEC_ONLY	tren_superior	3	bilateral	mancuerna	0
@@ -326,7 +326,7 @@ paseo_maleta_v03	TRUNK_REACH	FRONT	NONE	SPEC_ONLY	tren_central	3	unilateral	manc
 paseo_maleta_v04	TRUNK_REACH	FRONT	NONE	SPEC_ONLY	tren_central	4	unilateral	kettlebell	1
 paseo_maleta_v05	TRUNK_REACH	FRONT	NONE	SPEC_ONLY	tren_central	5	equilibrio	kettlebell	1
 marcha_v01	WALK	SIDE	NONE	SPEC_ONLY	cardio	1	asistido	silla	0
-marcha_v02	WALK	SIDE	MARCH	ILLUSTRATIVE	cardio	1	aerobico	sin_equipo	0
+marcha_v02	WALK	SIDE	NONE	SPEC_ONLY	cardio	1	aerobico	sin_equipo	0
 marcha_v03	WALK	SIDE	NONE	SPEC_ONLY	cardio	2	asistido	cinta	0
 marcha_v04	WALK	SIDE	NONE	SPEC_ONLY	cardio	2	aerobico	sin_equipo	0
 marcha_v05	WALK	SIDE	NONE	SPEC_ONLY	cardio	3	coordinacion	sin_equipo	0
@@ -654,7 +654,7 @@ talon_deslizante_sentado_v03	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	3	co
 talon_deslizante_supino_v01	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	colchoneta	0
 talon_deslizante_supino_v02	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	colchoneta	0
 talon_deslizante_supino_v03	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	3	controlado	colchoneta+toalla	0
-extension_rodilla_sin_carga_v01	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	silla	0
+extension_rodilla_sin_carga_v01	KNEE_EXTENSION	SIDE	SEATED_KNEE_EXTENSION	ILLUSTRATIVE	tren_inferior	1	controlado	silla	0
 extension_rodilla_sin_carga_v02	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	silla	0
 extension_rodilla_sin_carga_v03	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	3	controlado	silla	0
 flexion_rodilla_bipeda_v01	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	pared	0
