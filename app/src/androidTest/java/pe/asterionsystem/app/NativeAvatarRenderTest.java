@@ -312,6 +312,69 @@ public final class NativeAvatarRenderTest {
         });
     }
 
+    @Test public void softHingesHaveNoProtrudingJointBalls() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            AvatarSoftContour contour=new AvatarSoftContour();
+            Bitmap bitmap=Bitmap.createBitmap(250,200,Bitmap.Config.ARGB_8888);
+            Canvas canvas=new Canvas(bitmap);
+            int skin=0xFFF0B486;
+            AvatarKinematics.Point shoulder=new AvatarKinematics.Point(25,90);
+            AvatarKinematics.Point elbow=new AvatarKinematics.Point(105,90);
+            AvatarKinematics.Point wrist=new AvatarKinematics.Point(165,127);
+            contour.segment(canvas,shoulder,elbow,25f,17f,skin);
+            contour.segment(canvas,elbow,wrist,17f,12f,skin);
+            contour.hinge(canvas,elbow,17f,17f,skin);
+            assertEquals("The elbow stays on the connected body",skin,
+                    bitmap.getPixel(105,90));
+            assertEquals("No raised outside elbow sphere",0,
+                    bitmap.getPixel(105,112));
+            assertEquals("The far end cannot grow a detached blob",0,
+                    bitmap.getPixel(184,138));
+            assertThrows(IllegalArgumentException.class,()->
+                    contour.segment(canvas,elbow,elbow,17f,12f,skin));
+            assertThrows(IllegalArgumentException.class,()->
+                    contour.segment(canvas,shoulder,elbow,Float.NaN,12f,skin));
+            assertThrows(IllegalArgumentException.class,()->
+                    contour.hinge(canvas,elbow,0f,17f,skin));
+            bitmap.recycle();
+        });
+    }
+
+    @Test public void continuousMotionRendersEveryViewWithoutCanvasLeaks() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            for(boolean female:new boolean[]{false,true}){
+                view.setFemale(female);
+                for(AvatarMultiViewKinematics.ViewMode camera:
+                        AvatarMultiViewKinematics.ViewMode.values()){
+                    view.setViewMode(camera);
+                    if(camera==AvatarMultiViewKinematics.ViewMode.SIDE)
+                        view.setMotion(AvatarMotionEngine.Motion.BURPEE);
+                    for(int frame=0;frame<=12;frame++){
+                        view.setPhase(frame/12f);
+                        Bitmap bitmap=Bitmap.createBitmap(400,480,
+                                Bitmap.Config.ARGB_8888);
+                        Canvas canvas=new Canvas(bitmap);
+                        int prior=canvas.getSaveCount();
+                        view.draw(canvas);
+                        assertEquals("Unbalanced Canvas transformation",prior,
+                                canvas.getSaveCount());
+                        assertNotEquals("View must draw a visible scene",0,
+                                bitmap.getPixel(200,220));
+                        bitmap.recycle();
+                    }
+                }
+            }
+            view.setPhase(Float.POSITIVE_INFINITY);
+            assertEquals("Infinite phase must not poison animation",
+                    0f,view.getPhase(),.0001f);
+        });
+    }
+
     @Test public void proneTopShoesUseRearHeelCounterWithoutLaceBands() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
