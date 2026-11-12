@@ -199,6 +199,35 @@ public final class AvatarDedicatedSceneTest {
         assertEquals(0f,normal.pose.ankle.distance(band.pose.ankle),EPS);
         assertEquals(0f,normal.pose.farAnkle.distance(band.pose.farAnkle),EPS);
     }
+    @Test public void seatedHeelToeAlternationRetainsActualPivotsAndReturnsToNeutral(){
+        AvatarDedicatedScene.Kind kind=
+                AvatarDedicatedScene.Kind.SEATED_HEEL_TOE_ALTERNATION;
+        AvatarDedicatedScene neutral=AvatarDedicatedScene.at(kind,0f,BODY);
+        AvatarDedicatedScene heel=AvatarDedicatedScene.at(kind,.25f,BODY);
+        AvatarDedicatedScene middle=AvatarDedicatedScene.at(kind,.5f,BODY);
+        AvatarDedicatedScene toes=AvatarDedicatedScene.at(kind,.75f,BODY);
+        AvatarDedicatedScene finish=AvatarDedicatedScene.at(kind,1f,BODY);
+        assertTrue(heel.chairSeatContact);
+        assertFalse(heel.floorBackContact);
+        assertEquals(16f,heel.heelRaiseDegrees,.01f);
+        assertEquals(0f,heel.toeRaiseDegrees,0f);
+        assertEquals(0f,toes.heelRaiseDegrees,0f);
+        assertEquals(16f,toes.toeRaiseDegrees,.01f);
+        assertEquals(0f,neutral.pose.ankle.distance(middle.pose.ankle),EPS);
+        assertEquals(0f,neutral.pose.farAnkle.distance(middle.pose.farAnkle),EPS);
+        assertEquals(0f,neutral.pose.ankle.distance(toes.pose.ankle),EPS);
+        assertEquals(0f,neutral.pose.farAnkle.distance(toes.pose.farAnkle),EPS);
+        assertEquals(0f,neutral.pose.hip.distance(heel.pose.hip),EPS);
+        assertEquals(0f,neutral.pose.hip.distance(toes.pose.hip),EPS);
+        assertEquals(0f,neutral.nearToeContact.distance(
+                heel.nearToeContact),EPS);
+        assertEquals(0f,neutral.farToeContact.distance(
+                heel.farToeContact),EPS);
+        assertTrue(heel.pose.ankle.y<neutral.pose.ankle.y-6f);
+        assertEquals(0f,neutral.pose.ankle.distance(finish.pose.ankle),EPS);
+        assertEquals(0f,neutral.pose.farAnkle.distance(finish.pose.farAnkle),EPS);
+    }
+
     @Test public void invalidSpecsAndPhasesCannotProduceFakeScenes(){
         assertThrows(IllegalArgumentException.class,()->
                 AvatarDedicatedScene.at(null,.5f,BODY));
