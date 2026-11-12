@@ -178,6 +178,9 @@ public final class AvatarExerciseCommandCatalog {
             }
             Entry e=new Entry(p[0],command,camera,clip,status,p[5],level,p[7],
                     p[8],supervision,timeline);
+            // Never authorize a misleading exercise animation just because
+            // its joint command or projection is in the registry.
+            AvatarDemonstrationManifest.requireConsistent(e);
             if(result.putIfAbsent(p[0],e)!=null)
                 throw new IllegalArgumentException("Comando duplicado: "+p[0]);
         }
