@@ -17,7 +17,8 @@ for expected in (
 for expected in ("hy=174.4f","hy=181f+42f*s",
                  "AvatarKinematics.wristOnArc(","Math.PI*s"):
     assert expected in engine,expected
-for expected in ("canvas.scale(.78f,.78f,200f,364f)",
+for expected in ("cameraScale,cameraScale,200f,364f",
+                 "?.78f:.94f",
                  "interp(p.shoulder,p.elbow,.095f)",
                  "Side-profile torso", "shoulderFront"):
     assert expected in view,expected
