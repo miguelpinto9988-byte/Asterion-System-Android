@@ -225,6 +225,18 @@ public final class MissionsActivity extends ComponentActivity {
                         proposal.candidates());
             }
         }
+        // Register the selected catalog variants at this category's next
+        // 7/14/21 checkpoint. A new variant or technical level begins a fresh
+        // numeric volume epoch, without deleting earlier completion records.
+        List<VolumeProgressionEngine.Observation> numericHistory=
+                java.util.Collections.emptyList();
+        if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
+            VolumeProgressStore.observeCheckpointSelection(
+                    this,category,today,levelState.entered,
+                    levelState.technicalReview.checkpoint,proposal.candidates());
+            numericHistory=VolumeProgressStore.progressionHistoryForCategory(
+                    this,category,today);
+        }
         final MissionPlanner.Proposal dayProposal=proposal;
         paragraph("Fecha: "+dayProposal.start()
                 +". Esta selección permanece igual durante el día, incluso "
@@ -269,7 +281,7 @@ public final class MissionsActivity extends ComponentActivity {
         for(ExerciseVariant entry:dayProposal.candidates()) {
             dailyExerciseRow(index++,entry,today,category,dayProposal);
             VolumeProgressionEngine.Suggestion volume=VolumeProgressionEngine.review(
-                    entry,category,today,volumeHistory,
+                    entry,category,today,numericHistory,
                     recentlyInterrupted);
             if(volume.previousSets>0) {
                 String comparison=volume.previousSets+" series × "
@@ -282,6 +294,14 @@ public final class MissionsActivity extends ComponentActivity {
                             +"(no obligatoria).";
                 } else comparison+="; se mantiene la referencia.";
                 paragraph(comparison+" "+volume.explanation);
+            } else if(VolumeProgressStore.restartedOn(
+                    this,category,entry.id(),today)) {
+                paragraph("Nuevo bloque técnico: volumen reiniciado para esta "
+                        +"variante. Se define un punto de partida propio, "
+                        +"sin trasladar las series o repeticiones acumuladas.");
+            } else if(volume.status==VolumeProgressionEngine.Status.NO_HISTORY) {
+                paragraph("Volumen inicial sin registrar para esta variante: "
+                        +"no se heredan objetivos de otros ejercicios.");
             } else if(volume.status==VolumeProgressionEngine.Status.RECOVERY_PRIORITY) {
                 paragraph(volume.explanation);
             }
@@ -296,8 +316,8 @@ public final class MissionsActivity extends ComponentActivity {
         if(rating!=0) paragraph("Valoración de esfuerzo guardada: "+rating+" / 10.");
         action(rating==0?"Finalizar la actividad y valorar esfuerzo"
                 :"Revisar valoración de esfuerzo",()->requestEffort(today,category));
-        paragraph("La valoración es voluntaria. No aumenta automáticamente "
-                +"el volumen de ejercicio ni añade penalizaciones.");
+        paragraph("La valoración permite recalcular referencias del siguiente "
+                +"entrenamiento. Ningún aumento es obligatorio ni penaliza su omisión.");
     }
 
     private void dailyExerciseRow(int index,ExerciseVariant entry,LocalDate day,
