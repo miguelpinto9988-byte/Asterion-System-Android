@@ -93,6 +93,16 @@ public final class AvatarV11OrientationTest {
                 top,AvatarMultiViewKinematics.ViewMode.TOP,SPEC).proportions);
     }
 
+    @Test public void lateralBodyFrameTransitionsWithBurpeeTilt(){
+        AvatarSkeletonFrame upright=AvatarSkeletonFrame.fromSide(
+                AvatarMotionEngine.pose(AvatarMotionEngine.Motion.BURPEE,0f,SPEC),SPEC);
+        AvatarSkeletonFrame horizontal=AvatarSkeletonFrame.fromSide(
+                AvatarMotionEngine.pose(AvatarMotionEngine.Motion.BURPEE,.5f,SPEC),SPEC);
+        assertEquals(AvatarOrientationRules.Posture.STANDING,upright.orientation.posture);
+        assertEquals(AvatarOrientationRules.Posture.PRONE_GROUND_FACING,
+                horizontal.orientation.posture);
+    }
+
     @Test public void negativeAndDegenerateAxesRejected(){
         assertThrows(IllegalArgumentException.class,()->
                 AvatarFootOrientation.proneTop(null,AvatarFootOrientation.Side.LEFT));
