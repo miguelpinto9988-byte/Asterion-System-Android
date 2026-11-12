@@ -277,12 +277,17 @@ public final class MissionsActivity extends ComponentActivity {
                 id->dayProposal.candidates().stream().anyMatch(v->v.id().equals(id)))
                 .count()+" de "+dayProposal.candidates().size()
                 +". Puedes parar cuando lo necesites.");
+        // Recalculate via the joint engine only AFTER per-variant volume
+        // restart dates have been committed. Selection and numeric references
+        // now share the same exact, final list of variants.
+        Map<String,VolumeProgressionEngine.Suggestion> numericForSelection=
+                CoordinatedTrainingEngine.reviewSelected(
+                        dayProposal,category,today,numericHistory,recentlyInterrupted);
         int index=1;
         for(ExerciseVariant entry:dayProposal.candidates()) {
             dailyExerciseRow(index++,entry,today,category,dayProposal);
-            VolumeProgressionEngine.Suggestion volume=VolumeProgressionEngine.review(
-                    entry,category,today,numericHistory,
-                    recentlyInterrupted);
+            VolumeProgressionEngine.Suggestion volume=
+                    numericForSelection.get(entry.id());
             if(volume.previousSets>0) {
                 String comparison=volume.previousSets+" series × "
                         +volume.previousRepetitions+" repeticiones registradas";
