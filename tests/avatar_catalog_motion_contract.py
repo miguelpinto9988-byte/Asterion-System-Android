@@ -47,13 +47,15 @@ for row in rows:
     assert row["equipment"]==v["equipment"],ident
     assert row["supervision"]==v["supervision"],ident
     assert row["command"] in supported,ident
-    assert row["camera"] in ("SIDE","FRONT","TOP"),ident
+    assert row["camera"] in ("SIDE","FRONT","TOP","FRONT_LATERAL",
+                               "FRONT_BALANCE","FRONT_SIDE_STEP"),ident
     assert row["status"] in ("ILLUSTRATIVE","SPEC_ONLY"),ident
     assert (row["status"]=="SPEC_ONLY")==(row["clip"]=="NONE"),ident
     if row["status"]=="ILLUSTRATIVE":
         assert int(row["level"])<=3 and row["supervision"]=="0"
         assert row["clip"] in ("SQUAT","LUNGE","HIP_HINGE",
-                               "ARM_RAISE","ARM_CURL","KNEE_CURL","MARCH","FRONT")
+                               "ARM_RAISE","ARM_CURL","KNEE_CURL","MARCH","FRONT",
+                               "FRONT_LATERAL","FRONT_BALANCE","FRONT_SIDE_STEP")
         illustrated.append(row)
     counts[(row["category"],row["status"])]+=1
     families_covered.add(family)
@@ -64,7 +66,7 @@ for row in rows:
 
 assert len(families_covered)==155
 assert sum(counts.values())==1257
-assert len(illustrated)==8
+assert len(illustrated)==10
 assert len({row["command"] for row in rows})>=48
 for string in ("postInvalidateOnAnimation()","AvatarMotionEngine.pose("):
     assert string in (base/"NativeAvatarView.java").read_text(encoding="utf-8")
@@ -93,4 +95,4 @@ if "--samples" in sys.argv:
                  for x in new_exercises]
     },ensure_ascii=False,indent=2),encoding="utf-8")
     print("Saved",out)
-print("OK: 1257 variantes, 155 familias, 49 comandos definidos, 8 escenas ilustrativas validadas")
+print("OK: 1257 variantes, 155 familias, 49 comandos definidos, 10 escenas ilustrativas validadas")
