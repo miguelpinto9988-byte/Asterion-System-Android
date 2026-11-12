@@ -52,7 +52,9 @@ public final class AvatarContactFrame {
         if(motion==null)throw new IllegalArgumentException("Motion required");
         switch(motion){
             case MARCH:
-                return new AvatarContactFrame(Ground.NONE,Ground.SOLE,
+                return new AvatarContactFrame(
+                        AvatarKinematics.depthAtPhase(phase)<.001f
+                        ?Ground.SOLE:Ground.NONE,Ground.SOLE,
                         Ground.NONE,Ground.NONE,
                         AvatarOrientationRules.Posture.STANDING,false);
             case BURPEE:
