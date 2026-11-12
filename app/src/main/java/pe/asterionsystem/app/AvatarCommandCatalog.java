@@ -76,10 +76,6 @@ public final class AvatarCommandCatalog {
             knee=JointCurve.read(p[14]);ankle=JointCurve.read(p[15]);
             startPose=required(p[16]);activePose=required(p[17]);
             returnPose=required(p[18]);notice=required(p[19]);
-            if(status==VisualStatus.TEXT_ONLY
-                    && !command.name().endsWith("_REFERENCE")
-                    && command!=Command.HIP_ABDUCTION)
-                throw new IllegalArgumentException("Referencia no representable: "+variantId);
             if(command.name().endsWith("_REFERENCE")
                     && status!=VisualStatus.TEXT_ONLY)
                 throw new IllegalArgumentException("Referencia sin control visual: "+variantId);
@@ -110,6 +106,7 @@ public final class AvatarCommandCatalog {
         this.entries=Collections.unmodifiableMap(entries);
     }
     public int size() {return entries.size();}
+    public java.util.Collection<Entry> all() {return entries.values();}
     public Entry find(String id) {return entries.get(id);}
     public Entry require(String id) {
         Entry e=entries.get(Objects.requireNonNull(id,"variantId"));
