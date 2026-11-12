@@ -39,6 +39,9 @@ public final class AvatarMotionEngine {
                 hy+=9f*s;
                 hx-=5f*s;
                 break;
+            case ARM_CURL:
+                // Neutral stance: only the elbow command moves the hands.
+                break;
             case ARM_RAISE:
                 // Arms rotate in profile while both feet remain grounded.
                 break;
