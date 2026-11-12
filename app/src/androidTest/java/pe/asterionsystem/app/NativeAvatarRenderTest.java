@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import java.io.File;
+import java.io.FileOutputStream;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 import org.junit.Test;
@@ -267,31 +269,33 @@ public final class NativeAvatarRenderTest {
         });
     }
 
-    @Test public void proneTopShoesFollowLegAxisAndNeverShowOutsole() {
+    @Test public void proneTopShoesPointTowardHeadAndShowOnlyUpper() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
             AvatarArtDetails details=new AvatarArtDetails();
-            AvatarKinematics.Point ankle=new AvatarKinematics.Point(100f,170f);
-            AvatarKinematics.Point knee=new AvatarKinematics.Point(100f,105f);
-            for(AvatarPalette palette:new AvatarPalette[]{
-                    AvatarPalette.BLUE,AvatarPalette.PURPLE}){
-                Bitmap b=Bitmap.createBitmap(210,220,Bitmap.Config.ARGB_8888);
-                details.drawProneTopSneaker(new Canvas(b),ankle,knee,palette);
-                assertNotEquals("shoe upper must be visible",0,
-                        b.getPixel(100,173));
-                assertNotEquals("toe touches floor projection",0,
-                        b.getPixel(100,188));
-                b.recycle();
+            AvatarMultiViewKinematics.Pose pose=
+                    AvatarMultiViewKinematics.diamondTop(0f,AvatarBodySpec.DEFAULT);
+            for(AvatarFootOrientation.Side side:AvatarFootOrientation.Side.values()){
+                AvatarFootOrientation.FootProjection foot=
+                        AvatarFootOrientation.proneTop(pose,side);
+                for(AvatarPalette palette:new AvatarPalette[]{
+                        AvatarPalette.BLUE,AvatarPalette.PURPLE}){
+                    Bitmap b=Bitmap.createBitmap(260,480,Bitmap.Config.ARGB_8888);
+                    details.drawProneTopSneaker(new Canvas(b),foot,palette);
+                    int x=(int)foot.ankle.x,y=(int)foot.ankle.y;
+                    assertTrue("toe must be nearer head",foot.toe.y<foot.ankle.y);
+                    assertNotEquals("visible toe upper",0,b.getPixel(x,y-16));
+                    assertNotEquals("visible heel",0,b.getPixel(x,y+11));
+                    assertEquals("no protruding reversed outsole",0,
+                            b.getPixel(x,y+23));
+                    b.recycle();
+                }
             }
             try {
-                details.drawProneTopSneaker(
-                        new Canvas(Bitmap.createBitmap(210,220,
-                                Bitmap.Config.ARGB_8888)),
-                        ankle,new AvatarKinematics.Point(100f,200f),
-                        AvatarPalette.BLUE);
-                fail("A knee below ankle would flip the top shoe");
-            }catch(IllegalArgumentException expected) {
-                // Inverted shoe axis correctly rejected.
+                AvatarFootOrientation.proneTop(pose,null);
+                fail("Missing foot side must be rejected");
+            } catch(IllegalArgumentException expected) {
+                // An invalid orientation cannot reach the renderer.
             }
             NativeAvatarView view=new NativeAvatarView(context);
             view.layout(0,0,400,480);
@@ -306,6 +310,68 @@ public final class NativeAvatarRenderTest {
                 frame.recycle();
             }
         });
+    }
+
+    /**
+     * Pixel-level proof from the REAL Android View renderer, not a web mock.
+     * CI pulls these 42 PNGs from app-specific external storage and uploads
+     * them as GitHub artifacts; users can inspect the side, front, top, and
+     * every additional motion in both palettes at three distinct phases.
+     */
+    @Test public void exportRealAndroidMultiviewFramesForReview() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        File root=context.getExternalFilesDir(null);
+        assertNotNull("An emulator external files directory is required",root);
+        final File dir=new File(root,"asterion-v11-evidence");
+        assertTrue("Cannot create evidence directory",dir.isDirectory()||dir.mkdirs());
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            NativeAvatarView view=new NativeAvatarView(context);
+            view.layout(0,0,400,480);
+            view.setPlaying(false);
+            view.setDark(false);
+            for(boolean purple:new boolean[]{false,true}){
+                view.setFemale(purple);
+                for(int scene=0;scene<7;scene++){
+                    if(scene<=1){
+                        view.setViewMode(AvatarMultiViewKinematics.ViewMode.SIDE);
+                        view.setMotion(scene==0?AvatarMotionEngine.Motion.SQUAT
+                                :AvatarMotionEngine.Motion.BURPEE);
+                    }else{
+                        AvatarMultiViewKinematics.ViewMode[] views={
+                            AvatarMultiViewKinematics.ViewMode.FRONT,
+                            AvatarMultiViewKinematics.ViewMode.FRONT_SQUAT,
+                            AvatarMultiViewKinematics.ViewMode.FRONT_JACKS,
+                            AvatarMultiViewKinematics.ViewMode.FRONT_ELBOW,
+                            AvatarMultiViewKinematics.ViewMode.TOP};
+                        view.setViewMode(views[scene-2]);
+                    }
+                    for(int phaseIndex=0;phaseIndex<3;phaseIndex++){
+                        float phase=phaseIndex==0?0f:phaseIndex==1?.49f:1f;
+                        view.setPhase(phase);
+                        Bitmap bitmap=Bitmap.createBitmap(400,480,
+                                Bitmap.Config.ARGB_8888);
+                        view.draw(new Canvas(bitmap));
+                        String name=(purple?"morado":"azul")+"_"
+                                +(scene==0?"lateral_sentadilla":scene==1?"lateral_burpee":
+                                  view.getViewMode().name().toLowerCase(java.util.Locale.ROOT))
+                                +"_"+phaseIndex+".png";
+                        File output=new File(dir,name);
+                        try(FileOutputStream stream=new FileOutputStream(output)){
+                            assertTrue("PNG export failed",
+                                    bitmap.compress(Bitmap.CompressFormat.PNG,100,stream));
+                        }catch(java.io.IOException e){
+                            throw new IllegalStateException("Cannot save Android evidence",e);
+                        }finally{
+                            bitmap.recycle();
+                        }
+                        assertTrue("Empty screenshot",output.length()>2000);
+                    }
+                }
+            }
+        });
+        File[] images=dir.listFiles((folder,name)->name.endsWith(".png"));
+        assertNotNull(images);
+        assertEquals("2 palettes × 7 scenes × 3 phases",42,images.length);
     }
 
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
