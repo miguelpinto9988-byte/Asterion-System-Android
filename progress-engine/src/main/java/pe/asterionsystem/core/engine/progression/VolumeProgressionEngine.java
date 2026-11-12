@@ -213,7 +213,8 @@ public final class VolumeProgressionEngine {
         if(delta<0)
             return new Suggestion(Status.CALCULATED_DECREASE,
                     recent.sets,recent.quantity,recent.sets,
-                    Math.max(profile.minimumValue,recent.quantity+delta),
+                    Math.min(recent.quantity,
+                            Math.max(profile.minimumValue,recent.quantity+delta)),
                     "Esfuerzo 8–10: la siguiente referencia se reduce en "
                     +Math.abs(delta)+" "+profile.unit.label+" como máximo.",
                     profile.unit);
