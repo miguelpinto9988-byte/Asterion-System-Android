@@ -44,6 +44,39 @@ public final class ExerciseVolumeProfileCatalogTest {
         }
     }
 
+    @Test public void raisedStartingQuantityCoversAll1257VariantsWithoutChangingSets() {
+        int repetitions=0,seconds=0;
+        for(ExerciseVariant exercise:catalog.variants()) {
+            ExerciseVolumeProfileCatalog.Profile p=profiles.require(exercise);
+            assertEquals("Conservar el inicio en una serie por seguridad",1,p.initialSets);
+            assertTrue("Referencia nueva debe permanecer bajo su máximo",
+                    p.initialValue<=p.maximumValue);
+            if(p.unit==ExerciseVolumeProfileCatalog.Unit.REPETITIONS) {
+                repetitions++;
+                assertTrue("Referencia de repeticiones ya recalibrada",
+                        p.initialValue>=4);
+            } else {
+                seconds++;
+                assertTrue("Referencia en segundos ya recalibrada",
+                        p.initialValue>=8);
+            }
+        }
+        assertEquals(924,repetitions);
+        assertEquals(333,seconds);
+    }
+
+    @Test public void raisedBaselineExamplesRemainExerciseSpecific() {
+        assertEquals(10,get("sentadilla_bilateral_v01").initialValue);
+        assertEquals(8,get("sentadilla_bilateral_v03").initialValue);
+        assertEquals(7,get("sentadilla_bilateral_v04").initialValue);
+        assertEquals(6,get("sentadilla_bilateral_v07").initialValue);
+        assertEquals(10,get("flexiones_v02").initialValue);
+        assertEquals(15,get("plancha_frontal_v01").initialValue);
+        assertEquals(20,get("equilibrio_unipodal_v01").initialValue);
+        assertEquals(75,get("marcha_v02").initialValue);
+        assertEquals(75,get("ciclo_estatico_v01").initialValue);
+    }
+
     @Test public void squatsAreCountedByRepetitions() {
         assertEquals(ExerciseVolumeProfileCatalog.Unit.REPETITIONS,
                 get("sentadilla_bilateral_v03").unit);
