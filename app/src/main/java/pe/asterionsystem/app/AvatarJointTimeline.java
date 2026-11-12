@@ -34,7 +34,8 @@ public final class AvatarJointTimeline {
         LATERAL_STEP,NECK_SIDE_TILT,SEATED_TOE_RAISE,SEATED_FORWARD_REACH,
         GLUTE_BRIDGE_PAUSE,SEATED_KNEE_EXTENSION_SINGLE,
         SEATED_KNEE_EXTENSION_PAUSE,SEATED_KNEE_EXTENSION_ALTERNATING,
-        SEATED_TOE_RAISE_SINGLE,SEATED_HEEL_RAISE,SEATED_HEEL_RAISE_GENTLE
+        SEATED_TOE_RAISE_SINGLE,SEATED_HEEL_RAISE,SEATED_HEEL_RAISE_GENTLE,
+        SEATED_HEEL_TOE_ALTERNATION
     }
     private final Command command;
     private final EnumMap<Joint,Float> targets=new EnumMap<>(Joint.class);
@@ -127,6 +128,8 @@ public final class AvatarJointTimeline {
                 pair(Joint.LEFT_ANKLE,Joint.RIGHT_ANKLE,-22);break;
             case SEATED_HEEL_RAISE_GENTLE:
                 pair(Joint.LEFT_ANKLE,Joint.RIGHT_ANKLE,-12);break;
+            case SEATED_HEEL_TOE_ALTERNATION:
+                pair(Joint.LEFT_ANKLE,Joint.RIGHT_ANKLE,16);break;
             default:throw new IllegalStateException("Comando sin trayectoria");
         }
     }
@@ -165,6 +168,14 @@ public final class AvatarJointTimeline {
     }
     public float offset(Joint joint,float phase){
         if(joint==null)throw new IllegalArgumentException("Articulación requerida");
+        if(command==Command.SEATED_HEEL_TOE_ALTERNATION){
+            if(!Float.isFinite(phase)||phase<0f||phase>1f)
+                throw new IllegalArgumentException("Fase 0..1 requerida");
+            if(joint!=Joint.LEFT_ANKLE&&joint!=Joint.RIGHT_ANKLE)return 0f;
+            return phase<=.5f
+                    ?-16f*AvatarKinematics.depthAtPhase(2f*phase)
+                    :16f*AvatarKinematics.depthAtPhase(2f*(phase-.5f));
+        }
         if(command==Command.SEATED_KNEE_EXTENSION_ALTERNATING){
             if(!Float.isFinite(phase)||phase<0f||phase>1f)
                 throw new IllegalArgumentException("Fase 0..1 requerida");
