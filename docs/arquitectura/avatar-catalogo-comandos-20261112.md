@@ -115,7 +115,7 @@ requiere red.
 | Equilibrio unipodal (`equilibrio_unipodal_v04`) | Equilibrio | Animación frontal ilustrativa nueva con un pie de apoyo fijo |
 | Alcance unipodal (`alcance_unipodal_v01`) | Equilibrio | Especificación; requiere modelar el apoyo externo |
 
-La CI recoge **12 PNG reales** para los dos movimientos laterales nuevos y **24 PNG reales adicionales** para cuatro escenas frontales: dos paletas × inicio/mitad/final.
+La CI recoge **18 PNG reales** para tres movimientos laterales nuevos y **24 PNG reales adicionales** para cuatro escenas frontales: dos paletas × inicio/mitad/final.
 Las cuatro escenas son elevación lateral de brazos, equilibrio unilateral, paso lateral sin banda e inclinación lateral cervical.
 El archivo `build/avatar-command-samples/muestras_catalogo.json` contiene
 el muestreo de los nueve IDs con sus estados verdaderos.
@@ -235,7 +235,7 @@ proyecciones de cámara existentes.
 - `AvatarExerciseCommandCatalogInstrumentedTest` comprueba la
   clasificación 13/1.244 y exporta 24 PNG de mapas técnicos reales
   para puente de glúteos, giro cervical, alcance unipodal y natación,
-  además de las 36 capturas corporales de fases anteriores.
+  además de las 42 capturas corporales de fases anteriores.
 - GitHub Actions ejecuta validaciones de Android Java, Lint,
   APK y emulador Android 16. Consultar el último resultado
   antes de fusionar.
@@ -246,3 +246,11 @@ inspeccionar comandos sin inducir a error al mostrar un ejercicio ajeno.
 Para completar el catálogo corporal falta desarrollar y revisar poses
 de suelo, sedestación, rotación, equipamiento, deportes e intensidad
 variable con contactos y trayectorias propios.
+
+### Muestreo adicional de extensión de cadera
+
+Se exportan ahora **18 capturas laterales** del emulador: los dos clips
+`ARM_CURL` y `KNEE_CURL` previamente integrados, más
+`HIP_EXTENSION_STAND`; cada uno con dos colores y tres fases.
+Sumadas a las 24 capturas frontales y las 24 capturas de mapas
+articulares, la batería de la extensión actual recopila **66 PNG**.
