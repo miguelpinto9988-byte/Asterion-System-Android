@@ -8,26 +8,34 @@ package pe.asterionsystem.app;
  */
 public final class AvatarDedicatedScene {
     public enum Kind {
-        GLUTE_BRIDGE_SHORT,GLUTE_BRIDGE_BASIC,SEATED_KNEE_EXTENSION
+        GLUTE_BRIDGE_SHORT,GLUTE_BRIDGE_BASIC,SEATED_KNEE_EXTENSION,
+        SEATED_TOE_RAISE,SEATED_FORWARD_REACH
     }
     public final Kind kind;
     public final AvatarKinematics.Pose pose;
     public final AvatarKinematics.Point supportFoot,nearShoulder,nearHip;
     public final boolean floorBackContact,chairSeatContact;
+    /** Foot hinge used only for seated bilateral toe raise; heels remain planted. */
+    public final float toeRaiseDegrees;
     private AvatarDedicatedScene(Kind kind,AvatarKinematics.Pose p,
                                  AvatarKinematics.Point foot,
                                  AvatarKinematics.Point shoulder,
-                                 AvatarKinematics.Point hip){
+                                 AvatarKinematics.Point hip,float toeRaiseDegrees){
         this.kind=kind;pose=p;supportFoot=foot;
         nearShoulder=shoulder;nearHip=hip;
-        floorBackContact=kind!=Kind.SEATED_KNEE_EXTENSION;
-        chairSeatContact=kind==Kind.SEATED_KNEE_EXTENSION;
+        floorBackContact=kind==Kind.GLUTE_BRIDGE_SHORT||
+                kind==Kind.GLUTE_BRIDGE_BASIC;
+        chairSeatContact=!floorBackContact;
+        // A dedicated ankle command is rendered around each shoe heel,
+        // not interpreted as hip or knee motion.
+        this.toeRaiseDegrees=kind==Kind.SEATED_TOE_RAISE?toeRaiseDegrees:0f;
     }
     private static AvatarKinematics.Point pt(float x,float y){
         return new AvatarKinematics.Point(x,y);
     }
     public static AvatarDedicatedScene at(Kind kind,float phase,AvatarBodySpec b){
-        if(kind==null||b==null)throw new IllegalArgumentException("Escena y cuerpo necesarios");
+        if(kind==null||b==null||!Float.isFinite(phase)||phase<0f||phase>1f)
+            throw new IllegalArgumentException("Escena, cuerpo y fase válidos requeridos");
         float d=AvatarKinematics.depthAtPhase(phase);
         AvatarKinematics.Point hip,farHip,shoulder,farShoulder,ankle,farAnkle;
         AvatarRigConstraints.TwoBone leg,farLeg,arm,farArm;
@@ -59,17 +67,20 @@ public final class AvatarDedicatedScene {
             farArm=AvatarRigConstraints.twoBone(farShoulder,farHand,
                     b.upperArm,b.forearm,1,0f,170f);
         }else{
-            // A true seated posture: pelvis/seat and knees remain fixed.
-            // The one unloaded shin pivots from a flexed position toward
-            // forward extension. The far leg retains its foot contact.
+            // A true seated posture: fixed seat, femurs and grounded heels.
+            // Reaching flexes the trunk with constant hip-shoulder length.
             hip=pt(151f,225f);farHip=pt(143f,224f);
-            shoulder=pt(151f,225f-b.torso);
-            farShoulder=pt(145f,235f-b.torso);
+            float torsoReach=kind==Kind.SEATED_FORWARD_REACH?.36f*d:0f;
+            shoulder=pt(hip.x+b.torso*(float)Math.sin(torsoReach),
+                    hip.y-b.torso*(float)Math.cos(torsoReach));
+            farShoulder=pt(farHip.x+b.torso*(float)Math.sin(torsoReach),
+                    farHip.y-b.torso*(float)Math.cos(torsoReach));
             float ux=.64f,uy=(float)Math.sqrt(1f-ux*ux);
             AvatarKinematics.Point knee=pt(hip.x+ux*b.upperLeg,hip.y+uy*b.upperLeg);
             AvatarKinematics.Point farKnee=pt(
                     farHip.x+ux*b.upperLeg,farHip.y+uy*b.upperLeg);
-            float angle=(float)(Math.PI*.36d*d);
+            float angle=kind==Kind.SEATED_KNEE_EXTENSION
+                    ?(float)(Math.PI*.36d*d):0f;
             ankle=pt(knee.x+b.lowerLeg*(float)Math.sin(angle),
                     knee.y+b.lowerLeg*(float)Math.cos(angle));
             farAnkle=pt(farKnee.x,farKnee.y+b.lowerLeg);
@@ -81,8 +92,13 @@ public final class AvatarDedicatedScene {
                     b.upperLeg,b.lowerLeg,-1,0f,170f);
             neck=pt(shoulder.x+2f,shoulder.y-5f);
             head=pt(neck.x+3f,neck.y-27f);
-            hand=pt(shoulder.x+29f,shoulder.y+111f);
-            farHand=pt(farShoulder.x+29f,farShoulder.y+111f);
+            float nearArmAngle=kind==Kind.SEATED_FORWARD_REACH
+                    ?.15f+1.12f*d:.255f;
+            float farArmAngle=kind==Kind.SEATED_FORWARD_REACH
+                    ?.12f+1.12f*d:.255f;
+            float armReach=b.upperArm+b.forearm-.025f;
+            hand=AvatarKinematics.wristOnArc(shoulder,armReach,nearArmAngle);
+            farHand=AvatarKinematics.wristOnArc(farShoulder,armReach,farArmAngle);
             arm=AvatarRigConstraints.twoBone(shoulder,hand,
                     b.upperArm,b.forearm,1,0f,170f);
             farArm=AvatarRigConstraints.twoBone(farShoulder,farHand,
@@ -95,13 +111,14 @@ public final class AvatarDedicatedScene {
                     shoulder,farShoulder,neck,head,arm.joint,arm.end,
                     farArm.joint,farArm.end);
             AvatarMotionEngine.assertSkeleton(p,b,.12f);
-            return new AvatarDedicatedScene(kind,p,farAnkle,shoulder,hip);
+            return new AvatarDedicatedScene(kind,p,farAnkle,shoulder,hip,
+                    kind==Kind.SEATED_TOE_RAISE?22f*d:0f);
         }
         AvatarKinematics.Pose p=new AvatarKinematics.Pose(
                 ankle,farAnkle,leg.joint,farLeg.joint,hip,farHip,
                 shoulder,farShoulder,neck,head,arm.joint,arm.end,
                 farArm.joint,farArm.end);
         AvatarMotionEngine.assertSkeleton(p,b,.12f);
-        return new AvatarDedicatedScene(kind,p,ankle,shoulder,hip);
+        return new AvatarDedicatedScene(kind,p,ankle,shoulder,hip,0f);
     }
 }
