@@ -114,15 +114,15 @@ test "$NEW_COUNT" -eq 12 || {
 }
 echo "PASS: catalog commands have exact IDs and 12 emulator images are preserved."
 
-echo "Android avatar framing: export 18 additional frontal movement PNGs"
+echo "Android avatar framing: export 24 additional frontal movement PNGs"
 FRONT_REMOTE="/sdcard/Android/data/$PACKAGE/files/asterion-avatar-new-front-samples"
 FRONT_LOCAL="$OUT/asterion-avatar-new-front-samples"
 mkdir -p "$FRONT_LOCAL"
 adb shell ls "$FRONT_REMOTE"
 adb pull "$FRONT_REMOTE/." "$FRONT_LOCAL/"
 FRONT_COUNT="$(find "$FRONT_LOCAL" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
-test "$FRONT_COUNT" -eq 18 || {
-  echo "Expected 18 native new frontal PNGs; found $FRONT_COUNT"
+test "$FRONT_COUNT" -eq 24 || {
+  echo "Expected 24 native new frontal PNGs; found $FRONT_COUNT"
   exit 1
 }
-echo "PASS: new frontal balance/lateral raise/side step produce 18 real Canvas frames."
+echo "PASS: four frontal exercises produce 24 real Canvas frames in both palettes."
