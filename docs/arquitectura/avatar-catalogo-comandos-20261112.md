@@ -508,3 +508,39 @@ capturas deben aprobarse antes de promover la fase a validada.
 | **Total** | **1.237** |
 
 Seguimiento: [issue #37](https://github.com/miguelpinto9988-byte/Asterion-System-Android/issues/37).
+
+## Ampliación de demostraciones con equipo y apoyos — fase 8 (12-11-2026)
+
+**Avance registrado:** 24/1.257 = **1,91 %** de variantes con ilustración corporal;
+**1.233** variantes conservan solamente el mapa articular técnico. La
+implementación no equivale a validación profesional del gesto. Los **60
+comandos** se conservan y el `AvatarDemonstrationManifest` exige que ID,
+comando, clip, cámara, ejecución y equipamiento coincidan exactamente.
+
+| ID | Representación de cuerpo/equipo | Contactos y diferencias |
+| --- | --- | --- |
+| `puente_gluteo_v04` | Puente acostado y colchoneta con **banda visible por encima de las rodillas** | Hombros y cabeza sobre colchoneta, ambos pies fijos, elevación y retorno de pelvis; la banda no tiene anclaje inventado |
+| `elevacion_gemelos_v01` | Elevación bilateral de talones sentado en silla | Ambos antepiés se mantienen anclados; los tobillos siguen arcos circulares, el solucionador IK conserva las longitudes de fémur y tibia |
+| `balanceo_talon_punta_sentado_v01` | Elevación suave de talones sentado | Igual posición y contactos que la elevación bilateral, pero un recorrido menor de referencia (12° frente a 22°) |
+| `dorsiflexion_tobillo_v01` | Dorsiflexión unilateral de un pie sentado | Un pie gira alrededor del talón, el otro queda neutral y ambos miembros permanecen sentados |
+
+Los 22° y 12° son **parámetros ilustrativos de Canvas**, no mediciones
+clínicas. En las elevaciones de talones, la suela se dibuja respecto a un
+pivote de antepié constante y el tobillo se desplaza solidariamente; la
+rodilla puede reajustarse por IK para evitar segmentos elásticos. En la
+dorsiflexión unilateral, solo cambia el pie cercano al observador.
+
+**Validaciones añadidas:** prueba JVM de longitudes, pivotes, ausencia de
+deriva de los antepiés y cierre del ciclo para todas las variantes de
+`AvatarDedicatedScene`; contrato Python de 24 ilustraciones;
+`AvatarExerciseCommandCatalogInstrumentedTest` compara 24 IDs;
+`AvatarDedicatedSceneInstrumentedTest` recoge **74 PNG** nativos de 12
+escenas con 2 paletas, inicio, fase central y final (4 fases para la
+extensión alternada). El pipeline de Android 16 exige las 74 capturas
+para completar su prueba instrumental.
+
+**Restantes sin demostración propia por categoría:** tren inferior 276;
+tren superior 279; tren central 229; movilidad 240; cardio 209.
+Total: **1.233**. El issue #37 conserva los criterios de aceptación
+individuales. No declarar 100 %, ni fusionar la PR como catálogo
+completo, hasta que haya una escena específica revisada para cada ID.
