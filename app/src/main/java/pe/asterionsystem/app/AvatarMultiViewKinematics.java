@@ -14,7 +14,10 @@ public final class AvatarMultiViewKinematics {
         FRONT_SQUAT("Frontal · sentadilla abierta"),
         FRONT_JACKS("Frontal · saltos de tijera"),
         FRONT_ELBOW("Frontal · articulación de codos"),
-        TOP("Superior · flexión diamante");
+        TOP("Superior · flexión diamante"),
+        FRONT_LATERAL("Frontal · separación de brazos"),
+        FRONT_BALANCE("Frontal · equilibrio unilateral"),
+        FRONT_SIDE_STEP("Frontal · paso lateral con retorno");
         public final String title;
         ViewMode(String title){this.title=title;}
     }
@@ -185,6 +188,85 @@ public final class AvatarMultiViewKinematics {
                 at(174f,332f),at(226f,332f),
                 at(174f,428f),at(226f,428f),
                 d,body.upperArm,body.forearm);
+    }
+
+
+    /** True frontal shoulder abduction: arms stop at shoulder height rather
+     * than copying the existing overhead frontal flexion. Feet are pinned. */
+    public static Pose frontLateralRaise(float phase,AvatarBodySpec body) {
+        if(body==null)throw new IllegalArgumentException("BodySpec requerido");
+        float d=AvatarKinematics.depthAtPhase(phase);
+        float angle=.055f+((float)Math.PI/2f-.055f)*d;
+        float reach=body.upperArm+body.forearm-.03f;
+        AvatarKinematics.Point ls=at(153f,150f),rs=at(247f,150f);
+        AvatarKinematics.Point lw=at(ls.x-(float)Math.sin(angle)*reach,
+                ls.y+(float)Math.cos(angle)*reach);
+        AvatarKinematics.Point rw=at(rs.x+(float)Math.sin(angle)*reach,
+                rs.y+(float)Math.cos(angle)*reach);
+        AvatarRigConstraints.TwoBone la=AvatarRigConstraints.twoBone(
+                ls,lw,body.upperArm,body.forearm,-1,0f,170f);
+        AvatarRigConstraints.TwoBone ra=AvatarRigConstraints.twoBone(
+                rs,rw,body.upperArm,body.forearm,1,0f,170f);
+        AvatarKinematics.Point lh=at(174f,238f),rh=at(226f,238f);
+        AvatarKinematics.Point lf=at(173f,428f),rf=at(227f,428f);
+        AvatarRigConstraints.TwoBone ll=AvatarRigConstraints.twoBone(
+                lh,lf,body.upperLeg,body.lowerLeg,-1,0f,170f);
+        AvatarRigConstraints.TwoBone rl=AvatarRigConstraints.twoBone(
+                rh,rf,body.upperLeg,body.lowerLeg,1,0f,170f);
+        return new Pose(at(200f,103f),at(200f,130f),ls,rs,la,ra,
+                lh,rh,ll.joint,rl.joint,ll.end,rl.end,d,body.upperArm,body.forearm);
+    }
+
+    /** Single-leg balance: left free ankle travels upward while the right
+     * sole and both shoulders retain fixed world-space landmarks. */
+    public static Pose frontSingleLegBalance(float phase,AvatarBodySpec body) {
+        if(body==null)throw new IllegalArgumentException("BodySpec requerido");
+        float d=AvatarKinematics.depthAtPhase(phase);
+        AvatarKinematics.Point ls=at(153f,150f),rs=at(247f,150f);
+        float reach=body.upperArm+body.forearm-.03f;
+        AvatarKinematics.Point lw=at(ls.x-6f,ls.y+reach-.15f);
+        AvatarKinematics.Point rw=at(rs.x+6f,rs.y+reach-.15f);
+        AvatarRigConstraints.TwoBone la=AvatarRigConstraints.twoBone(
+                ls,lw,body.upperArm,body.forearm,-1,0f,170f);
+        AvatarRigConstraints.TwoBone ra=AvatarRigConstraints.twoBone(
+                rs,rw,body.upperArm,body.forearm,1,0f,170f);
+        AvatarKinematics.Point lh=at(174f,238f),rh=at(226f,238f);
+        AvatarKinematics.Point lf=at(173f+22f*d,428f-57f*d);
+        AvatarKinematics.Point rf=at(227f,428f);
+        AvatarRigConstraints.TwoBone ll=AvatarRigConstraints.twoBone(
+                lh,lf,body.upperLeg,body.lowerLeg,-1,0f,170f);
+        AvatarRigConstraints.TwoBone rl=AvatarRigConstraints.twoBone(
+                rh,rf,body.upperLeg,body.lowerLeg,1,0f,170f);
+        if(ll.targetLimited||rl.targetLimited)
+            throw new IllegalArgumentException("Apoyo unilateral fuera de alcance");
+        return new Pose(at(200f,103f),at(200f,130f),ls,rs,la,ra,
+                lh,rh,ll.joint,rl.joint,ll.end,rl.end,d,body.upperArm,body.forearm);
+    }
+
+    /** One unloaded lateral step and return, never a band-resistance demo.
+     * Left sole is planted; right foot is free until neutral. */
+    public static Pose frontSideStep(float phase,AvatarBodySpec body) {
+        if(body==null)throw new IllegalArgumentException("BodySpec requerido");
+        float d=AvatarKinematics.depthAtPhase(phase);
+        AvatarKinematics.Point ls=at(153f,150f),rs=at(247f,150f);
+        float reach=body.upperArm+body.forearm-.03f;
+        AvatarKinematics.Point lw=at(ls.x-6f,ls.y+reach-.15f);
+        AvatarKinematics.Point rw=at(rs.x+6f,rs.y+reach-.15f);
+        AvatarRigConstraints.TwoBone la=AvatarRigConstraints.twoBone(
+                ls,lw,body.upperArm,body.forearm,-1,0f,170f);
+        AvatarRigConstraints.TwoBone ra=AvatarRigConstraints.twoBone(
+                rs,rw,body.upperArm,body.forearm,1,0f,170f);
+        AvatarKinematics.Point lh=at(174f,238f),rh=at(226f,238f);
+        AvatarKinematics.Point lf=at(173f,428f);
+        AvatarKinematics.Point rf=at(227f+43f*d,428f-13f*d);
+        AvatarRigConstraints.TwoBone ll=AvatarRigConstraints.twoBone(
+                lh,lf,body.upperLeg,body.lowerLeg,-1,0f,170f);
+        AvatarRigConstraints.TwoBone rl=AvatarRigConstraints.twoBone(
+                rh,rf,body.upperLeg,body.lowerLeg,1,0f,170f);
+        if(ll.targetLimited||rl.targetLimited)
+            throw new IllegalArgumentException("Paso lateral fuera de alcance");
+        return new Pose(at(200f,103f),at(200f,130f),ls,rs,la,ra,
+                lh,rh,ll.joint,rl.joint,ll.end,rl.end,d,body.upperArm,body.forearm);
     }
 
     public static Pose diamondTop(float phase,AvatarBodySpec body) {
