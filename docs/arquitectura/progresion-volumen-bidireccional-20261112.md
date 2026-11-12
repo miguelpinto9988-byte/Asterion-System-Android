@@ -1,4 +1,4 @@
-# Asterion — progresión de volumen coordinada (v5, segunda recalibración inicial)
+# Asterion — progresión de volumen coordinada (v6, calibración por categoría y unidad)
 
 ## Objetivo y alcance
 
@@ -155,10 +155,10 @@ verificada por ID, para **cada una de las 1.257 variantes existentes**:
 
 | Variante | Unidad del motor | Referencia inicial de ejemplo |
 |---|---|---|
-| Sentadilla libre | Repeticiones | 1 serie, 10 repeticiones |
-| Flexión inclinada | Repeticiones | 1 serie, 12 repeticiones |
-| Plancha de pared | Segundos | 1 serie, 20 segundos |
-| Marcha exterior cómoda | Segundos | 1 serie, 85 segundos |
+| Sentadilla libre | Repeticiones | 1 serie, 15 repeticiones |
+| Flexión inclinada | Repeticiones | 1 serie, 15 repeticiones |
+| Plancha de pared | Segundos | 1 serie, 25 segundos |
+| Marcha exterior cómoda | Segundos | 1 serie, 95 segundos |
 
 El mismo algoritmo de esfuerzo opera sobre el **valor de la unidad**, nunca
 sobre un número ambiguo: en repeticiones el factor de escala es 1, y en
@@ -242,6 +242,47 @@ prescripciones ni tareas de realización obligatoria. Las personas pueden
 registrar su actividad real, descansar o detenerse sin penalización.
 Subir simultáneamente las series iniciales y la cantidad por serie
 supondría un salto mayor, por lo que se conservó una serie inicial.
+
+## Calibración por categoría solicitada · versión 6 (vigente)
+
+La última modificación aumenta la **referencia inicial ya existente** según
+la clasificación real de la variante en `families.tsv`, sin alterar
+`initial_sets`, `unit`, `minimum_value`, `maximum_value` ni
+el factor de progresión derivado del esfuerzo:
+
+| Grupo y unidad | Variantes | Aumento de la referencia inicial |
+|---|---:|---:|
+| Tren inferior, repeticiones | 268 | +5 repeticiones |
+| Tren superior, repeticiones | 276 | +3 repeticiones |
+| Ejercicios temporizados, posturas de menor duración | 126 | +5 segundos |
+| Ejercicios temporizados, duración intermedia | 16 | +7 segundos |
+| Ejercicios temporizados, actividad continua | 191 | +10 segundos |
+| Repeticiones de tronco, movilidad y cardio | 380 | Se conserva la versión 5 |
+
+**Total: 877 perfiles aumentados y 380 conservados**, sobre las 1.257
+variantes del catálogo. Todas las cantidades siguen dentro del máximo de su
+perfil. Los 333 perfiles temporizados se incrementaron entre cinco y diez
+segundos según su rango técnico y modalidad, no con un valor único.
+
+Ejemplos de referencia inicial actual:
+
+- Sentadilla a silla: 12 → **17 repeticiones** por serie.
+- Sentadilla libre: 10 → **15 repeticiones** por serie.
+- Flexión inclinada: 12 → **15 repeticiones** por serie.
+- Plancha de pared: 20 → **25 segundos** por serie.
+- Equilibrio con apoyo: 25 → **30 segundos** por serie.
+- Caminata cómoda y bicicleta estática básica: 85 → **95 segundos** por serie.
+
+Solo cambia el **dato de configuración inicial** que el motor ofrece cuando
+no existe un registro comparable o cuando el cambio de ejercicio/técnica
+reinicia el volumen en 7, 14 o 21 días. No se modifican datos históricos de
+sesiones completadas, ni las condiciones de descanso o pausa. En especial,
+las cantidades no son una obligación, ni un objetivo clínico ni una
+autorización para exigir actividad excesiva. El usuario puede reducirlas,
+omitirlas o detenerse sin sanción.
+
+Las secciones anteriores v4 y v5 documentan revisiones previas y quedan
+**supeditadas a esta versión 6** para los valores iniciales vigentes.
 
 ## Pruebas
 
