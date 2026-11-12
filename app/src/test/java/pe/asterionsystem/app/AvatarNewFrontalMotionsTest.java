@@ -15,6 +15,7 @@ public final class AvatarNewFrontalMotionsTest {
             case FRONT_LATERAL:return AvatarMultiViewKinematics.frontLateralRaise(phase,SPEC);
             case FRONT_BALANCE:return AvatarMultiViewKinematics.frontSingleLegBalance(phase,SPEC);
             case FRONT_SIDE_STEP:return AvatarMultiViewKinematics.frontSideStep(phase,SPEC);
+            case FRONT_NECK_TILT:return AvatarMultiViewKinematics.frontNeckSideTilt(phase,SPEC);
             default:throw new AssertionError("Not a new frontal motion");
         }
     }
@@ -23,7 +24,8 @@ public final class AvatarNewFrontalMotionsTest {
         for(AvatarMultiViewKinematics.ViewMode scene:new AvatarMultiViewKinematics.ViewMode[]{
                 AvatarMultiViewKinematics.ViewMode.FRONT_LATERAL,
                 AvatarMultiViewKinematics.ViewMode.FRONT_BALANCE,
-                AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP}){
+                AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP,
+                AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT}){
             AvatarMultiViewKinematics.Pose start=pose(scene,0f);
             AvatarMultiViewKinematics.Pose last=null;
             for(int i=0;i<=360;i++){
@@ -95,6 +97,21 @@ public final class AvatarNewFrontalMotionsTest {
         assertEquals(AvatarContactFrame.Ground.NONE,c.rightFoot);
     }
 
+    @Test public void cervicalTiltKeepsNeckLengthAndBothSolesFixed(){
+        AvatarMultiViewKinematics.Pose a=pose(
+                AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT,0f);
+        AvatarMultiViewKinematics.Pose peak=pose(
+                AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT,.49f);
+        assertTrue(peak.head.x>a.head.x+10f);
+        assertEquals(27f,peak.head.distance(peak.neck),.05f);
+        assertEquals(0f,a.leftAnkle.distance(peak.leftAnkle),.001f);
+        assertEquals(0f,a.rightAnkle.distance(peak.rightAnkle),.001f);
+        AvatarContactFrame frame=AvatarContactFrame.forCamera(
+                AvatarMultiViewKinematics.ViewMode.FRONT_NECK_TILT,.49f);
+        assertEquals(AvatarContactFrame.Ground.SOLE,frame.leftFoot);
+        assertEquals(AvatarContactFrame.Ground.SOLE,frame.rightFoot);
+    }
+
     @Test public void invalidInputsAreRejected(){
         assertThrows(IllegalArgumentException.class,()->
                 AvatarMultiViewKinematics.frontLateralRaise(.5f,null));
@@ -102,5 +119,7 @@ public final class AvatarNewFrontalMotionsTest {
                 AvatarMultiViewKinematics.frontSingleLegBalance(.5f,null));
         assertThrows(IllegalArgumentException.class,()->
                 AvatarMultiViewKinematics.frontSideStep(.5f,null));
+        assertThrows(IllegalArgumentException.class,()->
+                AvatarMultiViewKinematics.frontNeckSideTilt(.5f,null));
     }
 }
