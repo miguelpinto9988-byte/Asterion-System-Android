@@ -42,15 +42,24 @@ public final class AvatarArtDetails {
                              boolean far){
         seamSegment(c,hip,knee,far?28f:33f,false,far);
         seamSegment(c,knee,ankle,far?22f:24f,true,far);
+        // The older knee was an independent 21x22 solid rectangle,
+        // which stuck out of flexed trousers. The fabric now follows the
+        // calf direction and fits INSIDE the continuous skin envelope.
         c.save();
         c.translate(knee.x,knee.y);
         c.rotate((float)Math.toDegrees(Math.atan2(
                 ankle.y-knee.y,ankle.x-knee.x)));
-        fill(far?0xFF26374F:0xFF43536C);
-        c.drawRoundRect(-9f,-11f,12f,11f,6f,6f,paint);
-        line(c,-6f,-7f,6f,-7f,0x998CA1C0,1.1f);
-        line(c,-6f,7f,6f,7f,0x998CA1C0,1.1f);
-        line(c,1f,-2f,6f,-2f,0x99D5E0EE,.9f);
+        path.rewind();
+        path.moveTo(-8f,-4.6f);
+        path.cubicTo(-4f,-6.6f,4f,-6.3f,9f,-3.8f);
+        path.quadTo(10f,0f,9f,3.8f);
+        path.cubicTo(4f,6.3f,-4f,6.6f,-8f,4.6f);
+        path.quadTo(-10f,0f,-8f,-4.6f);
+        path.close();
+        fill(far?0xFF31435C:0xFF52657E);
+        c.drawPath(path,paint);
+        line(c,-5.5f,-3.1f,6.5f,-2.5f,0x998CA1C0,.85f);
+        line(c,-4.4f,3.5f,6f,3.1f,0x8899B0C8,.75f);
         c.restore();
     }
 
