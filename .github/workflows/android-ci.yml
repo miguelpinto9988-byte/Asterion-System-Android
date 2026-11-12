@@ -141,8 +141,8 @@ jobs:
           output="\n".join((e.text or "") for e in xml.iter("system-out"))
           prefix="ASTERION_DEMO_JSON:"
           cases=[json.loads(row.split(prefix,1)[1]) for row in output.splitlines() if prefix in row]
-          assert len(cases)==20, f"Se esperaban 20 registros reales; hay {len(cases)}"
-          assert len([r for r in cases if r.get("type")=="day"])==18
+          assert len(cases)==53, f"Se esperaban 53 registros reales; hay {len(cases)}"
+          assert len([r for r in cases if r.get("type")=="day"])==51
           data={
               "source":"MissionPlanner + catálogo TSV empaquetado; prueba JUnit real",
               "catalog_variants":1257,
