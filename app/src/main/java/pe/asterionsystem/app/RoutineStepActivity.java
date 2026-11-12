@@ -329,12 +329,18 @@ public final class RoutineStepActivity extends ComponentActivity {
         int movementCategory=effectiveCategory();
         if(movementCategory>=0 && current.difficulty()<=3) {
             java.util.List<VolumeProgressionEngine.Observation> previous=
-                    VolumeProgressStore.previousForCategory(
+                    VolumeProgressStore.progressionHistoryForCategory(
                             this,movementCategory,planDate);
             VolumeProgressionEngine.Suggestion suggestion=VolumeProgressionEngine.review(
                     current,movementCategory,planDate,previous,
                     SessionSafetyStore.recentInterruption(
                             this,movementCategory,planDate,7));
+            if(VolumeProgressStore.restartedOn(
+                    this,movementCategory,current.id(),planDate)) {
+                addText("Cambio de variante o técnica: se reinicia el "
+                        +"volumen acumulado. Registra un nuevo punto de partida "
+                        +"sin heredar objetivos del movimiento anterior.",13);
+            }
             if(suggestion.previousSets>0) {
                 addText("Volumen anterior: "+suggestion.previousSets+" series × "
                         +suggestion.previousRepetitions+" repeticiones. "
