@@ -61,7 +61,8 @@ for row in rows:
                                "FRONT_LATERAL","FRONT_BALANCE","FRONT_SIDE_STEP",
                                "FRONT_NECK_TILT","HIP_EXTENSION_STAND",
                                "GLUTE_BRIDGE_SHORT","GLUTE_BRIDGE_BASIC",
-                               "SEATED_KNEE_EXTENSION")
+                               "SEATED_KNEE_EXTENSION","SEATED_TOE_RAISE",
+                               "SEATED_FORWARD_REACH")
         illustrated.append(row)
     counts[(row["category"],row["status"])]+=1
     families_covered.add(family)
