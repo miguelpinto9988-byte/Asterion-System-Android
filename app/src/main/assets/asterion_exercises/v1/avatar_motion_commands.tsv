@@ -474,7 +474,7 @@ separacion_dedos_pies_v03	FOOT_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	contr
 recogida_toalla_pies_v01	FOOT_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	sin_equipo	0
 recogida_toalla_pies_v02	FOOT_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	toalla	0
 recogida_toalla_pies_v03	FOOT_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	toalla	0
-extension_cadera_bipeda_v01	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	sin_equipo	0
+extension_cadera_bipeda_v01	HIP_EXTENSION	SIDE	HIP_EXTENSION_STAND	ILLUSTRATIVE	tren_inferior	1	controlado	sin_equipo	0
 extension_cadera_bipeda_v02	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	asistido	pared	0
 extension_cadera_bipeda_v03	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	alterno	sin_equipo	0
 extension_cadera_cuadrupedia_v01	HIP_EXTENSION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	sin_equipo	0
@@ -862,7 +862,7 @@ activacion_muslo_sentado_v01	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	1	co
 activacion_muslo_sentado_v02	KNEE_FLEXION	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	silla	0
 paso_frente_y_retorno_v01	FOOTWORK	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	sin_equipo	0
 paso_frente_y_retorno_v02	FOOTWORK	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	sin_equipo	0
-paso_lateral_y_retorno_v01	FOOTWORK	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	sin_equipo	0
+paso_lateral_y_retorno_v01	LATERAL_STEP	FRONT_SIDE_STEP	FRONT_SIDE_STEP	ILLUSTRATIVE	tren_inferior	1	controlado	sin_equipo	0
 paso_lateral_y_retorno_v02	FOOTWORK	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	sin_equipo	0
 balanceo_talon_punta_sentado_v01	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	silla	0
 balanceo_talon_punta_sentado_v02	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	silla	0
