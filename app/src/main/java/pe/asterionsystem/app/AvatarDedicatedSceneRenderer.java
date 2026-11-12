@@ -56,17 +56,24 @@ public final class AvatarDedicatedSceneRenderer {
         shape(c,36,398,355,408,4,dark?0xFF5C7694:0xFFE3EDF6);
         label(c,"COLCHONETA",40,433,dark?0xFFAFC5DD:0xFF587493,10);
     }
-    private void drawBody(Canvas c,AvatarPose p,AvatarBodySpec b,
-                          AvatarPalette palette,boolean supine,
-                          float toeRaiseDegrees){
+    private void drawBody(Canvas c,AvatarDedicatedScene scene,AvatarBodySpec b,
+                          AvatarPalette palette){
+        AvatarPose p=scene.pose;
+        boolean supine=scene.floorBackContact;
+        float toeRaiseDegrees=scene.toeRaiseDegrees;
+        float heelRaiseDegrees=scene.heelRaiseDegrees;
         // Render far leg then far arm, trunk, near leg and near arm.
         limb(c,p.farHip,p.farKnee,b.thighWidth*.64f,palette.farLegColor);
         limb(c,p.farKnee,p.farAnkle,b.calfWidth*.60f,palette.farLegColor);
         // Rotate the forefoot about the fixed HEEL contact, rather than
         // moving the whole leg or allowing the heel to float.
         c.save();
-        c.rotate(-toeRaiseDegrees,p.farAnkle.x-12f,p.farAnkle.y+10f);
-        details.drawSneaker(c,p.farAnkle,palette,true);
+        if(heelRaiseDegrees>0f)
+            c.rotate(heelRaiseDegrees,scene.farToeContact.x,scene.farToeContact.y);
+        else if(scene.kind!=AvatarDedicatedScene.Kind.SEATED_TOE_RAISE_SINGLE)
+            c.rotate(-toeRaiseDegrees,p.farAnkle.x-12f,p.farAnkle.y+10f);
+        details.drawSneaker(c,heelRaiseDegrees>0f
+                ?scene.neutralFarAnkle:p.farAnkle,palette,true);
         c.restore();
         limb(c,p.farShoulder,p.farElbow,b.upperArmWidth*.70f,palette.skinShade);
         limb(c,p.farElbow,p.farWrist,b.forearmWidth*.67f,palette.skinShade);
@@ -75,8 +82,11 @@ public final class AvatarDedicatedSceneRenderer {
         limb(c,p.hip,p.knee,b.thighWidth*.81f,palette.legColor);
         limb(c,p.knee,p.ankle,b.calfWidth*.73f,palette.legColor);
         c.save();
-        c.rotate(-toeRaiseDegrees,p.ankle.x-12f,p.ankle.y+10f);
-        details.drawSneaker(c,p.ankle,palette,false);
+        if(heelRaiseDegrees>0f)
+            c.rotate(heelRaiseDegrees,scene.nearToeContact.x,scene.nearToeContact.y);
+        else c.rotate(-toeRaiseDegrees,p.ankle.x-12f,p.ankle.y+10f);
+        details.drawSneaker(c,heelRaiseDegrees>0f
+                ?scene.neutralNearAnkle:p.ankle,palette,false);
         c.restore();
         fill(palette.shorts);c.drawCircle(p.hip.x,p.hip.y,b.waistHalfWidth*.83f,paint);
         limb(c,p.shoulder,p.elbow,b.upperArmWidth*.82f,palette.skin);
@@ -110,16 +120,40 @@ public final class AvatarDedicatedSceneRenderer {
         else mat(c,dark);
         if(scene.chairSeatContact)
             shape(c,20,407,376,411,3,dark?0xFF667086:0xFFD5DCE6);
-        drawBody(c,scene.pose,b,palette,scene.floorBackContact,
-                scene.toeRaiseDegrees);
+        // Foot support surface is placed at neutral outsole height
+        // in seated scenes, not at the arbitrary 407px canvas guide.
+        if(scene.chairSeatContact){
+            float y=scene.neutralNearAnkle.y+14f;
+            shape(c,178f,y,324f,y+4f,2f,dark?0xFF556779:0xFFB7C4D0);
+        }
+        drawBody(c,scene,b,palette);
+        if(scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BAND){
+            // Visible loop above the knees; it is a visual resistance band
+            // with no invented attachment to a wall or machine.
+            fill(dark?0xFFD8A6F2:0xFF9063C2);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(7f);
+            float x=(scene.pose.knee.x+scene.pose.farKnee.x)/2f;
+            float y=(scene.pose.knee.y+scene.pose.farKnee.y)/2f-8f;
+            c.drawOval(x-14f,y-14f,x+16f,y+14f,paint);
+            paint.setStyle(Paint.Style.FILL);
+        }
         String name=scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_SHORT
                 ?"PERFIL · PUENTE CORTO":
                 scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BASIC
                 ?"PERFIL · PUENTE DE GLÚTEOS":
                 scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_PAUSE
                 ?"PERFIL · PUENTE CON PAUSA":
+                scene.kind==AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BAND
+                ?"PERFIL · PUENTE CON BANDA":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_TOE_RAISE
                 ?"PERFIL · ELEVACIÓN DE PUNTAS SENTADO":
+                scene.kind==AvatarDedicatedScene.Kind.SEATED_TOE_RAISE_SINGLE
+                ?"PERFIL · DORSIFLEXIÓN SENTADO":
+                scene.kind==AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE
+                ?"PERFIL · TALONES SENTADO":
+                scene.kind==AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE_GENTLE
+                ?"PERFIL · TALONES SUAVES SENTADO":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_FORWARD_REACH
                 ?"PERFIL · ALCANCE FRONTAL SENTADO":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE
