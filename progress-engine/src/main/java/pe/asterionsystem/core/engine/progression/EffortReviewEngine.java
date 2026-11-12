@@ -75,7 +75,7 @@ public final class EffortReviewEngine {
         }
         double average=(double)sum/count;
         String advice;
-        if (average>=7.0) {
+        if (average>=8.0) {
             advice="Esfuerzo percibido elevado. Considera descanso o una alternativa más suave; "
                     +"no se aumentará la exigencia automáticamente.";
         } else if (average>=4.0) {
