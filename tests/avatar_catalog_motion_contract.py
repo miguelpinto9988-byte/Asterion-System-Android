@@ -98,7 +98,7 @@ for row in rows:
 
 assert len(families_covered)==155
 assert sum(counts.values())==1257
-assert len(illustrated)==78
+assert len(illustrated)==108
 assert len({row["command"] for row in rows})>=49
 for string in ("postInvalidateOnAnimation()","AvatarMotionEngine.pose("):
     assert string in (base/"NativeAvatarView.java").read_text(encoding="utf-8")
