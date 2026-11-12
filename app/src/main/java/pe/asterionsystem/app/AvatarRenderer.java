@@ -36,7 +36,9 @@ public final class AvatarRenderer {
                      AvatarPalette palette,boolean dark,String motionLabel) {
         if(canvas==null||pose==null||body==null||palette==null)
             throw new IllegalArgumentException("Renderer necesita pose, spec y paleta");
-        this.body=body;
+        // Same canonical anatomical joint inventory used by all cameras.
+        AvatarSkeletonFrame skeleton=AvatarSkeletonFrame.fromSide(pose,body);
+        this.body=skeleton.proportions;
         this.palette=palette;
         AvatarPose p=pose;
         final int bg=dark?0xFF13131D:0xFFF8F9FD;

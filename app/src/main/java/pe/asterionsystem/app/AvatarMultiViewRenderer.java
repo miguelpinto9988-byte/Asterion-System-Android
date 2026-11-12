@@ -34,7 +34,9 @@ public final class AvatarMultiViewRenderer {
                      AvatarPalette palette,boolean dark,AvatarBodySpec body) {
         if(c==null||p==null||camera==null||palette==null||body==null)
             throw new IllegalArgumentException("Vista, paleta y spec necesarios");
-        this.palette=palette;this.dark=dark;this.bodySpec=body;
+        // Every camera validates its anatomical joints and shared body spec.
+        AvatarSkeletonFrame skeleton=AvatarSkeletonFrame.fromCamera(p,camera,body);
+        this.palette=palette;this.dark=dark;this.bodySpec=skeleton.proportions;
         int bg=dark?0xFF131722:0xFFF8FAFE;
         int grid=dark?0xFF252D40:0xFFE8EDF5;
         rr(c,10,8,390,468,18,bg);
@@ -291,7 +293,11 @@ public final class AvatarMultiViewRenderer {
             tapered(c,k,a,bodySpec.calfWidth*.92f,
                     bodySpec.calfWidth*.64f,palette.legColor);
             details.drawCameraJeans(c,h,k,a,direction<0);
-            details.drawProneTopSneaker(c,a,k,palette);
+            AvatarFootOrientation.FootProjection foot=
+                    AvatarFootOrientation.proneTop(p,
+                        direction<0?AvatarFootOrientation.Side.LEFT
+                                   :AvatarFootOrientation.Side.RIGHT);
+            details.drawProneTopSneaker(c,foot,palette);
         }
         // Hands and forearms are behind the back from this camera.
         drawTopArm(c,p.leftShoulder,p.leftElbow,p.leftWrist);
