@@ -53,10 +53,37 @@ normales faciales, del torso y de manos, las cámaras y la comprobación
 de superficies. Una comprobación de pares prohíbe que cada zapatilla
 rote por separado en pantalla por diferencias entre espinillas.
 
+## Control explícito de contactos para todas las escenas
+
+`AvatarContactFrame` registra de manera separada qué está apoyado:
+`Ground.SOLE`, `Ground.TOE`, `Ground.PALM` o `Ground.NONE`.
+Esto se asigna desde el movimiento, nunca desde la silueta proyectada:
+
+- Superior / flexión diamante: ambas palmas y ambas punteras apoyadas.
+- Frontal / sentadilla, elevación y codos: ambos pies apoyados por la suela.
+- Frontal / saltos de tijera: fase aérea separada de las fases con apoyo.
+- Lateral / marcha: un pie permanece en el suelo y el otro alterna contacto.
+- Lateral / burpee: manos apoyadas en la etapa horizontal y pies en
+  desplazamiento en las fases de transición.
+
+`NativeAvatarView` consulta `forCamera`/`forSide` antes de pintar
+y la cámara cenital comprueba `assertProneUpperCamera`. Se evita que
+una variación del dibujo infiera por error que un pie o palma está apoyado.
+
+## Hallazgos de inspección de Android real
+
+Las 42 capturas obtenidas de Android 16 evidenciaron un defecto adicional:
+el cabello de la postura lateral erguida quedaba parcialmente fuera del
+borde superior. Se redujo el zoom lateral de 1.00 a 0.94, usando como
+pivote la línea de los zapatos `(200,364)`: la cabeza entra dentro de
+la tarjeta sin levantar ni desplazar los apoyos.
+
 ## Pruebas
 - `AvatarV11OrientationTest`: punteras, ejes simétricos, longitud de
   segmentos, cámaras frontal y cenital, las seis variantes de perfil y
   validación de argumentos.
+- `AvatarContactFrameTest`: seis tests de estados de contacto explícitos
+  y fases de apoyo, vuelo o transferencia de peso.
 - `AvatarOrientationRulesTest`: corrige la aserción de V10, que
   incorrectamente esperaba que la puntera apuntara hacia los pies.
 - `NativeAvatarRenderTest`: rendering real de la parte superior del
