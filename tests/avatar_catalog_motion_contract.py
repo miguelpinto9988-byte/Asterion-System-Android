@@ -126,6 +126,11 @@ for marker in ("chair(c,dark)","mat(c,dark)","AvatarSkeletonFrame.fromSide"):
     assert marker in dedicated_view,marker
 assert "dedicatedRenderer.draw" in native
 assert "avatar.setDedicatedScene(dedicated)" in viewer
+manifest=(base/"AvatarDemonstrationManifest.java").read_text(encoding="utf-8")
+assert "AvatarDemonstrationManifest.requireConsistent(e)" in catalog
+assert "requireConsistent(AvatarExerciseCommandCatalog.Entry entry)" in manifest
+assert len(re.findall(r'register\(rows,',manifest))==15
+
 
 assert len(new_exercises)==15
 
