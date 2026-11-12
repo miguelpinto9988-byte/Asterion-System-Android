@@ -51,7 +51,34 @@ expected_start={
 }
 for variant_id, initial in expected_start.items():
     assert int(profiles[variant_id]["initial_value"])==initial,variant_id
-assert int(profiles["superman_v01"]["initial_value"])==11  # unaffected core repetitions
+# All five exercise categories now have individually calibrated references.
+assert int(profiles["superman_v01"]["initial_value"])==14
+assert int(profiles["alcance_unipodal_v01"]["initial_value"])==12
+assert int(profiles["talones_alternos_v02"]["initial_value"])==13
+
+with (assets/"types.tsv").open(encoding="utf-8",newline="") as file:
+    types={r["type_id"]:r["family_id"] for r in csv.DictReader(file,delimiter="\t")}
+with (assets/"families.tsv").open(encoding="utf-8",newline="") as file:
+    families={r["family_id"]:r["category"] for r in csv.DictReader(file,delimiter="\t")}
+coverage={}
+for row in data:
+    variant=variants[row["variant_id"]]
+    category=families[types[variant["type_id"]]]
+    key=(category,row["unit"])
+    coverage[key]=coverage.get(key,0)+1
+expected_coverage={
+    ("tren_inferior","REPETITIONS"):268,
+    ("tren_superior","REPETITIONS"):276,
+    ("tren_central","REPETITIONS"):165,
+    ("movilidad","REPETITIONS"):197,
+    ("cardio","REPETITIONS"):18,
+    ("tren_inferior","SECONDS"):26,
+    ("tren_superior","SECONDS"):5,
+    ("tren_central","SECONDS"):65,
+    ("movilidad","SECONDS"):46,
+    ("cardio","SECONDS"):191,
+}
+assert coverage==expected_coverage,coverage
 assert all(int(row["initial_sets"])==1 for row in data)
 assert all(int(row["initial_value"])>=
            (5 if row["unit"]=="REPETITIONS" else 11) for row in data)
@@ -81,4 +108,4 @@ for symbol in ("volumeProfiles", "AssetExerciseVolumeProfileRepository",
                "numericForSelection", "volume.unit.label", "volume.offeredQuantity"):
     assert symbol in missions,symbol
 assert "ExerciseVolumeProfileCatalog profiles" in coordinator
-print("OK: 1257 variantes, referencia individual y unidad segura",units)
+print("OK: 1257 variantes, cinco categorías, dos unidades y límites seguros",units)
