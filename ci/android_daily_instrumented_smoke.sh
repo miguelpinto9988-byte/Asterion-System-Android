@@ -101,7 +101,7 @@ AVATAR_CATALOG_TEST="pe.asterionsystem.app.AvatarExerciseCommandCatalogInstrumen
 adb shell am instrument -w -e class "$AVATAR_CATALOG_TEST" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
   | tee "$OUT/avatar-catalog-commands.txt"
-grep -q 'OK (3 tests)' "$OUT/avatar-catalog-commands.txt"
+grep -q 'OK (4 tests)' "$OUT/avatar-catalog-commands.txt"
 REMOTE_NEW="/sdcard/Android/data/$PACKAGE/files/asterion-avatar-command-samples"
 LOCAL_NEW="$OUT/asterion-avatar-command-samples"
 mkdir -p "$LOCAL_NEW"
@@ -126,3 +126,16 @@ test "$FRONT_COUNT" -eq 24 || {
   exit 1
 }
 echo "PASS: four frontal exercises produce 24 real Canvas frames in both palettes."
+
+echo "Avatar command-map previews: 24 Android PNG frames across 4 pending variants"
+MAP_REMOTE="/sdcard/Android/data/$PACKAGE/files/asterion-avatar-command-map-samples"
+MAP_LOCAL="$OUT/asterion-avatar-command-map-samples"
+mkdir -p "$MAP_LOCAL"
+adb shell ls "$MAP_REMOTE"
+adb pull "$MAP_REMOTE/." "$MAP_LOCAL/"
+MAP_COUNT="$(find "$MAP_LOCAL" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
+test "$MAP_COUNT" -eq 24 || {
+  echo "Expected 24 command-map PNG frames; found $MAP_COUNT"
+  exit 1
+}
+echo "PASS: representative non-illustrated variants have honest animated commands."
