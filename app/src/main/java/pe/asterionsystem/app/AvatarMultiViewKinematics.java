@@ -290,7 +290,8 @@ public final class AvatarMultiViewKinematics {
                 lh,lf,body.upperLeg,body.lowerLeg,-1,0f,170f);
         AvatarRigConstraints.TwoBone rl=AvatarRigConstraints.twoBone(
                 rh,rf,body.upperLeg,body.lowerLeg,1,0f,170f);
-        float x=12f*d;
+        // Match the authored NECK_SIDE_TILT reference (12 degrees at peak).
+        float x=27f*(float)Math.sin(Math.toRadians(12d))*d;
         float y=130f-(float)Math.sqrt(27f*27f-x*x);
         return new Pose(at(200f+x,y),at(200f,130f),
                 ls,rs,la,ra,lh,rh,ll.joint,rl.joint,
