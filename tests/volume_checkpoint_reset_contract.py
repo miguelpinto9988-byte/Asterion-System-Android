@@ -25,7 +25,7 @@ assert "sp.edit().clear()" not in volume
 assert "VolumeProgressStore.observeCheckpointSelection(" in missions
 assert "VolumeProgressStore.progressionHistoryForCategory(" in missions
 assert "VolumeProgressStore.progressionHistoryForCategory(" in routine
-assert "VolumeProgressionEngine.review(" in missions
+assert "CoordinatedTrainingEngine.reviewSelected(" in missions
 for test in ("daySevenChangedExerciseResetsOnlyNewVariant",
              "dayFourteenChangedTechniqueStartsFreshVolumeEpoch",
              "dayTwentyOneAlsoResetsAPreviouslyUsedVariantWhenReintroduced",
