@@ -32,7 +32,7 @@ for token in ("SIDE_FOOT_Y", "FRONT_FOOT_Y", "TOP_FOOT_Y", "TOP_HAND_Y",
 for token in ("AvatarFrameSafety.requireSide(pose,contact)",
               "AvatarFrameSafety.requireCamera(pose,viewMode,contact)",
               "finally", "canvas.restore()",
-              "!Float.isFinite(value)?0f"):
+              "Float.isNaN(value)?0f"):
     assert token in view,token
 unit=(base/"app/src/test/java/pe/asterionsystem/app/AvatarFrameSafetyTest.java").read_text()
 assert unit.count("@Test")>=4
