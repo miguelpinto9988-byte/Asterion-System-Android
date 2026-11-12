@@ -8,8 +8,9 @@ package pe.asterionsystem.app;
  */
 public final class AvatarDedicatedScene {
     public enum Kind {
-        GLUTE_BRIDGE_SHORT,GLUTE_BRIDGE_BASIC,SEATED_KNEE_EXTENSION,
-        SEATED_TOE_RAISE,SEATED_FORWARD_REACH
+        GLUTE_BRIDGE_SHORT,GLUTE_BRIDGE_BASIC,GLUTE_BRIDGE_PAUSE,
+        SEATED_KNEE_EXTENSION,SEATED_KNEE_EXTENSION_PAUSE,
+        SEATED_KNEE_EXTENSION_ALTERNATING,SEATED_TOE_RAISE,SEATED_FORWARD_REACH
     }
     public final Kind kind;
     public final AvatarKinematics.Pose pose;
@@ -24,7 +25,7 @@ public final class AvatarDedicatedScene {
         this.kind=kind;pose=p;supportFoot=foot;
         nearShoulder=shoulder;nearHip=hip;
         floorBackContact=kind==Kind.GLUTE_BRIDGE_SHORT||
-                kind==Kind.GLUTE_BRIDGE_BASIC;
+                kind==Kind.GLUTE_BRIDGE_BASIC||kind==Kind.GLUTE_BRIDGE_PAUSE;
         chairSeatContact=!floorBackContact;
         // A dedicated ankle command is rendered around each shoe heel,
         // not interpreted as hip or knee motion.
@@ -37,13 +38,16 @@ public final class AvatarDedicatedScene {
         if(kind==null||b==null||!Float.isFinite(phase)||phase<0f||phase>1f)
             throw new IllegalArgumentException("Escena, cuerpo y fase válidos requeridos");
         float d=AvatarKinematics.depthAtPhase(phase);
+        float held=AvatarJointTimeline.heldWeight(phase);
         AvatarKinematics.Point hip,farHip,shoulder,farShoulder,ankle,farAnkle;
         AvatarRigConstraints.TwoBone leg,farLeg,arm,farArm;
         AvatarKinematics.Point neck,head,hand,farHand;
-        if(kind==Kind.GLUTE_BRIDGE_SHORT||kind==Kind.GLUTE_BRIDGE_BASIC){
+        if(kind==Kind.GLUTE_BRIDGE_SHORT||kind==Kind.GLUTE_BRIDGE_BASIC||
+                kind==Kind.GLUTE_BRIDGE_PAUSE){
             // The shoulder and head remain on the mat; the pelvis follows
             // a torso-length circular arc while the soles remain in place.
-            float rise=kind==Kind.GLUTE_BRIDGE_SHORT?22f*d:42f*d;
+            float rise=kind==Kind.GLUTE_BRIDGE_SHORT?22f*d:
+                    kind==Kind.GLUTE_BRIDGE_PAUSE?42f*held:42f*d;
             shoulder=pt(125f,377f);
             farShoulder=pt(119f,387f);
             hip=pt(shoulder.x+(float)Math.sqrt(b.torso*b.torso-rise*rise),
@@ -79,11 +83,18 @@ public final class AvatarDedicatedScene {
             AvatarKinematics.Point knee=pt(hip.x+ux*b.upperLeg,hip.y+uy*b.upperLeg);
             AvatarKinematics.Point farKnee=pt(
                     farHip.x+ux*b.upperLeg,farHip.y+uy*b.upperLeg);
-            float angle=kind==Kind.SEATED_KNEE_EXTENSION
-                    ?(float)(Math.PI*.36d*d):0f;
-            ankle=pt(knee.x+b.lowerLeg*(float)Math.sin(angle),
-                    knee.y+b.lowerLeg*(float)Math.cos(angle));
-            farAnkle=pt(farKnee.x,farKnee.y+b.lowerLeg);
+            float nearDepth=kind==Kind.SEATED_KNEE_EXTENSION?d:
+                    kind==Kind.SEATED_KNEE_EXTENSION_PAUSE?held:
+                    kind==Kind.SEATED_KNEE_EXTENSION_ALTERNATING&&phase<=.5f
+                    ?AvatarKinematics.depthAtPhase(phase*2f):0f;
+            float farDepth=kind==Kind.SEATED_KNEE_EXTENSION_ALTERNATING&&phase>=.5f
+                    ?AvatarKinematics.depthAtPhase((phase-.5f)*2f):0f;
+            float nearAngle=(float)(Math.PI*.36d*nearDepth);
+            float farAngle=(float)(Math.PI*.36d*farDepth);
+            ankle=pt(knee.x+b.lowerLeg*(float)Math.sin(nearAngle),
+                    knee.y+b.lowerLeg*(float)Math.cos(nearAngle));
+            farAnkle=pt(farKnee.x+b.lowerLeg*(float)Math.sin(farAngle),
+                    farKnee.y+b.lowerLeg*(float)Math.cos(farAngle));
             leg=AvatarRigConstraints.twoBone(hip,ankle,
                     b.upperLeg,b.lowerLeg,-1,0f,170f);
             // The knee must not drift during extension: we retain the
@@ -111,7 +122,11 @@ public final class AvatarDedicatedScene {
                     shoulder,farShoulder,neck,head,arm.joint,arm.end,
                     farArm.joint,farArm.end);
             AvatarMotionEngine.assertSkeleton(p,b,.12f);
-            return new AvatarDedicatedScene(kind,p,farAnkle,shoulder,hip,
+            // Support side changes in the alternating clip; at any time
+            // only one knee extends, the other retains its ground reference.
+            AvatarKinematics.Point planted=kind==Kind.SEATED_KNEE_EXTENSION_ALTERNATING
+                    &&phase>=.5f?ankle:farAnkle;
+            return new AvatarDedicatedScene(kind,p,planted,shoulder,hip,
                     kind==Kind.SEATED_TOE_RAISE?22f*d:0f);
         }
         AvatarKinematics.Pose p=new AvatarKinematics.Pose(
