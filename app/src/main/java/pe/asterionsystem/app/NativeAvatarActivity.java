@@ -325,9 +325,12 @@ public final class NativeAvatarActivity extends ComponentActivity {
 
     private void showCommandDetails() {
         if(activeCommand==null)return;
+        String details=activeCommand.technicalDescription()
+                +AvatarCommandKinematics.projectedJointTrace(
+                        activeCommand,AvatarBodySpec.DEFAULT);
         new AlertDialog.Builder(this)
                 .setTitle("Inicio · movimiento · retorno")
-                .setMessage(activeCommand.technicalDescription())
+                .setMessage(details)
                 .setPositiveButton("Cerrar",null).show();
     }
 
