@@ -82,8 +82,9 @@ public final class AvatarExerciseCommandCatalog {
                 " columna, pelvis, caderas, rodillas y tobillos."+
                 " Fases: preparación, movimiento, control, retorno y posición final."+
                 (supervision?" Orientación supervisada recomendada.":"")+
-                (canIllustrate()?" Animación esquemática disponible.":
-                " Animación específica pendiente de revisión; no mostrar otra ejecución.");
+                (canIllustrate()?" Animación ilustrativa del movimiento disponible.":
+                " Mapa articular animado disponible; no es una demostración del ejercicio. "+
+                "La animación corporal específica sigue pendiente de revisión.");
         }
     }
 
