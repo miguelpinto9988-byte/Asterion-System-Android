@@ -865,7 +865,7 @@ paso_frente_y_retorno_v02	FOOTWORK	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlad
 paso_lateral_y_retorno_v01	LATERAL_STEP	FRONT_SIDE_STEP	FRONT_SIDE_STEP	ILLUSTRATIVE	tren_inferior	1	controlado	sin_equipo	0
 paso_lateral_y_retorno_v02	FOOTWORK	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	sin_equipo	0
 balanceo_talon_punta_sentado_v01	SEATED_HEEL_RAISE_GENTLE	SIDE	SEATED_HEEL_RAISE_GENTLE	ILLUSTRATIVE	tren_inferior	1	controlado	silla	0
-balanceo_talon_punta_sentado_v02	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	silla	0
+balanceo_talon_punta_sentado_v02	SEATED_HEEL_TOE_ALTERNATION	SIDE	SEATED_HEEL_TOE_ALTERNATION	ILLUSTRATIVE	tren_inferior	2	controlado	silla	0
 circulo_pies_sentado_v01	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	1	controlado	silla	0
 circulo_pies_sentado_v02	ANKLE_CONTROL	SIDE	NONE	SPEC_ONLY	tren_inferior	2	controlado	silla	0
 separacion_pierna_pared_v01	HIP_ABDUCTION	FRONT	NONE	SPEC_ONLY	tren_inferior	1	controlado	pared	0
