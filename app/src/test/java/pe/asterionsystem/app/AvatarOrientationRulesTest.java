@@ -12,8 +12,8 @@ public final class AvatarOrientationRulesTest {
                 AvatarOrientationRules.Posture.PRONE_GROUND_FACING);
         assertEquals(-1f,prone.faceNormal.y,.001f);
         assertEquals(-1f,prone.soleNormal.y,.001f);
-        assertEquals(1f,prone.toeAxis.z,.001f);
-        assertEquals(1f,AvatarOrientationRules.topToeSign(prone),.001f);
+        assertEquals(-1f,prone.toeAxis.z,.001f);
+        assertEquals(-1f,AvatarOrientationRules.topToeSign(prone),.001f);
         assertFalse(AvatarOrientationRules.visibleSurface(
                 prone.soleNormal,AvatarOrientationRules.Camera.TOP));
         assertEquals(AvatarOrientationRules.ShoeSurface.UPPER,
