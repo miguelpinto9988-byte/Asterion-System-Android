@@ -127,6 +127,51 @@ jobs:
       - name: Ejecutar pruebas de core, pruebas debug, lint y ensamblado debug
         run: gradle --no-daemon --stacktrace --continue :core:test :progress-engine:test :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleDebugAndroidTest
 
+      - name: Exportar demostración reproducible del generador real
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          report=Path("progress-engine/build/test-results/test/TEST-pe.asterionsystem.core.engine.missions.MissionThreeDayDemonstrationTest.xml")
+          assert report.is_file(), f"No existe el reporte JUnit real: {report}"
+          xml=ET.parse(report).getroot()
+          output="\n".join((e.text or "") for e in xml.iter("system-out"))
+          prefix="ASTERION_DEMO_JSON:"
+          cases=[json.loads(row.split(prefix,1)[1]) for row in output.splitlines() if prefix in row]
+          assert len(cases)==53, f"Se esperaban 53 registros reales; hay {len(cases)}"
+          assert len([r for r in cases if r.get("type")=="day"])==51
+          data={
+              "source":"MissionPlanner + catálogo TSV empaquetado; prueba JUnit real",
+              "catalog_variants":1257,
+              "same_category":"Tren inferior",
+              "simulation_only":True,
+              "not_training_advice":True,
+              "records":cases
+          }
+          folder=Path("build/mission-generator-demo")
+          folder.mkdir(parents=True,exist_ok=True)
+          target=folder/"tres_dias_generador_real.json"
+          target.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding="utf-8")
+          print(f"OK: {len(cases)} muestras reproducibles del código Java, guardadas en {target}")
+          for entry in cases:
+              if entry["type"]=="day":
+                  names=", ".join(item["name"]+f" (N{item['level']})" for item in entry["choices"])
+                  print(f"{entry['scenario']} · día {entry['day']} · entrada {entry['rpe_before']}/10"
+                        f" · siguiente límite {entry['requested_max']}: {names}")
+              else: print("REVISIÓN SEMANAL:",entry)
+          PY
+
+      - name: Publicar muestras verificadas del generador de misiones
+        uses: actions/upload-artifact@v4
+        with:
+          name: asterion-misiones-tres-dias-reales
+          path: build/mission-generator-demo/tres_dias_generador_real.json
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Verificar APK firmada de desarrollo
         run: |
           set -euo pipefail
