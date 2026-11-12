@@ -18,6 +18,7 @@ public final class AvatarRenderer {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path=new Path();
     private final AvatarArtDetails details=new AvatarArtDetails();
+    private final AvatarOrganicJointSkin organicJoints=new AvatarOrganicJointSkin();
     private final LinearGradient blueFabric=new LinearGradient(130f,0f,270f,0f,
             new int[]{0xFF163C78,0xFF397DBE,0xFF1A427A},
             null,Shader.TileMode.CLAMP);
@@ -38,6 +39,7 @@ public final class AvatarRenderer {
             throw new IllegalArgumentException("Renderer necesita pose, spec y paleta");
         // Same canonical anatomical joint inventory used by all cameras.
         AvatarSkeletonFrame skeleton=AvatarSkeletonFrame.fromSide(pose,body);
+        AvatarPoseGuard.requireRig(skeleton);
         this.body=skeleton.proportions;
         this.palette=palette;
         AvatarPose p=pose;
@@ -71,7 +73,7 @@ public final class AvatarRenderer {
                 palette.farLegColor);
         drawLimb(canvas,p.farKnee,p.farAnkle,body.calfWidth*.92f,body.calfWidth*.62f,
                 palette.female?0xFF514D70:0xFF293951);
-        drawJoint(canvas,p.farKnee,11.5f,palette.female?0xFF514D70:0xFF293951);
+        organicJoints.draw(canvas,p.farHip,p.farKnee,p.farAnkle,body.thighWidth*.72f,body.calfWidth*.72f,palette.farLegColor);
         details.drawDenimLeg(canvas,p.farHip,p.farKnee,p.farAnkle,true);
         // Rear upper arm begins inside the back of the jersey; a short
         // sleeve hides the shoulder pivot instead of a protruding cylinder.
@@ -81,7 +83,7 @@ public final class AvatarRenderer {
                 body.upperArmWidth*.67f,body.upperArmWidth*.58f,palette.skinShade);
         drawLimb(canvas,p.farElbow,p.farWrist,body.forearmWidth,
                 body.forearmWidth*.65f,palette.skinShade);
-        drawJoint(canvas,p.farElbow,8f,palette.skinShade);
+        organicJoints.draw(canvas,p.farShoulder,p.farElbow,p.farWrist,body.upperArmWidth*.58f,body.forearmWidth*.8f,palette.skinShade);
         details.drawHand(canvas,p.farWrist,palette.skinShade);
 
         // Front leg: continuous rounded leg silhouettes under sportswear.
@@ -90,7 +92,7 @@ public final class AvatarRenderer {
                 palette.legColor);
         drawLimb(canvas,p.knee,p.ankle,body.calfWidth,body.calfWidth*.67f,
                 palette.legColor);
-        drawJoint(canvas,p.knee,12.5f,palette.legColor);
+        organicJoints.draw(canvas,p.hip,p.knee,p.ankle,body.thighWidth*.73f,body.calfWidth*.82f,palette.legColor);
         details.drawDenimLeg(canvas,p.hip,p.knee,p.ankle,false);
         details.drawPelvis(canvas,p.hip,p.shoulder);
 
@@ -118,7 +120,7 @@ public final class AvatarRenderer {
         }
         drawLimb(canvas,p.elbow,p.wrist,body.forearmWidth,
                 body.forearmWidth*.71f,palette.skin);
-        drawJoint(canvas,p.elbow,8.8f,palette.skin);
+        organicJoints.draw(canvas,p.shoulder,p.elbow,p.wrist,body.upperArmWidth*.66f,body.forearmWidth*.83f,palette.skin);
         details.drawForearm(canvas,p.elbow,p.wrist,palette);
         details.drawHand(canvas,p.wrist,palette.skin);
         canvas.restore();

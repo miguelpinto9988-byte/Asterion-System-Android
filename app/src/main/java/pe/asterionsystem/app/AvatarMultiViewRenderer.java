@@ -15,6 +15,7 @@ public final class AvatarMultiViewRenderer {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path=new Path();
     private final AvatarArtDetails details=new AvatarArtDetails();
+    private final AvatarOrganicJointSkin organicJoints=new AvatarOrganicJointSkin();
     private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
     private final LinearGradient blue=new LinearGradient(
             140f,70f,255f,300f,0xFF397DBE,0xFF163C78,Shader.TileMode.CLAMP);
@@ -36,6 +37,7 @@ public final class AvatarMultiViewRenderer {
             throw new IllegalArgumentException("Vista, paleta y spec necesarios");
         // Every camera validates its anatomical joints and shared body spec.
         AvatarSkeletonFrame skeleton=AvatarSkeletonFrame.fromCamera(p,camera,body);
+        AvatarPoseGuard.requireRig(skeleton);
         this.palette=palette;this.dark=dark;this.bodySpec=skeleton.proportions;
         int bg=dark?0xFF131722:0xFFF8FAFE;
         int grid=dark?0xFF252D40:0xFFE8EDF5;
@@ -218,11 +220,10 @@ public final class AvatarMultiViewRenderer {
                 knee.x+sign*3f,knee.y-10f,0x887F9AB7,1.4f);
         line(c,knee.x+sign*3f,knee.y+10f,
                 ankle.x+sign*3f,ankle.y-12f,0x887F9AB7,1.1f);
-        c.save();c.translate(knee.x,knee.y);
-        rr(c,-9f,-12f,9f,12f,5f,0xFF3B4D69);
-        line(c,-7f,-6f,7f,-6f,0xAA90ACC7,1.1f);
-        line(c,-7f,6f,7f,6f,0xAA90ACC7,1.1f);
-        c.restore();
+        // V13: organic joint bridge replaces the rigid rectangular knee.
+        organicJoints.draw(c,hip,knee,ankle,
+                bodySpec.thighWidth*.73f,bodySpec.calfWidth*.82f,
+                palette.legColor);
         // The same denim seam-and-knee artwork as the lateral avatar.
         details.drawCameraJeans(c,hip,knee,ankle,left);
     }
@@ -240,6 +241,9 @@ public final class AvatarMultiViewRenderer {
                 bodySpec.upperArmWidth*.59f,palette.skin);
         tapered(c,elbow,wrist,bodySpec.forearmWidth,
                 bodySpec.forearmWidth*.71f,palette.skin);
+        organicJoints.draw(c,shoulder,elbow,wrist,
+                bodySpec.upperArmWidth*.60f,bodySpec.forearmWidth*.85f,
+                palette.skin);
         details.drawForearm(c,elbow,wrist,palette);
         details.drawProjectedHand(c,wrist,palette);
         float u=(float)Math.hypot(dx,dy);
@@ -292,6 +296,9 @@ public final class AvatarMultiViewRenderer {
                     bodySpec.thighWidth*.70f,palette.legColor);
             tapered(c,k,a,bodySpec.calfWidth*.92f,
                     bodySpec.calfWidth*.64f,palette.legColor);
+            organicJoints.draw(c,h,k,a,
+                    bodySpec.thighWidth*.72f,bodySpec.calfWidth*.78f,
+                    palette.legColor);
             details.drawCameraJeans(c,h,k,a,direction<0);
             AvatarFootOrientation.FootProjection foot=
                     AvatarFootOrientation.proneTop(p,
@@ -371,6 +378,9 @@ public final class AvatarMultiViewRenderer {
                 bodySpec.upperArmWidth*.59f,palette.skin);
         tapered(c,elbow,wrist,bodySpec.forearmWidth,
                 bodySpec.forearmWidth*.70f,palette.skin);
+        organicJoints.draw(c,shoulder,elbow,wrist,
+                bodySpec.upperArmWidth*.60f,bodySpec.forearmWidth*.85f,
+                palette.skin);
         details.drawForearm(c,elbow,wrist,palette);
         details.drawProjectedHand(c,wrist,palette);
         float length=(float)Math.hypot(elbow.x-shoulder.x,elbow.y-shoulder.y);
