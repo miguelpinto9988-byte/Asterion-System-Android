@@ -10,10 +10,16 @@ renderer=(MAIN/"AvatarRenderer.java").read_text(encoding="utf8")
 rig=(MAIN/"AvatarKinematics.java").read_text(encoding="utf8")
 tests=TEST.read_text(encoding="utf8")
 
+# Organic anatomy is now in a single painter shared with every camera.
+soft=(MAIN/"AvatarSoftContour.java").read_text(encoding="utf8")
 for required in ("drawTorso(canvas,p,top,hi);", "private void drawTorso(",
                  "torsoPoint(", "private void drawLimb(", "path.cubicTo(",
-                 "paint.setStrokeCap(Paint.Cap.ROUND)", "0x3026334C"):
+                 "contours.segment(c,a,b,wa,wb,fill)",
+                 "contours.hinge(c,p,proximalWidth,distalWidth,fill)"):
     assert required in renderer,required
+for required in ("Path()", "Paint.ANTI_ALIAS_FLAG", "cubicTo(",
+                 "endWidth*.16f", "length*.09f"):
+    assert required in soft,required
 for required in ("UPPER_ARM=58f", "FOREARM=63f", "elbowBelow(",
                  "Point elbow=nearArm.joint", "farElbow=farArm.joint",
                  "AvatarRigConstraints.twoBone("):
