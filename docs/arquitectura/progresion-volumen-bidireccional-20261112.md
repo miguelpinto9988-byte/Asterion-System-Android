@@ -36,21 +36,57 @@ Calendario + perfil + catálogo       Registro voluntario de volumen
 - Solo se persiste al confirmar **Guardar y completar**; cancelar no marca actividad como hecha.
 - El historial de una categoría nunca modifica directamente otra categoría.
 
-## Reglas de v1 (conservadoras, no prescripción)
+## Reglas revisadas v2 · propuesta automática, nunca ejecución obligatoria
 
-| Evidencia en la misma variante | Acción | Ejemplo con histórico 2 series × 8 |
-|---|---|---|
-| Ninguna | Sin objetivo | No hay cifra que comparar |
-| 1 sesión fácil completada | Mantener | 2 × 8 históricos, sin aumento |
-| 2 sesiones fáciles completadas, con al menos 2 días entre ellas y 7 días desde la primera, consistencia de series/reps, sin alto esfuerzo reciente | **Opción voluntaria**, nunca aplicada automáticamente | 2 × 8 → considerar 2 × 9 |
-| Esfuerzo >=7/10 o interrupción en la categoría en los últimos 7 días | Recuperación, no incremento | Mantener/simplificar/descansar |
-| Sesiones incompletas, no comparables, variaciones de volumen | Mantener o iniciar historia nueva | No transfiere automáticamente |
-| Repeticiones >=20 | Revisión de series/técnica con orientación | No eleva ni series ni repeticiones |
-| Pausa de categoría | Ninguna progresión | Respetar pausa |
+Cuando existe un registro **completado** de la misma variante y categoría, la referencia
+numérica de la siguiente sesión se calcula automáticamente de acuerdo con su última
+valoración, incluso si solo existe una sesión anterior.
 
-**Importante:** `2 × 9` es un ejemplo de oferta revisable tras evidencia repetida, NO una obligación, ni una indicación clínica personal. La v1 nunca añade una serie ni cambia cargas. El registro de series permite comparar el volumen real; cambios de series quedan para una evaluación posterior y requieren criterios separados.
+| Esfuerzo | Delta de repeticiones por serie | Estado |
+|---|---:|---|
+| 1/10 | +5 | Referencia calculada automáticamente, NO obligatoria |
+| 2/10 | +3 | Referencia calculada automáticamente, NO obligatoria |
+| 3/10 | +1 | Referencia calculada automáticamente, NO obligatoria |
+| 4–7/10 | 0 | Mantener referencia |
+| 8/10 | −1 | Simplificar referencia |
+| 9/10 | −2 | Simplificar referencia |
+| 10/10 | −3 | Simplificar referencia |
 
-Se preservan los filtros previos de seguridad: complejidad técnica automática <=3, sin variantes que requieren supervisión, equipo compatible, sin subir la cantidad de ejercicios por feedback.
+Con tres sesiones fáciles y **completadas**, en tres días distintos, en la misma
+variante, manteniendo igual cantidad de series, y separadas al menos por siete días
+entre la primera y la última, se calcula una propuesta de **una serie adicional**
+hasta un máximo de tres. Cuando se revisa el número de series, **no** se agregan
+repeticiones en esa misma revisión. Las repeticiones calculadas se acotan a
+20 por serie y las reducciones no descienden de una repetición en la referencia.
+Estos límites son del software, no recomendaciones físicas para una persona.
+
+Los valores de referencia son **informativos y no obligatorios**. La persona puede
+descansar, detenerse, registrar un volumen diferente, omitir una sesión o no aceptar
+un aumento, sin penalización. El motor no cambia peso, duración, calendario ni
+carga externa. Los ajustes nunca cruzan categorías ni variantes.
+
+### Revisión técnica de 7, 14 y 21 días
+
+`TechnicalCheckpointPolicy` revisa la categoría del día con evidencia semanal
+de actividades completadas y valoradas:
+
+- A los **7 días transcurridos**, con dos valoraciones fáciles completadas y sin
+  alto esfuerzo, puede habilitarse la siguiente fase de mezcla técnica.
+- A los **14 días transcurridos**, se reevalúa la categoría; si sigue cumpliendo
+  los requisitos, puede habilitarse una fase adicional.
+- A los **21 días transcurridos**, el sistema mantiene el techo técnico automático
+  de complejidad 3 y puede variar movimientos equivalentes; nunca exige subir
+  a complejidad 4 o 5.
+- Valoraciones **8–10** o interrupciones impiden aumentar la complejidad;
+  las de **4–7** no justifican una promoción. Las fases nunca dependen de una
+  categoría diferente.
+
+El día exacto de revisión depende del primer inicio del nivel de experiencia y
+del historial de la categoría; si la categoría no está programada ese día,
+se revisa en su siguiente aparición. No se alteran días de descanso.
+
+La revisión es automática en el software. **No se obliga a realizar** los
+ejercicios, las repeticiones ni las series sugeridas.
 
 ## Pruebas
 
@@ -62,6 +98,6 @@ Gradle: `./gradlew :progress-engine:test` (o `gradle :progress-engine:test` en l
 
 ## Separación de responsabilidades y próximos incrementos
 
-La v1 deja **sin implementar** objetivos numéricos automáticos, transferencia de cargas externas, prescripción de series, adaptación de movimientos de duración (p. ej. cardio o planchas), aprobación explícita guardada de una oferta futura y gráficos longitudinales de volumen. Para la siguiente fase, solicitar revisión del registro/objetivo por parte del usuario y habilitar reversión antes de incrementar las propuestas.
+La v2 **calcula referencias numéricas** de manera automática pero no las impone: falta aprobación guardada explícitamente de una referencia futura, historial visible de propuestas, transferencia entre modalidades comparables y ajustes de movimientos por duración (p. ej., cardio o planchas). Para la siguiente fase, solicitar revisión del registro/objetivo por parte del usuario y habilitar reversión antes de incrementar las propuestas.
 
 Este módulo no sustituye la evaluación profesional de la técnica, las necesidades individuales ni las pausas por malestar. La AAP subraya importancia de supervisión adecuada y evitar sobreentrenamiento en programas de fuerza de jóvenes: [HealthyChildren](https://www.healthychildren.org/English/news/Pages/Guidance-on-Resistance-Training-for-Children.aspx); [informe sobre sobreuso](https://publications.aap.org/pediatrics/article/153/2/e2023065129/196435/Overuse-Injuries-Overtraining-and-Burnout-in-Young).
