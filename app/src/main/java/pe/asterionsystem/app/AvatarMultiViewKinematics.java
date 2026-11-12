@@ -208,7 +208,7 @@ public final class AvatarMultiViewKinematics {
         AvatarRigConstraints.TwoBone ra=AvatarRigConstraints.twoBone(
                 rs,rw,body.upperArm,body.forearm,1,0f,170f);
         AvatarKinematics.Point lh=at(174f,238f),rh=at(226f,238f);
-        AvatarKinematics.Point lf=at(173f,428f),rf=at(227f,428f);
+        AvatarKinematics.Point lf=at(174f,428f),rf=at(226f,428f);
         AvatarRigConstraints.TwoBone ll=AvatarRigConstraints.twoBone(
                 lh,lf,body.upperLeg,body.lowerLeg,-1,0f,170f);
         AvatarRigConstraints.TwoBone rl=AvatarRigConstraints.twoBone(
@@ -231,8 +231,8 @@ public final class AvatarMultiViewKinematics {
         AvatarRigConstraints.TwoBone ra=AvatarRigConstraints.twoBone(
                 rs,rw,body.upperArm,body.forearm,1,0f,170f);
         AvatarKinematics.Point lh=at(174f,238f),rh=at(226f,238f);
-        AvatarKinematics.Point lf=at(173f+22f*d,428f-57f*d);
-        AvatarKinematics.Point rf=at(227f,428f);
+        AvatarKinematics.Point lf=at(174f+22f*d,428f-57f*d);
+        AvatarKinematics.Point rf=at(226f,428f);
         AvatarRigConstraints.TwoBone ll=AvatarRigConstraints.twoBone(
                 lh,lf,body.upperLeg,body.lowerLeg,-1,0f,170f);
         AvatarRigConstraints.TwoBone rl=AvatarRigConstraints.twoBone(
@@ -257,8 +257,8 @@ public final class AvatarMultiViewKinematics {
         AvatarRigConstraints.TwoBone ra=AvatarRigConstraints.twoBone(
                 rs,rw,body.upperArm,body.forearm,1,0f,170f);
         AvatarKinematics.Point lh=at(174f,238f),rh=at(226f,238f);
-        AvatarKinematics.Point lf=at(173f,428f);
-        AvatarKinematics.Point rf=at(227f+43f*d,428f-13f*d);
+        AvatarKinematics.Point lf=at(174f,428f);
+        AvatarKinematics.Point rf=at(226f+43f*d,428f-13f*d);
         AvatarRigConstraints.TwoBone ll=AvatarRigConstraints.twoBone(
                 lh,lf,body.upperLeg,body.lowerLeg,-1,0f,170f);
         AvatarRigConstraints.TwoBone rl=AvatarRigConstraints.twoBone(
