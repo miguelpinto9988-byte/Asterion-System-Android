@@ -38,6 +38,15 @@ public final class AvatarContactFrame {
             return new AvatarContactFrame(Ground.TOE,Ground.TOE,
                     Ground.PALM,Ground.PALM,
                     AvatarOrientationRules.Posture.PRONE_GROUND_FACING,false);
+        boolean moving=AvatarKinematics.depthAtPhase(phase)>.001f;
+        if(camera==AvatarMultiViewKinematics.ViewMode.FRONT_BALANCE)
+            return new AvatarContactFrame(moving?Ground.NONE:Ground.SOLE,
+                    Ground.SOLE,Ground.NONE,Ground.NONE,
+                    AvatarOrientationRules.Posture.STANDING,false);
+        if(camera==AvatarMultiViewKinematics.ViewMode.FRONT_SIDE_STEP)
+            return new AvatarContactFrame(Ground.SOLE,
+                    moving?Ground.NONE:Ground.SOLE,Ground.NONE,Ground.NONE,
+                    AvatarOrientationRules.Posture.STANDING,false);
         boolean jumping=camera==AvatarMultiViewKinematics.ViewMode.FRONT_JACKS;
         boolean inFlight=jumping&&
                 Math.abs(Math.sin(phase*Math.PI*2d))>.1d;
