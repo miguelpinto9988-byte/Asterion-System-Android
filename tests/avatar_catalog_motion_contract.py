@@ -32,7 +32,7 @@ motion=(base/"AvatarMotionEngine.java").read_text(encoding="utf-8")
 match=re.search(r"public enum Command\s*\{(.*?)\}",timeline,re.S)
 assert match
 supported={x.strip() for x in match.group(1).replace("\n","").split(",") if x.strip()}
-assert len(supported)==51,sorted(supported)
+assert len(supported)==53,sorted(supported)
 for cmd in supported:
     assert f"case {cmd}:" in timeline,cmd
 assert len(re.findall(r'\(".*?"\)',timeline.split("public enum Command")[0]))>=24
@@ -111,6 +111,8 @@ by_id={r["variant_id"]:r for r in rows}
 for wrong in ("curl_biceps_v01","marcha_v02"):
     assert by_id[wrong]["status"]=="SPEC_ONLY",wrong
     assert by_id[wrong]["clip"]=="NONE",wrong
+assert by_id["dorsiflexion_tibial_v01"]["command"]=="SEATED_TOE_RAISE"
+assert by_id["alcances_tronco_sentado_v02"]["command"]=="SEATED_FORWARD_REACH"
 for ident,clip,equipment in (
         ("puente_gluteo_v01","GLUTE_BRIDGE_SHORT","colchoneta"),
         ("puente_gluteo_v02","GLUTE_BRIDGE_BASIC","colchoneta"),
@@ -152,4 +154,4 @@ if "--samples" in sys.argv:
                  for x in new_exercises]
     },ensure_ascii=False,indent=2),encoding="utf-8")
     print("Saved",out)
-print("OK: 1257 variantes, 155 familias, 51 comandos definidos, 17 variantes ilustrativas registradas")
+print("OK: 1257 variantes, 155 familias, 53 comandos definidos, 17 variantes ilustrativas registradas")
