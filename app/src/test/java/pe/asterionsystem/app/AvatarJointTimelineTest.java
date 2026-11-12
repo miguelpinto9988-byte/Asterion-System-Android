@@ -6,7 +6,7 @@ import org.junit.Test;
 /** Screen-space timeline continuity; not a biomechanical validation. */
 public final class AvatarJointTimelineTest {
     @Test public void all49CommandsHaveFiniteJointTargetsAndCloseTheirLoop(){
-        assertEquals(51,AvatarJointTimeline.Command.values().length);
+        assertEquals(53,AvatarJointTimeline.Command.values().length);
         assertEquals(24,AvatarJointTimeline.Joint.values().length);
         for(AvatarJointTimeline.Command command:AvatarJointTimeline.Command.values()){
             AvatarJointTimeline line=new AvatarJointTimeline(command);
@@ -64,6 +64,24 @@ public final class AvatarJointTimelineTest {
                 AvatarJointTimeline.Command.NECK_SIDE_TILT);
         assertEquals(12f,neck.offset(AvatarJointTimeline.Joint.NECK_SIDE,.5f),.001f);
         assertEquals(0f,neck.offset(AvatarJointTimeline.Joint.NECK_TURN,.5f),0);
+    }
+
+    @Test public void seatedProgramsMatchArticulatedCanvasAngles(){
+        AvatarJointTimeline toes=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.SEATED_TOE_RAISE);
+        assertEquals(22f,toes.offset(AvatarJointTimeline.Joint.LEFT_ANKLE,.49f),.001f);
+        assertEquals(22f,toes.offset(AvatarJointTimeline.Joint.RIGHT_ANKLE,.49f),.001f);
+        assertEquals(0f,toes.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.49f),0f);
+        AvatarJointTimeline reach=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.SEATED_FORWARD_REACH);
+        assertEquals(21f,reach.offset(AvatarJointTimeline.Joint.SPINE_BEND,.49f),.001f);
+        assertEquals(64f,reach.offset(AvatarJointTimeline.Joint.LEFT_SHOULDER,.49f),.001f);
+        assertEquals(64f,reach.offset(AvatarJointTimeline.Joint.RIGHT_SHOULDER,.49f),.001f);
+        assertEquals(0f,reach.offset(AvatarJointTimeline.Joint.LEFT_HIP,.49f),0f);
+        for(float t:new float[]{0f,1f}){
+            assertEquals(0f,toes.offset(AvatarJointTimeline.Joint.LEFT_ANKLE,t),.001f);
+            assertEquals(0f,reach.offset(AvatarJointTimeline.Joint.SPINE_BEND,t),.001f);
+        }
     }
 
     @Test public void invalidPhaseAndNullJointFailClosed(){
