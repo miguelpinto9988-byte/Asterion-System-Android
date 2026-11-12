@@ -70,6 +70,21 @@ public class CoordinatedTrainingEngineTest {
         }
     }
 
+
+    @Test public void completedVolumeFeedbackCanKeepAComparableVariant() {
+        ExerciseVariant previouslySelected=planner.daily(profile,monday)
+                .candidates().get(0);
+        VolumeProgressionEngine.Observation logged=new VolumeProgressionEngine.Observation(
+                monday.minusDays(3),2,previouslySelected.id(),
+                previouslySelected.typeId(),previouslySelected.difficulty(),
+                2,8,5,true,false);
+        CoordinatedTrainingEngine.Plan joined=new CoordinatedTrainingEngine(planner)
+                .daily(profile,monday,5,List.of(previouslySelected.id()),
+                        List.of(previouslySelected.id()),false,0,List.of(logged),false);
+        assertTrue(joined.mission.candidates().stream().anyMatch(
+                v->v.id().equals(previouslySelected.id())));
+    }
+
     @Test public void restDayCannotAcquireExercisesFromVolumeHistory() {
         MissionPlanner.Profile rest = new MissionPlanner.Profile("avanzado","bienestar",
                 Arrays.asList(5,5,5,5,5,5,5),Set.of("sin_equipo"),3);
