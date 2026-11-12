@@ -27,7 +27,8 @@ public final class AvatarExerciseCommandCatalog {
         HIP_EXTENSION_STAND,GLUTE_BRIDGE_SHORT,GLUTE_BRIDGE_BASIC,
         SEATED_KNEE_EXTENSION,SEATED_TOE_RAISE,SEATED_FORWARD_REACH,
         GLUTE_BRIDGE_PAUSE,SEATED_KNEE_EXTENSION_PAUSE,
-        SEATED_KNEE_EXTENSION_ALTERNATING;
+        SEATED_KNEE_EXTENSION_ALTERNATING,GLUTE_BRIDGE_BAND,
+        SEATED_TOE_RAISE_SINGLE,SEATED_HEEL_RAISE,SEATED_HEEL_RAISE_GENTLE;
         public AvatarDedicatedScene.Kind dedicatedScene(){
             switch(this){
                 case GLUTE_BRIDGE_SHORT:return AvatarDedicatedScene.Kind.GLUTE_BRIDGE_SHORT;
@@ -38,6 +39,10 @@ public final class AvatarExerciseCommandCatalog {
                 case GLUTE_BRIDGE_PAUSE:return AvatarDedicatedScene.Kind.GLUTE_BRIDGE_PAUSE;
                 case SEATED_KNEE_EXTENSION_PAUSE:return AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE;
                 case SEATED_KNEE_EXTENSION_ALTERNATING:return AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING;
+                case GLUTE_BRIDGE_BAND:return AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BAND;
+                case SEATED_TOE_RAISE_SINGLE:return AvatarDedicatedScene.Kind.SEATED_TOE_RAISE_SINGLE;
+                case SEATED_HEEL_RAISE:return AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE;
+                case SEATED_HEEL_RAISE_GENTLE:return AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE_GENTLE;
                 default:return null;
             }
         }
