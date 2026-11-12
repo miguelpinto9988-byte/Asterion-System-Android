@@ -82,7 +82,7 @@ public final class AvatarMultiViewKinematicsTest {
         }
         assertTrue(deepest.leftHip.y>neutral.leftHip.y+40f);
         assertTrue(deepest.rightKnee.x>neutral.rightKnee.x+10f);
-        assertEquals(6,AvatarMultiViewKinematics.ViewMode.values().length);
+        assertEquals(9,AvatarMultiViewKinematics.ViewMode.values().length);
     }
 
     @Test public void headAndNeckAreSeparateFromShouldersInEveryCamera(){
