@@ -354,7 +354,8 @@ los mapas esqueléticos actuales no son sustitutos certificados.
 
 Se amplía el manifiesto de ilustraciones a **17 variantes**. Las **1.240**
 restantes conservan el esquema articular móvil; no se consideran
-demostraciones exactas. Los **51 comandos originales** permanecen en vigor.
+demostraciones exactas. Se conservan los **51 comandos originales** y
+se añaden dos especializados, para un total de **53**.
 
 ### Especificación mecánica y temporal de nuevas escenas
 
@@ -414,3 +415,21 @@ clínica individual para estas escenas.
 Las tareas de implementación y revisión continúan documentadas en el
 issue #37. La PR #36 no debe cerrarse ni fusionarse como «catálogo
 completo» mientras esas demostraciones sigan sin validación visual.
+
+### Comandos específicos añadidos tras cotejar los fotogramas
+
+- `SEATED_TOE_RAISE`: tobillo izquierdo = tobillo derecho = **22°**
+  en la fase central; caderas, rodillas, columna, hombros y codos sin
+  desvíos respecto a la postura sentada. El render gira el zapato
+  alrededor del talón y retorna a 0° en la fase final.
+- `SEATED_FORWARD_REACH`: `SPINE_BEND = 21°` y
+  `LEFT_SHOULDER = RIGHT_SHOULDER = 64°` en el centro; los brazos
+  mantienen longitud y las caderas permanecen fijas. El render
+  interpola ~0,36 rad de tronco y ~1,12 rad de movimiento relativo
+  de brazos: los objetivos son valores esquemáticos redondeados.
+  No representa una amplitud clínica medida.
+
+`AvatarJointTimelineTest` comprueba el estado de ambos comandos a
+inicio, centro y fin. `tests/avatar_catalog_motion_contract.py`
+exige **53 programas**, mantiene los 1.257 IDs e impide usar un
+comando distinto al específico para estas dos demostraciones.
