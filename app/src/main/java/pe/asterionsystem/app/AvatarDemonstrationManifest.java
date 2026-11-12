@@ -102,6 +102,22 @@ public final class AvatarDemonstrationManifest {
                 AvatarExerciseCommandCatalog.Clip.SEATED_KNEE_EXTENSION_PAUSE,
                 "silla","controlado",
                 AvatarJointTimeline.Command.SEATED_KNEE_EXTENSION_PAUSE);
+        register(rows,"puente_gluteo_v04",
+                AvatarExerciseCommandCatalog.Clip.GLUTE_BRIDGE_BAND,
+                "banda+colchoneta","resistencia",
+                AvatarJointTimeline.Command.HIP_EXTENSION);
+        register(rows,"dorsiflexion_tobillo_v01",
+                AvatarExerciseCommandCatalog.Clip.SEATED_TOE_RAISE_SINGLE,
+                "silla","movilidad",
+                AvatarJointTimeline.Command.SEATED_TOE_RAISE_SINGLE);
+        register(rows,"elevacion_gemelos_v01",
+                AvatarExerciseCommandCatalog.Clip.SEATED_HEEL_RAISE,
+                "silla","bilateral",
+                AvatarJointTimeline.Command.SEATED_HEEL_RAISE);
+        register(rows,"balanceo_talon_punta_sentado_v01",
+                AvatarExerciseCommandCatalog.Clip.SEATED_HEEL_RAISE_GENTLE,
+                "silla","controlado",
+                AvatarJointTimeline.Command.SEATED_HEEL_RAISE_GENTLE);
         REVIEWED=Collections.unmodifiableMap(rows);
     }
     private static void register(Map<String,Signature> target,String id,
