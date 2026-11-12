@@ -12,8 +12,8 @@ ilustrativo y no evalúa técnica humana ni tolerancia del usuario.
 - **51 programas de comando** definidos en
   `AvatarJointTimeline.Command`, con cobertura semántica para las cinco
   categorías y **24 ejes articulares de referencia 2D**.
-- **Once variantes con ilustración esquemática** activada y validable.
-  Las otras **1.246** disponen de especificación de comandos, pero tienen
+- **Trece variantes con ilustración corporal esquemática** activada y validable.
+  Las otras **1.244** disponen de especificación de comandos, pero tienen
   estado `SPEC_ONLY`: **no hay animación específica terminada**. En lugar
   de presentar una sentadilla como sustituto, el visor oculta el render
   y muestra el comando, el equipo, el nivel y las fases articulares.
@@ -135,7 +135,7 @@ el muestreo de los nueve IDs con sus estados verdaderos.
 
 ## Trabajo restante antes de afirmar fidelidad de los 1.257 ejercicios
 
-Los 1.246 perfiles `SPEC_ONLY` aún necesitan ilustraciones terminadas.
+Los 1.244 perfiles `SPEC_ONLY` aún necesitan ilustraciones terminadas.
 Para cada uno deberá verificarse el tipo de apoyo, material representado,
 pose inicial/final, planos correctos (especialmente suelo y gestos de
 rotación), proximidad y superposición visual de articulaciones, y
@@ -161,7 +161,7 @@ cervical requiere una revisión visual específica de la unión cuello-cabeza; l
 ejercicios de rotación cervical, puentes de glúteos, alcance unipodal y posturas
 sentadas siguen como `SPEC_ONLY` hasta contar con postura y apoyos fieles.
 
-La cobertura ilustrativa resulta en **11 variantes del catálogo** y **1.246
+La cobertura ilustrativa resulta en **13 variantes del catálogo** y **1.246
 especificaciones sin animación validada**. El contador de comandos permanece en
 51 y el catálogo en 1.257. Se conservan los controles de cámara y paleta.
 
@@ -188,3 +188,61 @@ Se preservan los **49 comandos anteriores** y se introducen dos nuevos:
 Con estas extensiones hay **51 comandos** y **24 ejes ilustrativos**.
 La interpolación C², el cierre de bucle y las limitaciones clínicas
 siguen inalterados.
+
+## Fase 3 — esquema articular animado universal y dos escenas adicionales
+
+### Cobertura honesta de la visualización
+
+Desde el visor Android, las **1.257 variantes** ahora tienen una visualización
+temporal asociada al comando: **13** muestran ilustración corporal en Canvas y
+**1.244** muestran un **mapa de comandos articulares animado**. El mapa NO
+representa la ejecución completa del ejercicio, ni sustituye la posición
+corporal, los apoyos o implementos de una ilustración revisada.
+
+El mapa es propio de cada `variant_id` y hereda su
+`AvatarJointTimeline`: hasta 24 ejes sobre una silueta anatómica fija,
+agujas y arcos que indican referencias de movimiento (no ángulos clínicos),
+interpolación C², inicio y final neutros, y control de fase. Los usuarios
+pueden pausar, avanzar, reiniciar, cambiar la velocidad y seleccionar
+avatar azul/morado, incluso si una variante todavía no tiene clip corporal.
+El texto de la pantalla recalca que es un **diagrama**, no una demostración.
+
+El visor utiliza `ScrollView` y reserva un área Canvas de **448 dp**
+de alto, evitando que la animación se comprima a cero al mostrar fichas,
+controles y fases articulares en pantallas pequeñas.
+
+### Nuevas ilustraciones corporales
+
+- `extension_cadera_bipeda_v01`: perfil `HIP_EXTENSION_STAND`, pie de
+  apoyo fijo y pie móvil hacia atrás y arriba. Cinemática analítica de
+  dos segmentos y continuidad de ciclo; sin aparatos.
+- `paso_lateral_y_retorno_v01`: reutiliza el clip frontal
+  `FRONT_SIDE_STEP` porque la variante es de paso lateral sin equipo,
+  con el mismo pie fijo, pie móvil y retorno. No se reutiliza para
+  caminatas alternas ni variantes con banda.
+
+El clip lateral nuevo es el noveno movimiento del motor
+`AvatarMotionEngine`, preservando los ocho anteriores y las diez
+proyecciones de cámara existentes.
+
+### Pruebas y evidencia
+
+- `AvatarMotionEngineTest` valida las nueve escenas laterales y que
+  `HIP_EXTENSION_STAND` libera solo un pie y termina en neutral.
+- `tests/avatar_catalog_motion_contract.py` exige exactamente 1.257
+  fichas, 13 clips reales y un mapa de comandos registrado para
+  todas las `SPEC_ONLY`.
+- `AvatarExerciseCommandCatalogInstrumentedTest` comprueba la
+  clasificación 13/1.244 y exporta 24 PNG de mapas técnicos reales
+  para puente de glúteos, giro cervical, alcance unipodal y natación,
+  además de las 36 capturas corporales de fases anteriores.
+- GitHub Actions ejecuta validaciones de Android Java, Lint,
+  APK y emulador Android 16. Consultar el último resultado
+  antes de fusionar.
+
+**Alcance:** la tarea de finalizar los 1.244 renders corporales no está
+terminada. Los mapas articulares son una herramienta adicional para
+inspeccionar comandos sin inducir a error al mostrar un ejercicio ajeno.
+Para completar el catálogo corporal falta desarrollar y revisar poses
+de suelo, sedestación, rotación, equipamiento, deportes e intensidad
+variable con contactos y trayectorias propios.
