@@ -186,6 +186,33 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Publicar porcentaje verificable por manifiesto de escenas
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/avatar-completion
+          python3 tests/avatar_completion_progress.py --format json > build/avatar-completion/progreso.json
+          python3 tests/avatar_completion_progress.py
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          data=json.loads(Path("build/avatar-completion/progreso.json").read_text(encoding="utf-8"))
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf-8") as out:
+              out.write("## Demostraciones corporales Asterion\\n")
+              out.write(f"- Avance registrado: **{data['percent_registered']:.2f}%**\\n")
+              out.write(f"- Escenas por ID: **{data['body_demonstrations_registered']}/{data['total_variants']}**\\n")
+              out.write(f"- Pendientes: **{data['body_demonstrations_pending']}**\\n")
+              out.write("- Los mapas articulares no son demostraciones corporales verificadas.\\n")
+          PY
+
+      - name: Guardar archivo JSON del avance de avatares
+        uses: actions/upload-artifact@v4
+        with:
+          name: asterion-avatar-progreso
+          path: build/avatar-completion/progreso.json
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Verificar APK firmada de desarrollo
         run: |
           set -euo pipefail
