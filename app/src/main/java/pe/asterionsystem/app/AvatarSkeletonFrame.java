@@ -43,12 +43,15 @@ public final class AvatarSkeletonFrame {
 
     public static AvatarSkeletonFrame fromSide(AvatarPose p,AvatarBodySpec spec){
         if(p==null)throw new IllegalArgumentException("Side pose required");
-        return new AvatarSkeletonFrame(new AvatarKinematics.Point[]{
+        AvatarSkeletonFrame frame=new AvatarSkeletonFrame(new AvatarKinematics.Point[]{
                 p.head,p.neck,p.shoulder,p.farShoulder,
                 p.elbow,p.farElbow,p.wrist,p.farWrist,
                 p.hip,p.farHip,p.knee,p.farKnee,p.ankle,p.farAnkle},
                 AvatarOrientationRules.Camera.SIDE,
                 AvatarOrientationRules.Posture.STANDING,spec);
+        frame.requireArmLengths(1f,.15f);
+        frame.requireLegLengths(1f,.15f);
+        return frame;
     }
 
     public static AvatarSkeletonFrame fromCamera(
@@ -73,6 +76,7 @@ public final class AvatarSkeletonFrame {
             AvatarFootOrientation.requirePair(p);
         }else{
             AvatarOrientationRules.requireUprightFrontPose(p);
+            f.requireLegLengths(1f,.15f);
         }
         return f;
     }
