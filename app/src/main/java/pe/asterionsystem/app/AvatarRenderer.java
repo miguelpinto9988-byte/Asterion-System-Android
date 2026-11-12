@@ -57,8 +57,12 @@ public final class AvatarRenderer {
         // Raise arms fully overhead without clipping beyond the fixed
         // 400x480 viewport. Keep the shoe floor coordinate unchanged.
         canvas.save();
-        if("Elevación de brazos".equals(motionLabel))
-            canvas.scale(.78f,.78f,200f,364f);
+        // The neutral standing head previously clipped at the card's top.
+        // Zoom out around the planted shoe line so feet remain grounded
+        // in every phase and the hair/short neck remain visible.
+        float cameraScale="Elevación de brazos".equals(motionLabel)
+                ?.78f:.94f;
+        canvas.scale(cameraScale,cameraScale,200f,364f);
 
         // Far limbs first. Rounded pieces overlap at each hinge; joints do
         // not display a separate dark ring when the skeleton bends.
