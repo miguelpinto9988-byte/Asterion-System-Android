@@ -583,3 +583,43 @@ biomecánica clínica ni una certificación de ejecución.
 Referencia pública para diferenciar elevación de talones y puntas:
 University Hospitals Sussex NHS Foundation Trust,
 https://www.uhsussex.nhs.uk/resources/chair-exercises-with-seated-arm-exercises/
+
+## Ampliación de la misma sesión: elevaciones de pie (27/1.257)
+
+Se añaden dos **ilustraciones corporales de pie sin aparatos**:
+
+| ID | Escena dedicada | Apoyo fijo | Acción visual |
+|---|---|---|---|
+| `elevacion_gemelos_v03` | `STANDING_HEEL_RAISE` | Ambas puntas | Cuerpo rígido asciende mientras cada talón rota respecto a la punta; retorno a suelo |
+| `dorsiflexion_tibial_v03` | `STANDING_TOE_RAISE` | Ambos talones | Tronco, caderas, rodillas y tobillos quietos; ambas puntas giran arriba y vuelven al suelo |
+
+`AvatarDedicatedScene` incorpora el estado
+`standingFloorContact`, mutuamente excluyente con
+`chairSeatContact` y `floorBackContact`. Así las escenas
+de pie no dibujan una silla o una colchoneta falsas. Los
+puntos de contacto del antepié y el talón son constantes
+durante todo el ciclo y el avatar mantiene la longitud de
+cada enlace corporal. El render Android muestra el suelo
+bajo ambos pies.
+
+La prueba `AvatarDedicatedSceneTest` recorre 301
+fotogramas por escena y comprueba posición neutra,
+fijación de pivotes, elevación de talón, estabilidad de
+caderas en elevación de puntas y continuidad del esqueleto.
+La captura instrumental añade 12 fotogramas nativos,
+elevando el muestreo de escenas dedicadas a **94 PNG**
+(15 escenas de silla, colchoneta o de pie, dos colores y
+tres fases; los dos ciclos alternados requieren cuatro fases).
+
+Se preservan los 61 comandos anteriores y se agregan
+`STANDING_HEEL_RAISE` y `STANDING_TOE_RAISE`, para
+**63 programas**. El manifiesto autoriza exactamente
+**27 IDs ilustrativos** de **1.257**, es decir, **2,15 %**,
+quedando **1.230 variantes** sin demostración corporal
+propia. La comprobación nativa de Android 16 debe
+pasar antes de considerar cerrada esta tanda.
+
+**Nota de calidad:** los movimientos son proyecciones
+2D ilustrativas con soportes y equipos identificados;
+no equivalen a la exactitud cinemática de un registro
+profesional ni sustituyen revisión experta de la postura.
