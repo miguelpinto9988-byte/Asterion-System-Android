@@ -105,6 +105,7 @@ jobs:
           python3 tests/avatar_v11_rig_and_shoes_contract.py
           python3 tests/avatar_v12_rear_heel_contract.py
           python3 tests/avatar_v13_organic_rig_contract.py
+          python3 tests/avatar_command_catalog_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
