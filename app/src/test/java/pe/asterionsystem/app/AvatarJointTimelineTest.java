@@ -6,7 +6,7 @@ import org.junit.Test;
 /** Screen-space timeline continuity; not a biomechanical validation. */
 public final class AvatarJointTimelineTest {
     @Test public void all57CommandsHaveFiniteJointTargetsAndCloseTheirLoop(){
-        assertEquals(61,AvatarJointTimeline.Command.values().length);
+        assertEquals(63,AvatarJointTimeline.Command.values().length);
         assertEquals(24,AvatarJointTimeline.Joint.values().length);
         for(AvatarJointTimeline.Command command:AvatarJointTimeline.Command.values()){
             AvatarJointTimeline line=new AvatarJointTimeline(command);
@@ -156,6 +156,24 @@ public final class AvatarJointTimelineTest {
         }
         assertEquals(0f,t.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.25f),0f);
         assertEquals(0f,t.offset(AvatarJointTimeline.Joint.LEFT_HIP,.75f),0f);
+    }
+
+    @Test public void standingShoeCommandsKeepTheOppositeSupportAndNoHipMovement(){
+        AvatarJointTimeline heel=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.STANDING_HEEL_RAISE);
+        AvatarJointTimeline toes=new AvatarJointTimeline(
+                AvatarJointTimeline.Command.STANDING_TOE_RAISE);
+        for(AvatarJointTimeline.Joint joint:new AvatarJointTimeline.Joint[]{
+                AvatarJointTimeline.Joint.LEFT_ANKLE,
+                AvatarJointTimeline.Joint.RIGHT_ANKLE}){
+            assertEquals(-18f,heel.offset(joint,.49f),.001f);
+            assertEquals(16f,toes.offset(joint,.49f),.001f);
+            assertEquals(0f,heel.offset(joint,1f),0f);
+            assertEquals(0f,toes.offset(joint,1f),0f);
+        }
+        assertEquals(0f,heel.offset(AvatarJointTimeline.Joint.LEFT_KNEE,.49f),0f);
+        assertEquals(0f,heel.offset(AvatarJointTimeline.Joint.SPINE_BEND,.49f),0f);
+        assertEquals(0f,toes.offset(AvatarJointTimeline.Joint.RIGHT_HIP,.49f),0f);
     }
 
     @Test public void invalidPhaseAndNullJointFailClosed(){
