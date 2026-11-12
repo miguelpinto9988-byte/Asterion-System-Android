@@ -15,6 +15,7 @@ public final class AvatarMultiViewRenderer {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path=new Path();
     private final AvatarArtDetails details=new AvatarArtDetails();
+    private final AvatarOrganicVolume organic=new AvatarOrganicVolume();
     private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
     private final LinearGradient blue=new LinearGradient(
             140f,70f,255f,300f,0xFF397DBE,0xFF163C78,Shader.TileMode.CLAMP);
@@ -208,9 +209,8 @@ public final class AvatarMultiViewRenderer {
                                    AvatarKinematics.Point knee,
                                    AvatarKinematics.Point ankle,
                                    boolean left) {
-        tapered(c,hip,knee,bodySpec.thighWidth,
-                bodySpec.thighWidth*.73f,palette.legColor);
-        tapered(c,knee,ankle,bodySpec.calfWidth,
+        organic.drawChain(c,hip,knee,ankle,
+                bodySpec.thighWidth,bodySpec.calfWidth,
                 bodySpec.calfWidth*.67f,palette.legColor);
         // Flexible diagonal textile seam follows both moving bones.
         float sign=left?-1f:1f;
@@ -218,11 +218,8 @@ public final class AvatarMultiViewRenderer {
                 knee.x+sign*3f,knee.y-10f,0x887F9AB7,1.4f);
         line(c,knee.x+sign*3f,knee.y+10f,
                 ankle.x+sign*3f,ankle.y-12f,0x887F9AB7,1.1f);
-        c.save();c.translate(knee.x,knee.y);
-        rr(c,-9f,-12f,9f,12f,5f,0xFF3B4D69);
-        line(c,-7f,-6f,7f,-6f,0xAA90ACC7,1.1f);
-        line(c,-7f,6f,7f,6f,0xAA90ACC7,1.1f);
-        c.restore();
+        // One small, tapered fabric crease from the shared art module;
+        // never a second rectangular patch protruding above the knee.
         // The same denim seam-and-knee artwork as the lateral avatar.
         details.drawCameraJeans(c,hip,knee,ankle,left);
     }
@@ -236,9 +233,8 @@ public final class AvatarMultiViewRenderer {
         tapered(c,shoulder,sleeve,
                 bodySpec.upperArmWidth*.91f,
                 bodySpec.upperArmWidth*.79f,palette.top);
-        tapered(c,sleeve,elbow,bodySpec.upperArmWidth*.72f,
-                bodySpec.upperArmWidth*.59f,palette.skin);
-        tapered(c,elbow,wrist,bodySpec.forearmWidth,
+        organic.drawChain(c,sleeve,elbow,wrist,
+                bodySpec.upperArmWidth*.72f,bodySpec.forearmWidth*.94f,
                 bodySpec.forearmWidth*.71f,palette.skin);
         details.drawForearm(c,elbow,wrist,palette);
         details.drawProjectedHand(c,wrist,palette);
@@ -288,9 +284,9 @@ public final class AvatarMultiViewRenderer {
             AvatarKinematics.Point h=direction<0?p.leftHip:p.rightHip;
             AvatarKinematics.Point k=direction<0?p.leftKnee:p.rightKnee;
             AvatarKinematics.Point a=direction<0?p.leftAnkle:p.rightAnkle;
-            tapered(c,h,k,bodySpec.thighWidth*.93f,
-                    bodySpec.thighWidth*.70f,palette.legColor);
-            tapered(c,k,a,bodySpec.calfWidth*.92f,
+            organic.drawChain(c,h,k,a,
+                    bodySpec.thighWidth*.93f,
+                    bodySpec.calfWidth*.92f,
                     bodySpec.calfWidth*.64f,palette.legColor);
             details.drawCameraJeans(c,h,k,a,direction<0);
             AvatarFootOrientation.FootProjection foot=
@@ -367,9 +363,8 @@ public final class AvatarMultiViewRenderer {
                 shoulder.y+(elbow.y-shoulder.y)*.32f);
         tapered(c,shoulder,sleeve,bodySpec.upperArmWidth*.86f,
                 bodySpec.upperArmWidth*.75f,palette.top);
-        tapered(c,sleeve,elbow,bodySpec.upperArmWidth*.68f,
-                bodySpec.upperArmWidth*.59f,palette.skin);
-        tapered(c,elbow,wrist,bodySpec.forearmWidth,
+        organic.drawChain(c,sleeve,elbow,wrist,
+                bodySpec.upperArmWidth*.68f,bodySpec.forearmWidth*.91f,
                 bodySpec.forearmWidth*.70f,palette.skin);
         details.drawForearm(c,elbow,wrist,palette);
         details.drawProjectedHand(c,wrist,palette);
