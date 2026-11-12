@@ -44,7 +44,7 @@ public final class VolumeProgressionEngine {
                            ExerciseVolumeProfileCatalog.Unit unit) {
             this.day = Objects.requireNonNull(day, "day");
             this.unit = Objects.requireNonNull(unit, "unit");
-            if (category < 0 || category > 4 || technicalLevel < 1 || technicalLevel > 3
+            if (category < 0 || category > 4 || technicalLevel < 1 || technicalLevel > 5
                     || sets < 1 || sets > 12 || quantity < 1
                     || quantity > (unit==ExerciseVolumeProfileCatalog.Unit.SECONDS?180:60)
                     || effort < 1 || effort > 10) {
