@@ -140,7 +140,7 @@ test "$MAP_COUNT" -eq 24 || {
 }
 echo "PASS: representative non-illustrated variants have honest animated commands."
 
-echo "Android mat and chair: 18 actual frames for two bridge ranges and seated knee extension"
+echo "Android mat and chair: 30 real frames for five authored floor/chair scenes"
 SUPPORTED_TEST="pe.asterionsystem.app.AvatarDedicatedSceneInstrumentedTest"
 adb shell am instrument -w -e class "$SUPPORTED_TEST" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
@@ -152,8 +152,8 @@ mkdir -p "$SUP_LOCAL"
 adb shell ls "$SUP_REMOTE"
 adb pull "$SUP_REMOTE/." "$SUP_LOCAL/"
 SUP_COUNT="$(find "$SUP_LOCAL" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
-test "$SUP_COUNT" -eq 18 || {
-  echo "Expected 18 mat/chair scene PNG frames; found $SUP_COUNT"
+test "$SUP_COUNT" -eq 30 || {
+  echo "Expected 30 mat/chair scene PNG frames; found $SUP_COUNT"
   exit 1
 }
-echo "PASS: 18 native Android mat/chair PNGs plus rigid bridge and seated knee geometry."
+echo "PASS: 30 native Android mat/chair PNGs including seated toe raise and forward reach."
