@@ -11,7 +11,7 @@ view=g('NativeAvatarView.java')
 for token in ('FRONT_SQUAT(', 'frontWideSquat(', 'leftLeg.joint',
               'rightLeg.joint', 'body.upperLeg', 'body.lowerLeg'):
     assert token in k,token
-for token in ('drawFront(c,p,squat||jacks)', 'drawFrontDenimLeg(',
+for token in ('drawFront(c,p,squat||jacks,', 'drawFrontDenimLeg(',
               'drawFrontArm(', 'drawDiamondTop(', 'drawHandsInset(',
               'drawPushupSideInset(', 'rr(c,193f,topNeck'):
     assert token in r,token
