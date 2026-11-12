@@ -18,6 +18,7 @@ public final class AvatarRenderer {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path=new Path();
     private final AvatarArtDetails details=new AvatarArtDetails();
+    private final AvatarOrganicVolume organic=new AvatarOrganicVolume();
     private final LinearGradient blueFabric=new LinearGradient(130f,0f,270f,0f,
             new int[]{0xFF163C78,0xFF397DBE,0xFF1A427A},
             null,Shader.TileMode.CLAMP);
@@ -67,30 +68,26 @@ public final class AvatarRenderer {
         // Far limbs first. Rounded pieces overlap at each hinge; joints do
         // not display a separate dark ring when the skeleton bends.
         details.drawSneaker(canvas,p.farAnkle,palette,true);
-        drawLimb(canvas,p.farHip,p.farKnee,body.thighWidth*.88f,body.thighWidth*.72f,
-                palette.farLegColor);
-        drawLimb(canvas,p.farKnee,p.farAnkle,body.calfWidth*.92f,body.calfWidth*.62f,
-                palette.female?0xFF514D70:0xFF293951);
-        drawJoint(canvas,p.farKnee,11.5f,palette.female?0xFF514D70:0xFF293951);
+        organic.drawChain(canvas,p.farHip,p.farKnee,p.farAnkle,
+                body.thighWidth*.88f,body.calfWidth*.92f,
+                body.calfWidth*.62f,palette.farLegColor);
         details.drawDenimLeg(canvas,p.farHip,p.farKnee,p.farAnkle,true);
         // Rear upper arm begins inside the back of the jersey; a short
         // sleeve hides the shoulder pivot instead of a protruding cylinder.
         drawLimb(canvas,p.farShoulder,interp(p.farShoulder,p.farElbow,.34f),
                 body.upperArmWidth*.75f,body.upperArmWidth*.68f,palette.top);
-        drawLimb(canvas,interp(p.farShoulder,p.farElbow,.27f),p.farElbow,
-                body.upperArmWidth*.67f,body.upperArmWidth*.58f,palette.skinShade);
-        drawLimb(canvas,p.farElbow,p.farWrist,body.forearmWidth,
+        organic.drawChain(canvas,
+                interp(p.farShoulder,p.farElbow,.27f),
+                p.farElbow,p.farWrist,
+                body.upperArmWidth*.67f,body.forearmWidth*.91f,
                 body.forearmWidth*.65f,palette.skinShade);
-        drawJoint(canvas,p.farElbow,8f,palette.skinShade);
         details.drawHand(canvas,p.farWrist,palette.skinShade);
 
         // Front leg: continuous rounded leg silhouettes under sportswear.
         details.drawSneaker(canvas,p.ankle,palette,false);
-        drawLimb(canvas,p.hip,p.knee,body.thighWidth,body.thighWidth*.73f,
-                palette.legColor);
-        drawLimb(canvas,p.knee,p.ankle,body.calfWidth,body.calfWidth*.67f,
-                palette.legColor);
-        drawJoint(canvas,p.knee,12.5f,palette.legColor);
+        organic.drawChain(canvas,p.hip,p.knee,p.ankle,
+                body.thighWidth,body.calfWidth,
+                body.calfWidth*.67f,palette.legColor);
         details.drawDenimLeg(canvas,p.hip,p.knee,p.ankle,false);
         details.drawPelvis(canvas,p.hip,p.shoulder);
 
@@ -110,15 +107,17 @@ public final class AvatarRenderer {
                     interp(p.shoulder,p.elbow,.34f),
                     body.upperArmWidth*.91f,body.upperArmWidth*.79f,top);
             details.drawSleeve(canvas,p.shoulder,p.elbow,palette);
-            drawLimb(canvas,interp(p.shoulder,p.elbow,.23f),p.elbow,
-                    19f,17f,palette.skin);
         } else {
-            drawLimb(canvas,p.shoulder,p.elbow,19f,16f,palette.skin);
-            drawJoint(canvas,p.shoulder,12f,top);
+            // Sleeve root is nested in the jersey, not a large disc.
+            drawLimb(canvas,interp(p.shoulder,p.elbow,.04f),
+                    interp(p.shoulder,p.elbow,.19f),
+                    body.upperArmWidth*.89f,body.upperArmWidth*.72f,top);
         }
-        drawLimb(canvas,p.elbow,p.wrist,body.forearmWidth,
+        organic.drawChain(canvas,
+                interp(p.shoulder,p.elbow,palette.female?.12f:.23f),
+                p.elbow,p.wrist,
+                body.upperArmWidth*.77f,body.forearmWidth*.92f,
                 body.forearmWidth*.71f,palette.skin);
-        drawJoint(canvas,p.elbow,8.8f,palette.skin);
         details.drawForearm(canvas,p.elbow,p.wrist,palette);
         details.drawHand(canvas,p.wrist,palette.skin);
         canvas.restore();
