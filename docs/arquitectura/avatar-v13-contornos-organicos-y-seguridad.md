@@ -32,7 +32,12 @@
 - Valida coordenadas finitas, límites espaciales y anchos de cada
   silueta antes de llegar a `Path.cubicTo`. No permite huesos
   colapsados ni anchos no numéricos.
-- `NativeAvatarView.setPhase` neutraliza valores infinitos y NaN.
+- `NativeAvatarView.setPhase` limita valores infinitos a los
+  extremos del ciclo y evita que NaN contamine la animación.
+- Si las proporciones suministradas generan una postura imposible,
+  `NativeAvatarView.onDraw` muestra un aviso neutro en vez de una figura
+  dislocada o un fallo de la vista; `wasLastFrameRejected()` permite
+  comprobar la recuperación al corregir la configuración.
 - `NativeAvatarView.onDraw` equilibra `Canvas.save/restore` con
   `try/finally`, incluso si un chequeo rechaza una postura inválida.
 - Sin nuevas dependencias, permisos, internet, bibliotecas nativas
@@ -45,10 +50,11 @@
 
 - `AvatarFrameSafetyTest`: cuatro pruebas Java, muestreo de 241 fases
   de seis clips laterales y cinco escenas de otras cámaras.
-- Dos pruebas instrumentadas adicionales: un codo Bézier estrecho no
+- Tres pruebas instrumentadas adicionales: un codo Bézier estrecho no
   debe producir un óvalo suelto y todos los modos deben dibujar de
   forma segura entre distintas fases y dos paletas, sin fuga
-  de estado de Canvas.
+  de estado de Canvas, y una prueba de recuperación tras
+  proporciones imposibles.
 - `avatar_v13_soft_joint_contract.py`: garantiza que todos los renderers
   llaman al mismo `AvatarSoftContour`, conservan el contacto y no
   reintroducen artefactos geométricos conocidos.

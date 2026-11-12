@@ -31,7 +31,8 @@ for token in ("SIDE_FOOT_Y", "FRONT_FOOT_Y", "TOP_FOOT_Y", "TOP_HAND_Y",
     assert token in support,token
 for token in ("AvatarFrameSafety.requireSide(pose,contact)",
               "AvatarFrameSafety.requireCamera(pose,viewMode,contact)",
-              "finally", "canvas.restore()",
+              "catch(IllegalArgumentException | IllegalStateException invalidRig)",
+              "wasLastFrameRejected()", "finally", "canvas.restore()",
               "Float.isNaN(value)?0f"):
     assert token in view,token
 unit=(base/"app/src/test/java/pe/asterionsystem/app/AvatarFrameSafetyTest.java").read_text()
@@ -39,9 +40,10 @@ assert unit.count("@Test")>=4
 android=(base/"app/src/androidTest/java/pe/asterionsystem/app/NativeAvatarRenderTest.java").read_text()
 for v in ("softHingesHaveNoProtrudingJointBalls",
           "continuousMotionRendersEveryViewWithoutCanvasLeaks",
+          "invalidProportionsUseSafePlaceholderAndCanRecover",
           "getSaveCount()", "exportRealAndroidMultiviewFramesForReview"):
     assert v in android,v
-assert android.count("@Test")>=15
+assert android.count("@Test")>=16
 for unwanted in ("android.permission.INTERNET", "HttpURLConnection",
                  "System.loadLibrary", "UnityPlayer"):
     assert unwanted not in soft+support+side+multi,unwanted
