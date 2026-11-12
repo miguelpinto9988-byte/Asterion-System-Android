@@ -22,6 +22,7 @@ public final class NativeAvatarView extends View {
     private AvatarPalette palette=AvatarPalette.BLUE;
     private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
     private AvatarMotionEngine.Motion motion=AvatarMotionEngine.Motion.SQUAT;
+    private AvatarCommandCatalog.Entry catalogEntry;
 
     private boolean female=false;
     private boolean playing=true;
@@ -49,9 +50,23 @@ public final class NativeAvatarView extends View {
     public boolean isFemale(){return female;}
     public AvatarMotionEngine.Motion getMotion(){return motion;}
     public AvatarMultiViewKinematics.ViewMode getViewMode(){return viewMode;}
+    public AvatarCommandCatalog.Entry getCatalogEntry(){return catalogEntry;}
+    public void setCatalogEntry(AvatarCommandCatalog.Entry entry) {
+        if(entry==null)throw new IllegalArgumentException("Comando del catálogo requerido");
+        catalogEntry=entry;
+        viewMode=entry.camera;
+        AvatarMotionEngine.Motion legacy=AvatarCommandKinematics.legacy(entry.command);
+        if(legacy!=null)motion=legacy;
+        phase=0f;
+        if(!entry.canAnimate())playing=false;
+        lastFrameMs=SystemClock.uptimeMillis();
+        updateAccessibilityDescription();
+        invalidate();
+    }
     public void setViewMode(AvatarMultiViewKinematics.ViewMode value){
         if(value==null)throw new IllegalArgumentException("Vista requerida");
         viewMode=value;
+        catalogEntry=null;
         phase=0f;
         lastFrameMs=SystemClock.uptimeMillis();
         updateAccessibilityDescription();
@@ -60,6 +75,7 @@ public final class NativeAvatarView extends View {
     public void setMotion(AvatarMotionEngine.Motion value){
         if(value==null)throw new IllegalArgumentException("Movimiento obligatorio");
         motion=value;
+        catalogEntry=null;
         phase=0f;
         lastFrameMs=SystemClock.uptimeMillis();
         updateAccessibilityDescription();
@@ -95,6 +111,15 @@ public final class NativeAvatarView extends View {
 
     private void updateAccessibilityDescription() {
         String activity;
+        if(catalogEntry!=null) {
+            activity=catalogEntry.name;
+            setContentDescription((female?"Avatar morado":"Avatar azul")
+                    +" mostrando "+activity+"; "
+                    +(catalogEntry.canAnimate()
+                    ?"proyección 2D ilustrativa, no una validación biomecánica."
+                    :"sin demostración anatómica específica verificada."));
+            return;
+        }
         switch(viewMode) {
             case SIDE: activity=motion.label;break;
             case FRONT: activity="elevación frontal de brazos";break;
@@ -128,9 +153,11 @@ public final class NativeAvatarView extends View {
                 float dt=Math.max(0,Math.min(80,now-lastFrameMs));
                 // Multi-pose clips need enough time to show contacts, unlike
                 // a two-keyframe arm raise.
-                float cycleMs=viewMode==AvatarMultiViewKinematics.ViewMode.SIDE
+                float cycleMs=catalogEntry!=null
+                        ?catalogEntry.tempoMs
+                        :(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE
                         &&motion==AvatarMotionEngine.Motion.BURPEE
-                        ?LOOP_MS*1.6f:LOOP_MS;
+                        ?LOOP_MS*1.6f:LOOP_MS);
                 phase=(phase+dt*speed/cycleMs)%1f;
             }
             if(listener!=null&&now-lastNotifyMs>85) {
@@ -149,9 +176,19 @@ public final class NativeAvatarView extends View {
         if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE) {
             // Contact flags are authored by motion, never guessed from
             // the visible 2D ankle-to-knee segment.
-            AvatarContactFrame.forSide(motion,phase);
-            renderer.draw(canvas,AvatarMotionEngine.pose(motion,phase,bodySpec),
-                    bodySpec,palette,dark,motion.label);
+            AvatarKinematics.Pose pose;
+            String label;
+            if(catalogEntry!=null) {
+                pose=catalogEntry.canAnimate()
+                        ?AvatarCommandKinematics.pose(catalogEntry,phase,bodySpec)
+                        :AvatarMotionEngine.pose(AvatarMotionEngine.Motion.SQUAT,0f,bodySpec);
+                label=catalogEntry.name;
+            } else {
+                AvatarContactFrame.forSide(motion,phase);
+                pose=AvatarMotionEngine.pose(motion,phase,bodySpec);
+                label=motion.label;
+            }
+            renderer.draw(canvas,pose,bodySpec,palette,dark,label);
         } else {
             AvatarContactFrame contact=AvatarContactFrame.forCamera(viewMode,phase);
             if(viewMode==AvatarMultiViewKinematics.ViewMode.TOP)
