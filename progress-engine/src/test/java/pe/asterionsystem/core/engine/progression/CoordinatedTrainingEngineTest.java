@@ -105,6 +105,36 @@ public class CoordinatedTrainingEngineTest {
                         .get(same.id()).status);
     }
 
+
+    @Test public void coordinatorUsesUnitAndStartingReferenceOfEachRealSelectedVariant() throws Exception {
+        ExerciseCatalog library;
+        ExerciseVolumeProfileCatalog profiles;
+        try(InputStreamReader families=reader("families.tsv");
+            InputStreamReader types=reader("types.tsv");
+            InputStreamReader variants=reader("variants.tsv");
+            InputStreamReader volume=reader("volume_profiles.tsv")) {
+            library=ExerciseCatalogLoader.load(families,types,variants);
+            profiles=ExerciseVolumeProfileCatalog.load(volume,library);
+        }
+        MissionPlanner.Profile cardio=new MissionPlanner.Profile(
+                "principiante","bienestar",
+                Arrays.asList(4,4,4,4,4,5,5),Set.of("sin_equipo","silla","pared"),3);
+        CoordinatedTrainingEngine.Plan plan=new CoordinatedTrainingEngine(
+                new MissionPlanner(library)).daily(
+                        cardio,monday,0,List.of(),List.of(),false,0,
+                        List.of(),false,profiles);
+        assertFalse(plan.mission.empty());
+        for(ExerciseVariant variant:plan.mission.candidates()) {
+            ExerciseVolumeProfileCatalog.Profile own=profiles.require(variant);
+            VolumeProgressionEngine.Suggestion s=
+                    plan.volumeByVariant.get(variant.id());
+            assertEquals("No generic unit may override real catalog metadata",
+                    own.unit,s.unit);
+            assertEquals(own.initialSets,s.offeredSets);
+            assertEquals(own.initialValue,s.offeredQuantity);
+        }
+    }
+
     @Test public void restDayCannotAcquireExercisesFromVolumeHistory() {
         MissionPlanner.Profile rest = new MissionPlanner.Profile("avanzado","bienestar",
                 Arrays.asList(5,5,5,5,5,5,5),Set.of("sin_equipo"),3);
