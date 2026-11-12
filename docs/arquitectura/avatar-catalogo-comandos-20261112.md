@@ -17,7 +17,7 @@ ilustrativo y no evalúa técnica humana ni tolerancia del usuario.
   estado `SPEC_ONLY`: **no hay animación específica terminada**. En lugar
   de presentar una sentadilla como sustituto, el visor oculta el render
   y muestra el comando, el equipo, el nivel y las fases articulares.
-- Se conservan los seis clips laterales históricos, las cinco cámaras
+- Se conservan los seis clips laterales históricos, las nueve cámaras
   adicionales, ambas paletas, los controles y las pruebas anteriores.
 - Se incorporan dos clips nuevos: `ARM_CURL` (flexión de codo en perfil)
   y `KNEE_CURL` (flexión de rodilla de pie con un pie libre y otro fijo).
@@ -112,7 +112,7 @@ requiere red.
 | Flexión de rodilla de pie (`flexion_rodilla_bipeda_v03`) | Flexión de rodilla | Nueva ilustración de pie libre y pie plantado |
 | Puente de glúteos (`puente_gluteo_v02`) | Extensión de cadera | Especificación, render de suelo pendiente |
 | Giro cervical suave (`rotacion_cervical_suave_v02`) | Movilidad cervical | Especificación, giro 3D no representable en perfil sin revisión |
-| Equilibrio unipodal (`equilibrio_unipodal_v04`) | Equilibrio | Especificación, contacto unilateral pendiente de render específico |
+| Equilibrio unipodal (`equilibrio_unipodal_v04`) | Equilibrio | Animación frontal ilustrativa nueva con un pie de apoyo fijo |
 | Alcance unipodal (`alcance_unipodal_v01`) | Equilibrio | Especificación; requiere modelar el apoyo externo |
 
 La CI recoge **12 PNG reales** para los dos movimientos laterales nuevos y **24 PNG reales adicionales** para cuatro escenas frontales: dos paletas × inicio/mitad/final.
