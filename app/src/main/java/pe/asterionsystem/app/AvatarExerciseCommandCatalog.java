@@ -23,7 +23,7 @@ public final class AvatarExerciseCommandCatalog {
     public enum Clip {
         NONE, SQUAT,HIP_HINGE,LUNGE,ARM_RAISE,ARM_CURL,KNEE_CURL,MARCH,
         FRONT,FRONT_SQUAT,FRONT_JACKS,FRONT_ELBOW,TOP,
-        FRONT_LATERAL,FRONT_BALANCE,FRONT_SIDE_STEP;
+        FRONT_LATERAL,FRONT_BALANCE,FRONT_SIDE_STEP,FRONT_NECK_TILT;
         public AvatarMotionEngine.Motion sideMotion() {
             switch(this) {
                 case SQUAT:return AvatarMotionEngine.Motion.SQUAT;
@@ -157,7 +157,7 @@ public final class AvatarExerciseCommandCatalog {
                         (clip!=Clip.FRONT&&clip!=Clip.FRONT_SQUAT&&
                          clip!=Clip.FRONT_JACKS&&clip!=Clip.FRONT_ELBOW&&clip!=Clip.TOP&&
                          clip!=Clip.FRONT_LATERAL&&clip!=Clip.FRONT_BALANCE&&
-                         clip!=Clip.FRONT_SIDE_STEP))
+                         clip!=Clip.FRONT_SIDE_STEP&&clip!=Clip.FRONT_NECK_TILT))
                     throw new IllegalArgumentException("Proyección equivocada: "+p[0]);
             }
             AvatarJointTimeline timeline=timelines.get(command);
