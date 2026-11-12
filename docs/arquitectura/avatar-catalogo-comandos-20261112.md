@@ -12,8 +12,8 @@ ilustrativo y no evalúa técnica humana ni tolerancia del usuario.
 - **49 programas de comando** definidos en
   `AvatarJointTimeline.Command`, con cobertura semántica para las cinco
   categorías y **23 ejes articulares de referencia 2D**.
-- **Ocho variantes con ilustración esquemática** activada y validable.
-  Las otras **1.249** disponen de especificación de comandos, pero tienen
+- **Once variantes con ilustración esquemática** activada y validable.
+  Las otras **1.246** disponen de especificación de comandos, pero tienen
   estado `SPEC_ONLY`: **no hay animación específica terminada**. En lugar
   de presentar una sentadilla como sustituto, el visor oculta el render
   y muestra el comando, el equipo, el nivel y las fases articulares.
@@ -115,10 +115,10 @@ requiere red.
 | Equilibrio unipodal (`equilibrio_unipodal_v04`) | Equilibrio | Especificación, contacto unilateral pendiente de render específico |
 | Alcance unipodal (`alcance_unipodal_v01`) | Equilibrio | Especificación; requiere modelar el apoyo externo |
 
-La CI recoge **12 imágenes PNG reales del emulador Android** para
-los dos clips nuevos: azul/morado × inicio/mitad/final.
+La CI recoge **12 PNG reales** para los dos movimientos laterales nuevos y **24 PNG reales adicionales** para cuatro escenas frontales: dos paletas × inicio/mitad/final.
+Las cuatro escenas son elevación lateral de brazos, equilibrio unilateral, paso lateral sin banda e inclinación lateral cervical.
 El archivo `build/avatar-command-samples/muestras_catalogo.json` contiene
-el muestreo de los seis IDs con sus estados verdaderos.
+el muestreo de los nueve IDs con sus estados verdaderos.
 
 ## Pruebas y protección de calidad
 
@@ -135,7 +135,7 @@ el muestreo de los seis IDs con sus estados verdaderos.
 
 ## Trabajo restante antes de afirmar fidelidad de los 1.257 ejercicios
 
-Los 1.249 perfiles `SPEC_ONLY` aún necesitan ilustraciones terminadas.
+Los 1.246 perfiles `SPEC_ONLY` aún necesitan ilustraciones terminadas.
 Para cada uno deberá verificarse el tipo de apoyo, material representado,
 pose inicial/final, planos correctos (especialmente suelo y gestos de
 rotación), proximidad y superposición visual de articulaciones, y
@@ -143,3 +143,31 @@ continuidad geométrica en todas las fases. Algunas variantes del mismo
 tipo podrán reutilizar una animación y otras requerirán escenas propias.
 No se debe activar una ilustración solo para elevar artificialmente
 el porcentaje de cobertura visual.
+
+## Ampliación visual V2 — 12 de noviembre de 2026
+
+La cámara frontal incorpora cuatro proyecciones nuevas, sin alterar los seis
+movimientos históricos ni los dos nuevos movimientos laterales:
+
+| ID activado | Cámara | Movimiento representado | Contactos |
+|---|---|---|---|
+| `elevacion_lateral_v01` | `FRONT_LATERAL` | Elevación lateral de ambos brazos hasta altura de hombros; sustituye una elevación incorrectamente completa sobre la cabeza | Ambas plantas fijas |
+| `equilibrio_unipodal_v04` | `FRONT_BALANCE` | Elevación controlada de un pie, posición estable, retorno | Pie derecho fijo; izquierdo libre solo en fase activa |
+| `caminata_banda_v01` | `FRONT_SIDE_STEP` | Paso lateral **sin banda**, retorno del pie desplazado | Pie izquierdo fijo; derecho móvil durante desplazamiento |
+| `inclinacion_cervical_suave_v01` | `FRONT_NECK_TILT` | Inclinación lateral ilustrativa con referencia cuello-cabeza de longitud fija; **no** representa rotación cervical | Ambas plantas fijas |
+
+Estas escenas son proyecciones 2D ilustrativas sin medición clínica. El movimiento
+cervical requiere una revisión visual específica de la unión cuello-cabeza; los
+ejercicios de rotación cervical, puentes de glúteos, alcance unipodal y posturas
+sentadas siguen como `SPEC_ONLY` hasta contar con postura y apoyos fieles.
+
+La cobertura ilustrativa resulta en **11 variantes del catálogo** y **1.246
+especificaciones sin animación validada**. El contador de comandos permanece en
+49 y el catálogo en 1.257. Se conservan los controles de cámara y paleta.
+
+Pruebas añadidas: `AvatarNewFrontalMotionsTest` recorre 361 puntos por escena,
+verifica brazos/piernas de longitud constante, cabeza/cuello, cierre sin saltos,
+contactos y posiciones. `AvatarV13PoseGuardTest` valida también los cuatro
+nuevos modos. La prueba instrumental exporta **24 PNG** (4 escenas × 3 fases ×
+2 avatares) en `build/runtime-diagnostics/asterion-avatar-new-front-samples/`,
+publicados como artefacto de ejecución de GitHub Actions.
