@@ -312,6 +312,38 @@ public final class NativeAvatarRenderTest {
         });
     }
 
+    @Test public void proneTopShoesUseRearHeelCounterWithoutLaceBands() {
+        Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            AvatarMultiViewKinematics.Pose pose=
+                    AvatarMultiViewKinematics.diamondTop(.49f,AvatarBodySpec.DEFAULT);
+            AvatarArtDetails details=new AvatarArtDetails();
+            for(AvatarFootOrientation.Side side:AvatarFootOrientation.Side.values()){
+                AvatarFootOrientation.FootProjection foot=
+                        AvatarFootOrientation.proneTop(pose,side);
+                for(AvatarPalette palette:new AvatarPalette[]{
+                        AvatarPalette.BLUE,AvatarPalette.PURPLE}){
+                    Bitmap b=Bitmap.createBitmap(280,480,Bitmap.Config.ARGB_8888);
+                    details.drawProneTopSneaker(new Canvas(b),foot,palette);
+                    int x=Math.round(foot.ankle.x),y=Math.round(foot.ankle.y);
+                    // The rear collar/backstay is dark and unbroken.
+                    // A lace/tongue graphic here would render pale stripes.
+                    for(int delta:new int[]{-5,-2,2,5,8}){
+                        int pixel=b.getPixel(x,y+delta);
+                        assertTrue("Rear counter must cover the heel",pixel!=0);
+                        int red=(pixel>>16)&0xFF;
+                        assertTrue("No front tongue/laces on rear heel",red<180);
+                    }
+                    // The toe remains in the correct anatomical direction;
+                    // no floating outsole is painted below the heel.
+                    assertTrue(foot.toe.y<foot.ankle.y);
+                    assertEquals(0,b.getPixel(x,y+24));
+                    b.recycle();
+                }
+            }
+        });
+    }
+
     /**
      * Pixel-level proof from the REAL Android View renderer, not a web mock.
      * CI pulls these 42 PNGs from app-specific external storage and uploads

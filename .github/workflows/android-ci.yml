@@ -21,6 +21,7 @@ on:
       - feature/avatar-v9-identidad-visual-multivista-20261111
       - feature/avatar-v10-orientacion-superficies-20261111
       - feature/avatar-v11-orientacion-zapatillas-rig-evidencia-20261111
+      - feature/avatar-v12-heel-rear-topview-20261111
   pull_request:
     branches:
       - main
@@ -101,6 +102,7 @@ jobs:
           python3 tests/avatar_v9_visual_identity_contract.py
           python3 tests/avatar_v10_orientation_contract.py
           python3 tests/avatar_v11_rig_and_shoes_contract.py
+          python3 tests/avatar_v12_rear_heel_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py

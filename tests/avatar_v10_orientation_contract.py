@@ -16,7 +16,7 @@ for v in ('PRONE_GROUND_FACING','STANDING','faceNormal','soleNormal',
 # The V11 renderer replaces V10's shin-based orientation with the
 # shared foot pose. Assert the current API rather than obsolete comments.
 for v in ('drawProneTopSneaker(', 'AvatarFootOrientation.FootProjection',
-          'foot.requireProneOrientation()', 'c.rotate(', 'Toe cap'):
+          'foot.requireProneOrientation()', 'c.rotate(', 'Padded heel collar'):
     assert v in a,v
 foot=read('AvatarFootOrientation.java')
 for v in ('ShoeSurface.UPPER','Contact.TOE','proneTop(','requirePair('):

@@ -33,8 +33,8 @@ for token in ("enum Ground", "Ground.SOLE", "Ground.TOE", "Ground.PALM",
 assert "AvatarContactFrame.forSide(motion,phase);" in view
 assert "AvatarContactFrame.forCamera(viewMode,phase);" in view
 for token in ("drawProneTopSneaker(", "AvatarFootOrientation.FootProjection",
-              "foot.requireProneOrientation()", "Toe/upper are at local NEGATIVE Y",
-              "Toe cap is towards the head", "drawRoundRect(-8.6f,-19.3f"):
+              "foot.requireProneOrientation()", "REAR HEEL camera asset",
+              "Padded heel collar", "vertical backstay", "drawRoundRect(-2.8f,0f,2.8f,14.2f"):
     assert token in art,token
 assert "AvatarSkeletonFrame.fromCamera(p,camera,body)" in multi
 assert "AvatarFootOrientation.proneTop(p," in multi
