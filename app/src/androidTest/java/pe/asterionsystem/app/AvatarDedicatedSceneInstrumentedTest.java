@@ -16,7 +16,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 
 @RunWith(AndroidJUnit4.class)
 public final class AvatarDedicatedSceneInstrumentedTest {
-    @Test public void exportedNativeCanvasMatchesMatAndChairCatalogExamples(){
+    @Test public void exportedNativeCanvasMatchesFiveMatAndChairCatalogExamples(){
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         ExerciseCatalog c=new AssetExerciseCatalogRepository(context).load();
         AvatarExerciseCommandCatalog commands=
@@ -26,7 +26,8 @@ public final class AvatarDedicatedSceneInstrumentedTest {
         File dir=new File(base,"asterion-avatar-supported-mat-chair");
         assertTrue(dir.isDirectory()||dir.mkdirs());
         String[] ids={"puente_gluteo_v01","puente_gluteo_v02",
-                "extension_rodilla_sin_carga_v01"};
+                "extension_rodilla_sin_carga_v01",
+                "dorsiflexion_tibial_v01","alcances_tronco_sentado_v02"};
         for(String id:ids){
             AvatarExerciseCommandCatalog.Entry entry=commands.require(id);
             assertTrue(entry.canIllustrate());
@@ -61,6 +62,6 @@ public final class AvatarDedicatedSceneInstrumentedTest {
         });
         File[] files=dir.listFiles((p,name)->name.endsWith(".png"));
         assertNotNull(files);
-        assertEquals(18,files.length);
+        assertEquals(30,files.length);
     }
 }
