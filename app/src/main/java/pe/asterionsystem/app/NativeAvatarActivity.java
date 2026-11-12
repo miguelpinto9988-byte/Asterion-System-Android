@@ -1,5 +1,6 @@
 package pe.asterionsystem.app;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -13,6 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.activity.ComponentActivity;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import pe.asterionsystem.app.data.AssetExerciseCatalogRepository;
+import pe.asterionsystem.app.data.AssetAvatarExerciseCommandRepository;
+import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 
 /**
  * Educational 2D animation viewer, executed entirely in the Android APK.
@@ -26,6 +32,10 @@ public final class NativeAvatarActivity extends ComponentActivity {
     private Spinner motionPicker;
     private Spinner scenePicker;
     private TextView status;
+    private TextView specification;
+    private AvatarExerciseCommandCatalog.Entry selectedEntry;
+    private final ExecutorService commandWorker=Executors.newSingleThreadExecutor();
+    private LinearLayout genderControls,playbackControls;
     private boolean light;
     private boolean scrubbing;
     private float density;
@@ -46,9 +56,11 @@ public final class NativeAvatarActivity extends ComponentActivity {
         avatar=new NativeAvatarView(this);
         avatar.setDark(!light);
         root.addView(avatar,new LinearLayout.LayoutParams(-1,0,1));
-        avatar.setContentDescription("Demostración ilustrada de sentadilla con avatar articulado");
+        // NativeAvatarView owns its live, motion-specific accessibility text.
+        if(getIntent().hasExtra("variant_id"))avatar.setVisibility(View.INVISIBLE);
 
         LinearLayout genders=row();
+        genderControls=genders;
         Button blue=button("Chico azul");
         Button purple=button("Chica morada");
         genders.addView(blue,new LinearLayout.LayoutParams(0,dp(52),1));
@@ -131,6 +143,7 @@ public final class NativeAvatarActivity extends ComponentActivity {
         });
 
         LinearLayout controls=row();
+        playbackControls=controls;
         play=button("Pausar");
         Button reset=button("Reiniciar");
         Button speed=button("Velocidad 1×");
@@ -151,6 +164,16 @@ public final class NativeAvatarActivity extends ComponentActivity {
         root.addView(text("Cámaras ilustrativas independientes: lateral, frontal y "
                 +"superior con ampliación de manos. El visor no comprueba la "
                 +"postura ni sustituye orientación profesional.",12,false));
+        specification=text("",12,false);
+        if(getIntent().hasExtra("variant_id")){
+            specification.setText("Cargando comando del catálogo…");
+            root.addView(specification);
+        }
+        Button joints=button("Ver fases y las 23 articulaciones");
+        if(getIntent().hasExtra("variant_id")){
+            root.addView(joints,new LinearLayout.LayoutParams(-1,dp(52)));
+            joints.setOnClickListener(v->showJointStages());
+        }
         Button back=button("Volver a Rutinas");
         root.addView(back,new LinearLayout.LayoutParams(-1,dp(52)));
         back.setOnClickListener(v->finish());
@@ -184,6 +207,79 @@ public final class NativeAvatarActivity extends ComponentActivity {
             speed.setText(avatar.getSpeed()==1f?"Velocidad 1×":"Velocidad 0,5×");
         }
         applyPlayback();
+        String variantId=getIntent().getStringExtra("variant_id");
+        if(variantId!=null&&!variantId.isEmpty())loadVariant(variantId);
+    }
+
+    /** Read the full catalog asynchronously: no 1,257-row TSV parsing on UI. */
+    private void loadVariant(String variantId){
+        commandWorker.execute(()->{
+            try{
+                ExerciseCatalog catalog=new AssetExerciseCatalogRepository(this).load();
+                AvatarExerciseCommandCatalog commands=
+                        new AssetAvatarExerciseCommandRepository(this).load(catalog);
+                AvatarExerciseCommandCatalog.Entry entry=commands.require(variantId);
+                runOnUiThread(()->{
+                    if(isDestroyed())return;
+                    selectedEntry=entry;
+                    specification.setText(entry.safeDescription());
+                    // The chosen exercise owns the camera and command.
+                    // In guided mode, selectors cannot silently switch clips.
+                    motionPicker.setEnabled(false);
+                    scenePicker.setEnabled(false);
+                    if(entry.canIllustrate()){
+                        if(entry.camera==AvatarMultiViewKinematics.ViewMode.SIDE){
+                            AvatarMotionEngine.Motion motion=entry.clip.sideMotion();
+                            avatar.setMotion(motion);
+                            motionPicker.setSelection(motion.ordinal());
+                            avatar.setViewMode(entry.camera);
+                            scenePicker.setSelection(entry.camera.ordinal());
+                        }else{
+                            avatar.setViewMode(entry.camera);
+                            scenePicker.setSelection(entry.camera.ordinal());
+                        }
+                        avatar.setVisibility(View.VISIBLE);
+                        applyPlayback();
+                    }else{
+                        avatar.setPlaying(false);
+                        avatar.setVisibility(View.GONE);
+                        genderControls.setVisibility(View.GONE);
+                        playbackControls.setVisibility(View.GONE);
+                        timeline.setVisibility(View.GONE);
+                        motionPicker.setVisibility(View.GONE);
+                        scenePicker.setVisibility(View.GONE);
+                    }
+                    updatePlay();
+                });
+            }catch(RuntimeException invalid){
+                runOnUiThread(()->{
+                    if(isDestroyed())return;
+                    avatar.setPlaying(false);
+                    avatar.setVisibility(View.GONE);
+                    specification.setText("No hay una ficha visual fiable para el ID solicitado. "+
+                            "El visor no mostrará un ejercicio distinto como sustituto.");
+                    status.setText("Comando no disponible");
+                });
+            }
+        });
+    }
+
+    private void showJointStages(){
+        if(selectedEntry==null)return;
+        AvatarJointTimeline timelineData=selectedEntry.timeline();
+        String message="Referencia 2D ilustrativa, no amplitud clínica. "+
+                "Cada articulación se define, incluso si permanece neutra.\n\n"+
+                "INICIO · "+selectedEntry.phaseLabel(0f)+"\n"+
+                timelineData.describe(0f)+"\n\n"+
+                "DURANTE · "+selectedEntry.phaseLabel(.5f)+"\n"+
+                timelineData.describe(.5f)+"\n\n"+
+                "RETORNO · "+selectedEntry.phaseLabel(.79f)+"\n"+
+                timelineData.describe(.79f)+"\n\n"+
+                "FINAL · "+selectedEntry.phaseLabel(1f)+"\n"+
+                timelineData.describe(1f);
+        new AlertDialog.Builder(this)
+                .setTitle("Comando "+selectedEntry.command)
+                .setMessage(message).setPositiveButton("Cerrar",null).show();
     }
 
     @Override protected void onSaveInstanceState(Bundle state) {
@@ -208,6 +304,7 @@ public final class NativeAvatarActivity extends ComponentActivity {
         super.onPause();
     }
     @Override protected void onDestroy(){
+        commandWorker.shutdownNow();
         if(avatar!=null)avatar.setFrameListener(null);
         super.onDestroy();
     }
@@ -217,10 +314,15 @@ public final class NativeAvatarActivity extends ComponentActivity {
     }
     private void updatePlay(){
         if(avatar==null)return;
+        if(selectedEntry!=null&&!selectedEntry.canIllustrate()){
+            if(status!=null)status.setText("Comandos del catálogo · sin animación específica revisada");
+            return;
+        }
         if(play!=null)play.setText(avatar.isPlaying()?"Pausar":"Reproducir");
         String scene=avatar.getViewMode()==AvatarMultiViewKinematics.ViewMode.SIDE
                 ?avatar.getMotion().label:avatar.getViewMode().title;
-        if(status!=null)status.setText((avatar.isFemale()?"Avatar morado":"Avatar azul")
+        if(status!=null)status.setText((selectedEntry==null?"":selectedEntry.variantId+" · ")
+                +(avatar.isFemale()?"Avatar morado":"Avatar azul")
                 +" · "+scene+" · "
                 +(avatar.isPlaying()?"Reproduciendo":"En pausa"));
     }
