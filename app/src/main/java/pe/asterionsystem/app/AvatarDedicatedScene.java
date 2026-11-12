@@ -9,8 +9,11 @@ package pe.asterionsystem.app;
 public final class AvatarDedicatedScene {
     public enum Kind {
         GLUTE_BRIDGE_SHORT,GLUTE_BRIDGE_BASIC,GLUTE_BRIDGE_PAUSE,
+        GLUTE_BRIDGE_BAND,
         SEATED_KNEE_EXTENSION,SEATED_KNEE_EXTENSION_PAUSE,
-        SEATED_KNEE_EXTENSION_ALTERNATING,SEATED_TOE_RAISE,SEATED_FORWARD_REACH
+        SEATED_KNEE_EXTENSION_ALTERNATING,SEATED_TOE_RAISE,
+        SEATED_TOE_RAISE_SINGLE,SEATED_FORWARD_REACH,
+        SEATED_HEEL_RAISE,SEATED_HEEL_RAISE_GENTLE
     }
     public final Kind kind;
     public final AvatarKinematics.Pose pose;
@@ -18,21 +21,45 @@ public final class AvatarDedicatedScene {
     public final boolean floorBackContact,chairSeatContact;
     /** Foot hinge used only for seated bilateral toe raise; heels remain planted. */
     public final float toeRaiseDegrees;
+    public final float heelRaiseDegrees;
+    public final AvatarKinematics.Point neutralNearAnkle,neutralFarAnkle;
+    public final AvatarKinematics.Point nearToeContact,farToeContact;
     private AvatarDedicatedScene(Kind kind,AvatarKinematics.Pose p,
                                  AvatarKinematics.Point foot,
                                  AvatarKinematics.Point shoulder,
-                                 AvatarKinematics.Point hip,float toeRaiseDegrees){
+                                 AvatarKinematics.Point hip,float toeRaiseDegrees,
+                                 float heelRaiseDegrees,
+                                 AvatarKinematics.Point neutralNearAnkle,
+                                 AvatarKinematics.Point neutralFarAnkle){
         this.kind=kind;pose=p;supportFoot=foot;
         nearShoulder=shoulder;nearHip=hip;
         floorBackContact=kind==Kind.GLUTE_BRIDGE_SHORT||
-                kind==Kind.GLUTE_BRIDGE_BASIC||kind==Kind.GLUTE_BRIDGE_PAUSE;
+                kind==Kind.GLUTE_BRIDGE_BASIC||kind==Kind.GLUTE_BRIDGE_PAUSE||
+                kind==Kind.GLUTE_BRIDGE_BAND;
         chairSeatContact=!floorBackContact;
         // A dedicated ankle command is rendered around each shoe heel,
         // not interpreted as hip or knee motion.
-        this.toeRaiseDegrees=kind==Kind.SEATED_TOE_RAISE?toeRaiseDegrees:0f;
+        this.toeRaiseDegrees=(kind==Kind.SEATED_TOE_RAISE||
+                kind==Kind.SEATED_TOE_RAISE_SINGLE)?toeRaiseDegrees:0f;
+        this.heelRaiseDegrees=(kind==Kind.SEATED_HEEL_RAISE||
+                kind==Kind.SEATED_HEEL_RAISE_GENTLE)?heelRaiseDegrees:0f;
+        this.neutralNearAnkle=neutralNearAnkle;
+        this.neutralFarAnkle=neutralFarAnkle;
+        this.nearToeContact=neutralNearAnkle==null?null:
+                pt(neutralNearAnkle.x+42f,neutralNearAnkle.y+10f);
+        this.farToeContact=neutralFarAnkle==null?null:
+                pt(neutralFarAnkle.x+42f,neutralFarAnkle.y+10f);
     }
     private static AvatarKinematics.Point pt(float x,float y){
         return new AvatarKinematics.Point(x,y);
+    }
+    /** Rotates an ankle position about the fixed toe/forefoot contact. */
+    private static AvatarKinematics.Point rotateAbout(
+            AvatarKinematics.Point origin,AvatarKinematics.Point pivot,
+            float degrees){
+        float a=(float)Math.toRadians(degrees),cos=(float)Math.cos(a),
+                sin=(float)Math.sin(a),x=origin.x-pivot.x,y=origin.y-pivot.y;
+        return pt(pivot.x+x*cos-y*sin,pivot.y+x*sin+y*cos);
     }
     public static AvatarDedicatedScene at(Kind kind,float phase,AvatarBodySpec b){
         if(kind==null||b==null||!Float.isFinite(phase)||phase<0f||phase>1f)
@@ -43,7 +70,7 @@ public final class AvatarDedicatedScene {
         AvatarRigConstraints.TwoBone leg,farLeg,arm,farArm;
         AvatarKinematics.Point neck,head,hand,farHand;
         if(kind==Kind.GLUTE_BRIDGE_SHORT||kind==Kind.GLUTE_BRIDGE_BASIC||
-                kind==Kind.GLUTE_BRIDGE_PAUSE){
+                kind==Kind.GLUTE_BRIDGE_PAUSE||kind==Kind.GLUTE_BRIDGE_BAND){
             // The shoulder and head remain on the mat; the pelvis follows
             // a torso-length circular arc while the soles remain in place.
             float rise=kind==Kind.GLUTE_BRIDGE_SHORT?22f*d:
@@ -95,6 +122,17 @@ public final class AvatarDedicatedScene {
                     knee.y+b.lowerLeg*(float)Math.cos(nearAngle));
             farAnkle=pt(farKnee.x+b.lowerLeg*(float)Math.sin(farAngle),
                     farKnee.y+b.lowerLeg*(float)Math.cos(farAngle));
+            AvatarKinematics.Point neutralNearAnkle=ankle;
+            AvatarKinematics.Point neutralFarAnkle=farAnkle;
+            float heelAngle=(kind==Kind.SEATED_HEEL_RAISE_GENTLE?12f:
+                    kind==Kind.SEATED_HEEL_RAISE?22f:0f)*d;
+            if(heelAngle>0f){
+                // The shoebox rotates about its fixed toe contact; the
+                // ankle follows this arc, and IK adjusts the knee without
+                // stretching the femur or tibia.
+                ankle=rotateAbout(ankle,pt(ankle.x+42f,ankle.y+10f),heelAngle);
+                farAnkle=rotateAbout(farAnkle,pt(farAnkle.x+42f,farAnkle.y+10f),heelAngle);
+            }
             leg=AvatarRigConstraints.twoBone(hip,ankle,
                     b.upperLeg,b.lowerLeg,-1,0f,170f);
             // The knee must not drift during extension: we retain the
@@ -116,7 +154,8 @@ public final class AvatarDedicatedScene {
                     b.upperArm,b.forearm,1,0f,170f);
             // Use explicit angular knee axes instead of twoBone's solver:
             // hip-knee and knee-ankle are rigid and knee never relocates.
-            AvatarKinematics.Point legJoint=knee,farJoint=farKnee;
+            AvatarKinematics.Point legJoint=heelAngle>0f?leg.joint:knee;
+            AvatarKinematics.Point farJoint=heelAngle>0f?farLeg.joint:farKnee;
             AvatarKinematics.Pose p=new AvatarKinematics.Pose(
                     ankle,farAnkle,legJoint,farJoint,hip,farHip,
                     shoulder,farShoulder,neck,head,arm.joint,arm.end,
@@ -127,13 +166,15 @@ public final class AvatarDedicatedScene {
             AvatarKinematics.Point planted=kind==Kind.SEATED_KNEE_EXTENSION_ALTERNATING
                     &&phase>=.5f?ankle:farAnkle;
             return new AvatarDedicatedScene(kind,p,planted,shoulder,hip,
-                    kind==Kind.SEATED_TOE_RAISE?22f*d:0f);
+                    kind==Kind.SEATED_TOE_RAISE||kind==Kind.SEATED_TOE_RAISE_SINGLE
+                    ?22f*d:0f,heelAngle,neutralNearAnkle,neutralFarAnkle);
         }
         AvatarKinematics.Pose p=new AvatarKinematics.Pose(
                 ankle,farAnkle,leg.joint,farLeg.joint,hip,farHip,
                 shoulder,farShoulder,neck,head,arm.joint,arm.end,
                 farArm.joint,farArm.end);
         AvatarMotionEngine.assertSkeleton(p,b,.12f);
-        return new AvatarDedicatedScene(kind,p,ankle,shoulder,hip,0f);
+        return new AvatarDedicatedScene(kind,p,ankle,shoulder,hip,
+                0f,0f,ankle,farAnkle);
     }
 }
