@@ -32,6 +32,15 @@ public final class AvatarVariantSceneRenderer {
         // Fixed framing across all phases, around the grounded outsole.
         c.save();c.translate(40,42);c.scale(.80f,.80f);
         line(c,5,frame.floorY,405,frame.floorY,3,dark?0xFF607083:0xFFC5CEDB);
+        if(r.prop==AvatarVariantScene.Prop.WALL){
+            line(c,AvatarVariantScene.WALL_X,20,AvatarVariantScene.WALL_X,frame.floorY,
+                    7,metal);
+        }
+        if(r.prop==AvatarVariantScene.Prop.CHAIR_SUPPORT){
+            rect(c,232,128,267,139,metal);
+            rect(c,235,138,241,frame.floorY,metal);
+            rect(c,258,138,264,frame.floorY,metal);
+        }
         if(r.posture==AvatarVariantScene.Posture.SEATED){
             rect(c,112,222,235,234,metal);
             rect(c,111,124,123,232,metal);
@@ -45,12 +54,31 @@ public final class AvatarVariantSceneRenderer {
         }else if(r.prop==AvatarVariantScene.Prop.BAND_FEET){
             band(c,p.farWrist,new AvatarKinematics.Point(frame.farRestFoot.x+10,frame.farRestFoot.y+14));
             band(c,p.wrist,new AvatarKinematics.Point(frame.nearRestFoot.x+10,frame.nearRestFoot.y+14));
+        }else if(r.prop==AvatarVariantScene.Prop.BAND_SHOULDERS){
+            band(c,p.shoulder,new AvatarKinematics.Point(frame.nearRestFoot.x,
+                    frame.nearRestFoot.y+10f));
+            band(c,p.farShoulder,new AvatarKinematics.Point(frame.farRestFoot.x,
+                    frame.farRestFoot.y+10f));
+        }else if(r.prop==AvatarVariantScene.Prop.BAND_KNEE){
+            line(c,272,p.knee.y-12,272,frame.floorY,5,metal);
+            band(c,p.knee,new AvatarKinematics.Point(272,p.knee.y));
         }else if(r.prop==AvatarVariantScene.Prop.TOWEL){
             rect(c,p.ankle.x-16,frame.floorY-2,p.ankle.x+44,frame.floorY+3,0xFFA0C7CA);
             rect(c,p.farAnkle.x-16,frame.floorY-3,p.farAnkle.x+44,frame.floorY+2,0xFFA0C7CA);
         }
         avatar.drawFigure(c,p,b,palette);
         switch(r.prop){
+            case HAMMER_DUMBBELLS:
+                c.save();c.rotate(90,p.farWrist.x,p.farWrist.y);
+                dumbbell(c,p.farWrist,metal);c.restore();
+                c.save();c.rotate(90,p.wrist.x,p.wrist.y);
+                dumbbell(c,p.wrist,metal);c.restore();break;
+            case KETTLEBELL:
+                color(metal);
+                c.drawOval(p.wrist.x-16,p.wrist.y+8,p.wrist.x+16,p.wrist.y+36,paint);
+                paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(4);
+                c.drawRoundRect(p.wrist.x-9,p.wrist.y+1,p.wrist.x+9,p.wrist.y+17,6,6,paint);
+                paint.setStyle(Paint.Style.FILL);break;
             case DUMBBELLS:case FRONT_DUMBBELLS:
                 dumbbell(c,p.farWrist,metal);dumbbell(c,p.wrist,metal);break;
             case GOBLET:
