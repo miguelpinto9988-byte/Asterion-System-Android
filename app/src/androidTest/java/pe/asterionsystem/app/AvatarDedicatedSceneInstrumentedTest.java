@@ -27,7 +27,9 @@ public final class AvatarDedicatedSceneInstrumentedTest {
         assertTrue(dir.isDirectory()||dir.mkdirs());
         String[] ids={"puente_gluteo_v01","puente_gluteo_v02",
                 "extension_rodilla_sin_carga_v01",
-                "dorsiflexion_tibial_v01","alcances_tronco_sentado_v02"};
+                "dorsiflexion_tibial_v01","alcances_tronco_sentado_v02",
+                "puente_gluteo_v03","extension_rodilla_sin_carga_v02",
+                "extension_rodilla_sin_carga_v03"};
         for(String id:ids){
             AvatarExerciseCommandCatalog.Entry entry=commands.require(id);
             assertTrue(entry.canIllustrate());
@@ -42,8 +44,14 @@ public final class AvatarDedicatedSceneInstrumentedTest {
                 for(String id:ids){
                     AvatarExerciseCommandCatalog.Entry entry=commands.require(id);
                     view.setDedicatedScene(entry.clip.dedicatedScene());
-                    for(int i=0;i<3;i++){
-                        view.setPhase(i==0?0f:i==1?.49f:1f);
+                    // Alternating knees need two middle frames: first leg at
+                    // 25% and the opposite leg at 75%, not a neutral 50%.
+                    float[] phases=entry.clip.dedicatedScene()==
+                            AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_ALTERNATING
+                            ?new float[]{0f,.25f,.75f,1f}
+                            :new float[]{0f,.49f,1f};
+                    for(int i=0;i<phases.length;i++){
+                        view.setPhase(phases[i]);
                         Bitmap b=Bitmap.createBitmap(400,480,Bitmap.Config.ARGB_8888);
                         try{
                             view.draw(new Canvas(b));
@@ -62,6 +70,6 @@ public final class AvatarDedicatedSceneInstrumentedTest {
         });
         File[] files=dir.listFiles((p,name)->name.endsWith(".png"));
         assertNotNull(files);
-        assertEquals(30,files.length);
+        assertEquals(50,files.length);
     }
 }
