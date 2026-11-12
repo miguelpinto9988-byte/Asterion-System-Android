@@ -8,9 +8,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.ComponentActivity;
@@ -33,6 +35,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
 import pe.asterionsystem.core.engine.missions.RoutineGenerator;
 import pe.asterionsystem.core.engine.missions.SessionInterruptionPolicy;
+import pe.asterionsystem.core.engine.progression.VolumeProgressionEngine;
 
 /**
  * Guided, resumable session for daily tasks or an ACTIVE opt-in Monarca cycle.
@@ -323,6 +326,28 @@ public final class RoutineStepActivity extends ComponentActivity {
                 +" · Nivel técnico "+current.difficulty(),13);
         addText("Elige tu ritmo. Puedes parar, descansar o no terminar "
                 +"si algo resulta incómodo.",13);
+        int movementCategory=effectiveCategory();
+        if(movementCategory>=0 && current.difficulty()<=3) {
+            java.util.List<VolumeProgressionEngine.Observation> previous=
+                    VolumeProgressStore.previousForCategory(
+                            this,movementCategory,planDate);
+            VolumeProgressionEngine.Suggestion suggestion=VolumeProgressionEngine.review(
+                    current,movementCategory,planDate,previous,
+                    SessionSafetyStore.recentInterruption(
+                            this,movementCategory,planDate,7));
+            if(suggestion.previousSets>0) {
+                addText("Volumen anterior: "+suggestion.previousSets+" series × "
+                        +suggestion.previousRepetitions+" repeticiones. "
+                        +suggestion.explanation,13);
+                if(suggestion.requiresConsent()) {
+                    addText("Opción para considerar, NO obligatoria: "
+                            +suggestion.offeredSets+" series × "
+                            +suggestion.offeredRepetitions+" repeticiones.",13);
+                }
+            }
+            addAction("Completar y registrar mi volumen (opcional)",
+                    ()->requestVolume(current,movementCategory));
+        }
         if(!byRounds) {
             addAction("Registrar otra serie (opcional)",()->{
                 extraSeries++;
@@ -331,18 +356,84 @@ public final class RoutineStepActivity extends ComponentActivity {
         }
         nextButton.setText(byRounds?"Registrar ejercicio y continuar"
                 :"Terminé este ejercicio");
-        nextButton.setOnClickListener(v->{
-            if("daily".equals(kind)) {
-                MissionTrackingStore.setDailyCompleted(this,planDate,current.id(),true);
-            } else if("monarch".equals(kind)) {
-                MissionTrackingStore.markMonarch(this,planDate,current.id());
+        nextButton.setOnClickListener(v->completeCurrent(current,null));
+    }
+
+    /** Explicit, optional volume entry. Cancel never marks the exercise complete. */
+    private void requestVolume(ExerciseVariant current,int currentCategory) {
+        LinearLayout form=new LinearLayout(this);
+        form.setOrientation(LinearLayout.VERTICAL);
+        form.setPadding(dp(18),dp(8),dp(18),dp(4));
+        EditText sets=new EditText(this);
+        EditText reps=new EditText(this);
+        EditText effort=new EditText(this);
+        for(EditText field:new EditText[]{sets,reps,effort}) {
+            field.setInputType(InputType.TYPE_CLASS_NUMBER);
+            field.setSingleLine(true);
+            form.addView(field,new LinearLayout.LayoutParams(-1,dp(56)));
+        }
+        sets.setHint("Series realizadas (1 a 12)");
+        reps.setHint("Repeticiones por serie (1 a 60)");
+        effort.setHint("Esfuerzo percibido (1 a 10)");
+        AlertDialog dialog=new AlertDialog.Builder(this)
+                .setTitle("Registro voluntario · "+current.name())
+                .setMessage("Anota lo que realmente hiciste; no es una meta "
+                        +"ni implica que debas hacer más la próxima vez.")
+                .setView(form)
+                .setNegativeButton("Cancelar",null)
+                .setPositiveButton("Guardar y completar",null)
+                .create();
+        dialog.setOnShowListener(d->dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setOnClickListener(v->{
+                    try {
+                        int performedSets=Integer.parseInt(sets.getText().toString().trim());
+                        int performedReps=Integer.parseInt(reps.getText().toString().trim());
+                        int perceivedEffort=Integer.parseInt(effort.getText().toString().trim());
+                        VolumeProgressionEngine.Observation record=
+                                new VolumeProgressionEngine.Observation(
+                                planDate,currentCategory,current.id(),current.typeId(),
+                                current.difficulty(),performedSets,performedReps,
+                                perceivedEffort,true,false);
+                        if(completeCurrent(current,record))dialog.dismiss();
+                    }catch(RuntimeException invalid) {
+                        effort.setError("Introduce series (1–12), repeticiones (1–60) "
+                                +"y esfuerzo (1–10) válidos.");
+                    }
+                }));
+        dialog.show();
+    }
+
+    private boolean completeCurrent(ExerciseVariant current,
+                                    VolumeProgressionEngine.Observation volume) {
+        int currentCategory=effectiveCategory();
+        if(SessionSafetyStore.globallyPaused(this)
+                ||(currentCategory>=0
+                    && SessionSafetyStore.categoryPaused(this,currentCategory))) {
+            block("La categoría está en pausa; no se registra el ejercicio.");
+            return false;
+        }
+        if(volume!=null) {
+            try {
+                VolumeProgressStore.recordCompleted(this,volume);
+            } catch(RuntimeException error) {
+                new AlertDialog.Builder(this).setTitle("No se guardó el volumen")
+                        .setMessage("Se conserva este ejercicio sin completar. "
+                                +"Puedes revisarlo o continuar sin registro numérico.")
+                        .setPositiveButton("Entendido",null).show();
+                return false;
             }
-            // A custom session is independent of daily and Monarca tracking.
-            index++;
-            extraSeries=0;
-            save();
-            render();
-        });
+        }
+        if("daily".equals(kind)) {
+            MissionTrackingStore.setDailyCompleted(this,planDate,current.id(),true);
+        } else if("monarch".equals(kind)) {
+            MissionTrackingStore.markMonarch(this,planDate,current.id());
+        }
+        // Custom sessions remain distinct from daily and Monarca tracking.
+        index++;
+        extraSeries=0;
+        save();
+        render();
+        return true;
     }
 
     private void save() {
