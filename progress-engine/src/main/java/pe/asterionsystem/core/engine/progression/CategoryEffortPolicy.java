@@ -67,9 +67,9 @@ public final class CategoryEffortPolicy {
             return new Decision(category,lastEffort,Guidance.REVIEW_OPTIONAL,baseline,false,
                     "En "+categoryName+" declaraste poco esfuerzo ("+lastEffort+
                     "/10). El motor buscará automáticamente una variante del mismo tipo y nivel técnico, "
-                    +"si existe; no se aumentan repeticiones ni intensidad.");
+                    +"si existe. Los ajustes de repeticiones se calculan por separado.");
         }
-        if(lastEffort<=6) {
+        if(lastEffort<=7) {
             return new Decision(category,lastEffort,Guidance.MAINTAIN,baseline,false,
                     "Esfuerzo moderado en "+categoryName+" ("+lastEffort+
                     "/10). Se conserva el nivel y la cantidad propuesta.");
