@@ -38,6 +38,23 @@ for id,unit in {
 }.items():
     assert profiles[id]["unit"]==unit,(id,profiles[id])
 
+# Golden references after the second increase, all still within profile caps.
+expected_start={
+    "sentadilla_bilateral_v01":12,
+    "sentadilla_bilateral_v03":10,
+    "sentadilla_bilateral_v07":7,
+    "flexiones_v02":12,
+    "plancha_frontal_v01":20,
+    "equilibrio_unipodal_v01":25,
+    "marcha_v02":85,
+    "ciclo_estatico_v01":85,
+}
+for variant_id, initial in expected_start.items():
+    assert int(profiles[variant_id]["initial_value"])==initial,variant_id
+assert all(int(row["initial_sets"])==1 for row in data)
+assert all(int(row["initial_value"])>=
+           (5 if row["unit"]=="REPETITIONS" else 11) for row in data)
+
 engine=(root/"progress-engine/src/main/java/pe/asterionsystem/core/engine/progression/VolumeProgressionEngine.java").read_text()
 store=(root/"app/src/main/java/pe/asterionsystem/app/VolumeProgressStore.java").read_text()
 activity=(root/"app/src/main/java/pe/asterionsystem/app/RoutineStepActivity.java").read_text()
