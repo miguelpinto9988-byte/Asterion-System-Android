@@ -15,6 +15,7 @@ public final class AvatarMultiViewRenderer {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path=new Path();
     private final AvatarArtDetails details=new AvatarArtDetails();
+    private final AvatarSoftContour contours=new AvatarSoftContour();
     private AvatarBodySpec bodySpec=AvatarBodySpec.DEFAULT;
     private final LinearGradient blue=new LinearGradient(
             140f,70f,255f,300f,0xFF397DBE,0xFF163C78,Shader.TileMode.CLAMP);
@@ -92,44 +93,12 @@ public final class AvatarMultiViewRenderer {
     }
 
     /**
-     * Reusable soft cutout contour. The variable-width silhouette matches
-     * the Bézier limbs used by AvatarRenderer, avoiding cylindrical front
-     * legs and round elbow beads in other camera projections.
+     * All projections use exactly the same organic contour geometry.
+     * No exposed endpoint caps or separate renderer-specific cylinders.
      */
     private void tapered(Canvas c,AvatarKinematics.Point a,
                          AvatarKinematics.Point b,float wa,float wb,int fill){
-        float dx=b.x-a.x,dy=b.y-a.y;
-        float d=(float)Math.hypot(dx,dy);
-        if(d<.01f)return;
-        float nx=-dy/d,ny=dx/d,ux=dx/d,uy=dy/d;
-        path.rewind();
-        path.moveTo(a.x+nx*wa*.5f,a.y+ny*wa*.5f);
-        path.cubicTo(a.x+dx*.3f+nx*wa*.51f,a.y+dy*.3f+ny*wa*.51f,
-                a.x+dx*.72f+nx*wb*.51f,a.y+dy*.72f+ny*wb*.51f,
-                b.x+nx*wb*.5f,b.y+ny*wb*.5f);
-        path.cubicTo(b.x+ux*wb*.4f+nx*wb*.44f,
-                b.y+uy*wb*.4f+ny*wb*.44f,
-                b.x+ux*wb*.4f-nx*wb*.44f,
-                b.y+uy*wb*.4f-ny*wb*.44f,
-                b.x-nx*wb*.5f,b.y-ny*wb*.5f);
-        path.cubicTo(a.x+dx*.72f-nx*wb*.51f,
-                a.y+dy*.72f-ny*wb*.51f,
-                a.x+dx*.3f-nx*wa*.51f,
-                a.y+dy*.3f-ny*wa*.51f,
-                a.x-nx*wa*.5f,a.y-ny*wa*.5f);
-        path.cubicTo(a.x-ux*wa*.4f-nx*wa*.44f,
-                a.y-uy*wa*.4f-ny*wa*.44f,
-                a.x-ux*wa*.4f+nx*wa*.44f,
-                a.y-uy*wa*.4f+ny*wa*.44f,
-                a.x+nx*wa*.5f,a.y+ny*wa*.5f);
-        path.close();
-        color(fill);c.drawPath(path,paint);
-        paint.setColor(0x3026334C);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(.55f);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        c.drawPath(path,paint);
-        paint.setStyle(Paint.Style.FILL);
+        contours.segment(c,a,b,wa,wb,fill);
     }
 
     /** Frontal anatomy follows the actual hip/shoulder pair, not fixed pixels.
@@ -218,11 +187,10 @@ public final class AvatarMultiViewRenderer {
                 knee.x+sign*3f,knee.y-10f,0x887F9AB7,1.4f);
         line(c,knee.x+sign*3f,knee.y+10f,
                 ankle.x+sign*3f,ankle.y-12f,0x887F9AB7,1.1f);
-        c.save();c.translate(knee.x,knee.y);
-        rr(c,-9f,-12f,9f,12f,5f,0xFF3B4D69);
-        line(c,-7f,-6f,7f,-6f,0xAA90ACC7,1.1f);
-        line(c,-7f,6f,7f,6f,0xAA90ACC7,1.1f);
-        c.restore();
+        // No second rigid kneecap patch: one soft hinge and the shared
+        // sewn contour avoid double-thick, protruding geometric blocks.
+        contours.hinge(c,knee,bodySpec.thighWidth*.73f,
+                bodySpec.calfWidth,palette.legColor);
         // The same denim seam-and-knee artwork as the lateral avatar.
         details.drawCameraJeans(c,hip,knee,ankle,left);
     }
@@ -240,6 +208,8 @@ public final class AvatarMultiViewRenderer {
                 bodySpec.upperArmWidth*.59f,palette.skin);
         tapered(c,elbow,wrist,bodySpec.forearmWidth,
                 bodySpec.forearmWidth*.71f,palette.skin);
+        contours.hinge(c,elbow,bodySpec.upperArmWidth*.59f,
+                bodySpec.forearmWidth,palette.skin);
         details.drawForearm(c,elbow,wrist,palette);
         details.drawProjectedHand(c,wrist,palette);
         float u=(float)Math.hypot(dx,dy);
@@ -292,6 +262,8 @@ public final class AvatarMultiViewRenderer {
                     bodySpec.thighWidth*.70f,palette.legColor);
             tapered(c,k,a,bodySpec.calfWidth*.92f,
                     bodySpec.calfWidth*.64f,palette.legColor);
+            contours.hinge(c,k,bodySpec.thighWidth*.70f,
+                    bodySpec.calfWidth*.92f,palette.legColor);
             details.drawCameraJeans(c,h,k,a,direction<0);
             AvatarFootOrientation.FootProjection foot=
                     AvatarFootOrientation.proneTop(p,
@@ -371,6 +343,8 @@ public final class AvatarMultiViewRenderer {
                 bodySpec.upperArmWidth*.59f,palette.skin);
         tapered(c,elbow,wrist,bodySpec.forearmWidth,
                 bodySpec.forearmWidth*.70f,palette.skin);
+        contours.hinge(c,elbow,bodySpec.upperArmWidth*.59f,
+                bodySpec.forearmWidth,palette.skin);
         details.drawForearm(c,elbow,wrist,palette);
         details.drawProjectedHand(c,wrist,palette);
         float length=(float)Math.hypot(elbow.x-shoulder.x,elbow.y-shoulder.y);
