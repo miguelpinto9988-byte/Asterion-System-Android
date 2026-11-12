@@ -42,19 +42,24 @@ final class VolumeProgressStore {
                 + "|" + entry.typeId + "|" + entry.technicalLevel
                 + "|" + entry.sets + "|" + entry.repetitions + "|"
                 + entry.effort + "|" + (entry.completed ? 1 : 0) + "|"
-                + (entry.interrupted ? 1 : 0);
+                + (entry.interrupted ? 1 : 0) + "|" + entry.unit.name();
     }
 
     private static VolumeProgressionEngine.Observation decode(String raw) {
         if (raw == null) return null;
         try {
             String[] p = raw.split("\\|", -1);
-            if (p.length != 10) return null;
+            if (p.length != 10 && p.length != 11) return null;
+            pe.asterionsystem.core.engine.progression.ExerciseVolumeProfileCatalog.Unit unit=
+                    p.length==10
+                    ?pe.asterionsystem.core.engine.progression.ExerciseVolumeProfileCatalog.Unit.REPETITIONS
+                    :pe.asterionsystem.core.engine.progression.ExerciseVolumeProfileCatalog.Unit.valueOf(p[10]);
             return new VolumeProgressionEngine.Observation(
                     LocalDate.parse(p[0]), Integer.parseInt(p[1]),
                     p[2], p[3], Integer.parseInt(p[4]),
                     Integer.parseInt(p[5]), Integer.parseInt(p[6]),
-                    Integer.parseInt(p[7]), "1".equals(p[8]), "1".equals(p[9]));
+                    Integer.parseInt(p[7]), "1".equals(p[8]), "1".equals(p[9]),
+                    unit);
         } catch (RuntimeException invalid) {
             return null;
         }
@@ -63,7 +68,8 @@ final class VolumeProgressStore {
     /**
      * Persist only after the user has explicitly completed the exercise.
      * Repeated rounds on the same day accumulate sets; the smaller per-set
-     * repetitions and larger effort are retained conservatively.
+     * quantity (repetitions OR seconds) and larger effort are retained
+     * conservatively. Legacy 10-field rows mean repetitions, never seconds.
      */
     static void recordCompleted(Context context, VolumeProgressionEngine.Observation entry) {
         if (!entry.completed || entry.interrupted || !entry.day.equals(LocalDate.now())) {
@@ -77,14 +83,15 @@ final class VolumeProgressStore {
             if (!old.day.equals(entry.day) || old.category != entry.category
                     || !old.variantId.equals(entry.variantId)
                     || !old.typeId.equals(entry.typeId)
-                    || old.technicalLevel != entry.technicalLevel) {
+                    || old.technicalLevel != entry.technicalLevel
+                    || old.unit!=entry.unit) {
                 throw new IllegalArgumentException("Datos de sesión incompatibles");
             }
             toStore = new VolumeProgressionEngine.Observation(
                     entry.day, entry.category, entry.variantId, entry.typeId,
                     entry.technicalLevel, Math.min(12, old.sets + entry.sets),
                     Math.min(old.repetitions, entry.repetitions),
-                    Math.max(old.effort, entry.effort), true, false);
+                    Math.max(old.effort, entry.effort), true, false,entry.unit);
         }
         if (!sp.edit().putString(entryKey, encode(toStore)).commit()) {
             throw new IllegalStateException("No se pudo guardar el volumen");
