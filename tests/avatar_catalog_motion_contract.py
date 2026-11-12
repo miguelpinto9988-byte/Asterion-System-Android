@@ -48,7 +48,9 @@ for row in rows:
     assert row["supervision"]==v["supervision"],ident
     assert row["command"] in supported,ident
     assert row["camera"] in ("SIDE","FRONT","TOP","FRONT_LATERAL",
-                               "FRONT_BALANCE","FRONT_SIDE_STEP","FRONT_NECK_TILT","HIP_EXTENSION_STAND"),ident
+                               "FRONT_BALANCE","FRONT_SIDE_STEP","FRONT_NECK_TILT","HIP_EXTENSION_STAND",
+                               "GLUTE_BRIDGE_SHORT","GLUTE_BRIDGE_BASIC",
+                               "SEATED_KNEE_EXTENSION"),ident
     assert row["status"] in ("ILLUSTRATIVE","SPEC_ONLY"),ident
     assert (row["status"]=="SPEC_ONLY")==(row["clip"]=="NONE"),ident
     if row["status"]=="ILLUSTRATIVE":
@@ -65,12 +67,14 @@ for row in rows:
                  "equilibrio_unipodal_v04","alcance_unipodal_v01",
                  "elevacion_lateral_v01","caminata_banda_v01",
                  "inclinacion_cervical_suave_v01","extension_cadera_bipeda_v01",
-                 "paso_lateral_y_retorno_v01"):
+                 "paso_lateral_y_retorno_v01",
+                 "puente_gluteo_v01","extension_rodilla_sin_carga_v01",
+                 "sentadilla_bilateral_v04","marcha_v02"):
         new_exercises.append(row)
 
 assert len(families_covered)==155
 assert sum(counts.values())==1257
-assert len(illustrated)==13
+assert len(illustrated)==15
 assert len({row["command"] for row in rows})>=49
 for string in ("postInvalidateOnAnimation()","AvatarMotionEngine.pose("):
     assert string in (base/"NativeAvatarView.java").read_text(encoding="utf-8")
@@ -96,7 +100,32 @@ for symbol in ("requireFixedLengths","AvatarRigConstraints.requireFixedLength",
     assert symbol in figure,symbol
 assert "ILLUSTRATIVE" in catalog and "SPEC_ONLY" in catalog
 assert "status==Status.SPEC_ONLY" in catalog
-assert len(new_exercises)==11
+# An exercise-specific illustration is not interchangeable with a similar
+# movement if contacts, equipment or locomotion differ.
+by_id={r["variant_id"]:r for r in rows}
+for wrong in ("curl_biceps_v01","marcha_v02"):
+    assert by_id[wrong]["status"]=="SPEC_ONLY",wrong
+    assert by_id[wrong]["clip"]=="NONE",wrong
+for ident,clip,equipment in (
+        ("puente_gluteo_v01","GLUTE_BRIDGE_SHORT","colchoneta"),
+        ("puente_gluteo_v02","GLUTE_BRIDGE_BASIC","colchoneta"),
+        ("extension_rodilla_sin_carga_v01","SEATED_KNEE_EXTENSION","silla"),
+        ("sentadilla_bilateral_v04","SQUAT","sin_equipo")):
+    assert by_id[ident]["status"]=="ILLUSTRATIVE",ident
+    assert by_id[ident]["clip"]==clip,ident
+    assert by_id[ident]["equipment"]==equipment,ident
+dedicated=(base/"AvatarDedicatedScene.java").read_text(encoding="utf-8")
+dedicated_view=(base/"AvatarDedicatedSceneRenderer.java").read_text(encoding="utf-8")
+native=(base/"NativeAvatarView.java").read_text(encoding="utf-8")
+for marker in ("GLUTE_BRIDGE_SHORT","GLUTE_BRIDGE_BASIC",
+               "SEATED_KNEE_EXTENSION","AvatarMotionEngine.assertSkeleton"):
+    assert marker in dedicated,marker
+for marker in ("chair(c,dark)","mat(c,dark)","AvatarSkeletonFrame.fromSide"):
+    assert marker in dedicated_view,marker
+assert "dedicatedRenderer.draw" in native
+assert "avatar.setDedicatedScene(dedicated)" in viewer
+
+assert len(new_exercises)==14
 
 if "--samples" in sys.argv:
     out=root/"build/avatar-command-samples/muestras_catalogo.json"
@@ -111,4 +140,4 @@ if "--samples" in sys.argv:
                  for x in new_exercises]
     },ensure_ascii=False,indent=2),encoding="utf-8")
     print("Saved",out)
-print("OK: 1257 variantes, 155 familias, 51 comandos definidos, 13 variantes ilustrativas validadas")
+print("OK: 1257 variantes, 155 familias, 51 comandos definidos, 15 variantes ilustrativas registradas")
