@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.progression.VolumeProgressionEngine;
 import pe.asterionsystem.core.engine.progression.VolumeResetPolicy;
+import pe.asterionsystem.core.engine.progression.ExerciseVolumeProfileCatalog;
 
 /**
  * On an ephemeral CI emulator, verify that checkpoint selection is persisted,
@@ -90,4 +91,49 @@ public final class VolumeProgressResetPersistenceTest {
         assertTrue(VolumeProgressStore.previousForCategory(
                 ctx,2,first.plusDays(21)).isEmpty());
     }
+
+    @Test public void timedSecondsPersistAndLegacyRepetitionsRemainDistinct() {
+        Context ctx=context();
+        assertTrue(ctx.getSharedPreferences("asterion_volume_progress_v1",
+                Context.MODE_PRIVATE).edit().clear().commit());
+        LocalDate now=LocalDate.now();
+        ExerciseVariant timed=new ExerciseVariant("marcha_v02","marcha",
+                "Caminata cómoda en terreno plano",1,"sin_equipo","aerobico",false);
+        ExerciseVolumeProfileCatalog.Profile profile=
+                new ExerciseVolumeProfileCatalog.Profile(
+                        timed.id(),ExerciseVolumeProfileCatalog.Unit.SECONDS,
+                        1,60,10,180,3,true);
+        VolumeProgressStore.recordCompleted(ctx,
+                new VolumeProgressionEngine.Observation(
+                        now,4,timed.id(),timed.typeId(),1,1,60,1,true,false,
+                        ExerciseVolumeProfileCatalog.Unit.SECONDS));
+        List<VolumeProgressionEngine.Observation> saved=
+                VolumeProgressStore.previousForCategory(ctx,4,now.plusDays(1));
+        assertEquals(1,saved.size());
+        assertEquals(ExerciseVolumeProfileCatalog.Unit.SECONDS,saved.get(0).unit);
+        assertEquals(60,saved.get(0).quantity);
+        assertEquals(75,VolumeProgressionEngine.review(
+                timed,4,now.plusDays(1),saved,false,profile).offeredQuantity);
+
+        // An older ten-field record has no unit: it must decode as repetitions.
+        String priorDate=now.minusDays(1).toString();
+        String legacyKey="vol_"+priorDate+"_"+timed.id();
+        String legacyValue=priorDate+"|4|"+timed.id()+"|"+timed.typeId()
+                +"|1|1|8|2|1|0";
+        assertTrue(ctx.getSharedPreferences("asterion_volume_progress_v1",
+                Context.MODE_PRIVATE).edit().putString(
+                        legacyKey,legacyValue).commit());
+        List<VolumeProgressionEngine.Observation> mixed=
+                VolumeProgressStore.previousForCategory(ctx,4,now.plusDays(1));
+        assertEquals(2,mixed.size());
+        for(VolumeProgressionEngine.Observation entry:mixed) {
+            if(entry.day.equals(now.minusDays(1))) {
+                assertEquals(ExerciseVolumeProfileCatalog.Unit.REPETITIONS,entry.unit);
+            }
+        }
+        // Latest seconds entry stays the only comparable volume evidence.
+        assertEquals(75,VolumeProgressionEngine.review(
+                timed,4,now.plusDays(1),mixed,false,profile).offeredQuantity);
+    }
+
 }
