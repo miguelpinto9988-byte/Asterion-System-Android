@@ -9,14 +9,16 @@ import java.util.Objects;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 
 /**
- * Pure, optional volume review. It NEVER edits a workout or creates mandatory
- * exercise prescriptions. Only completed, personally logged volume is evidence.
- * Numeric suggestions are small, require repeated observations, and need consent.
+ * Pure per-category volume calculation, not a training mandate.
+ * Recalculates a reference for the NEXT session from recorded completion and
+ * effort. A calculated increase never forces the user to perform that work.
+ * No load/intensity escalation, no coercion, and no transfer between variants.
  */
 public final class VolumeProgressionEngine {
     public enum Status {
-        NO_HISTORY, MAINTAIN, OPTIONAL_ONE_REPETITION,
-        REVIEW_SERIES_WITH_GUIDANCE, RECOVERY_PRIORITY, PAUSED
+        NO_HISTORY, MAINTAIN, CALCULATED_INCREASE, CALCULATED_DECREASE,
+        CALCULATED_EXTRA_SERIES, REVIEW_SERIES_WITH_GUIDANCE,
+        RECOVERY_PRIORITY, PAUSED, OPTIONAL_ONE_REPETITION
     }
 
     public static final class Observation {
@@ -54,7 +56,7 @@ public final class VolumeProgressionEngine {
         public final Status status;
         /** Previous actually logged volume; zero when no comparable record. */
         public final int previousSets, previousRepetitions;
-        /** Optional, NEVER automatically applied to a session. */
+        /** Automatically calculated next-session reference, not an obligation. */
         public final int offeredSets, offeredRepetitions;
         public final String explanation;
 
@@ -69,7 +71,9 @@ public final class VolumeProgressionEngine {
         }
 
         public boolean requiresConsent() {
-            return status == Status.OPTIONAL_ONE_REPETITION;
+            return status == Status.CALCULATED_INCREASE
+                    || status == Status.CALCULATED_EXTRA_SERIES
+                    || status == Status.OPTIONAL_ONE_REPETITION;
         }
     }
 
@@ -107,9 +111,30 @@ public final class VolumeProgressionEngine {
         return effort;
     }
 
+    /** Requested step mapping, kept pure and testable. Positive values are
+     * informative references, not permission to require more exercise. */
+    public static int repetitionDelta(int effort) {
+        switch (effort) {
+            case 1: return 5;
+            case 2: return 3;
+            case 3: return 1;
+            case 4: case 5: case 6: case 7: return 0;
+            case 8: return -1;
+            case 9: return -2;
+            case 10: return -3;
+            default: throw new IllegalArgumentException("Esfuerzo fuera de 1..10");
+        }
+    }
+
     /**
-     * Check one ACTUALLY SELECTED catalog variant. Volume from a different
-     * variant, even of the same movement type, is never transferred blindly.
+     * Compare the ACTUALLY SELECTED catalog variant with completed history
+     * from its own category. On the next eligible date, the user's mapping is
+     * reflected automatically in the reference, while the person may always
+     * skip, rest or choose an easier amount.
+     *
+     * Three distinct easy completed sessions can trigger a one-series option,
+     * after seven calendar days at minimum and with a three-series ceiling.
+     * Never propose increasing sets AND reps at the same time.
      */
     public static Suggestion review(ExerciseVariant selected, int category,
                                     LocalDate nextDay, List<Observation> history,
@@ -117,69 +142,98 @@ public final class VolumeProgressionEngine {
         Objects.requireNonNull(selected, "selected");
         Objects.requireNonNull(nextDay, "nextDay");
         Objects.requireNonNull(history, "history");
-        if (category < 0 || category > 4) {
+        if (category < 0 || category > 4)
             throw new IllegalArgumentException("Categoría inválida");
-        }
         if (pausedOrInterrupted) {
             return new Suggestion(Status.PAUSED, 0, 0, 0, 0,
-                    "Categoría en pausa o con interrupción reciente: no hay progresión de volumen.");
+                    "Pausa o interrupción: no se generan aumentos ni objetivos obligatorios.");
         }
+
         ArrayList<Observation> matching = new ArrayList<>();
-        boolean recoveryAlert = false;
+        boolean recentHighOrInterrupted = false;
         for (Observation entry : history) {
             if (entry == null || entry.category != category
                     || !entry.day.isBefore(nextDay)
                     || entry.day.isBefore(nextDay.minusDays(21))) continue;
             if (!entry.day.isBefore(nextDay.minusDays(7))
-                    && (entry.effort >= 7 || entry.interrupted)) recoveryAlert = true;
-            if (entry.variantId.equals(selected.id())
+                    && (entry.effort >= 8 || entry.interrupted))
+                recentHighOrInterrupted = true;
+            if (entry.completed && !entry.interrupted
+                    && entry.variantId.equals(selected.id())
                     && entry.typeId.equals(selected.typeId())
-                    && entry.technicalLevel == selected.difficulty()) {
+                    && entry.technicalLevel == selected.difficulty())
                 matching.add(entry);
-            }
         }
         matching.sort(Comparator.comparing((Observation o) -> o.day).reversed());
         if (matching.isEmpty()) {
-            return new Suggestion(recoveryAlert ? Status.RECOVERY_PRIORITY : Status.NO_HISTORY,
+            return new Suggestion(recentHighOrInterrupted
+                    ? Status.RECOVERY_PRIORITY : Status.NO_HISTORY,
                     0, 0, 0, 0,
-                    recoveryAlert ? "Esfuerzo reciente alto en esta categoría: priorizar recuperación."
-                            : "Variante sin volumen comparable registrado: no se inventa un objetivo.");
+                    recentHighOrInterrupted
+                    ? "Esfuerzo reciente alto en esta categoría; se prioriza recuperación."
+                    : "No hay volumen completado comparable para esta variante.");
         }
+
         Observation recent = matching.get(0);
-        if (recoveryAlert || recent.effort >= 7 || recent.interrupted) {
-            return new Suggestion(Status.RECOVERY_PRIORITY, recent.sets,
-                    recent.repetitions, recent.sets, recent.repetitions,
-                    "Esfuerzo alto o interrupción reciente: no se propone aumentar el volumen.");
+        int delta = repetitionDelta(recent.effort);
+        if (delta < 0) {
+            return new Suggestion(Status.CALCULATED_DECREASE,
+                    recent.sets, recent.repetitions,
+                    recent.sets, Math.max(1, recent.repetitions + delta),
+                    "La dificultad comunicada reduce automáticamente la referencia "
+                    + "de la siguiente sesión. Descansar sigue disponible.");
         }
-        if (matching.size() >= 2) {
-            Observation prior = matching.get(1);
-            boolean repeatedAndSeparated = recent.completed && prior.completed
-                    && !recent.interrupted && !prior.interrupted
-                    && recent.effort <= 3 && prior.effort <= 3
-                    && recent.sets == prior.sets
-                    && recent.repetitions == prior.repetitions
-                    && ChronoUnit.DAYS.between(prior.day, recent.day) >= 2
-                    && ChronoUnit.DAYS.between(prior.day, nextDay) >= 7;
-            if (repeatedAndSeparated && recent.sets <= 3 && recent.repetitions < 20) {
-                return new Suggestion(Status.OPTIONAL_ONE_REPETITION,
-                        recent.sets, recent.repetitions,
-                        recent.sets, recent.repetitions + 1,
-                        "Dos sesiones completadas y fáciles, separadas en el tiempo: "
-                        + "se puede revisar una repetición adicional por serie. "
-                        + "Solo si se confirma voluntariamente y se mantiene buena técnica.");
-            }
-            if (repeatedAndSeparated && recent.repetitions >= 20) {
-                return new Suggestion(Status.REVIEW_SERIES_WITH_GUIDANCE,
-                        recent.sets, recent.repetitions,
-                        recent.sets, recent.repetitions,
-                        "No se añaden más repeticiones ni series automáticamente. "
-                        + "Revisar alternativas y técnica con orientación adecuada.");
-            }
+        if (recentHighOrInterrupted) {
+            return new Suggestion(Status.RECOVERY_PRIORITY,
+                    recent.sets, recent.repetitions,
+                    recent.sets, recent.repetitions,
+                    "Hubo una sesión reciente difícil: se evita aumentar el volumen.");
         }
-        return new Suggestion(Status.MAINTAIN,
+        if (delta == 0) {
+            return new Suggestion(Status.MAINTAIN,
+                    recent.sets, recent.repetitions,
+                    recent.sets, recent.repetitions,
+                    "Esfuerzo 4–7: conservar la referencia sin cambios.");
+        }
+
+        ArrayList<LocalDate> easyDays = new ArrayList<>();
+        boolean sameVolume = true;
+        LocalDate oldest = recent.day;
+        for (Observation obs : matching) {
+            if (obs.effort > 3 || obs.sets != recent.sets
+                    || obs.repetitions != recent.repetitions)
+                sameVolume = false;
+            if (obs.effort <= 3 && !easyDays.contains(obs.day))
+                easyDays.add(obs.day);
+            if (obs.day.isBefore(oldest)) oldest = obs.day;
+        }
+        boolean eligibleSeries = matching.size() >= 3
+                && easyDays.size() >= 3
+                && sameVolume
+                && ChronoUnit.DAYS.between(oldest, recent.day) >= 7
+                && recent.sets < 3;
+        if (eligibleSeries) {
+            return new Suggestion(Status.CALCULATED_EXTRA_SERIES,
+                    recent.sets, recent.repetitions,
+                    recent.sets + 1, recent.repetitions,
+                    "Tres sesiones fáciles comparables: el motor calcula una serie "
+                    + "adicional como opción revisable, sin imponerla.");
+        }
+
+        final int maxReferenceReps = 20;
+        if (recent.repetitions >= maxReferenceReps) {
+            return new Suggestion(Status.REVIEW_SERIES_WITH_GUIDANCE,
+                    recent.sets, recent.repetitions,
+                    recent.sets, recent.repetitions,
+                    "Límite de referencia alcanzado: revisar técnica y variedad "
+                    + "sin añadir volumen automáticamente.");
+        }
+        int reference = Math.min(maxReferenceReps,
+                recent.repetitions + delta);
+        return new Suggestion(Status.CALCULATED_INCREASE,
                 recent.sets, recent.repetitions,
-                recent.sets, recent.repetitions,
-                "Mantener el volumen registrado. Se requieren sesiones comparables "
-                + "y recuperación suficiente antes de ofrecer cambios opcionales.");
+                recent.sets, reference,
+                "Cambio calculado a partir del esfuerzo, limitado a una "
+                + "referencia opcional; no es una obligación de entrenar.");
     }
 }
