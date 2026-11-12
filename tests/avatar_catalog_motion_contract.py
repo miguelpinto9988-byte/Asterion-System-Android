@@ -171,4 +171,9 @@ if "--samples" in sys.argv:
                  for x in new_exercises]
     },ensure_ascii=False,indent=2),encoding="utf-8")
     print("Saved",out)
+from avatar_completion_progress import summary
+progress=summary()
+assert progress["body_demonstrations_registered"]==len(illustrated)
+assert progress["body_demonstrations_pending"]==1257-len(illustrated)
 print("OK: 1257 variantes, 155 familias, 57 comandos definidos, 20 variantes ilustrativas registradas")
+print("Avance del catálogo corporal:",progress["percent_registered"],"% / pendientes:",progress["body_demonstrations_pending"])
