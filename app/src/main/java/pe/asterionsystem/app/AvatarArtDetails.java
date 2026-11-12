@@ -463,63 +463,70 @@ public final class AvatarArtDetails {
     }
 
     /**
-     * Overhead projection of a prone contact shoe, not a front-view shoe
-     * translated to the floor. The heel is nearest the knee and the toe
-     * touches the far end of the floor projection. No underside/sole bar
-     * is exposed to the camera above the person's back.
+     * Dedicated dorsal foot art for a prone, toe-supported position.
+     *
+     * Critical distinction: the ankle-to-knee shin axis goes AWAY from
+     * the head, whereas the ground-contacting TOE bends TOWARD the head.
+     * The foot orientation comes from the shared root body axis. It must
+     * never be inferred from the direction of the tibia's screen projection.
      */
-    public void drawProneTopSneaker(Canvas c,AvatarKinematics.Point ankle,
-                                   AvatarKinematics.Point knee,
+    public void drawProneTopSneaker(Canvas c,
+                                   AvatarFootOrientation.FootProjection foot,
                                    AvatarPalette palette){
-        if(c==null||ankle==null||knee==null||palette==null)
-            throw new IllegalArgumentException("Shoe pose required");
-        AvatarOrientationRules.BodyFrame frame=AvatarOrientationRules.forPosture(
-                AvatarOrientationRules.Posture.PRONE_GROUND_FACING);
-        if(AvatarOrientationRules.visibleShoeSurface(
-                AvatarOrientationRules.Camera.TOP,frame)
-                !=AvatarOrientationRules.ShoeSurface.UPPER)
-            throw new IllegalStateException("A sole cannot face the overhead camera");
-        float dx=ankle.x-knee.x,dy=ankle.y-knee.y;
-        float distance=(float)Math.hypot(dx,dy);
-        if(!Float.isFinite(distance)||distance<.01f||dy<=0f)
-            throw new IllegalArgumentException("Toe must point away from the knee");
-        c.save();c.translate(ankle.x,ankle.y);
-        c.rotate((float)Math.toDegrees(Math.atan2(dy,dx)-Math.PI/2d));
+        if(c==null||foot==null||palette==null)
+            throw new IllegalArgumentException("Shoe, foot and palette required");
+        foot.requireProneOrientation();
+        c.save();c.translate(foot.ankle.x,foot.ankle.y);
+        c.rotate(foot.angleDegrees);
 
-        // Floor contact is beneath the distal toe, not above the ankle.
-        fill(0x45435A70);
-        c.drawOval(-11f,17f,11f,24f,paint);
-        path.rewind();
-        path.moveTo(-9f,-13f);
-        path.quadTo(0f,-19f,9f,-13f);
-        path.lineTo(11f,8f);
-        path.quadTo(12f,17f,5f,20f);
-        path.quadTo(0f,22f,-5f,20f);
-        path.quadTo(-12f,17f,-11f,8f);
-        path.close();
-        fill(palette.shoe);
+        // Foot ground contact lies under the toe, near the HEAD of the
+        // horizontal figure; upper and tongue remain visible from above.
+        fill(0x30405265);
+        c.drawOval(-10.5f,-22f,10.5f,-16f,paint);
+
+        // Toe/upper are at local NEGATIVE Y. Narrow heel is POSITIVE Y.
+        path.rewind();path.moveTo(-9.2f,12f);
+        path.cubicTo(-11f,8f,-10.7f,-8f,-10.4f,-13f);
+        path.cubicTo(-9.8f,-22f,9.8f,-22f,10.4f,-13f);
+        path.cubicTo(10.7f,-8f,11f,8f,9.2f,12f);
+        path.quadTo(0f,16f,-9.2f,12f);
+        path.close();fill(palette.shoe);c.drawPath(path,paint);
+
+        // A narrow seam outlines the shoe but the outsole is not presented
+        // face-on to the overhead camera.
+        fill(palette.shoeDark);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(.85f);
         c.drawPath(path,paint);
-        // Upper panel and shallow shoe tongue seen from above. No sole face.
+        paint.setStyle(Paint.Style.FILL);
+
+        // Material panel and upward-facing tongue.
         fill(palette.female?0xFF8466B2:0xFF346BA8);
-        path.rewind();
-        path.moveTo(-7f,-9f);
-        path.quadTo(0f,-12f,7f,-9f);
-        path.lineTo(8f,10f);
-        path.quadTo(0f,14f,-8f,10f);
+        path.rewind();path.moveTo(-7f,8.5f);
+        path.lineTo(-8f,-13f);
+        path.quadTo(0f,-17f,8f,-13f);
+        path.lineTo(7f,8.5f);
+        path.quadTo(0f,11f,-7f,8.5f);
         path.close();c.drawPath(path,paint);
-        fill(0xFFD7E5F1);
-        c.drawRoundRect(-4f,-7f,4f,9f,2f,2f,paint);
-        // Identical three lace pattern and paletted accents.
+        fill(0xFFE0ECF6);
+        c.drawRoundRect(-3.8f,-12f,3.8f,6f,2f,2f,paint);
+
+        // Toe cap is towards the head; it is never drawn by the heel.
+        fill(0xFFF1F6FD);
+        c.drawRoundRect(-8.6f,-19.3f,8.6f,-13.8f,3.5f,3.5f,paint);
         for(int i=0;i<3;i++){
-            float y=-4f+4f*i;
-            line(c,-6f,y,6f,y+1f,0xFFF3F8FF,1.1f);
+            float y=-10.5f+4.3f*i;
+            line(c,-6f,y,6f,y+.35f,0xFFF7FAFD,1.1f);
         }
-        fill(0xFFF4F9FF);
-        c.drawOval(-9f,11f,9f,19f,paint);
-        // A narrow contact edge is acceptable; a wide outsole face isn't.
-        line(c,-7f,19f,7f,19f,palette.shoeDark,1.1f);
+
+        // Ankle collar and rear heel counter, distinguishable from toe cap.
+        fill(palette.female?0xFF6A548E:0xFF285C8C);
+        c.drawRoundRect(-8f,8.3f,8f,13.7f,3f,3f,paint);
+        line(c,-6f,11f,6f,11f,0xFFC2D2E5,1f);
+
+        // Small lace/ankle highlight from the lateral palette.
         fill(0xFF7796B4);
-        c.drawRoundRect(-9f,-14f,-5f,-8f,1.5f,1.5f,paint);
+        c.drawRoundRect(-9.8f,5.6f,-7f,12.5f,1.2f,1.2f,paint);
         c.restore();
     }
 
