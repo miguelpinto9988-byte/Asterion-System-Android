@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.LinearLayout;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.activity.ComponentActivity;
@@ -50,7 +51,12 @@ public final class NativeAvatarActivity extends ComponentActivity {
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(dp(14),dp(16),dp(14),dp(16));
         root.setBackgroundColor(light?Color.WHITE:0xFF080808);
-        setContentView(root);
+        // The 400x480 Canvas must retain a legible viewport on small phones;
+        // scroll controls instead of squeezing the demonstration to zero height.
+        ScrollView scroll=new ScrollView(this);
+        scroll.setFillViewport(true);
+        scroll.addView(root,new ScrollView.LayoutParams(-1,-2));
+        setContentView(scroll);
 
         root.addView(text("ASTERION · AVATAR 2D NATIVO",19,true));
         root.addView(text("Animación ilustrativa creada en Java y Canvas. "
@@ -63,7 +69,7 @@ public final class NativeAvatarActivity extends ComponentActivity {
         commandDiagram.setDark(!light);
         commandDiagram.setVisibility(View.GONE);
         visualArea.addView(commandDiagram,new FrameLayout.LayoutParams(-1,-1));
-        root.addView(visualArea,new LinearLayout.LayoutParams(-1,0,1));
+        root.addView(visualArea,new LinearLayout.LayoutParams(-1,dp(448)));
         // NativeAvatarView owns its live, motion-specific accessibility text.
         if(getIntent().hasExtra("variant_id"))avatar.setVisibility(View.INVISIBLE);
 
