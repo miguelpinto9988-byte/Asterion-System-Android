@@ -48,14 +48,15 @@ public final class AvatarExerciseCommandCatalogInstrumentedTest {
                 assertEquals(AvatarExerciseCommandCatalog.Clip.NONE,e.clip);
             }
         }
-        assertEquals(15,illustrated);
-        assertEquals(1242,unreviewed);
+        assertEquals(17,illustrated);
+        assertEquals(1240,unreviewed);
         for(String id:new String[]{"flexion_rodilla_bipeda_v03",
                 "equilibrio_unipodal_v04","caminata_banda_v01","elevacion_lateral_v01",
                 "inclinacion_cervical_suave_v01",
                 "extension_cadera_bipeda_v01","paso_lateral_y_retorno_v01",
                 "puente_gluteo_v01","puente_gluteo_v02",
-                "extension_rodilla_sin_carga_v01","sentadilla_bilateral_v04"}){
+                "extension_rodilla_sin_carga_v01","sentadilla_bilateral_v04",
+                "dorsiflexion_tibial_v01","alcances_tronco_sentado_v02"}){
             assertTrue(profiles.require(id).canIllustrate());
         }
         for(String id:new String[]{"curl_biceps_v01","marcha_v02",
