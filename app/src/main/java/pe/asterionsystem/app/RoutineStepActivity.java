@@ -410,7 +410,7 @@ public final class RoutineStepActivity extends ComponentActivity {
         ExerciseVolumeProfileCatalog.Profile reference=
                 volumeProfiles.require(current);
         reps.setHint(reference.unit==ExerciseVolumeProfileCatalog.Unit.SECONDS
-                ?"Segundos por serie (1 a 180)"
+                ?"Segundos por serie (1 a 3600)"
                 :"Repeticiones por serie (1 a 60)");
         effort.setHint("Esfuerzo percibido (1 a 10)");
         AlertDialog dialog=new AlertDialog.Builder(this)
@@ -436,7 +436,7 @@ public final class RoutineStepActivity extends ComponentActivity {
                     }catch(RuntimeException invalid) {
                         effort.setError("Comprueba las series (1–12), "+
                                 (reference.unit==ExerciseVolumeProfileCatalog.Unit.SECONDS
-                                ?"segundos (1–180)":"repeticiones (1–60)")
+                                ?"segundos (1–3600)":"repeticiones (1–60)")
                                 +" y esfuerzo (1–10).");
                     }
                 }));
@@ -493,7 +493,7 @@ public final class RoutineStepActivity extends ComponentActivity {
                         +seconds+" segundos");
             return;
         }
-        if(seconds<1||seconds>180 || exerciseTimerButton==null)return;
+        if(seconds<1||seconds>3600 || exerciseTimerButton==null)return;
         final Button display=exerciseTimerButton;
         exerciseTimer=new CountDownTimer(seconds*1000L,1000L) {
             @Override public void onTick(long remainingMillis) {
