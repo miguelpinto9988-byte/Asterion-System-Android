@@ -30,12 +30,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.json.JSONObject;
 import pe.asterionsystem.app.data.AssetExerciseCatalogRepository;
+import pe.asterionsystem.app.data.AssetExerciseVolumeProfileRepository;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
 import pe.asterionsystem.core.engine.missions.RoutineGenerator;
 import pe.asterionsystem.core.engine.missions.SessionInterruptionPolicy;
 import pe.asterionsystem.core.engine.progression.VolumeProgressionEngine;
+import pe.asterionsystem.core.engine.progression.ExerciseVolumeProfileCatalog;
 
 /**
  * Guided, resumable session for daily tasks or an ACTIVE opt-in Monarca cycle.
@@ -47,6 +49,7 @@ import pe.asterionsystem.core.engine.progression.VolumeProgressionEngine;
 public final class RoutineStepActivity extends ComponentActivity {
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private List<ExerciseVariant> exercises=Collections.emptyList();
+    private ExerciseVolumeProfileCatalog volumeProfiles;
     private final Map<String,Integer> categoriesById=new HashMap<>();
     private String kind;
     private int requestedMinutes;
@@ -64,6 +67,8 @@ public final class RoutineStepActivity extends ComponentActivity {
     private boolean closed;
     private float density;
     private CountDownTimer restTimer;
+    private CountDownTimer exerciseTimer;
+    private Button exerciseTimerButton;
 
     private TextView title;
     private TextView subtitle;
@@ -138,6 +143,8 @@ public final class RoutineStepActivity extends ComponentActivity {
         worker.execute(()->{
             try {
                 ExerciseCatalog catalog=new AssetExerciseCatalogRepository(this).load();
+                ExerciseVolumeProfileCatalog references=
+                        new AssetExerciseVolumeProfileRepository(this).load(catalog);
                 Map<String,String> familyForType=new HashMap<>();
                 Map<String,Integer> categoryForFamily=new HashMap<>();
                 for(ExerciseType type:catalog.types())
@@ -224,6 +231,7 @@ public final class RoutineStepActivity extends ComponentActivity {
                         return;
                     }
                     exercises=validated;
+                    volumeProfiles=references;
                     token=RoutineSessionStore.token(kind,planDate,exercises);
                     RoutineSessionStore.State state=RoutineSessionStore.read(
                             this,token,exercises.size());
@@ -255,6 +263,11 @@ public final class RoutineStepActivity extends ComponentActivity {
     }
 
     private void render() {
+        if(exerciseTimer!=null) {
+            exerciseTimer.cancel();
+            exerciseTimer=null;
+            exerciseTimerButton=null;
+        }
         if(exercises.isEmpty())return;
         if(SessionSafetyStore.globallyPaused(this)
                 ||(("daily".equals(kind)||"custom".equals(kind))
@@ -327,30 +340,44 @@ public final class RoutineStepActivity extends ComponentActivity {
         addText("Elige tu ritmo. Puedes parar, descansar o no terminar "
                 +"si algo resulta incómodo.",13);
         int movementCategory=effectiveCategory();
-        if(movementCategory>=0 && current.difficulty()<=3) {
-            java.util.List<VolumeProgressionEngine.Observation> previous=
+        if(movementCategory>=0 && volumeProfiles!=null) {
+            ExerciseVolumeProfileCatalog.Profile volumeProfile=
+                    volumeProfiles.require(current);
+            List<VolumeProgressionEngine.Observation> previous=
                     VolumeProgressStore.progressionHistoryForCategory(
                             this,movementCategory,planDate);
-            VolumeProgressionEngine.Suggestion suggestion=VolumeProgressionEngine.review(
-                    current,movementCategory,planDate,previous,
-                    SessionSafetyStore.recentInterruption(
-                            this,movementCategory,planDate,7));
+            VolumeProgressionEngine.Suggestion suggestion=
+                    VolumeProgressionEngine.review(
+                            current,movementCategory,planDate,previous,
+                            SessionSafetyStore.recentInterruption(
+                                    this,movementCategory,planDate,7),
+                            volumeProfile);
             if(VolumeProgressStore.restartedOn(
                     this,movementCategory,current.id(),planDate)) {
-                addText("Cambio de variante o técnica: se reinicia el "
-                        +"volumen acumulado. Registra un nuevo punto de partida "
-                        +"sin heredar objetivos del movimiento anterior.",13);
+                addText("Nueva etapa: se reinició el volumen al cambiar "
+                        +"ejercicio o nivel técnico. No se heredaron "
+                        +"repeticiones ni segundos.",13);
             }
             if(suggestion.previousSets>0) {
-                addText("Volumen anterior: "+suggestion.previousSets+" series × "
-                        +suggestion.previousRepetitions+" repeticiones. "
+                addText("Volumen anterior: "+
+                        volumeProfile.display(suggestion.previousSets,
+                                suggestion.previousQuantity)+". "
                         +suggestion.explanation,13);
-                if(suggestion.offeredSets!=suggestion.previousSets
-                        || suggestion.offeredRepetitions!=suggestion.previousRepetitions) {
-                    addText("Siguiente referencia calculada (NO obligatoria): "
-                            +suggestion.offeredSets+" series × "
-                            +suggestion.offeredRepetitions+" repeticiones.",13);
-                }
+            }
+            if(suggestion.offeredSets>0) {
+                addText((suggestion.previousSets>0
+                        ?"Siguiente referencia calculada"
+                        :"Referencia inicial propia de este ejercicio")
+                        +" (NO obligatoria): "
+                        +volumeProfile.display(suggestion.offeredSets,
+                                suggestion.offeredQuantity)+".",13);
+            }
+            if(volumeProfile.unit==ExerciseVolumeProfileCatalog.Unit.SECONDS
+                    && suggestion.offeredQuantity>0) {
+                int duration=suggestion.offeredQuantity;
+                exerciseTimerButton=addAction(
+                        "Iniciar contador opcional de "+duration+" segundos",
+                        ()->startOrCancelExerciseTimer(duration));
             }
             addAction("Completar y registrar mi volumen (opcional)",
                     ()->requestVolume(current,movementCategory));
@@ -380,7 +407,11 @@ public final class RoutineStepActivity extends ComponentActivity {
             form.addView(field,new LinearLayout.LayoutParams(-1,dp(56)));
         }
         sets.setHint("Series realizadas (1 a 12)");
-        reps.setHint("Repeticiones por serie (1 a 60)");
+        ExerciseVolumeProfileCatalog.Profile reference=
+                volumeProfiles.require(current);
+        reps.setHint(reference.unit==ExerciseVolumeProfileCatalog.Unit.SECONDS
+                ?"Segundos por serie (1 a 180)"
+                :"Repeticiones por serie (1 a 60)");
         effort.setHint("Esfuerzo percibido (1 a 10)");
         AlertDialog dialog=new AlertDialog.Builder(this)
                 .setTitle("Registro voluntario · "+current.name())
@@ -394,17 +425,19 @@ public final class RoutineStepActivity extends ComponentActivity {
                 .setOnClickListener(v->{
                     try {
                         int performedSets=Integer.parseInt(sets.getText().toString().trim());
-                        int performedReps=Integer.parseInt(reps.getText().toString().trim());
+                        int performedValue=Integer.parseInt(reps.getText().toString().trim());
                         int perceivedEffort=Integer.parseInt(effort.getText().toString().trim());
                         VolumeProgressionEngine.Observation record=
                                 new VolumeProgressionEngine.Observation(
                                 planDate,currentCategory,current.id(),current.typeId(),
-                                current.difficulty(),performedSets,performedReps,
-                                perceivedEffort,true,false);
+                                current.difficulty(),performedSets,performedValue,
+                                perceivedEffort,true,false,reference.unit);
                         if(completeCurrent(current,record))dialog.dismiss();
                     }catch(RuntimeException invalid) {
-                        effort.setError("Introduce series (1–12), repeticiones (1–60) "
-                                +"y esfuerzo (1–10) válidos.");
+                        effort.setError("Comprueba las series (1–12), "+
+                                (reference.unit==ExerciseVolumeProfileCatalog.Unit.SECONDS
+                                ?"segundos (1–180)":"repeticiones (1–60)")
+                                +" y esfuerzo (1–10).");
                     }
                 }));
         dialog.show();
@@ -445,6 +478,34 @@ public final class RoutineStepActivity extends ComponentActivity {
 
     private void save() {
         RoutineSessionStore.save(this,token,index,round,extraSeries);
+    }
+
+    /**
+     * Optional exercise-specific timer. It never marks a series complete,
+     * awards XP or starts another round automatically. Separate from rest.
+     */
+    private void startOrCancelExerciseTimer(int seconds) {
+        if(exerciseTimer!=null) {
+            exerciseTimer.cancel();
+            exerciseTimer=null;
+            if(exerciseTimerButton!=null)
+                exerciseTimerButton.setText("Iniciar contador opcional de "
+                        +seconds+" segundos");
+            return;
+        }
+        if(seconds<1||seconds>180 || exerciseTimerButton==null)return;
+        final Button display=exerciseTimerButton;
+        exerciseTimer=new CountDownTimer(seconds*1000L,1000L) {
+            @Override public void onTick(long remainingMillis) {
+                display.setText("Tiempo: "+((remainingMillis+999L)/1000L)
+                        +" segundos · pulsar para cancelar");
+            }
+            @Override public void onFinish() {
+                exerciseTimer=null;
+                display.setText("Contador finalizado · sin registro automático");
+            }
+        };
+        exerciseTimer.start();
     }
 
     private void startOrCancelRest() {
@@ -604,6 +665,7 @@ public final class RoutineStepActivity extends ComponentActivity {
     @Override protected void onDestroy() {
         closed=true;
         if(restTimer!=null){restTimer.cancel();restTimer=null;}
+        if(exerciseTimer!=null){exerciseTimer.cancel();exerciseTimer=null;}
         worker.shutdownNow();
         super.onDestroy();
     }
