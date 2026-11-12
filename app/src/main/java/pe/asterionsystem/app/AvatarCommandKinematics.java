@@ -41,7 +41,7 @@ public final class AvatarCommandKinematics {
 
         switch(command) {
             case STEP_UP:
-                ax+=35f*s;ay-=54f*s;hx+=4f*s;hy-=2f*s;
+                ax+=35f*s;ay-=54f*s;hx+=4f*s;hy+=3f*s;
                 nearAngle+=.35f*s;farAngle+=.16f*s;break;
             case CALF_RAISE:
                 hy-=8f*s;ay-=8f*s;fy-=8f*s;
