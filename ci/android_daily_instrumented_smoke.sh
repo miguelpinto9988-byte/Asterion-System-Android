@@ -93,5 +93,5 @@ RESET_TEST="pe.asterionsystem.app.VolumeProgressResetPersistenceTest"
 adb shell am instrument -w -e class "$RESET_TEST" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
   | tee "$OUT/volume-checkpoint-reset.txt"
-grep -q 'OK (2 tests)' "$OUT/volume-checkpoint-reset.txt"
+grep -q 'OK (3 tests)' "$OUT/volume-checkpoint-reset.txt"
 echo "PASS: checkpoint volume resets are persisted and historical records remain intact."
