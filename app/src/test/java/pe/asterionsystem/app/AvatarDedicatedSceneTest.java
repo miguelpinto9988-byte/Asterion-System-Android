@@ -70,6 +70,41 @@ public final class AvatarDedicatedSceneTest {
         assertTrue(peak.pose.ankle.y<start.pose.ankle.y-40f);
         assertEquals(0f,peak.supportFoot.distance(start.supportFoot),EPS);
     }
+    @Test public void toeLiftOnlyRotatesTheFeetAndKeepsSeatedJointsStable(){
+        AvatarDedicatedScene start=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_TOE_RAISE,0f,BODY);
+        AvatarDedicatedScene max=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_TOE_RAISE,.49f,BODY);
+        AvatarDedicatedScene end=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_TOE_RAISE,1f,BODY);
+        assertTrue(max.chairSeatContact);
+        assertFalse(max.floorBackContact);
+        assertEquals(22f,max.toeRaiseDegrees,.15f);
+        assertEquals(0f,start.toeRaiseDegrees,EPS);
+        assertEquals(0f,end.toeRaiseDegrees,EPS);
+        assertEquals(0f,start.pose.hip.distance(max.pose.hip),EPS);
+        assertEquals(0f,start.pose.shoulder.distance(max.pose.shoulder),EPS);
+        assertEquals(0f,start.pose.knee.distance(max.pose.knee),EPS);
+        assertEquals(0f,start.pose.ankle.distance(max.pose.ankle),EPS);
+        assertEquals(0f,start.pose.farAnkle.distance(max.pose.farAnkle),EPS);
+    }
+    @Test public void seatedForwardReachRotatesTrunkAroundFixedHipAndHoldsBothFeet(){
+        AvatarDedicatedScene start=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_FORWARD_REACH,0f,BODY);
+        AvatarDedicatedScene max=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_FORWARD_REACH,.49f,BODY);
+        assertTrue(max.chairSeatContact);
+        assertEquals(0f,start.pose.hip.distance(max.pose.hip),EPS);
+        assertEquals(0f,start.pose.farHip.distance(max.pose.farHip),EPS);
+        assertEquals(0f,start.pose.ankle.distance(max.pose.ankle),EPS);
+        assertEquals(0f,start.pose.farAnkle.distance(max.pose.farAnkle),EPS);
+        assertEquals(0f,start.pose.knee.distance(max.pose.knee),EPS);
+        assertTrue(max.pose.shoulder.x>start.pose.shoulder.x+32f);
+        assertTrue(max.pose.wrist.x>start.pose.wrist.x+100f);
+        assertEquals(BODY.torso,
+                max.pose.hip.distance(max.pose.shoulder),EPS);
+        assertEquals(0f,max.toeRaiseDegrees,EPS);
+    }
     @Test public void invalidSpecsAndPhasesCannotProduceFakeScenes(){
         assertThrows(IllegalArgumentException.class,()->
                 AvatarDedicatedScene.at(null,.5f,BODY));
