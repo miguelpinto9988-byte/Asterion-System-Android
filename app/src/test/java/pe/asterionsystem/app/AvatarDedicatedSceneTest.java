@@ -154,6 +154,51 @@ public final class AvatarDedicatedSceneTest {
         assertEquals(0f,start.pose.ankle.distance(second.pose.ankle),EPS);
         assertEquals(0f,start.pose.farAnkle.distance(end.pose.farAnkle),EPS);
     }
+    @Test public void chairHeelRaiseKeepsForefootContactAndRigidBones(){
+        for(AvatarDedicatedScene.Kind kind:new AvatarDedicatedScene.Kind[]{
+                AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE,
+                AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE_GENTLE}){
+            AvatarDedicatedScene start=AvatarDedicatedScene.at(kind,0f,BODY);
+            AvatarDedicatedScene peak=AvatarDedicatedScene.at(kind,.49f,BODY);
+            AvatarDedicatedScene end=AvatarDedicatedScene.at(kind,1f,BODY);
+            assertTrue(peak.chairSeatContact);
+            assertEquals(0f,start.pose.hip.distance(peak.pose.hip),EPS);
+            assertEquals(0f,start.nearToeContact.distance(peak.nearToeContact),EPS);
+            assertEquals(0f,start.farToeContact.distance(peak.farToeContact),EPS);
+            assertTrue(peak.pose.ankle.y<start.pose.ankle.y-7f);
+            assertTrue(peak.pose.farAnkle.y<start.pose.farAnkle.y-7f);
+            assertTrue(peak.heelRaiseDegrees>10f);
+            assertEquals(0f,start.pose.ankle.distance(end.pose.ankle),EPS);
+            assertEquals(0f,start.pose.farAnkle.distance(end.pose.farAnkle),EPS);
+            assertEquals(0f,end.heelRaiseDegrees,EPS);
+        }
+        AvatarDedicatedScene gentle=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE_GENTLE,.49f,BODY);
+        AvatarDedicatedScene normal=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE,.49f,BODY);
+        assertTrue(normal.heelRaiseDegrees>gentle.heelRaiseDegrees+9f);
+    }
+    @Test public void unilateralToeRaiseKeepsFarShoeAndChairUnchanged(){
+        AvatarDedicatedScene start=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_TOE_RAISE_SINGLE,0f,BODY);
+        AvatarDedicatedScene peak=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.SEATED_TOE_RAISE_SINGLE,.49f,BODY);
+        assertEquals(22f,peak.toeRaiseDegrees,.1f);
+        assertEquals(0f,start.pose.farAnkle.distance(peak.pose.farAnkle),EPS);
+        assertEquals(0f,start.pose.ankle.distance(peak.pose.ankle),EPS);
+        assertEquals(0f,start.pose.knee.distance(peak.pose.knee),EPS);
+        assertTrue(peak.chairSeatContact);
+    }
+    @Test public void bridgeBandHasMatAndCorrectTwoFootContacts(){
+        AvatarDedicatedScene normal=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BASIC,.49f,BODY);
+        AvatarDedicatedScene band=AvatarDedicatedScene.at(
+                AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BAND,.49f,BODY);
+        assertTrue(band.floorBackContact);
+        assertEquals(0f,normal.pose.hip.distance(band.pose.hip),EPS);
+        assertEquals(0f,normal.pose.ankle.distance(band.pose.ankle),EPS);
+        assertEquals(0f,normal.pose.farAnkle.distance(band.pose.farAnkle),EPS);
+    }
     @Test public void invalidSpecsAndPhasesCannotProduceFakeScenes(){
         assertThrows(IllegalArgumentException.class,()->
                 AvatarDedicatedScene.at(null,.5f,BODY));
