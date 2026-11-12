@@ -139,6 +139,18 @@ public final class AvatarOrganicVolume {
         paint.setColor(fill);
         paint.setAlpha(255);
         canvas.drawPath(contour,paint);
+        // A deeply folded joint can cause the inner contour to overlap
+        // itself, briefly leaving a pixel-sized gap at the mathematical
+        // hinge. Seal only that INTERIOR seam with a short rounded ribbon,
+        // smaller than the skin radius. This is not a separate elbow disk.
+        if(m.bendDegrees>88f){
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            paint.setStrokeWidth(Math.min(m.bridgeRadius*1.32f,10.5f));
+            canvas.drawLine(joint.x-u1x*2.2f,joint.y-u1y*2.2f,
+                    joint.x+u2x*2.2f,joint.y+u2y*2.2f,paint);
+            paint.setStyle(Paint.Style.FILL);
+        }
     }
 
     private static void requirePoint(AvatarKinematics.Point p){
