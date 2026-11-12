@@ -257,11 +257,18 @@ public final class NativeAvatarActivity extends ComponentActivity {
                         commandDiagram.setPlaying(false);
                         commandDiagram.setVisibility(View.GONE);
                         if(entry.camera==AvatarMultiViewKinematics.ViewMode.SIDE){
-                            AvatarMotionEngine.Motion motion=entry.clip.sideMotion();
-                            avatar.setMotion(motion);
-                            motionPicker.setSelection(motion.ordinal());
-                            avatar.setViewMode(entry.camera);
-                            scenePicker.setSelection(entry.camera.ordinal());
+                            AvatarDedicatedScene.Kind dedicated=entry.clip.dedicatedScene();
+                            if(dedicated!=null){
+                                avatar.setViewMode(entry.camera);
+                                avatar.setDedicatedScene(dedicated);
+                                scenePicker.setSelection(entry.camera.ordinal());
+                            }else{
+                                AvatarMotionEngine.Motion motion=entry.clip.sideMotion();
+                                avatar.setMotion(motion);
+                                motionPicker.setSelection(motion.ordinal());
+                                avatar.setViewMode(entry.camera);
+                                scenePicker.setSelection(entry.camera.ordinal());
+                            }
                         }else{
                             avatar.setViewMode(entry.camera);
                             scenePicker.setSelection(entry.camera.ordinal());
@@ -362,7 +369,9 @@ public final class NativeAvatarActivity extends ComponentActivity {
             return;
         }
         if(play!=null)play.setText(avatar.isPlaying()?"Pausar":"Reproducir");
-        String scene=avatar.getViewMode()==AvatarMultiViewKinematics.ViewMode.SIDE
+        String scene=avatar.getDedicatedScene()!=null
+                ?avatar.getContentDescription().toString():
+                avatar.getViewMode()==AvatarMultiViewKinematics.ViewMode.SIDE
                 ?avatar.getMotion().label:avatar.getViewMode().title;
         if(status!=null)status.setText((selectedEntry==null?"":selectedEntry.variantId+" · ")
                 +(avatar.isFemale()?"Avatar morado":"Avatar azul")
