@@ -43,7 +43,9 @@ assert "shouldPlay()" in controller
 assert "updateAccessibilityDescription()" in anim
 assert 'new Intent(this,NativeAvatarActivity.class)' in routine
 assert 'new Intent(this,NativeAvatarActivity.class)' in step
-assert "contains(\"sentadilla\")" in step
+assert 'putExtra("variant_id",current.id())' in step
+assert "AvatarCommandCatalog" in activity
+assert "AvatarCommandKinematics.pose(" in anim
 assert '<activity android:name=".NativeAvatarActivity" android:exported="false" />' in manifest
 assert 'NativeAvatarActivity' not in home
 # No third-party animation SDK, image/video API, permission or network.
