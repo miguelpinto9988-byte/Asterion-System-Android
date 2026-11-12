@@ -17,7 +17,8 @@ public final class AvatarJointTimeline {
         LEFT_HIP("cadera izquierda, flexión"),RIGHT_HIP("cadera derecha, flexión"),
         LEFT_HIP_SIDE("cadera izquierda, abducción"),RIGHT_HIP_SIDE("cadera derecha, abducción"),
         LEFT_KNEE("rodilla izquierda"),RIGHT_KNEE("rodilla derecha"),
-        LEFT_ANKLE("tobillo izquierdo"),RIGHT_ANKLE("tobillo derecho");
+        LEFT_ANKLE("tobillo izquierdo"),RIGHT_ANKLE("tobillo derecho"),
+        NECK_SIDE("cuello, inclinación lateral");
         public final String label;
         Joint(String label){this.label=label;}
     }
@@ -29,7 +30,8 @@ public final class AvatarJointTimeline {
         TRUNK_FLEXION,TRUNK_EXTENSION,TRUNK_ROTATION,CORE_BRACE,QUADRUPED,
         TRUNK_REACH,BREATHING,LATERAL_BRACE,BALANCE,COORDINATION,HIP_MOBILITY,
         SPINE_MOBILITY,SHOULDER_MOBILITY,ANKLE_MOBILITY,NECK_MOBILITY,STRETCH,
-        WALK,RUN,BIKE,ROW,ELLIPTICAL,AEROBIC_STEP,DANCE,SWIM,CARDIO_SPORT
+        WALK,RUN,BIKE,ROW,ELLIPTICAL,AEROBIC_STEP,DANCE,SWIM,CARDIO_SPORT,
+        LATERAL_STEP,NECK_SIDE_TILT
     }
     private final Command command;
     private final EnumMap<Joint,Float> targets=new EnumMap<>(Joint.class);
@@ -102,6 +104,10 @@ public final class AvatarJointTimeline {
             case DANCE:legs(28,33,12);arms(51,15,3);break;
             case SWIM:legs(24,11,12);arms(72,16,5);break;
             case CARDIO_SPORT:legs(41,49,12);arms(39,32,7);break;
+            case LATERAL_STEP:
+                one(Joint.RIGHT_HIP_SIDE,25);one(Joint.RIGHT_KNEE,20);
+                one(Joint.RIGHT_ANKLE,8);break;
+            case NECK_SIDE_TILT:one(Joint.NECK_SIDE,12);break;
             default:throw new IllegalStateException("Comando sin trayectoria");
         }
     }
