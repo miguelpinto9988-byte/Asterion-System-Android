@@ -154,6 +154,8 @@ public final class AvatarDedicatedSceneRenderer {
                 ?"PERFIL · TALONES SENTADO":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_HEEL_RAISE_GENTLE
                 ?"PERFIL · TALONES SUAVES SENTADO":
+                scene.kind==AvatarDedicatedScene.Kind.SEATED_HEEL_TOE_ALTERNATION
+                ?"PERFIL · ALTERNAR TALÓN Y PUNTA":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_FORWARD_REACH
                 ?"PERFIL · ALCANCE FRONTAL SENTADO":
                 scene.kind==AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION_PAUSE
