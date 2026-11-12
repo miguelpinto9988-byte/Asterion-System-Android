@@ -35,6 +35,8 @@ import pe.asterionsystem.core.engine.missions.MissionPlanner;
 import pe.asterionsystem.core.engine.missions.MissionDifficultyMixPolicy;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
+import pe.asterionsystem.core.engine.progression.CoordinatedTrainingEngine;
+import pe.asterionsystem.core.engine.progression.VolumeProgressionEngine;
 import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
 
 /**
@@ -163,6 +165,13 @@ public final class MissionsActivity extends ComponentActivity {
                 && SessionSafetyStore.lighterToday(this,category,today);
         int previousRating=category==CategoryEffortPolicy.REST ? 0
                 :softer?9:MissionTrackingStore.latestCategoryRating(this,category,today);
+        // Volume history is category-isolated, and only PRIOR days count.
+        List<VolumeProgressionEngine.Observation> volumeHistory=
+                category==CategoryEffortPolicy.REST
+                ?java.util.Collections.emptyList()
+                :VolumeProgressStore.previousForCategory(this,category,today);
+        previousRating=Math.max(previousRating,
+                VolumeProgressionEngine.latestCategoryEffort(category,today,volumeHistory));
         CategoryEffortPolicy.Decision decision=CategoryEffortPolicy.evaluate(
                 category,previousRating,profile.dailyLimit);
         MissionPlanner.Profile dayProfile=decision.preferSimplerTechnique
@@ -205,11 +214,12 @@ public final class MissionsActivity extends ComponentActivity {
                     ?java.util.Collections.emptyList()
                     :MissionTrackingStore.recentCompletedForCategory(
                             this,catalog,category,today);
-            proposal=planner.daily(
-                    dayProfile,today,decision,previousVariants,
-                    weekly!=null && weekly.rotateEquivalentVariant()
-                            && !recentlyInterrupted,
-                    recentCompleted,levelState.phase);
+            // Coordinator delegates selection to planner.daily(...) and
+            // feeds prior volume effort into the same category decision.
+            proposal=new CoordinatedTrainingEngine(planner).daily(
+                    profile,today,previousRating,previousVariants,recentCompleted,
+                    weekly!=null && weekly.rotateEquivalentVariant(),
+                    levelState.phase,volumeHistory,recentlyInterrupted).mission;
             if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
                 DailyMissionStore.write(this,today,profile,catalog,
                         proposal.candidates());
@@ -256,6 +266,20 @@ public final class MissionsActivity extends ComponentActivity {
         int index=1;
         for(ExerciseVariant entry:dayProposal.candidates()) {
             dailyExerciseRow(index++,entry,today,category,dayProposal);
+            VolumeProgressionEngine.Suggestion volume=VolumeProgressionEngine.review(
+                    entry,category,today,volumeHistory,
+                    recentlyInterrupted || decision.preferSimplerTechnique);
+            if(volume.previousSets>0) {
+                String comparison=volume.previousSets+" series × "
+                        +volume.previousRepetitions+" repeticiones registradas";
+                if(volume.requiresConsent()) {
+                    comparison+="; opción voluntaria: "+volume.offeredSets
+                            +" series × "+volume.offeredRepetitions+" repeticiones.";
+                } else comparison+="; sin aumento automático.";
+                paragraph(comparison+" "+volume.explanation);
+            } else if(volume.status==VolumeProgressionEngine.Status.RECOVERY_PRIORITY) {
+                paragraph(volume.explanation);
+            }
         }
         action("Ver ventana de misión diaria",()->previewMissionPopup(
                 "Misiones de hoy",dayProposal.candidates(),
