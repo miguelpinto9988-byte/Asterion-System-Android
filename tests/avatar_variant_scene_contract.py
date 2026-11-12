@@ -16,7 +16,7 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--frames',type=Path)
     args=parser.parse_args()
     rows=recipes()
-    assert len(rows)==51
+    assert len(rows)==81
     assert len({r[0] for r in rows})==len(rows)
     def load(path):
         with path.open() as f:return {r['variant_id']:r for r in csv.DictReader(f,delimiter='\t')}
@@ -28,10 +28,13 @@ def main():
         assert level==int(tax[id]['level']) and supervision==(tax[id]['supervision']=='1'),id
         assert catalog[id]['clip']=='AUTHORED_VARIANT' and catalog[id]['status']=='ILLUSTRATIVE',id
         assert 0<amp<=85 and pattern in ('BOTH','NEAR','ALTERNATING'),id
-        assert (posture=='SEATED')==('silla' in equipment.split('+')),id
+        assert (posture=='SEATED')==('silla' in equipment.split('+') and prop!='CHAIR_SUPPORT'),id
         required={'DUMBBELLS':'mancuerna','GOBLET':'mancuerna','FRONT_DUMBBELLS':'mancuerna',
                   'BAR':'barra','BAR_BACK':'barra','BAR_FRONT':'barra',
-                  'BAND_FEET':'banda','BAND_ANCHOR':'banda','TOWEL':'toalla'}
+                  'BAND_FEET':'banda','BAND_ANCHOR':'banda','TOWEL':'toalla',
+                  'HAMMER_DUMBBELLS':'mancuerna','KETTLEBELL':'kettlebell',
+                  'BAND_SHOULDERS':'banda','BAND_KNEE':'banda','WALL':'pared',
+                  'CHAIR_SUPPORT':'silla'}
         assert set(equipment.split('+'))-{'sin_equipo','silla'}==({required[prop]} if prop!='NONE' else set()),id
     if args.frames:
         expected={f'{palette}_{r[0]}_{phase}.png' for r in rows
@@ -42,5 +45,5 @@ def main():
             data=(args.frames/name).read_bytes()
             assert data.startswith(b'\x89PNG\r\n\x1a\n') and len(data)>2000,name
     print(f'OK: {len(rows)} authored recipes, exact equipment/metadata'+
-          (', 510 native Android frames' if args.frames else ''))
+          (', 810 native Android frames' if args.frames else ''))
 if __name__=='__main__':main()
