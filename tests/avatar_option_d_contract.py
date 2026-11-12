@@ -14,9 +14,12 @@ for token in ("renderer.draw(canvas,","setBodySpec(","AvatarPalette.BLUE",
               "AvatarPalette.PURPLE","postInvalidateOnAnimation()"):
     assert token in view,token
 for token in ("drawTorso(", "drawLimb(", "drawJoint(", "path.cubicTo(",
-              "Paint.ANTI_ALIAS_FLAG","Paint.Join.ROUND","torsoPoint(",
+              "Paint.ANTI_ALIAS_FLAG","torsoPoint(",
               "body.thighWidth","body.waistHalfWidth", "palette.garmentShade"):
     assert token in renderer,token
+assert "contours.segment(c,a,b,wa,wb,fill)" in renderer
+soft=read("AvatarSoftContour.java")
+assert "Paint.ANTI_ALIAS_FLAG" in soft and "cubicTo(" in soft
 for token in ("public static Pose squat(float depth,AvatarBodySpec spec)",
               "kneeForward(", "elbowBelow(", "spec.upperArm","spec.lowerLeg"):
     assert token in kin,token
