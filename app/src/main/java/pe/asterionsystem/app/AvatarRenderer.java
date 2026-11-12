@@ -18,6 +18,7 @@ public final class AvatarRenderer {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path path=new Path();
     private final AvatarArtDetails details=new AvatarArtDetails();
+    private final AvatarSoftContour contours=new AvatarSoftContour();
     private final LinearGradient blueFabric=new LinearGradient(130f,0f,270f,0f,
             new int[]{0xFF163C78,0xFF397DBE,0xFF1A427A},
             null,Shader.TileMode.CLAMP);
@@ -71,7 +72,8 @@ public final class AvatarRenderer {
                 palette.farLegColor);
         drawLimb(canvas,p.farKnee,p.farAnkle,body.calfWidth*.92f,body.calfWidth*.62f,
                 palette.female?0xFF514D70:0xFF293951);
-        drawJoint(canvas,p.farKnee,11.5f,palette.female?0xFF514D70:0xFF293951);
+        drawJoint(canvas,p.farKnee,body.thighWidth*.72f,
+                body.calfWidth*.92f,palette.female?0xFF514D70:0xFF293951);
         details.drawDenimLeg(canvas,p.farHip,p.farKnee,p.farAnkle,true);
         // Rear upper arm begins inside the back of the jersey; a short
         // sleeve hides the shoulder pivot instead of a protruding cylinder.
@@ -81,7 +83,8 @@ public final class AvatarRenderer {
                 body.upperArmWidth*.67f,body.upperArmWidth*.58f,palette.skinShade);
         drawLimb(canvas,p.farElbow,p.farWrist,body.forearmWidth,
                 body.forearmWidth*.65f,palette.skinShade);
-        drawJoint(canvas,p.farElbow,8f,palette.skinShade);
+        drawJoint(canvas,p.farElbow,body.upperArmWidth*.58f,
+                body.forearmWidth,palette.skinShade);
         details.drawHand(canvas,p.farWrist,palette.skinShade);
 
         // Front leg: continuous rounded leg silhouettes under sportswear.
@@ -90,7 +93,8 @@ public final class AvatarRenderer {
                 palette.legColor);
         drawLimb(canvas,p.knee,p.ankle,body.calfWidth,body.calfWidth*.67f,
                 palette.legColor);
-        drawJoint(canvas,p.knee,12.5f,palette.legColor);
+        drawJoint(canvas,p.knee,body.thighWidth*.73f,
+                body.calfWidth,palette.legColor);
         details.drawDenimLeg(canvas,p.hip,p.knee,p.ankle,false);
         details.drawPelvis(canvas,p.hip,p.shoulder);
 
@@ -105,20 +109,18 @@ public final class AvatarRenderer {
                 p.hip,p.shoulder),p.head.x,p.head.y);
         details.drawHead(canvas,p.head,body,palette);
         canvas.restore();
-        if(!palette.female) {
-            drawLimb(canvas,interp(p.shoulder,p.elbow,.095f),
-                    interp(p.shoulder,p.elbow,.34f),
-                    body.upperArmWidth*.91f,body.upperArmWidth*.79f,top);
-            details.drawSleeve(canvas,p.shoulder,p.elbow,palette);
-            drawLimb(canvas,interp(p.shoulder,p.elbow,.23f),p.elbow,
-                    19f,17f,palette.skin);
-        } else {
-            drawLimb(canvas,p.shoulder,p.elbow,19f,16f,palette.skin);
-            drawJoint(canvas,p.shoulder,12f,top);
-        }
+        // All palettes use the same short-sleeve anatomical cutout. No
+        // shoulder sphere or oversized skin cylinder is drawn in either.
+        drawLimb(canvas,interp(p.shoulder,p.elbow,.095f),
+                interp(p.shoulder,p.elbow,.34f),
+                body.upperArmWidth*.91f,body.upperArmWidth*.79f,top);
+        details.drawSleeve(canvas,p.shoulder,p.elbow,palette);
+        drawLimb(canvas,interp(p.shoulder,p.elbow,.30f),p.elbow,
+                body.upperArmWidth*.72f,body.upperArmWidth*.60f,palette.skin);
         drawLimb(canvas,p.elbow,p.wrist,body.forearmWidth,
                 body.forearmWidth*.71f,palette.skin);
-        drawJoint(canvas,p.elbow,8.8f,palette.skin);
+        drawJoint(canvas,p.elbow,body.upperArmWidth*.60f,
+                body.forearmWidth,palette.skin);
         details.drawForearm(canvas,p.elbow,p.wrist,palette);
         details.drawHand(canvas,p.wrist,palette.skin);
         canvas.restore();
@@ -218,56 +220,17 @@ public final class AvatarRenderer {
     }
 
     /**
-     * Tapered filled Bézier volume with curved ends. Overlapping rounded
-     * silhouettes eliminate seams when two hinged segments rotate.
+     * No second curve implementation: side, front and top share the same
+     * bounded Bézier caps. A joint's screen anchor never moves with paint.
      */
     private void drawLimb(Canvas c,AvatarKinematics.Point a,
                           AvatarKinematics.Point b,float wa,float wb,int fill) {
-        float dx=b.x-a.x,dy=b.y-a.y;
-        float distance=(float)Math.hypot(dx,dy);
-        if(distance<.01f)return;
-        float ux=dx/distance,uy=dy/distance;
-        float nx=-uy,ny=ux;
-        float x1=a.x+nx*wa*.5f,y1=a.y+ny*wa*.5f;
-        float x2=b.x+nx*wb*.5f,y2=b.y+ny*wb*.5f;
-        float x3=b.x-nx*wb*.5f,y3=b.y-ny*wb*.5f;
-        float x4=a.x-nx*wa*.5f,y4=a.y-ny*wa*.5f;
-        path.rewind();
-        path.moveTo(x1,y1);
-        path.cubicTo(a.x+dx*.30f+nx*wa*.51f,
-                a.y+dy*.30f+ny*wa*.51f,
-                a.x+dx*.72f+nx*wb*.51f,
-                a.y+dy*.72f+ny*wb*.51f,x2,y2);
-        path.cubicTo(b.x+ux*wb*.40f+nx*wb*.44f,
-                b.y+uy*wb*.40f+ny*wb*.44f,
-                b.x+ux*wb*.40f-nx*wb*.44f,
-                b.y+uy*wb*.40f-ny*wb*.44f,x3,y3);
-        path.cubicTo(a.x+dx*.72f-nx*wb*.51f,
-                a.y+dy*.72f-ny*wb*.51f,
-                a.x+dx*.30f-nx*wa*.51f,
-                a.y+dy*.30f-ny*wa*.51f,x4,y4);
-        path.cubicTo(a.x-ux*wa*.40f-nx*wa*.44f,
-                a.y-uy*wa*.40f-ny*wa*.44f,
-                a.x-ux*wa*.40f+nx*wa*.44f,
-                a.y-uy*wa*.40f+ny*wa*.44f,x1,y1);
-        path.close();
-        color(fill);
-        c.drawPath(path,paint);
-        if(wa>=7f && wb>=7f) {
-            paint.setColor(0x3026334C);
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(.55f);
-            paint.setStrokeJoin(Paint.Join.ROUND);
-            paint.setStrokeCap(Paint.Cap.ROUND);
-            c.drawPath(path,paint);
-            paint.setStyle(Paint.Style.FILL);
-        }
+        contours.segment(c,a,b,wa,wb,fill);
     }
 
-    /** Joint fill is continuous with its segments; no decorative dark ring. */
-    private void drawJoint(Canvas c,AvatarKinematics.Point p,float radius,int fill) {
-        color(fill);
-        c.drawCircle(p.x,p.y,radius,paint);
+    private void drawJoint(Canvas c,AvatarKinematics.Point p,
+                           float proximalWidth,float distalWidth,int fill){
+        contours.hinge(c,p,proximalWidth,distalWidth,fill);
     }
     private void drawOval(Canvas c,float l,float t,float r,float b,int fill){
         color(fill);
