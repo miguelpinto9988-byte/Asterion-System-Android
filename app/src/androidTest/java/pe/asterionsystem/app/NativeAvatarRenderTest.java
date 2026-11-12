@@ -370,8 +370,8 @@ public final class NativeAvatarRenderTest {
                 }
             }
             view.setPhase(Float.POSITIVE_INFINITY);
-            assertEquals("Infinite phase must not poison animation",
-                    0f,view.getPhase(),.0001f);
+            assertEquals("Positive infinite phase clamps to cycle endpoint",
+                    1f,view.getPhase(),.0001f);
         });
     }
 
