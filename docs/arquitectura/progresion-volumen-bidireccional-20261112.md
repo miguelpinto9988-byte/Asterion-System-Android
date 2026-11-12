@@ -1,4 +1,4 @@
-# Asterion — progresión de volumen coordinada (v3, cobertura total del catálogo)
+# Asterion — progresión de volumen coordinada (v4, valores iniciales recalibrados)
 
 ## Objetivo y alcance
 
@@ -155,10 +155,10 @@ verificada por ID, para **cada una de las 1.257 variantes existentes**:
 
 | Variante | Unidad del motor | Referencia inicial de ejemplo |
 |---|---|---|
-| Sentadilla libre | Repeticiones | 1 serie, 6 repeticiones |
-| Flexión inclinada | Repeticiones | 1 serie, 7 repeticiones |
-| Plancha de pared | Segundos | 1 serie, 10 segundos |
-| Marcha exterior cómoda | Segundos | 1 serie, 60 segundos |
+| Sentadilla libre | Repeticiones | 1 serie, 8 repeticiones |
+| Flexión inclinada | Repeticiones | 1 serie, 10 repeticiones |
+| Plancha de pared | Segundos | 1 serie, 15 segundos |
+| Marcha exterior cómoda | Segundos | 1 serie, 75 segundos |
 
 El mismo algoritmo de esfuerzo opera sobre el **valor de la unidad**, nunca
 sobre un número ambiguo: en repeticiones el factor de escala es 1, y en
@@ -190,6 +190,31 @@ siempre con el perfil exacto de la variante seleccionada.
 **Regla de mantenimiento:** si se añade cualquier variante al catálogo sin
 una fila correspondiente, falla la validación de referencias en vez de
 inventar un volumen genérico.
+
+## Recalibración de los valores de inicio · versión 4
+
+Se incrementó **initial_value** en las **1.257 variantes** sin alterar su
+unidad, el número de series iniciales, las repeticiones/segundos realmente
+registrados, los mínimos y máximos de seguridad ni las reglas 1–10 de esfuerzo.
+
+- **924 perfiles por repeticiones:** los de nivel 1 suman **3** repeticiones;
+  los de niveles 2–3, **2**; los de niveles 4–5, **1**.
+- **333 perfiles por segundos:** los **191** movimientos continuos suman
+  **15 segundos**; otras **101** variantes de tiempo de menor complejidad,
+  **5 segundos**; y las restantes **41**, **3 segundos**.
+- Todos los nuevos valores se comprobaron individualmente para no superar
+  el máximo configurado de su propia variante. No hubo perfiles omitidos.
+- El número de series de arranque permanece en **una**: elevar simultáneamente
+  repeticiones/tiempo y series duplicaría innecesariamente el salto de volumen.
+- `ExerciseVolumeProfileCatalogTest` verifica el número de perfiles, el
+  arranque conservador en una serie y ejemplos de cada tipo y nivel técnico.
+
+La recalibración se aplica cuando el sistema necesita una **nueva referencia**
+(sin historial comparable o tras el reinicio por cambio de ejercicio/técnica en
+7/14/21 días). Nunca reescribe un registro real ni altera un día fijado
+anteriormente. Quien entrena puede hacer menos, descansar o cancelar sin
+penalización. Estos valores son ajustes generales de la configuración,
+**no recomendaciones individualizadas**.
 
 ## Pruebas
 
