@@ -463,12 +463,16 @@ public final class AvatarArtDetails {
     }
 
     /**
-     * Dedicated dorsal foot art for a prone, toe-supported position.
+     * REAR HEEL camera asset for prone toe-supported push-ups.
      *
-     * Critical distinction: the ankle-to-knee shin axis goes AWAY from
-     * the head, whereas the ground-contacting TOE bends TOWARD the head.
-     * The foot orientation comes from the shared root body axis. It must
-     * never be inferred from the direction of the tibia's screen projection.
+     * Although the anatomical toe stays aimed toward the head, the viewing
+     * camera sees the padded heel/counter/backstay of a bent sneaker here.
+     * It must NOT reveal the front tongue, eyelets or laces. This rear-only
+     * illustration is deliberately separate from the side/front assets.
+     *
+     * Coordinates: local -Y toward the head/toe contact, +Y toward the
+     * heel. The anatomical axis is supplied by AvatarFootOrientation and
+     * therefore cannot be flipped by an independent shin movement.
      */
     public void drawProneTopSneaker(Canvas c,
                                    AvatarFootOrientation.FootProjection foot,
@@ -476,57 +480,73 @@ public final class AvatarArtDetails {
         if(c==null||foot==null||palette==null)
             throw new IllegalArgumentException("Shoe, foot and palette required");
         foot.requireProneOrientation();
-        c.save();c.translate(foot.ankle.x,foot.ankle.y);
+        c.save();
+        c.translate(foot.ankle.x,foot.ankle.y);
         c.rotate(foot.angleDegrees);
 
-        // Foot ground contact lies under the toe, near the HEAD of the
-        // horizontal figure; upper and tongue remain visible from above.
-        fill(0x30405265);
-        c.drawOval(-10.5f,-22f,10.5f,-16f,paint);
+        final int trim=palette.female?0xFF765D9E:0xFF2F699D;
+        final int counter=palette.female?0xFF5E477E:0xFF234C78;
+        final int stitch=0xFFCFDDEB;
 
-        // Toe/upper are at local NEGATIVE Y. Narrow heel is POSITIVE Y.
-        path.rewind();path.moveTo(-9.2f,12f);
-        path.cubicTo(-11f,8f,-10.7f,-8f,-10.4f,-13f);
-        path.cubicTo(-9.8f,-22f,9.8f,-22f,10.4f,-13f);
-        path.cubicTo(10.7f,-8f,11f,8f,9.2f,12f);
-        path.quadTo(0f,16f,-9.2f,12f);
-        path.close();fill(palette.shoe);c.drawPath(path,paint);
+        // Subtle rear contact shadow. Neither the sole nor the laces face
+        // the overhead observer, even while the toe is planted below.
+        fill(0x27405265);
+        c.drawOval(-11.5f,-16f,11.5f,18f,paint);
 
-        // A narrow seam outlines the shoe but the outsole is not presented
-        // face-on to the overhead camera.
-        fill(palette.shoeDark);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(.85f);
+        // Compact sneaker seen from behind: narrow concealed forefoot,
+        // rounded heel cup and a raised central heel tab.
+        path.rewind();
+        path.moveTo(-7.2f,-16f);
+        path.cubicTo(-9f,-15.6f,-10.6f,-11f,-11f,-4f);
+        path.lineTo(-11.2f,7f);
+        path.cubicTo(-11.2f,14f,-7.7f,17f,0f,17.3f);
+        path.cubicTo(7.7f,17f,11.2f,14f,11.2f,7f);
+        path.lineTo(11f,-4f);
+        path.cubicTo(10.6f,-11f,9f,-15.6f,7.2f,-16f);
+        path.close();
+        fill(palette.shoe);
         c.drawPath(path,paint);
-        paint.setStyle(Paint.Style.FILL);
 
-        // Material panel and upward-facing tongue.
-        fill(palette.female?0xFF8466B2:0xFF346BA8);
-        path.rewind();path.moveTo(-7f,8.5f);
-        path.lineTo(-8f,-13f);
-        path.quadTo(0f,-17f,8f,-13f);
-        path.lineTo(7f,8.5f);
-        path.quadTo(0f,11f,-7f,8.5f);
-        path.close();c.drawPath(path,paint);
-        fill(0xFFE0ECF6);
-        c.drawRoundRect(-3.8f,-12f,3.8f,6f,2f,2f,paint);
+        // The rear quarters curve inward towards the ankle. Only a small
+        // recessed toe-contact strip survives above, no forefoot graphics.
+        fill(trim);
+        path.rewind();
+        path.moveTo(-8.4f,-11f);
+        path.quadTo(-8.4f,-4f,-8.8f,4f);
+        path.cubicTo(-8.6f,12f,-4f,14.8f,0f,15f);
+        path.cubicTo(4f,14.8f,8.6f,12f,8.8f,4f);
+        path.quadTo(8.4f,-4f,8.4f,-11f);
+        path.quadTo(0f,-14f,-8.4f,-11f);
+        path.close();
+        c.drawPath(path,paint);
 
-        // Toe cap is towards the head; it is never drawn by the heel.
-        fill(0xFFF1F6FD);
-        c.drawRoundRect(-8.6f,-19.3f,8.6f,-13.8f,3.5f,3.5f,paint);
-        for(int i=0;i<3;i++){
-            float y=-10.5f+4.3f*i;
-            line(c,-6f,y,6f,y+.35f,0xFFF7FAFD,1.1f);
-        }
+        // Padded heel collar: curved arc, no exposed tongue or eyelets.
+        fill(counter);
+        path.rewind();
+        path.moveTo(-8.6f,-2f);
+        path.cubicTo(-8.5f,-6f,-4f,-8f,0f,-8f);
+        path.cubicTo(4f,-8f,8.5f,-6f,8.6f,-2f);
+        path.lineTo(7.2f,8.7f);
+        path.quadTo(0f,11.7f,-7.2f,8.7f);
+        path.close();
+        c.drawPath(path,paint);
 
-        // Ankle collar and rear heel counter, distinguishable from toe cap.
-        fill(palette.female?0xFF6A548E:0xFF285C8C);
-        c.drawRoundRect(-8f,8.3f,8f,13.7f,3f,3f,paint);
-        line(c,-6f,11f,6f,11f,0xFFC2D2E5,1f);
+        // A vertical backstay and a small rear pull-tab identify the heel
+        // in both palettes. All white lines below are BACK seams, not laces.
+        fill(palette.female?0xFFB2A0D1:0xFF91B3D1);
+        c.drawRoundRect(-2.8f,0f,2.8f,14.2f,1.5f,1.5f,paint);
+        fill(counter);
+        c.drawRoundRect(-2.1f,2f,2.1f,14f,1f,1f,paint);
+        fill(palette.female?0xFF6E558F:0xFF295682);
+        c.drawRoundRect(-3.9f,13.1f,3.9f,19f,2.1f,2.1f,paint);
+        fill(palette.shoe);
+        c.drawRoundRect(-1.7f,14.5f,1.7f,17f,.8f,.8f,paint);
 
-        // Small lace/ankle highlight from the lateral palette.
-        fill(0xFF7796B4);
-        c.drawRoundRect(-9.8f,5.6f,-7f,12.5f,1.2f,1.2f,paint);
+        // One continuous heel-counter seam makes the REAR silhouette
+        // legible at the small 400x480 Android preview resolution.
+        line(c,-8.1f,9.1f,-4.2f,11.5f,stitch,.9f);
+        line(c,4.2f,11.5f,8.1f,9.1f,stitch,.9f);
+        line(c,-5.6f,14f,5.6f,14f,0xFFCBD9E7,.9f);
         c.restore();
     }
 
