@@ -57,7 +57,7 @@ public final class AvatarFrameSafetyTest {
     @Test public void cameraMismatchAndMissingSpecsFailClosed(){
         AvatarMultiViewKinematics.Pose front=
                 AvatarMultiViewKinematics.frontArms(0f,SPEC);
-        assertThrows(IllegalArgumentException.class,()->
+        assertThrows(IllegalStateException.class,()->
                 AvatarFrameSafety.camera(front,
                         AvatarMultiViewKinematics.ViewMode.TOP,
                         AvatarContactFrame.forCamera(AvatarMultiViewKinematics.ViewMode.TOP,0f),
