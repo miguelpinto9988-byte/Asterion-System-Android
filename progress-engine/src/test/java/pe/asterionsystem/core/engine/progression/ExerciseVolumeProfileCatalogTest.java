@@ -66,15 +66,15 @@ public final class ExerciseVolumeProfileCatalogTest {
     }
 
     @Test public void raisedBaselineExamplesRemainExerciseSpecific() {
-        assertEquals(12,get("sentadilla_bilateral_v01").initialValue);
-        assertEquals(10,get("sentadilla_bilateral_v03").initialValue);
-        assertEquals(8,get("sentadilla_bilateral_v04").initialValue);
-        assertEquals(7,get("sentadilla_bilateral_v07").initialValue);
-        assertEquals(12,get("flexiones_v02").initialValue);
-        assertEquals(20,get("plancha_frontal_v01").initialValue);
-        assertEquals(25,get("equilibrio_unipodal_v01").initialValue);
-        assertEquals(85,get("marcha_v02").initialValue);
-        assertEquals(85,get("ciclo_estatico_v01").initialValue);
+        assertEquals(17,get("sentadilla_bilateral_v01").initialValue);
+        assertEquals(15,get("sentadilla_bilateral_v03").initialValue);
+        assertEquals(13,get("sentadilla_bilateral_v04").initialValue);
+        assertEquals(12,get("sentadilla_bilateral_v07").initialValue);
+        assertEquals(15,get("flexiones_v02").initialValue);
+        assertEquals(25,get("plancha_frontal_v01").initialValue);
+        assertEquals(30,get("equilibrio_unipodal_v01").initialValue);
+        assertEquals(95,get("marcha_v02").initialValue);
+        assertEquals(95,get("ciclo_estatico_v01").initialValue);
     }
 
     @Test public void secondIncreasePreservesLimitsAndOneInitialSetForAllVariants() {
@@ -94,6 +94,10 @@ public final class ExerciseVolumeProfileCatalogTest {
         }
         assertEquals(924,repetitions);
         assertEquals(333,seconds);
+    }
+
+    @Test public void otherCategoryRepetitionsKeepExistingReference() {
+        assertEquals(11,get("superman_v01").initialValue);
     }
 
     @Test public void squatsAreCountedByRepetitions() {
