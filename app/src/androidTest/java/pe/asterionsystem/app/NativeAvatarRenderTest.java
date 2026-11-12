@@ -406,6 +406,31 @@ public final class NativeAvatarRenderTest {
         assertEquals("2 palettes × 7 scenes × 3 phases",42,images.length);
     }
 
+    @Test public void elbowsAndKneesHaveContinuousOrganicPixelCoverage(){
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
+            AvatarOrganicVolume volume=new AvatarOrganicVolume();
+            int fill=0xFFAD8C73;
+            AvatarKinematics.Point shoulder=new AvatarKinematics.Point(60f,60f);
+            AvatarKinematics.Point elbow=new AvatarKinematics.Point(106f,110f);
+            for(int degrees:new int[]{0,35,70,110,150,175}){
+                double angle=Math.toRadians(degrees);
+                AvatarKinematics.Point wrist=new AvatarKinematics.Point(
+                        elbow.x+(float)Math.cos(angle)*55f,
+                        elbow.y+(float)Math.sin(angle)*55f);
+                Bitmap b=Bitmap.createBitmap(260,240,Bitmap.Config.ARGB_8888);
+                volume.drawChain(new Canvas(b),shoulder,elbow,wrist,
+                        22f,18f,13f,fill);
+                assertNotEquals("Joint must be filled, no detached elbow",
+                        0,b.getPixel(Math.round(elbow.x),Math.round(elbow.y)));
+                assertEquals("No detached sphere outside envelope",0,
+                        b.getPixel(Math.round(elbow.x),Math.round(elbow.y)-33));
+                assertEquals("No detached spur far from elbow",0,
+                        b.getPixel(245,220));
+                b.recycle();
+            }
+        });
+    }
+
     @Test public void playbackParametersRejectNonFiniteValuesAndRemainAccessible() {
         Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{
