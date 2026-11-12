@@ -149,9 +149,10 @@ public final class NativeAvatarView extends View {
         if(viewMode==AvatarMultiViewKinematics.ViewMode.SIDE) {
             // Contact flags are authored by motion, never guessed from
             // the visible 2D ankle-to-knee segment.
-            AvatarContactFrame.forSide(motion,phase);
-            renderer.draw(canvas,AvatarMotionEngine.pose(motion,phase,bodySpec),
-                    bodySpec,palette,dark,motion.label);
+            AvatarContactFrame contact=AvatarContactFrame.forSide(motion,phase);
+            AvatarPose sidePose=AvatarMotionEngine.pose(motion,phase,bodySpec);
+            AvatarFrameSafety.side(sidePose,contact,bodySpec);
+            renderer.draw(canvas,sidePose,bodySpec,palette,dark,motion.label);
         } else {
             AvatarContactFrame contact=AvatarContactFrame.forCamera(viewMode,phase);
             if(viewMode==AvatarMultiViewKinematics.ViewMode.TOP)
@@ -176,6 +177,7 @@ public final class NativeAvatarView extends View {
                 default:
                     throw new IllegalStateException("Camera not implemented");
             }
+            AvatarFrameSafety.camera(pose,viewMode,contact,bodySpec);
             multiRenderer.draw(canvas,pose,viewMode,palette,dark,bodySpec);
         }
         canvas.restore();
