@@ -17,7 +17,8 @@ public final class AvatarMultiViewKinematics {
         TOP("Superior · flexión diamante"),
         FRONT_LATERAL("Frontal · separación de brazos"),
         FRONT_BALANCE("Frontal · equilibrio unilateral"),
-        FRONT_SIDE_STEP("Frontal · paso lateral con retorno");
+        FRONT_SIDE_STEP("Frontal · paso lateral con retorno"),
+        FRONT_NECK_TILT("Frontal · inclinación lateral cervical");
         public final String title;
         ViewMode(String title){this.title=title;}
     }
@@ -267,6 +268,33 @@ public final class AvatarMultiViewKinematics {
             throw new IllegalArgumentException("Paso lateral fuera de alcance");
         return new Pose(at(200f,103f),at(200f,130f),ls,rs,la,ra,
                 lh,rh,ll.joint,rl.joint,ll.end,rl.end,d,body.upperArm,body.forearm);
+    }
+
+
+    /** Gentle frontal head tilt; the neck-to-head reference link stays
+     * constant. This is not an axial head rotation or a clinical ROM target. */
+    public static Pose frontNeckSideTilt(float phase,AvatarBodySpec body){
+        if(body==null)throw new IllegalArgumentException("BodySpec requerido");
+        float d=AvatarKinematics.depthAtPhase(phase);
+        AvatarKinematics.Point ls=at(153f,150f),rs=at(247f,150f);
+        float reach=body.upperArm+body.forearm-.03f;
+        AvatarKinematics.Point lw=at(ls.x-6f,ls.y+reach-.15f);
+        AvatarKinematics.Point rw=at(rs.x+6f,rs.y+reach-.15f);
+        AvatarRigConstraints.TwoBone la=AvatarRigConstraints.twoBone(
+                ls,lw,body.upperArm,body.forearm,-1,0f,170f);
+        AvatarRigConstraints.TwoBone ra=AvatarRigConstraints.twoBone(
+                rs,rw,body.upperArm,body.forearm,1,0f,170f);
+        AvatarKinematics.Point lh=at(174f,238f),rh=at(226f,238f);
+        AvatarKinematics.Point lf=at(174f,428f),rf=at(226f,428f);
+        AvatarRigConstraints.TwoBone ll=AvatarRigConstraints.twoBone(
+                lh,lf,body.upperLeg,body.lowerLeg,-1,0f,170f);
+        AvatarRigConstraints.TwoBone rl=AvatarRigConstraints.twoBone(
+                rh,rf,body.upperLeg,body.lowerLeg,1,0f,170f);
+        float x=12f*d;
+        float y=130f-(float)Math.sqrt(27f*27f-x*x);
+        return new Pose(at(200f+x,y),at(200f,130f),
+                ls,rs,la,ra,lh,rh,ll.joint,rl.joint,
+                ll.end,rl.end,d,body.upperArm,body.forearm);
     }
 
     public static Pose diamondTop(float phase,AvatarBodySpec body) {
