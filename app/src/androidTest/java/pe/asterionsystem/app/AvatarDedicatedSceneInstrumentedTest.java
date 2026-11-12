@@ -32,7 +32,8 @@ public final class AvatarDedicatedSceneInstrumentedTest {
                 "extension_rodilla_sin_carga_v03",
                 "puente_gluteo_v04","dorsiflexion_tobillo_v01",
                 "elevacion_gemelos_v01","balanceo_talon_punta_sentado_v01",
-                "balanceo_talon_punta_sentado_v02"};
+                "balanceo_talon_punta_sentado_v02",
+                "elevacion_gemelos_v03","dorsiflexion_tibial_v03"};
         for(String id:ids){
             AvatarExerciseCommandCatalog.Entry entry=commands.require(id);
             assertTrue(entry.canIllustrate());
@@ -75,6 +76,6 @@ public final class AvatarDedicatedSceneInstrumentedTest {
         });
         File[] files=dir.listFiles((p,name)->name.endsWith(".png"));
         assertNotNull(files);
-        assertEquals(82,files.length);
+        assertEquals(94,files.length);
     }
 }
