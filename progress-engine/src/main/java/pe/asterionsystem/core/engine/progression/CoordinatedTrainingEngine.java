@@ -88,12 +88,27 @@ public final class CoordinatedTrainingEngine {
                 adapted, today, decision, previousCompleted,
                 allowWeeklyRotation && !recentInterruption,
                 selectionAvoid, technicalPhase);
-        Map<String, VolumeProgressionEngine.Suggestion> proposed = new LinkedHashMap<>();
+        return new Plan(mission, decision, reviewSelected(
+                mission, category, today, volumeHistory, recentInterruption));
+    }
+
+    /**
+     * Re-evaluate the actual selected variants AFTER Android has applied the
+     * checkpoint restart boundaries. Using the filtered history here avoids
+     * propagating numeric references from a previous technical block.
+     */
+    public static Map<String, VolumeProgressionEngine.Suggestion> reviewSelected(
+            MissionPlanner.Proposal mission, int category, LocalDate today,
+            List<VolumeProgressionEngine.Observation> numericHistory,
+            boolean recentInterruption) {
+        Objects.requireNonNull(mission, "mission");
+        Objects.requireNonNull(today, "today");
+        Objects.requireNonNull(numericHistory, "numericHistory");
+        Map<String, VolumeProgressionEngine.Suggestion> calculated = new LinkedHashMap<>();
         for (ExerciseVariant variant : mission.candidates()) {
-            proposed.put(variant.id(), VolumeProgressionEngine.review(
-                    variant, category, today, volumeHistory,
-                    recentInterruption));
+            calculated.put(variant.id(), VolumeProgressionEngine.review(
+                    variant, category, today, numericHistory, recentInterruption));
         }
-        return new Plan(mission, decision, proposed);
+        return Collections.unmodifiableMap(calculated);
     }
 }
