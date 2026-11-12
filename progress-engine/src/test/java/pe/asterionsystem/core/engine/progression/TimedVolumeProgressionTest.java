@@ -121,6 +121,16 @@ public final class TimedVolumeProgressionTest {
         assertEquals(15,s.offeredQuantity);
     }
 
+    @Test public void hardEffortCannotRaiseAnActuallyLowerTimedEntry() {
+        ExerciseVariant walk=variant("marcha_v02");
+        ExerciseVolumeProfileCatalog.Profile p=profiles.require(walk);
+        // Actual low volume can be below the configured display minimum.
+        VolumeProgressionEngine.Suggestion s=VolumeProgressionEngine.review(
+                walk,4,day,List.of(obs(walk,1,4,1,5,10,p.unit)),false,p);
+        assertEquals(VolumeProgressionEngine.Status.CALCULATED_DECREASE,s.status);
+        assertEquals(5,s.offeredQuantity);
+    }
+
     @Test public void limitsApplySeparatelyToSeconds() {
         ExerciseVariant plank=variant("plancha_frontal_v01");
         ExerciseVolumeProfileCatalog.Profile p=profiles.require(plank);
