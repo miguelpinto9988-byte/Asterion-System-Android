@@ -24,7 +24,16 @@ public final class AvatarExerciseCommandCatalog {
         NONE, SQUAT,HIP_HINGE,LUNGE,ARM_RAISE,ARM_CURL,KNEE_CURL,MARCH,
         FRONT,FRONT_SQUAT,FRONT_JACKS,FRONT_ELBOW,TOP,
         FRONT_LATERAL,FRONT_BALANCE,FRONT_SIDE_STEP,FRONT_NECK_TILT,
-        HIP_EXTENSION_STAND;
+        HIP_EXTENSION_STAND,GLUTE_BRIDGE_SHORT,GLUTE_BRIDGE_BASIC,
+        SEATED_KNEE_EXTENSION;
+        public AvatarDedicatedScene.Kind dedicatedScene(){
+            switch(this){
+                case GLUTE_BRIDGE_SHORT:return AvatarDedicatedScene.Kind.GLUTE_BRIDGE_SHORT;
+                case GLUTE_BRIDGE_BASIC:return AvatarDedicatedScene.Kind.GLUTE_BRIDGE_BASIC;
+                case SEATED_KNEE_EXTENSION:return AvatarDedicatedScene.Kind.SEATED_KNEE_EXTENSION;
+                default:return null;
+            }
+        }
         public AvatarMotionEngine.Motion sideMotion() {
             switch(this) {
                 case SQUAT:return AvatarMotionEngine.Motion.SQUAT;
