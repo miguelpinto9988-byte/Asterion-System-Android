@@ -122,6 +122,14 @@ public final class AvatarDemonstrationManifest {
                 AvatarExerciseCommandCatalog.Clip.SEATED_HEEL_TOE_ALTERNATION,
                 "silla","controlado",
                 AvatarJointTimeline.Command.SEATED_HEEL_TOE_ALTERNATION);
+        register(rows,"elevacion_gemelos_v03",
+                AvatarExerciseCommandCatalog.Clip.STANDING_HEEL_RAISE,
+                "sin_equipo","bilateral",
+                AvatarJointTimeline.Command.STANDING_HEEL_RAISE);
+        register(rows,"dorsiflexion_tibial_v03",
+                AvatarExerciseCommandCatalog.Clip.STANDING_TOE_RAISE,
+                "sin_equipo","bilateral",
+                AvatarJointTimeline.Command.STANDING_TOE_RAISE);
         REVIEWED=Collections.unmodifiableMap(rows);
     }
     private static void register(Map<String,Signature> target,String id,
