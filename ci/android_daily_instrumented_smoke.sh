@@ -86,3 +86,12 @@ test "$COUNT" -eq 42 || { echo "Expected 42 real emulator PNGs; found $COUNT"; e
 test -s "$LOCAL/azul_top_1.png"
 test -s "$LOCAL/morado_top_1.png"
 echo "PASS: 42 real Android renderer screenshots from seven scenes × three phases × two palettes."
+
+
+echo "Android instrumentation 9/9: checkpoint resets retain prior logs without inheriting old volume"
+RESET_TEST="pe.asterionsystem.app.VolumeProgressResetPersistenceTest"
+adb shell am instrument -w -e class "$RESET_TEST" \
+  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
+  | tee "$OUT/volume-checkpoint-reset.txt"
+grep -q 'OK (3 tests)' "$OUT/volume-checkpoint-reset.txt"
+echo "PASS: checkpoint volume resets are persisted and historical records remain intact."

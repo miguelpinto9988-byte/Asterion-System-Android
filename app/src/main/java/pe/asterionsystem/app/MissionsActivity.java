@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import pe.asterionsystem.app.data.AssetExerciseCatalogRepository;
+import pe.asterionsystem.app.data.AssetExerciseVolumeProfileRepository;
 import pe.asterionsystem.core.engine.exercises.ExerciseCatalog;
 import pe.asterionsystem.core.engine.exercises.ExerciseIntensity;
 import pe.asterionsystem.core.engine.exercises.ExerciseCategoryMapper;
@@ -35,6 +36,9 @@ import pe.asterionsystem.core.engine.missions.MissionPlanner;
 import pe.asterionsystem.core.engine.missions.MissionDifficultyMixPolicy;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
+import pe.asterionsystem.core.engine.progression.CoordinatedTrainingEngine;
+import pe.asterionsystem.core.engine.progression.VolumeProgressionEngine;
+import pe.asterionsystem.core.engine.progression.ExerciseVolumeProfileCatalog;
 import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
 
 /**
@@ -51,6 +55,7 @@ public final class MissionsActivity extends ComponentActivity {
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private String section=SECTION_DAILY;
     private ExerciseCatalog catalog;
+    private ExerciseVolumeProfileCatalog volumeProfiles;
     private MissionPlanner planner;
     private MissionPlanner.Profile profile;
     private LinearLayout content;
@@ -88,12 +93,15 @@ public final class MissionsActivity extends ComponentActivity {
         worker.execute(()-> {
             try {
                 ExerciseCatalog fetched=new AssetExerciseCatalogRepository(this).load();
+                ExerciseVolumeProfileCatalog references=
+                        new AssetExerciseVolumeProfileRepository(this).load(fetched);
                 MissionPlanner engine=new MissionPlanner(fetched);
                 MissionPlanner.Profile preferences=
                         MissionProfileAdapter.fromRegistration(ProfileStore.getRegistration(this));
                 runOnUiThread(()->{
                     if(destroyed || isFinishing())return;
                     catalog=fetched;
+                    volumeProfiles=references;
                     planner=engine;
                     profile=preferences;
                     show(section);
@@ -163,6 +171,13 @@ public final class MissionsActivity extends ComponentActivity {
                 && SessionSafetyStore.lighterToday(this,category,today);
         int previousRating=category==CategoryEffortPolicy.REST ? 0
                 :softer?9:MissionTrackingStore.latestCategoryRating(this,category,today);
+        // Volume history is category-isolated, and only PRIOR days count.
+        List<VolumeProgressionEngine.Observation> volumeHistory=
+                category==CategoryEffortPolicy.REST
+                ?java.util.Collections.emptyList()
+                :VolumeProgressStore.previousForCategory(this,category,today);
+        previousRating=Math.max(previousRating,
+                VolumeProgressionEngine.latestCategoryEffort(category,today,volumeHistory));
         CategoryEffortPolicy.Decision decision=CategoryEffortPolicy.evaluate(
                 category,previousRating,profile.dailyLimit);
         MissionPlanner.Profile dayProfile=decision.preferSimplerTechnique
@@ -205,15 +220,29 @@ public final class MissionsActivity extends ComponentActivity {
                     ?java.util.Collections.emptyList()
                     :MissionTrackingStore.recentCompletedForCategory(
                             this,catalog,category,today);
-            proposal=planner.daily(
-                    dayProfile,today,decision,previousVariants,
-                    weekly!=null && weekly.rotateEquivalentVariant()
-                            && !recentlyInterrupted,
-                    recentCompleted,levelState.phase);
+            // Coordinator delegates selection to planner.daily(...) and
+            // feeds prior volume effort into the same category decision.
+            proposal=new CoordinatedTrainingEngine(planner).daily(
+                    profile,today,previousRating,previousVariants,recentCompleted,
+                    weekly!=null && weekly.rotateEquivalentVariant(),
+                    levelState.phase,volumeHistory,recentlyInterrupted,
+                    volumeProfiles).mission;
             if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
                 DailyMissionStore.write(this,today,profile,catalog,
                         proposal.candidates());
             }
+        }
+        // Register the selected catalog variants at this category's next
+        // 7/14/21 checkpoint. A new variant or technical level begins a fresh
+        // numeric volume epoch, without deleting earlier completion records.
+        List<VolumeProgressionEngine.Observation> numericHistory=
+                java.util.Collections.emptyList();
+        if(category!=CategoryEffortPolicy.REST && !proposal.empty()) {
+            VolumeProgressStore.observeCheckpointSelection(
+                    this,category,today,levelState.entered,
+                    levelState.technicalReview.checkpoint,proposal.candidates());
+            numericHistory=VolumeProgressStore.progressionHistoryForCategory(
+                    this,category,today);
         }
         final MissionPlanner.Proposal dayProposal=proposal;
         paragraph("Fecha: "+dayProposal.start()
@@ -228,12 +257,14 @@ public final class MissionsActivity extends ComponentActivity {
             }
             if(weekly!=null && weekly.rotateEquivalentVariant()) {
                 paragraph("El motor buscó automáticamente una alternativa equivalente "
-                        +"del catálogo. No se añadieron repeticiones ni series.");
+                        +"del catálogo. La progresión numérica se calcula de manera independiente.");
             }
         }
         paragraph(dayProposal.explanation());
         paragraph(MissionDifficultyMixPolicy.explanation(
                 profile.experience,levelState.phase));
+        paragraph("Punto de revisión técnica (7/14/21 días, por categoría): "
+                +levelState.technicalReview.explanation);
         if(dayProposal.empty()) {
             paragraph("Sin propuestas de ejercicio para hoy. Se respeta el descanso.");
             return;
@@ -253,9 +284,42 @@ public final class MissionsActivity extends ComponentActivity {
                 id->dayProposal.candidates().stream().anyMatch(v->v.id().equals(id)))
                 .count()+" de "+dayProposal.candidates().size()
                 +". Puedes parar cuando lo necesites.");
+        // Recalculate via the joint engine only AFTER per-variant volume
+        // restart dates have been committed. Selection and numeric references
+        // now share the same exact, final list of variants.
+        Map<String,VolumeProgressionEngine.Suggestion> numericForSelection=
+                CoordinatedTrainingEngine.reviewSelected(
+                        dayProposal,category,today,numericHistory,recentlyInterrupted,
+                        volumeProfiles);
         int index=1;
         for(ExerciseVariant entry:dayProposal.candidates()) {
             dailyExerciseRow(index++,entry,today,category,dayProposal);
+            VolumeProgressionEngine.Suggestion volume=
+                    numericForSelection.get(entry.id());
+            if(volume.previousSets>0) {
+                String comparison=volume.previousSets+" serie(s) × "
+                        +volume.previousQuantity+" "+volume.unit.label
+                        +" registrados";
+                if(volume.offeredSets!=volume.previousSets
+                        || volume.offeredQuantity!=volume.previousQuantity) {
+                    comparison+="; próxima referencia calculada: "
+                            +volume.offeredSets+" serie(s) × "
+                            +volume.offeredQuantity+" "+volume.unit.label
+                            +" (no obligatoria).";
+                } else comparison+="; se mantiene la referencia.";
+                paragraph(comparison+" "+volume.explanation);
+            } else if(volume.offeredSets>0) {
+                paragraph("Referencia inicial de "+entry.name()+": "
+                        +volume.offeredSets+" serie(s) × "
+                        +volume.offeredQuantity+" "+volume.unit.label
+                        +". "+(VolumeProgressStore.restartedOn(
+                                this,category,entry.id(),today)
+                          ?"Nueva etapa tras cambio técnico; no se hereda volumen. ":"")
+                        +volume.explanation);
+            } else if(volume.status==VolumeProgressionEngine.Status.RECOVERY_PRIORITY
+                    || volume.status==VolumeProgressionEngine.Status.PAUSED) {
+                paragraph(volume.explanation);
+            }
         }
         action("Ver ventana de misión diaria",()->previewMissionPopup(
                 "Misiones de hoy",dayProposal.candidates(),
@@ -267,8 +331,8 @@ public final class MissionsActivity extends ComponentActivity {
         if(rating!=0) paragraph("Valoración de esfuerzo guardada: "+rating+" / 10.");
         action(rating==0?"Finalizar la actividad y valorar esfuerzo"
                 :"Revisar valoración de esfuerzo",()->requestEffort(today,category));
-        paragraph("La valoración es voluntaria. No aumenta automáticamente "
-                +"el volumen de ejercicio ni añade penalizaciones.");
+        paragraph("La valoración permite recalcular referencias del siguiente "
+                +"entrenamiento. Ningún aumento es obligatorio ni penaliza su omisión.");
     }
 
     private void dailyExerciseRow(int index,ExerciseVariant entry,LocalDate day,

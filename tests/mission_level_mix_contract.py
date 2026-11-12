@@ -21,12 +21,17 @@ for marker in ("takeLevelMix(", "MissionDifficultyMixPolicy.higherTarget(",
                "variant.difficulty() > maxTechnicalLevel",
                "selected.size()+upperTarget", "decision.preferSimplerTechnique"):
     assert marker in PLANNER,marker
-for marker in ("entered.plusDays(7)", "last.plusDays(7)",
-               "weekly.completedRatings>=2", "weekly.lowRatings>=2",
-               "weekly.highRatings==0", "weekly.category==category",
-               "if(category==5", "Context.MODE_PRIVATE",
-               "selected_experience"):
+for marker in ("TechnicalCheckpointPolicy.evaluate(", "last.plusDays(7)",
+               "review.mayAdvance()", "if(category==5",
+               "Context.MODE_PRIVATE", "selected_experience"):
     assert marker in STATE,marker
+CHECKPOINT=(ROOT/"progress-engine/src/main/java/pe/asterionsystem/core/engine/progression/TechnicalCheckpointPolicy.java").read_text()
+for marker in ("weekly.completedRatings < 2", "weekly.lowRatings < 2",
+               "weekly.category != category", "weekly.highRatings > 0",
+               "daysSinceExperienceStart >= 7",
+               "daysSinceExperienceStart >= 14",
+               "daysSinceExperienceStart >= 21"):
+    assert marker in CHECKPOINT,marker
 for marker in ("MissionLevelProgressStore.observe(", "levelState.phase",
                "recentlyInterrupted", "DailyMissionStore.read(this,today,profile,catalog)"):
     assert marker in ACTIVITY,marker

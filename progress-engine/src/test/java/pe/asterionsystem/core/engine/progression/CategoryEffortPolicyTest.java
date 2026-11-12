@@ -10,7 +10,7 @@ public class CategoryEffortPolicyTest {
         assertEquals(CategoryEffortPolicy.Guidance.REVIEW_OPTIONAL,d.guidance);
         assertEquals(3,d.suggestedActivities);
         assertFalse(d.preferSimplerTechnique);
-        assertTrue(d.explanation.contains("no se aumentan"));
+        assertTrue(d.explanation.contains("se calculan por separado"));
     }
 
     @Test public void moderateEffortMaintainsLowerCategory() {

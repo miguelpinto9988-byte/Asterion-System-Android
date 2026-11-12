@@ -1,0 +1,151 @@
+package pe.asterionsystem.core.engine.progression;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
+import pe.asterionsystem.core.engine.missions.MissionPlanner;
+
+/**
+ * Bidirectional, side-effect-free coordination.
+ *
+ * Volume -> selector: recent category-specific volume effort participates in
+ * CategoryEffortPolicy, potentially reducing count / technical complexity.
+ * Selector -> volume: only the actual selected variant and its technical
+ * level can receive a comparable, optional numeric volume review.
+ *
+ * No automatic series/reps change, no mutation of the user's weekly calendar.
+ */
+public final class CoordinatedTrainingEngine {
+    private final MissionPlanner selector;
+
+    public CoordinatedTrainingEngine(MissionPlanner selector) {
+        this.selector = Objects.requireNonNull(selector, "selector");
+    }
+
+    public static final class Plan {
+        public final MissionPlanner.Proposal mission;
+        public final CategoryEffortPolicy.Decision effortDecision;
+        public final Map<String, VolumeProgressionEngine.Suggestion> volumeByVariant;
+
+        private Plan(MissionPlanner.Proposal mission,
+                     CategoryEffortPolicy.Decision effortDecision,
+                     Map<String, VolumeProgressionEngine.Suggestion> volumeByVariant) {
+            this.mission = mission;
+            this.effortDecision = effortDecision;
+            this.volumeByVariant = Collections.unmodifiableMap(volumeByVariant);
+        }
+    }
+
+    public Plan daily(MissionPlanner.Profile profile, LocalDate today,
+                      int categoryEffort, List<String> previousCompleted,
+                      List<String> recentCompleted, boolean allowWeeklyRotation,
+                      int technicalPhase, List<VolumeProgressionEngine.Observation> volumeHistory,
+                      boolean recentInterruption) {
+        Objects.requireNonNull(profile, "profile");
+        Objects.requireNonNull(today, "today");
+        Objects.requireNonNull(volumeHistory, "volumeHistory");
+        int category = profile.weekly.get(today.getDayOfWeek().getValue() - 1);
+        int volumeEffort = VolumeProgressionEngine.latestCategoryEffort(
+                category, today, volumeHistory);
+        int combinedEffort = Math.max(categoryEffort, volumeEffort);
+        if (recentInterruption && category != CategoryEffortPolicy.REST) {
+            combinedEffort = Math.max(combinedEffort, 9);
+        }
+        CategoryEffortPolicy.Decision decision = CategoryEffortPolicy.evaluate(
+                category, combinedEffort, profile.dailyLimit);
+        MissionPlanner.Profile adapted = decision.preferSimplerTechnique
+                || decision.suggestedActivities < profile.dailyLimit
+                ? profile.adapted(
+                        decision.preferSimplerTechnique ? "principiante" : profile.experience,
+                        Math.max(1, decision.suggestedActivities))
+                : profile;
+        Objects.requireNonNull(previousCompleted, "previousCompleted");
+        Objects.requireNonNull(recentCompleted, "recentCompleted");
+        // Volume -> selector, second signal: a voluntarily logged, moderate
+        // completed variant may be kept for comparison instead of being
+        // treated as an automatic 14-day "avoid" candidate. Weekly rotation
+        // and safety filters still win when applicable.
+        ArrayList<String> selectionAvoid = new ArrayList<>(recentCompleted);
+        if (!recentInterruption && combinedEffort <= 7
+                && category != CategoryEffortPolicy.REST) {
+            for (VolumeProgressionEngine.Observation entry : volumeHistory) {
+                if (entry != null && entry.category == category
+                        && entry.completed && !entry.interrupted
+                        && entry.effort <= 7
+                        && entry.day.isBefore(today)
+                        && !entry.day.isBefore(today.minusDays(14))
+                        && previousCompleted.contains(entry.variantId)) {
+                    selectionAvoid.remove(entry.variantId);
+                }
+            }
+        }
+        MissionPlanner.Proposal mission = selector.daily(
+                adapted, today, decision, previousCompleted,
+                allowWeeklyRotation && !recentInterruption,
+                selectionAvoid, technicalPhase);
+        return new Plan(mission, decision, reviewSelected(
+                mission, category, today, volumeHistory, recentInterruption));
+    }
+
+    /** Typed path used by Android: both engines cooperate with all 1257
+     * per-variant profiles. Automatic numerical references are not enforced. */
+    public Plan daily(MissionPlanner.Profile profile, LocalDate today,
+                      int categoryEffort, List<String> previousCompleted,
+                      List<String> recentCompleted, boolean allowWeeklyRotation,
+                      int technicalPhase, List<VolumeProgressionEngine.Observation> volumeHistory,
+                      boolean recentInterruption,
+                      ExerciseVolumeProfileCatalog volumeProfiles) {
+        Objects.requireNonNull(volumeProfiles,"volumeProfiles");
+        Plan selected=daily(profile,today,categoryEffort,previousCompleted,
+                recentCompleted,allowWeeklyRotation,technicalPhase,
+                volumeHistory,recentInterruption);
+        int category=profile.weekly.get(today.getDayOfWeek().getValue()-1);
+        if(category==CategoryEffortPolicy.REST) return selected;
+        return new Plan(selected.mission,selected.effortDecision,reviewSelected(
+                selected.mission,category,today,volumeHistory,
+                recentInterruption,volumeProfiles));
+    }
+
+    /** Typed post-checkpoint recomputation; this must be called after reset. */
+    public static Map<String, VolumeProgressionEngine.Suggestion> reviewSelected(
+            MissionPlanner.Proposal mission, int category, LocalDate today,
+            List<VolumeProgressionEngine.Observation> numericHistory,
+            boolean recentInterruption,ExerciseVolumeProfileCatalog profiles) {
+        Objects.requireNonNull(mission,"mission");
+        Objects.requireNonNull(today,"today");
+        Objects.requireNonNull(numericHistory,"numericHistory");
+        Objects.requireNonNull(profiles,"profiles");
+        Map<String,VolumeProgressionEngine.Suggestion> result=new LinkedHashMap<>();
+        for(ExerciseVariant variant:mission.candidates()) {
+            result.put(variant.id(),VolumeProgressionEngine.review(
+                    variant,category,today,numericHistory,recentInterruption,
+                    profiles.require(variant)));
+        }
+        return Collections.unmodifiableMap(result);
+    }
+
+    /**
+     * Re-evaluate the actual selected variants AFTER Android has applied the
+     * checkpoint restart boundaries. Using the filtered history here avoids
+     * propagating numeric references from a previous technical block.
+     */
+    public static Map<String, VolumeProgressionEngine.Suggestion> reviewSelected(
+            MissionPlanner.Proposal mission, int category, LocalDate today,
+            List<VolumeProgressionEngine.Observation> numericHistory,
+            boolean recentInterruption) {
+        Objects.requireNonNull(mission, "mission");
+        Objects.requireNonNull(today, "today");
+        Objects.requireNonNull(numericHistory, "numericHistory");
+        Map<String, VolumeProgressionEngine.Suggestion> calculated = new LinkedHashMap<>();
+        for (ExerciseVariant variant : mission.candidates()) {
+            calculated.put(variant.id(), VolumeProgressionEngine.review(
+                    variant, category, today, numericHistory, recentInterruption));
+        }
+        return Collections.unmodifiableMap(calculated);
+    }
+}

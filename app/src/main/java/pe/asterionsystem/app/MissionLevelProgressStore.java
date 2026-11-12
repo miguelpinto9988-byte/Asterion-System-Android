@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import pe.asterionsystem.core.engine.missions.MissionDifficultyMixPolicy;
 import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
+import pe.asterionsystem.core.engine.progression.TechnicalCheckpointPolicy;
 
 /**
  * Private, minimal, category-isolated phase state. This does not modify
@@ -34,12 +35,15 @@ final class MissionLevelProgressStore {
         final LocalDate entered;
         final int phase;
         final boolean promoted;
+        final TechnicalCheckpointPolicy.Decision technicalReview;
 
-        Snapshot(String experience,LocalDate entered,int phase,boolean promoted) {
+        Snapshot(String experience,LocalDate entered,int phase,boolean promoted,
+                 TechnicalCheckpointPolicy.Decision technicalReview) {
             this.experience=experience;
             this.entered=entered;
             this.phase=phase;
             this.promoted=promoted;
+            this.technicalReview=technicalReview;
         }
 
         long daysSinceEntry(LocalDate today) {
@@ -69,23 +73,25 @@ final class MissionLevelProgressStore {
             }
             entered=today;
         }
-        if(category==5 || !MissionDifficultyMixPolicy.mixed(selected))
-            return new Snapshot(selected,entered,0,false);
-
+        if(category==5) {
+            TechnicalCheckpointPolicy.Decision review=
+                    TechnicalCheckpointPolicy.evaluate(
+                            category,0,0,selected,null,recentInterruption);
+            return new Snapshot(selected,entered,0,false,review);
+        }
         int phase=MissionDifficultyMixPolicy.clampPhase(
                 sp.getInt(PHASE+category,0));
+        TechnicalCheckpointPolicy.Decision review=
+                TechnicalCheckpointPolicy.evaluate(
+                        category,Math.max(0,ChronoUnit.DAYS.between(entered,today)),
+                        phase,selected,weekly,recentInterruption);
+        if(!MissionDifficultyMixPolicy.mixed(selected))
+            return new Snapshot(selected,entered,0,false,review);
+
         LocalDate last=parse(sp.getString(SHIFT+category,""));
-        // Never promote from calendar time or another category's report.
-        boolean eligible=!recentInterruption
-                && phase<MissionDifficultyMixPolicy.PHASES-1
-                && !today.isBefore(entered.plusDays(7))
-                && (last==null || !today.isBefore(last.plusDays(7)))
-                && weekly!=null
-                && weekly.category==category
-                && weekly.status==WeeklyCategoryChallengePolicy.Status.OFFER_EQUIVALENT_VARIETY
-                && weekly.completedRatings>=2
-                && weekly.lowRatings>=2
-                && weekly.highRatings==0;
+        // No calendar-only promotion; use completed evidence for this category.
+        boolean eligible=review.mayAdvance()
+                && (last==null || !today.isBefore(last.plusDays(7)));
         if(eligible) {
             if(!sp.edit().putInt(PHASE+category,phase+1)
                     .putString(SHIFT+category,today.toString()).commit()) {
@@ -93,7 +99,7 @@ final class MissionLevelProgressStore {
             }
             phase++;
         }
-        return new Snapshot(selected,entered,phase,eligible);
+        return new Snapshot(selected,entered,phase,eligible,review);
     }
 
     private static LocalDate parse(String value) {

@@ -89,7 +89,7 @@ public final class WeeklyCategoryChallengePolicy {
             counted.add(observation.date);
             // A hard or unfinished session is always relevant to recovery.
             // Only completed activities qualify as "repeatedly easy".
-            if(observation.effort>=7)high++;
+            if(observation.effort>=8)high++;
             if(!observation.activityCompleted)continue;
             completed++;
             if(observation.effort<=3)low++;

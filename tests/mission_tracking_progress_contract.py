@@ -37,7 +37,7 @@ for text in ('"day_effort_"', '"monarch_done_"', '"day_done_"',
              'effort<1||effort>10', "SharedPreferences"):
     assert text in tracking,text
 for text in ("day >=21 ?21", "day>=14 ?14", "day>=7 ?7",
-             "if (average>=7.0)", "no se aumentará", "sin aumentar automáticamente"):
+             "if (average>=8.0)", "no se aumentará", "sin aumentar automáticamente"):
     assert text in domain,text
 assert "highEffortCanSuggestReducingAtDayTwentyOne" in tests
 assert "lowEffortDoesNotTriggerAutomaticIncrease" in tests
@@ -48,9 +48,9 @@ assert "MissionTrackingStore.ratingForCategory(this,day,category)" in activity
 assert "int category=profile.weekly.get(today.getDayOfWeek().getValue()-1)" in activity
 assert "EffortAdaptationPolicy.dailySuggestionCount(" not in activity
 policy=(root/"progress-engine/src/main/java/pe/asterionsystem/core/engine/progression/CategoryEffortPolicy.java").read_text(encoding="utf-8")
-for condition in ("lastEffort<=3", "lastEffort<=6", "lastEffort>=9",
+for condition in ("lastEffort<=3", "lastEffort<=7", "lastEffort>=9",
                   "REVIEW_OPTIONAL", "MAINTAIN", "EASIER",
-                  "no se aumentan repeticiones"):
+                  "Los ajustes de repeticiones se calculan por separado"):
     assert condition in policy, condition
 assert '"category_effort_"' in tracking
 assert "latestCategoryRating(Context context,int category,LocalDate before)" in tracking
