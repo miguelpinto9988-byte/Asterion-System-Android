@@ -11,6 +11,8 @@ public final class PortableTrainingModuleTest {
     @Test public void corpusAndInitialSettingsAreComplete() throws Exception {
         PortableTrainingModule kit=PortableTrainingModule.loadDefaults();
         assertEquals(5,kit.categories().size());
+        assertEquals(5,kit.settings().dailyActivities);
+        assertEquals(5,PortableTrainingSettings.defaults().dailyActivities);
         assertEquals(155,kit.catalog().families().size());
         assertEquals(474,kit.catalog().types().size());
         assertEquals(1257,kit.catalog().variants().size());
