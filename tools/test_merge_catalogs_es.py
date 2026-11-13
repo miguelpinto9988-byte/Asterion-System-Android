@@ -6,6 +6,10 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 import merge_catalogs_es as merge
 
 class MergeCatalogsTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        merge.generate()
+
     def test_old_catalogue_is_preserved_and_unique_ids_are_distinct(self):
         m=merge.generate()
         data=json.loads((merge.DEST/"catalogo_es.json").read_text(encoding="utf-8"))
