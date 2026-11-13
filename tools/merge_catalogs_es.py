@@ -59,7 +59,7 @@ MOVEMENTS=[
  ("encogimiento",r"\bshrug|\bencogimiento"),
  ("plancha",r"\bplank|\bplancha"),
  ("crunch",r"\bcrunch|\bencogimiento abdominal"),
- ("abdominal",r"\bsit.up|\babdominal(?:es)?\b"),
+ ("abdominal",r"\bsit.up|\babdominales\b|^abdominal\b"),
  ("elevacion_pierna",r"\bleg raise|\bhip raise|\belevacion de piernas"),
  ("giro",r"\btorso twist|\brussian twist|\btwist|\bgiro de tronco"),
  ("abduccion",r"\bhip abduction|\babduccion"),
@@ -124,9 +124,34 @@ def assess(external,old_by_movement):
     qnew=qualifiers(external["nombre_original"])
     for original in old_by_movement.get((cat,family),[]):
         old_gear=set(original["equipment"].split("+"))
-        if any(x in old_gear for x in ("sin_equipo","colchoneta","pared","silla")):
+        # Una colchoneta puede acompañar a peso corporal; una toalla,
+        # máquina, silla o pared NO es equipamiento equivalente por defecto.
+        if old_gear.issubset({"sin_equipo","colchoneta"}):
             old_gear.add("sin_equipo")
         if gear not in old_gear:continue
+        if family=="estiramiento":
+            # Evitar falsos positivos entre músculos totalmente distintos.
+            # Se coteja el grupo anatómico nombrado en ambos idiomas.
+            targets=[
+                (r"pec|chest",r"pectoral|pecho"),
+                (r"hamstring",r"isquiotibial"),
+                (r"quad",r"cuadriceps"),
+                (r"wrist",r"muneca"),
+                (r"neck",r"cuello"),
+                (r"shoulder",r"hombro"),
+                (r"hip flexor",r"flexor(?:es)? de cadera"),
+                (r"glut",r"glute"),
+                (r"lower back",r"lumbar"),
+                (r"calf",r"pantorrilla|gemelo"),
+                (r"triceps",r"triceps"),
+                (r"biceps",r"biceps"),
+            ]
+            target_pairs=[sp for en,sp in targets
+                if re.search(en,ascii_name(external["nombre_original"]))]
+            if not target_pairs or not any(
+                    re.search(sp,ascii_name(original["name"]))
+                    for sp in target_pairs):
+                continue
         qold=qualifiers(original["name"])
         if len(qnew.symmetric_difference(qold))<=1:
             # No afirmar duplicado por un patrón similar; necesita revisión.
