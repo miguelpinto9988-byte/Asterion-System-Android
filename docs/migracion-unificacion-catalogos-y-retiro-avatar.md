@@ -15,9 +15,9 @@
 |---|---:|---|
 | Originales Asterion | 1.257 | Se conservan íntegros |
 | Duplicados confirmados por ID | 5 | Se conserva el original y se excluye la copia |
-| Posibles duplicados | 481 | No se agregan hasta revisión |
-| Nuevos provisionales | 838 | Se incorporan al explorador unificado |
-| Total visible en catálogo unificado | 2.095 | 1.257+838 |
+| Posibles duplicados | 407 | No se agregan hasta revisión |
+| Nuevos provisionales | 912 | Se incorporan al explorador unificado |
+| Total visible en catálogo unificado | 2.169 | 1.257+912 |
 
 Estas cantidades dependen de heurísticas conservadoras. El archivo
 docs/datos/comparacion_catalogos_es.csv contiene un dictamen para
@@ -60,7 +60,7 @@ cuando los movimientos reciben nombres muy diferentes.
 ## Siguientes validaciones
 1. Resolver los 481 posibles duplicados comprobando movimiento, material,
    posición y técnica, no solo palabras similares.
-2. Revisar los 838 nombres y categorías provisionales con fuentes
+2. Revisar los 912 nombres y categorías provisionales con fuentes
    propias o legalmente reutilizables.
 3. Asignar nivel técnico y elegibilidad para sugerencias, caso por caso.
 4. Integrar solo las variantes validadas al motor de rutinas y crear
