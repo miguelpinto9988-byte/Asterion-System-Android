@@ -37,7 +37,7 @@ MUSCLES={
  "abductors":("tren_inferior","abductores")
 }
 EQUIPMENT={
- "body only":("sin_equipo","peso corporal"),"none":("sin_equipo","sin material"),
+ "body only":("sin_equipo","peso corporal"),"none":("material_por_revisar","material por verificar"),
  "machine":("maquina","máquina"),"other":("material_especifico","material específico"),
  "foam roll":("rodillo","rodillo de espuma"),"kettlebells":("kettlebell","pesa rusa"),
  "dumbbell":("mancuerna","mancuernas"),"cable":("polea","polea"),
@@ -232,7 +232,8 @@ def build(source_rows):
     counts=Counter()
     rows=[]
     extra=[]
-    for index,item in enumerate(source_rows,1):
+    for index,original in enumerate(source_rows,1):
+        item={**original,"equipment":original.get("equipment") or "none"}
         required=("id","name","level","equipment","category","primaryMuscles")
         if any(not item.get(x) for x in required):raise ValueError("Registro incompleto")
         if item["equipment"] not in EQUIPMENT:raise ValueError("Material desconocido")
