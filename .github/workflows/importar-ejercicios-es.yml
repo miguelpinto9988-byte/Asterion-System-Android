@@ -1,0 +1,64 @@
+name: Importar catálogo de ejercicios en español sin medios protegidos
+on:
+  push:
+    branches:
+      - feature/catalogo-exercises-dataset-es-20261113
+    paths:
+      - tools/import_exercises_dataset_es.py
+      - tools/test_import_exercises_dataset_es.py
+      - .github/workflows/importar-ejercicios-es.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  importar:
+    if: github.repository == 'miguelpinto9988-byte/Asterion-System-Android'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validar mapeos y reglas
+        run: python -m unittest discover -s tools -p test_import_exercises_dataset_es.py
+      - name: Descargar datos MIT de revisión fijada
+        run: python tools/import_exercises_dataset_es.py
+      - name: Verificar español, IDs y ausencia de multimedia
+        shell: bash
+        run: |
+          test "$(find app/src/main/assets/external_exercises -type f \( -iname '*.gif' -o -iname '*.jpg' -o -iname '*.png' \) | wc -l)" -eq 0
+          python - <<'PY'
+          import json
+          path='app/src/main/assets/external_exercises/v1/ejercicios_es.json'
+          data=json.load(open(path,encoding='utf-8'))
+          es=data['ejercicios']
+          assert len(es)==1324 and len({x['id'] for x in es})==1324
+          assert all(x['instrucciones_es'] and x['nombre_es'] for x in es)
+          assert all(not x['gif_incluido'] and not x['imagen_incluida'] for x in es)
+          assert all(x['nivel_tecnico']=='pendiente_revision' for x in es)
+          PY
+      - name: Incorporar datos MIT solo en esta rama
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/src/main/assets/external_exercises/v1/ejercicios_es.json \
+                  app/src/main/assets/external_exercises/v1/manifest.json \
+                  third_party/exercises_dataset/LICENSE third_party/exercises_dataset/NOTICE.md
+          if ! git diff --cached --quiet; then
+            git commit -m "data(es): añadir 1324 fichas en español sin GIF/JPG con derechos reservados"
+            git push origin "HEAD:${{ github.ref_name }}"
+          fi
+      - name: Publicar copia de datos y prueba de importación
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asterion-catalogo-es-sin-multimedia
+          path: |
+            app/src/main/assets/external_exercises/v1/
+            third_party/exercises_dataset/
+          if-no-files-found: warn
+          retention-days: 30
