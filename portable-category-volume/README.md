@@ -47,7 +47,7 @@ posible pasar `Properties` a `PortableTrainingSettings.from(...)`).
 |---|---|---|
 | `categorias_habilitadas` | cinco categorías | grupos mostrados |
 | `nivel_experiencia` | `principiante` | preferencia para nuevo planificador |
-| `actividades_diarias` | 3 | preferencia de UI, aún no crea rutinas |
+| `actividades_diarias` | 5 | preferencia de UI, aún no crea rutinas |
 | `sugerencias_volumen` | `false` | requiere activación explícita |
 | `zona_horaria` | `system` | fechas de la nueva app |
 | `idioma` | `es` | idioma de UI, no traducción automática del catálogo |
