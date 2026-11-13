@@ -21,7 +21,7 @@ public final class AssetExerciseVolumeProfileRepository {
 
     public ExerciseVolumeProfileCatalog load(ExerciseCatalog catalog) {
         try(InputStreamReader input=new InputStreamReader(
-                context.getAssets().open("asterion_exercises/v1/volume_profiles.tsv"),
+                context.getAssets().open("asterion_exercises/v2/volume_profiles.tsv"),
                 StandardCharsets.UTF_8)) {
             return ExerciseVolumeProfileCatalog.load(input,catalog);
         }catch(IOException|IllegalArgumentException error) {
