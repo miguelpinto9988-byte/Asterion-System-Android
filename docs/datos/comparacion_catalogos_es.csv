@@ -1,8 +1,8 @@
 id_externo,nombre_origen,categoria,decision,id_original_relacionado,motivo
-ext_0001,3/4 sit-up,tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
+ext_0001,3/4 sit-up,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0002,45° side bend,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0003,air bike,tren_central,nuevo_provisional,,sin_correspondencia_verificable
-ext_1512,all fours squad stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1512,all fours squad stretch,movilidad,posible_duplicado,estiramiento_cuadriceps_v02,misma_categoria_movimiento_material
 ext_0006,alternate heel touchers,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0007,alternate lateral pulldown,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1368,ankle circles,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
@@ -11,24 +11,24 @@ ext_3294,archer push up,tren_superior,posible_duplicado,flexiones_v04,misma_cate
 ext_2355,arm slingers hanging bent knee legs,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_2333,arm slingers hanging straight legs,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_3214,arms apart circular toe touch (male),tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_3204,arms overhead full sit-up (male),tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
+ext_3204,arms overhead full sit-up (male),tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0009,assisted chest dip (kneeling),tren_superior,posible_duplicado,fondos_v02,misma_categoria_movimiento_material
 ext_0011,assisted hanging knee raise,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0010,assisted hanging knee raise with throw down,tren_central,nuevo_provisional,,sin_correspondencia_verificable
-ext_1708,assisted lying calves stretch,movilidad,posible_duplicado,dep_024_estiramiento_de_flexor_de_cadera_en_de_v01,misma_categoria_movimiento_material
-ext_1709,assisted lying glutes stretch,movilidad,posible_duplicado,dep_024_estiramiento_de_flexor_de_cadera_en_de_v01,misma_categoria_movimiento_material
-ext_1710,assisted lying gluteus and piriformis stretch,movilidad,posible_duplicado,dep_024_estiramiento_de_flexor_de_cadera_en_de_v01,misma_categoria_movimiento_material
+ext_1708,assisted lying calves stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_1709,assisted lying glutes stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_1710,assisted lying gluteus and piriformis stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0012,assisted lying leg raise with lateral throw down,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0013,assisted lying leg raise with throw down,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0014,assisted motion russian twist,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0015,assisted parallel close grip pull-up,tren_superior,posible_duplicado,dominadas_v02,misma_categoria_movimiento_material
 ext_0016,assisted prone hamstring,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_1713,assisted prone lying quads stretch,movilidad,posible_duplicado,dep_024_estiramiento_de_flexor_de_cadera_en_de_v01,misma_categoria_movimiento_material
-ext_1714,assisted prone rectus femoris stretch,movilidad,posible_duplicado,estiramiento_isquios_v03,misma_categoria_movimiento_material
+ext_1713,assisted prone lying quads stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_1714,assisted prone rectus femoris stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0017,assisted pull-up,tren_superior,posible_duplicado,dominadas_v02,misma_categoria_movimiento_material
-ext_1716,assisted seated pectoralis major stretch with stability ball,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1716,assisted seated pectoralis major stretch with stability ball,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_1712,assisted side lying adductor stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
-ext_1758,assisted sit-up,tren_central,posible_duplicado,rueda_abdominal_v01,misma_categoria_movimiento_material
+ext_1758,assisted sit-up,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_1431,assisted standing chin-up,tren_superior,posible_duplicado,dominadas_v02,misma_categoria_movimiento_material
 ext_1432,assisted standing pull-up,tren_superior,posible_duplicado,dominadas_v02,misma_categoria_movimiento_material
 ext_0018,assisted standing triceps extension (with towel),tren_superior,nuevo_provisional,,sin_duplicado_verificado
@@ -38,7 +38,7 @@ ext_3220,astride jumps (male),cardio,posible_duplicado,talones_alternos_v01,mism
 ext_3672,back and forth step,cardio,nuevo_provisional,,sin_correspondencia_verificable
 ext_1314,back extension on exercise ball,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3297,back lever,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_1405,back pec stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1405,back pec stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_1473,backward jump,tren_inferior,posible_duplicado,pasos_diagonales_suelo_v03,misma_categoria_movimiento_material
 ext_0020,balance board,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0968,band alternating biceps curl,tren_superior,posible_duplicado,curl_biceps_v01,misma_categoria_movimiento_material
@@ -239,9 +239,9 @@ ext_0127,barbell zercher squat,tren_inferior,nuevo_provisional,,sin_duplicado_ve
 ext_3212,basic toe touch (male),tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0128,battling ropes,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3360,bear crawl,cardio,nuevo_provisional,,sin_correspondencia_verificable
-ext_1259,behind head chest stretch,movilidad,posible_duplicado,estiramiento_isquios_v03,misma_categoria_movimiento_material
-ext_0129,bench dip (knees bent),tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
-ext_1399,bench dip on floor,tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
+ext_1259,behind head chest stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_0129,bench dip (knees bent),tren_superior,nuevo_provisional,,sin_duplicado_verificado
+ext_1399,bench dip on floor,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0130,bench hip extension,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3019,bench pull-ups,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_3639,bent knee lying twist (male),tren_inferior,nuevo_provisional,,sin_duplicado_verificado
@@ -249,13 +249,13 @@ ext_1770,biceps leg concentration curl,tren_superior,nuevo_provisional,,sin_corr
 ext_0139,biceps narrow pull-ups,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0140,biceps pull-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0137,body-up,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_3543,bodyweight drop jump squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
-ext_3544,bodyweight incline side plank,tren_central,posible_duplicado,plancha_lateral_v01,misma_categoria_movimiento_material
-ext_1771,bodyweight kneeling triceps extension,tren_superior,posible_duplicado,fondos_v01,misma_categoria_movimiento_material
+ext_3543,bodyweight drop jump squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
+ext_3544,bodyweight incline side plank,tren_central,posible_duplicado,plancha_lateral_v02,misma_categoria_movimiento_material
+ext_1771,bodyweight kneeling triceps extension,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_1769,bodyweight side lying biceps curl,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_3168,bodyweight squatting row,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_3167,bodyweight squatting row (with towel),tren_superior,nuevo_provisional,,sin_duplicado_verificado
-ext_1373,bodyweight standing calf raise,tren_inferior,posible_duplicado,elevacion_gemelos_v02,misma_categoria_movimiento_material
+ext_1373,bodyweight standing calf raise,tren_inferior,posible_duplicado,elevacion_gemelos_v03,misma_categoria_movimiento_material
 ext_3156,bodyweight standing close-grip one arm row,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_3158,bodyweight standing close-grip row,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_3162,bodyweight standing one arm row,tren_superior,nuevo_provisional,,sin_duplicado_verificado
@@ -423,21 +423,21 @@ ext_1324,cable upper row,tren_superior,posible_duplicado,remo_v06,misma_categori
 ext_0246,cable upright row,tren_superior,posible_duplicado,remo_v06,misma_categoria_movimiento_material
 ext_1325,cable wide grip rear pulldown behind neck,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0247,cable wrist curl,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_1407,calf push stretch with hands against wall,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
-ext_1377,calf stretch with hands against wall,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1407,calf push stretch with hands against wall,movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_1377,calf stretch with hands against wall,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_1378,calf stretch with rope,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0248,cambered bar lying row,tren_superior,posible_duplicado,dep_013_remo_con_flexion_de_tronco_barbell_row_v01,misma_categoria_movimiento_material
 ext_2963,captains chair straight leg raise,tren_central,nuevo_provisional,,sin_duplicado_verificado
-ext_1548,chair leg extended stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
-ext_1271,chest and front of shoulder stretch,movilidad,posible_duplicado,estiramiento_isquios_v03,misma_categoria_movimiento_material
-ext_0251,chest dip,tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
+ext_1548,chair leg extended stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_1271,chest and front of shoulder stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_0251,chest dip,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_1430,chest dip (on dip-pull-up cage),tren_superior,nuevo_provisional,,sin_duplicado_verificado
-ext_2462,chest dip on straight bar,tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
+ext_2462,chest dip on straight bar,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_1272,chest stretch with exercise ball,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_3216,chest tap push-up (male),tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_1326,chin-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0253,chin-ups (narrow parallel grip),tren_superior,nuevo_provisional,,sin_duplicado_verificado
-ext_0257,circles knee stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_0257,circles knee stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_1273,clap push up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_0258,clock push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_1327,close grip chin-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
@@ -451,15 +451,15 @@ ext_0271,crunch (on stability ball),tren_central,posible_duplicado,crunch_v05,mi
 ext_0272,"crunch (on stability ball, arms straight)",tren_central,posible_duplicado,crunch_v05,misma_categoria_movimiento_material
 ext_0274,crunch floor,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
 ext_3016,curl-up,tren_central,nuevo_provisional,,sin_correspondencia_verificable
-ext_3769,curtsey squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
+ext_3769,curtsey squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
 ext_2331,cycle cross trainer,cardio,nuevo_provisional,,sin_correspondencia_verificable
 ext_0276,dead bug,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0277,decline crunch,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
 ext_0279,decline push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
-ext_0282,decline sit-up,tren_central,posible_duplicado,rueda_abdominal_v01,misma_categoria_movimiento_material
+ext_0282,decline sit-up,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_1274,deep push up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0283,diamond push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
-ext_0284,donkey calf raise,tren_inferior,posible_duplicado,elevacion_gemelos_v01,misma_categoria_movimiento_material
+ext_0284,donkey calf raise,tren_inferior,posible_duplicado,elevacion_gemelos_v03,misma_categoria_movimiento_material
 ext_1275,drop push up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_0285,dumbbell alternate biceps curl,tren_superior,posible_duplicado,curl_biceps_v03,misma_categoria_movimiento_material
 ext_2403,dumbbell alternate biceps curl (with arm blaster),tren_superior,posible_duplicado,curl_biceps_v03,misma_categoria_movimiento_material
@@ -745,7 +745,7 @@ ext_0438,dumbbell w-press,tren_superior,nuevo_provisional,,sin_correspondencia_v
 ext_0439,dumbbell zottman curl,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_2294,dumbbell zottman preacher curl,tren_superior,posible_duplicado,curl_biceps_v02,misma_categoria_movimiento_material
 ext_2189,dumbbells seated triceps extension,tren_superior,posible_duplicado,extension_triceps_v04,misma_categoria_movimiento_material
-ext_1167,dynamic chest stretch (male),movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1167,dynamic chest stretch (male),movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_3287,elbow dips,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1772,elbow lift - reverse push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_0443,elbow-to-knee,tren_central,nuevo_provisional,,sin_correspondencia_verificable
@@ -797,18 +797,18 @@ ext_2741,ez-barbell standing wide grip biceps curl,tren_superior,nuevo_provision
 ext_2133,farmers walk,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
 ext_0455,finger curls,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3303,flag,tren_central,nuevo_provisional,,sin_correspondencia_verificable
-ext_0456,flexion leg sit up (bent knee),tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
-ext_0457,flexion leg sit up (straight arm),tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
+ext_0456,flexion leg sit up (bent knee),tren_central,nuevo_provisional,,sin_duplicado_verificado
+ext_0457,flexion leg sit up (straight arm),tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0458,floor fly (with barbell),tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0459,flutter kicks,tren_inferior,posible_duplicado,dep_075_talones_al_gluteo_butt_kicks_v01,misma_categoria_movimiento_material
 ext_1472,forward jump,tren_inferior,posible_duplicado,pasos_diagonales_suelo_v03,misma_categoria_movimiento_material
-ext_3470,forward lunge (male),tren_inferior,posible_duplicado,zancada_estatica_v01,misma_categoria_movimiento_material
+ext_3470,forward lunge (male),tren_inferior,posible_duplicado,zancada_estatica_v02,misma_categoria_movimiento_material
 ext_3194,frankenstein squat,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
 ext_2429,frog crunch,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
 ext_3301,frog planche,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_3296,front lever,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_3295,front lever reps,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_0464,front plank with twist,tren_central,posible_duplicado,plancha_frontal_v01,misma_categoria_movimiento_material
+ext_0464,front plank with twist,tren_central,posible_duplicado,plancha_frontal_v03,misma_categoria_movimiento_material
 ext_3315,full maltese,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_3299,full planche,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_3327,full planche push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
@@ -821,8 +821,8 @@ ext_0469,groin crunch,tren_central,posible_duplicado,crunch_v02,misma_categoria_
 ext_1383,hack calf raise,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1384,hack one leg calf raise,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3221,half knee bends (male),cardio,nuevo_provisional,,sin_correspondencia_verificable
-ext_3202,half sit-up (male),tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
-ext_1511,hamstring stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_3202,half sit-up (male),tren_central,nuevo_provisional,,sin_duplicado_verificado
+ext_1511,hamstring stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_2139,hands bike,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3218,hands clasped circular toe touch (male),tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3215,hands reversed clasped circular toe touch (male),tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
@@ -844,32 +844,32 @@ ext_0488,hyperextension (on bench),tren_superior,nuevo_provisional,,sin_correspo
 ext_3289,impossible dips,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1471,inchworm,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_3698,inchworm v. 2,tren_central,nuevo_provisional,,sin_correspondencia_verificable
-ext_0490,incline close-grip push-up,tren_superior,posible_duplicado,flexion_pica_v01,misma_categoria_movimiento_material
+ext_0490,incline close-grip push-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0491,incline leg hip raise (leg straight),tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0492,incline push up depth jump,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_0493,incline push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_3785,incline push-up (on box),tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
-ext_0494,incline reverse grip push-up,tren_superior,posible_duplicado,flexion_pica_v01,misma_categoria_movimiento_material
+ext_0494,incline reverse grip push-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_3011,incline scapula push up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
-ext_0495,incline twisting sit-up,tren_central,posible_duplicado,rueda_abdominal_v01,misma_categoria_movimiento_material
+ext_0495,incline twisting sit-up,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_1564,intermediate hip flexor and quad stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
-ext_0496,inverse leg curl (bench support),tren_inferior,posible_duplicado,curl_femoral_v01,misma_categoria_movimiento_material
-ext_2400,inverse leg curl (on pull-up cable machine),tren_inferior,posible_duplicado,curl_femoral_v01,misma_categoria_movimiento_material
-ext_0499,inverted row,tren_superior,posible_duplicado,remo_v01,misma_categoria_movimiento_material
-ext_2300,inverted row bent knees,tren_superior,posible_duplicado,remo_v01,misma_categoria_movimiento_material
-ext_2298,inverted row on bench,tren_superior,posible_duplicado,remo_v01,misma_categoria_movimiento_material
-ext_0497,inverted row v. 2,tren_superior,posible_duplicado,remo_v01,misma_categoria_movimiento_material
-ext_0498,inverted row with straps,tren_superior,posible_duplicado,remo_v01,misma_categoria_movimiento_material
-ext_1419,iron cross stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_0496,inverse leg curl (bench support),tren_inferior,nuevo_provisional,,sin_duplicado_verificado
+ext_2400,inverse leg curl (on pull-up cable machine),tren_inferior,nuevo_provisional,,sin_duplicado_verificado
+ext_0499,inverted row,tren_superior,posible_duplicado,remo_banda_pecho_v01,misma_categoria_movimiento_material
+ext_2300,inverted row bent knees,tren_superior,posible_duplicado,remo_banda_pecho_v01,misma_categoria_movimiento_material
+ext_2298,inverted row on bench,tren_superior,posible_duplicado,remo_banda_pecho_v01,misma_categoria_movimiento_material
+ext_0497,inverted row v. 2,tren_superior,posible_duplicado,remo_banda_pecho_v01,misma_categoria_movimiento_material
+ext_0498,inverted row with straps,tren_superior,posible_duplicado,remo_banda_pecho_v01,misma_categoria_movimiento_material
+ext_1419,iron cross stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_1297,isometric chest squeeze,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0500,isometric wipers,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0501,jack burpee,cardio,posible_duplicado,dep_burpee_tecnico_v01,misma_categoria_movimiento_material
 ext_3224,jack jump (male),cardio,posible_duplicado,talones_alternos_v01,misma_categoria_movimiento_material
-ext_0507,jackknife sit-up,tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
-ext_0508,janda sit-up,tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
+ext_0507,jackknife sit-up,tren_central,nuevo_provisional,,sin_duplicado_verificado
+ext_0508,janda sit-up,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_2612,jump rope,cardio,posible_duplicado,cuerda_salto_basico_v01,misma_categoria_movimiento_material
-ext_0514,jump squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
-ext_0513,jump squat v. 2,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
+ext_0514,jump squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
+ext_0513,jump squat v. 2,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
 ext_0517,kettlebell advanced windmill,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0518,kettlebell alternating hang clean,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0520,kettlebell alternating press,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
@@ -915,8 +915,8 @@ ext_0555,kick out sit,tren_inferior,posible_duplicado,dep_075_talones_al_gluteo_
 ext_0558,kipping muscle up,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3640,knee touch crunch,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
 ext_1420,kneeling jump squat,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
-ext_1346,kneeling lat stretch,movilidad,posible_duplicado,estiramiento_isquios_v03,misma_categoria_movimiento_material
-ext_3239,kneeling plank tap shoulder (male),tren_central,posible_duplicado,plancha_frontal_v01,misma_categoria_movimiento_material
+ext_1346,kneeling lat stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_3239,kneeling plank tap shoulder (male),tren_central,posible_duplicado,plancha_frontal_v03,misma_categoria_movimiento_material
 ext_3211,kneeling push-up (male),tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_3288,korean dips,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3418,l-pull-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
@@ -926,7 +926,7 @@ ext_3237,landmine lateral raise,tren_superior,nuevo_provisional,,sin_duplicado_v
 ext_3300,lean planche,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_2271,left hook. boxing,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0570,leg pull in flat bench,tren_central,nuevo_provisional,,sin_correspondencia_verificable
-ext_1576,leg up hamstring stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1576,leg up hamstring stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_2287,lever alternate leg press,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0571,lever alternating narrow grip seated row,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0572,lever assisted chin-up,tren_superior,posible_duplicado,dominadas_v02,misma_categoria_movimiento_material
@@ -1001,9 +1001,9 @@ ext_1313,lever unilateral row,tren_superior,posible_duplicado,remo_v03,misma_cat
 ext_0609,london bridge,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3013,low glute bridge on floor,tren_inferior,posible_duplicado,puente_gluteo_v01,misma_categoria_movimiento_material
 ext_1352,lower back curl,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_3582,lunge with jump,tren_inferior,posible_duplicado,zancada_estatica_v01,misma_categoria_movimiento_material
+ext_3582,lunge with jump,tren_inferior,posible_duplicado,zancada_estatica_v02,misma_categoria_movimiento_material
 ext_1688,lunge with twist,tren_central,nuevo_provisional,,sin_duplicado_verificado
-ext_0613,lying (side) quads stretch,movilidad,posible_duplicado,dep_024_estiramiento_de_flexor_de_cadera_en_de_v01,misma_categoria_movimiento_material
+ext_0613,lying (side) quads stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_2312,lying elbow to knee,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0620,lying leg raise flat bench,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0865,lying leg-hip raise,tren_central,nuevo_provisional,,sin_duplicado_verificado
@@ -1026,7 +1026,7 @@ ext_0630,mountain climber,cardio,nuevo_provisional,,sin_correspondencia_verifica
 ext_0631,muscle up,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1401,muscle-up (on vertical bar),tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_2328,narrow push-up on exercise ball,tren_superior,nuevo_provisional,,sin_duplicado_verificado
-ext_1403,neck side stretch,movilidad,posible_duplicado,estiramiento_isquios_v03,misma_categoria_movimiento_material
+ext_1403,neck side stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0634,negative crunch,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
 ext_1495,oblique crunch v. 2,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
 ext_0635,oblique crunches floor,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
@@ -1037,12 +1037,12 @@ ext_0638,one arm chin-up,tren_superior,nuevo_provisional,,sin_duplicado_verifica
 ext_0639,one arm dip,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0640,one arm slam (with medicine ball),tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_1773,one arm towel row,tren_superior,posible_duplicado,remo_banda_pecho_v01,misma_categoria_movimiento_material
-ext_1386,one leg donkey calf raise,tren_inferior,posible_duplicado,elevacion_gemelos_v05,misma_categoria_movimiento_material
-ext_1387,one leg floor calf raise,tren_inferior,posible_duplicado,elevacion_gemelos_v05,misma_categoria_movimiento_material
-ext_1476,one leg squat,tren_inferior,posible_duplicado,sentadilla_unilateral_v05,misma_categoria_movimiento_material
+ext_1386,one leg donkey calf raise,tren_inferior,posible_duplicado,talones_estaticos_v03,misma_categoria_movimiento_material
+ext_1387,one leg floor calf raise,tren_inferior,posible_duplicado,talones_estaticos_v03,misma_categoria_movimiento_material
+ext_1476,one leg squat,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
 ext_0641,otis up,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0642,outside leg kick push-up,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
-ext_0643,overhead triceps stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_0643,overhead triceps stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_3147,pelvic tilt,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_1422,pelvic tilt into bridge,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1388,peroneals stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
@@ -1051,10 +1051,10 @@ ext_1306,plyo push up,tren_superior,posible_duplicado,flexiones_v04,misma_catego
 ext_1687,posterior step to overhead reach,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_1389,posterior tibialis stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_3119,potty squat,tren_central,nuevo_provisional,,sin_duplicado_verificado
-ext_3132,potty squat with support,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
+ext_3132,potty squat with support,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
 ext_0648,power clean,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_3665,power point plank,tren_central,posible_duplicado,plancha_frontal_v01,misma_categoria_movimiento_material
-ext_3203,prisoner half sit-up (male),tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
+ext_3665,power point plank,tren_central,posible_duplicado,plancha_frontal_v03,misma_categoria_movimiento_material
+ext_3203,prisoner half sit-up (male),tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_1707,prone twist on stability ball,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0651,pull up (neutral grip),tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0650,pull-in (on stability ball),tren_central,nuevo_provisional,,sin_correspondencia_verificable
@@ -1075,11 +1075,11 @@ ext_1467,push-up on lower arms,tren_superior,posible_duplicado,flexiones_v04,mis
 ext_3145,push-up plus,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_0664,push-up to side plank,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_3533,quads,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_3201,quarter sit-up,tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
+ext_3201,quarter sit-up,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_3552,quick feet v. 2,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0666,raise single arm push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_0668,rear decline bridge,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_0669,rear deltoid stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_0669,rear deltoid stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0670,rear pull-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_1582,reclining big toe pose with rope,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3236,resistance band hip thrusts on knees (female),tren_inferior,posible_duplicado,puente_gluteo_v04,misma_categoria_movimiento_material
@@ -1095,9 +1095,9 @@ ext_0673,reverse grip machine lat pulldown,tren_superior,nuevo_provisional,,sin_
 ext_0674,reverse grip pull-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0675,reverse hyper extension (on stability ball),tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1423,reverse hyper on flat bench,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_3663,reverse plank with leg lift,tren_central,posible_duplicado,plancha_frontal_v01,misma_categoria_movimiento_material
+ext_3663,reverse plank with leg lift,tren_central,posible_duplicado,plancha_frontal_v03,misma_categoria_movimiento_material
 ext_0677,ring dips,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_2571,rocking frog stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_2571,rocking frog stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0678,rocky pull-up pulldown,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_2208,roller back stretch,movilidad,nuevo_provisional,,sin_correspondencia_verificable
 ext_2204,roller body saw,tren_central,nuevo_provisional,,sin_correspondencia_verificable
@@ -1110,22 +1110,22 @@ ext_2207,roller side lat stretch,movilidad,nuevo_provisional,,sin_correspondenci
 ext_0680,rope climb,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0685,run,cardio,posible_duplicado,trote_v03,misma_categoria_movimiento_material
 ext_0684,run (equipment),cardio,posible_duplicado,trote_v03,misma_categoria_movimiento_material
-ext_1585,runners stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1585,runners stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0687,russian twist,tren_central,posible_duplicado,dep_070_giro_de_cadera_hip_twist_pilates_v01,misma_categoria_movimiento_material
 ext_3012,scapula dips,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3021,scapula push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_0688,scapular pull-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_3219,scissor jumps (male),cardio,posible_duplicado,talones_alternos_v01,misma_categoria_movimiento_material
-ext_1390,seated calf stretch (male),movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
-ext_1424,seated glute stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1390,seated calf stretch (male),movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_1424,seated glute stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0689,seated leg raise,tren_central,nuevo_provisional,,sin_duplicado_verificado
-ext_0690,seated lower back stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
-ext_2567,seated piriformis stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_0690,seated lower back stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
+ext_2567,seated piriformis stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0691,seated side crunch (wall),tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_1587,seated wide angle pose sequence,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_0697,self assisted inverse leg curl,tren_inferior,posible_duplicado,curl_deslizante_v01,misma_categoria_movimiento_material
-ext_1766,self assisted inverse leg curl,tren_inferior,posible_duplicado,curl_deslizante_v01,misma_categoria_movimiento_material
-ext_0696,self assisted inverse leg curl (on floor),tren_inferior,posible_duplicado,curl_deslizante_v01,misma_categoria_movimiento_material
+ext_0697,self assisted inverse leg curl,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
+ext_1766,self assisted inverse leg curl,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
+ext_0696,self assisted inverse leg curl (on floor),tren_inferior,nuevo_provisional,,sin_duplicado_verificado
 ext_3222,semi squat jump (male),cardio,nuevo_provisional,,sin_duplicado_verificado
 ext_3656,short stride run,cardio,posible_duplicado,trote_v03,misma_categoria_movimiento_material
 ext_1763,shoulder grip pull-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
@@ -1135,22 +1135,22 @@ ext_1774,side bridge hip abduction,tren_inferior,posible_duplicado,abduccion_v02
 ext_0705,side bridge v. 2,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0709,side hip (on parallel bars),tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0710,side hip abduction,tren_inferior,posible_duplicado,abduccion_v02,misma_categoria_movimiento_material
-ext_1358,side lying floor stretch,movilidad,posible_duplicado,dep_024_estiramiento_de_flexor_de_cadera_en_de_v01,misma_categoria_movimiento_material
+ext_1358,side lying floor stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_3667,side lying hip adduction (male),tren_inferior,posible_duplicado,aduccion_v02,misma_categoria_movimiento_material
 ext_1775,side plank hip adduction,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
-ext_0716,side push neck stretch,movilidad,posible_duplicado,estiramiento_isquios_v03,misma_categoria_movimiento_material
+ext_0716,side push neck stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0717,side push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
-ext_0721,side wrist pull stretch,movilidad,posible_duplicado,estiramiento_isquios_v03,misma_categoria_movimiento_material
+ext_0721,side wrist pull stretch,movilidad,posible_duplicado,estiramiento_flexores_muneca_v02,misma_categoria_movimiento_material
 ext_0720,side-to-side chin,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3213,side-to-side toe touch (male),tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0725,single arm push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_3645,single leg bridge with outstretched leg,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0727,single leg calf raise (on a dumbbell),tren_inferior,posible_duplicado,elevacion_gemelos_v06,misma_categoria_movimiento_material
 ext_0730,single leg platform slide,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_1759,single leg squat (pistol) male,tren_inferior,posible_duplicado,sentadilla_unilateral_v05,misma_categoria_movimiento_material
-ext_1489,sissy squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
-ext_0735,sit-up v. 2,tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
-ext_3679,sit-up with arms on chest,tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
+ext_1759,single leg squat (pistol) male,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
+ext_1489,sissy squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
+ext_0735,sit-up v. 2,tren_central,nuevo_provisional,,sin_duplicado_verificado
+ext_3679,sit-up with arms on chest,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_3361,skater hops,cardio,nuevo_provisional,,sin_correspondencia_verificable
 ext_2142,ski ergometer,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3671,ski step,cardio,nuevo_provisional,,sin_correspondencia_verificable
@@ -1221,24 +1221,24 @@ ext_0776,snatch pull,tren_inferior,nuevo_provisional,,sin_correspondencia_verifi
 ext_0777,spell caster,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_1362,sphinx,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0778,spider crawl push up,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
-ext_1363,spine stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1363,spine stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_2329,spine twist,tren_central,posible_duplicado,dep_070_giro_de_cadera_hip_twist_pilates_v01,misma_categoria_movimiento_material
-ext_2368,split squats,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
+ext_2368,split squats,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
 ext_0786,squat jerk,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
 ext_1705,squat on bosu ball,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_1685,squat to overhead reach,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
-ext_1686,squat to overhead reach with twist,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
+ext_1685,squat to overhead reach,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
+ext_1686,squat to overhead reach with twist,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
 ext_2297,stability ball crunch (full range hands behind head),tren_central,posible_duplicado,crunch_v05,misma_categoria_movimiento_material
 ext_3291,stalder press,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3669,standing archer,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0788,standing behind neck press,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_1490,standing calf raise (on a staircase),tren_inferior,posible_duplicado,elevacion_gemelos_v02,misma_categoria_movimiento_material
+ext_1490,standing calf raise (on a staircase),tren_inferior,posible_duplicado,elevacion_gemelos_v03,misma_categoria_movimiento_material
 ext_1397,standing calves,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_1398,standing calves calf stretch,movilidad,posible_duplicado,estiramiento_isquios_v03,misma_categoria_movimiento_material
+ext_1398,standing calves calf stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_1599,standing hamstring and calf stretch with strap,movilidad,nuevo_provisional,,sin_duplicado_verificado
-ext_0794,standing lateral stretch,movilidad,posible_duplicado,estiramiento_cuadriceps_v03,misma_categoria_movimiento_material
+ext_0794,standing lateral stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_1364,standing pelvic tilt,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_0795,standing single leg curl,tren_inferior,posible_duplicado,curl_femoral_v01,misma_categoria_movimiento_material
+ext_0795,standing single leg curl,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
 ext_0796,standing wheel rollerout,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_3223,star jump (male),cardio,posible_duplicado,talones_alternos_v01,misma_categoria_movimiento_material
 ext_2138,stationary bike run v. 3,cardio,nuevo_provisional,,sin_correspondencia_verificable
@@ -1247,50 +1247,50 @@ ext_3314,straddle maltese,tren_central,nuevo_provisional,,sin_correspondencia_ve
 ext_3298,straddle planche,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_1427,straight leg outer hip abductor,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0803,superman push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
-ext_0805,suspended abdominal fallout,tren_central,posible_duplicado,dead_bug_v01,misma_categoria_movimiento_material
+ext_0805,suspended abdominal fallout,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0806,suspended push-up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_0807,suspended reverse crunch,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
-ext_0808,suspended row,tren_superior,posible_duplicado,remo_v01,misma_categoria_movimiento_material
-ext_0809,suspended split squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
+ext_0808,suspended row,tren_superior,posible_duplicado,remo_banda_pecho_v01,misma_categoria_movimiento_material
+ext_0809,suspended split squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
 ext_3433,swimmer kicks v. 2 (male),tren_inferior,posible_duplicado,dep_075_talones_al_gluteo_butt_kicks_v01,misma_categoria_movimiento_material
 ext_3318,swing 360,cardio,nuevo_provisional,,sin_correspondencia_verificable
-ext_1753,three bench dip,tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
+ext_1753,three bench dip,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_2459,tire flip,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0811,trap bar deadlift,tren_inferior,nuevo_provisional,,sin_correspondencia_verificable
-ext_0814,triceps dip,tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
-ext_0812,triceps dip (bench leg),tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
-ext_0813,triceps dip (between benches),tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
+ext_0814,triceps dip,tren_superior,nuevo_provisional,,sin_duplicado_verificado
+ext_0812,triceps dip (bench leg),tren_superior,nuevo_provisional,,sin_duplicado_verificado
+ext_0813,triceps dip (between benches),tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0815,triceps dips floor,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0816,triceps press,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_0817,triceps stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_0817,triceps stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0871,tuck crunch,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
 ext_0818,twin handle parallel grip lat pulldown,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1466,twist hip lift,tren_inferior,nuevo_provisional,,sin_duplicado_verificado
 ext_2802,twisted leg raise,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_2801,twisted leg raise (female),tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_3231,two toe touch (male),tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_1365,upper back stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1365,upper back stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_1366,upward facing dog,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3420,v-sit on floor,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_0826,vertical leg raise (on parallel bars),tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_2141,walk elliptical cross trainer,cardio,nuevo_provisional,,sin_correspondencia_verificable
 ext_3655,walking high knees lunge,cardio,nuevo_provisional,,sin_duplicado_verificado
-ext_1460,walking lunge,tren_inferior,posible_duplicado,zancada_estatica_v01,misma_categoria_movimiento_material
+ext_1460,walking lunge,tren_inferior,posible_duplicado,zancada_estatica_v02,misma_categoria_movimiento_material
 ext_3666,walking on incline treadmill,cardio,nuevo_provisional,,sin_duplicado_verificado
 ext_2311,walking on stepmill,cardio,nuevo_provisional,,sin_correspondencia_verificable
-ext_0830,weighted bench dip,tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
+ext_0830,weighted bench dip,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_2987,weighted close grip chin-up on dip cage,tren_superior,nuevo_provisional,,sin_duplicado_verificado
-ext_3643,weighted cossack squats (male),tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
+ext_3643,weighted cossack squats (male),tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
 ext_0832,weighted crunch,tren_central,posible_duplicado,crunch_v02,misma_categoria_movimiento_material
-ext_3670,weighted decline sit-up,tren_central,posible_duplicado,rueda_abdominal_v01,misma_categoria_movimiento_material
-ext_0833,weighted donkey calf raise,tren_inferior,posible_duplicado,elevacion_gemelos_v01,misma_categoria_movimiento_material
+ext_3670,weighted decline sit-up,tren_central,nuevo_provisional,,sin_duplicado_verificado
+ext_0833,weighted donkey calf raise,tren_inferior,posible_duplicado,elevacion_gemelos_v03,misma_categoria_movimiento_material
 ext_1310,weighted drop push up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
-ext_2135,weighted front plank,tren_central,posible_duplicado,plancha_frontal_v01,misma_categoria_movimiento_material
+ext_2135,weighted front plank,tren_central,posible_duplicado,plancha_frontal_v03,misma_categoria_movimiento_material
 ext_0834,weighted front raise,tren_superior,posible_duplicado,elevacion_frontal_v01,misma_categoria_movimiento_material
 ext_0866,weighted hanging leg-hip raise,tren_central,nuevo_provisional,,sin_duplicado_verificado
 ext_0835,weighted hyperextension (on stability ball),tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3641,weighted kneeling step with swing,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_3644,weighted lunge with swing,tren_inferior,posible_duplicado,zancada_estatica_v01,misma_categoria_movimiento_material
+ext_3644,weighted lunge with swing,tren_inferior,posible_duplicado,zancada_estatica_v02,misma_categoria_movimiento_material
 ext_3286,weighted muscle up,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3312,weighted muscle up (on bar),tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_3290,weighted one hand pull up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
@@ -1303,16 +1303,16 @@ ext_2371,weighted russian twist v. 2,tren_central,posible_duplicado,dep_070_giro
 ext_0847,weighted seated bicep curl (on stability ball),tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0849,weighted seated twist (on stability ball),tren_central,posible_duplicado,dep_070_giro_de_cadera_hip_twist_pilates_v01,misma_categoria_movimiento_material
 ext_0850,weighted side bend (on stability ball),tren_central,nuevo_provisional,,sin_correspondencia_verificable
-ext_0851,weighted sissy squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
-ext_0852,weighted squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v01,misma_categoria_movimiento_material
+ext_0851,weighted sissy squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
+ext_0852,weighted squat,tren_inferior,posible_duplicado,sentadilla_bilateral_v03,misma_categoria_movimiento_material
 ext_0853,weighted standing curl,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0854,weighted standing hand squeeze,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_3313,weighted straight bar dip,tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
+ext_3313,weighted straight bar dip,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_3642,weighted stretch lunge,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_0856,weighted svend press,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1754,weighted three bench dips,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_1755,weighted tricep dips,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
-ext_1767,weighted triceps dip on high parallel bars,tren_superior,posible_duplicado,fondos_v03,misma_categoria_movimiento_material
+ext_1767,weighted triceps dip on high parallel bars,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0857,wheel rollerout,tren_central,nuevo_provisional,,sin_correspondencia_verificable
 ext_3637,wheel run,cardio,posible_duplicado,trote_v03,misma_categoria_movimiento_material
 ext_1429,wide grip pull-up,tren_superior,nuevo_provisional,,sin_duplicado_verificado
@@ -1320,6 +1320,6 @@ ext_1367,wide grip rear pull-up,tren_superior,nuevo_provisional,,sin_duplicado_v
 ext_1311,wide hand push up,tren_superior,posible_duplicado,flexiones_v04,misma_categoria_movimiento_material
 ext_2363,wide-grip chest dip on high parallel bars,tren_superior,nuevo_provisional,,sin_duplicado_verificado
 ext_0858,wind sprints,tren_central,nuevo_provisional,,sin_correspondencia_verificable
-ext_1604,world greatest stretch,movilidad,posible_duplicado,estiramiento_isquios_v02,misma_categoria_movimiento_material
+ext_1604,world greatest stretch,movilidad,nuevo_provisional,,sin_duplicado_verificado
 ext_1428,wrist circles,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
 ext_0859,wrist rollerer,tren_superior,nuevo_provisional,,sin_correspondencia_verificable
