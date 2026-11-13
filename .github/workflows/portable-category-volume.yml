@@ -22,3 +22,10 @@ jobs:
           gradle-version: '8.13'
       - name: Validar Java puro
         run: gradle -p portable-category-volume clean test jar --no-daemon
+      - name: Publicar kit Java portable y su configuración
+        uses: actions/upload-artifact@v4
+        with:
+          name: asterion-category-volume-portable
+          path: portable-category-volume/
+          if-no-files-found: error
+          retention-days: 14
