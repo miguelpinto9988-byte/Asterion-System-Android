@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - feature/unificar-catalogos-y-retirar-avatar-20261113
       # Stacked feature PR is based on the catalog PR, not yet on main.
       - feature/rutinas-calendario-aleatoriedad-20261111
       - feature/avatar-2d-nativo-android-20261111
@@ -26,6 +27,7 @@ on:
   pull_request:
     branches:
       - main
+      - feature/catalogo-exercises-dataset-es-20261113
       - feature/catalogo-taxonomia-categorias-v2-20261110
       - feature/rutinas-calendario-aleatoriedad-20261111
       - consolidacion/asterion-integracion-20261111
@@ -91,20 +93,6 @@ jobs:
           python3 tests/monarch_randomness_contract.py
           python3 tests/routines_calendar_contract.py
           python3 tests/home_navigation_architecture_contract.py
-          python3 tests/native_avatar_2d_contract.py
-          python3 tests/native_avatar_organic_contract.py
-          python3 tests/avatar_option_d_contract.py
-          python3 tests/avatar_v3_visual_contract.py
-          python3 tests/avatar_v4_motion_contract.py
-          python3 tests/avatar_v5_anatomy_contract.py
-          python3 tests/avatar_v6_multiview_contract.py
-          python3 tests/avatar_v7_cameras_contract.py
-          python3 tests/avatar_v8_motion_contract.py
-          python3 tests/avatar_v9_visual_identity_contract.py
-          python3 tests/avatar_v10_orientation_contract.py
-          python3 tests/avatar_v11_rig_and_shoes_contract.py
-          python3 tests/avatar_v12_rear_heel_contract.py
-          python3 tests/avatar_v13_organic_rig_contract.py
           python3 tests/android_runtime_crash_scope_contract.py
           python3 tests/mission_tracking_progress_contract.py
           python3 tests/autonomous_category_planner_contract.py
