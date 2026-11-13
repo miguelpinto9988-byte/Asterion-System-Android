@@ -1,0 +1,64 @@
+name: Generar catálogo Asterion v2 desde dominio público
+on:
+  push:
+    branches:
+      - feature/unificar-catalogos-y-retirar-avatar-20261113
+    paths:
+      - 'tools/build_public_domain_catalog.py'
+      - 'tools/test_public_domain_catalog.py'
+      - '.github/workflows/build-public-domain-catalog.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validar y generar catálogo original más dominio público
+        run: |
+          python -m unittest discover -s tools -p 'test_public_domain_catalog.py' -v
+      - name: Auditoría final de licencia y contrato
+        run: |
+          python - <<'PY'
+          import csv,json,pathlib
+          d=json.loads(pathlib.Path('app/src/main/assets/unified_exercises/v2/catalogo_es.json').read_text(encoding='utf-8'))
+          p=pathlib.Path('progress-engine/src/main/resources/asterion_exercises/v2')
+          assert d['originales']==1257 and d['total']==len(d['ejercicios'])
+          assert d['total']>1257
+          assert d['no_incluye_contenido_mit_previo']
+          assert not list(p.rglob('*.gif')) and not list(p.rglob('*.jpg'))
+          with (p/'variants.tsv').open(encoding='utf-8') as f:
+            variants=list(csv.DictReader(f,delimiter='\t'))
+          assert len(variants)==d['total']
+          assert all(x['level']=='0' and x['supervision']=='1' for x in variants[1257:])
+          with (p/'volume_profiles.tsv').open(encoding='utf-8') as f:
+            volumes=list(csv.DictReader(f,delimiter='\t'))
+          assert len(volumes)==d['total']
+          PY
+      - name: Versionar archivo v2 y auditoría sin GIF de terceros
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add progress-engine/src/main/resources/asterion_exercises/v2/ \
+                  app/src/main/assets/unified_exercises/v2/ \
+                  docs/datos/auditoria_dominio_publico.csv
+          if ! git diff --cached --quiet; then
+            git commit -m 'data(catalog): generar inventario independiente de dominio publico v2'
+            git push origin 'HEAD:${{ github.ref_name }}'
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asterion-catalogo-independiente-public-domain-v2
+          path: |
+            progress-engine/src/main/resources/asterion_exercises/v2/
+            app/src/main/assets/unified_exercises/v2/
+            docs/datos/auditoria_dominio_publico.csv
+          retention-days: 30
