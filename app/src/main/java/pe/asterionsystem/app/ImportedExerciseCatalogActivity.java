@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Imported entries are NOT currently eligible for automatic workout planning.
  */
 public final class ImportedExerciseCatalogActivity extends ComponentActivity {
-    private static final String ASSET="external_exercises/v1/ejercicios_es.json";
+    private static final String ASSET="unified_exercises/v1/catalogo_es.json";
     private static final String[] CATEGORIES={
             "Todas las categorías","Tren superior","Tren central",
             "Tren inferior","Movilidad","Cardio"};
@@ -63,13 +63,15 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         LinearLayout root=column();
         root.setPadding(dp(16),dp(12),dp(16),dp(12));
         root.setBackgroundColor(background());
-        TextView heading=text("CATÁLOGO DE EJERCICIOS · ESPAÑOL",21);
+        TextView heading=text("CATÁLOGO UNIFICADO · ESPAÑOL",21);
         root.addView(heading);
-        root.addView(text("Fichas informativas con instrucciones en español. "
-                +"El nivel técnico aún requiere revisión; estos ejercicios "
-                +"no se añaden automáticamente a rutinas.",13));
-        root.addView(text("GIFs y miniaturas pendientes de licencia propia "
-                +"de Gym visual. No se descargan ni muestran archivos protegidos.",12));
+        root.addView(text("Asterion conserva sus ejercicios originales; "
+                +"solo se suman variantes nuevas sin duplicado probable. "
+                +"Los nuevos requieren validar nivel y traducción antes "
+                +"de entrar en rutinas automáticas.",13));
+        root.addView(text("El antiguo avatar 2D de demostraciones se ha retirado. "
+                +"Los GIFs del catálogo externo requieren una licencia independiente "
+                +"de Gym visual; no se incluyen.",12));
         search=new EditText(this);
         search.setSingleLine(true);
         search.setHint("Buscar un ejercicio en español");
@@ -120,8 +122,8 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
             } catch(Exception error) {
                 runOnUiThread(()->{
                     if(closed||isFinishing())return;
-                    summary.setText("No se pudo cargar el catálogo importado. "
-                            +"Comprueba que el importador generó el JSON español.");
+                    summary.setText("No se pudo cargar el catálogo unificado. "
+                            +"Comprueba el informe de comparación de catálogos.");
                 });
             }
         });
@@ -137,13 +139,15 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
             bytes=buffer.toByteArray();
         }
         JSONObject root=new JSONObject(new String(bytes,StandardCharsets.UTF_8));
+        int expected=root.optInt("total");
         if(!"es".equals(root.optString("idioma"))
                 ||root.optBoolean("multimedia_incluida",true)
-                ||root.optInt("total")!=1324)
-            throw new IllegalArgumentException("Contrato español/licencia no válido");
+                ||root.optInt("originales")!=1257
+                ||expected<1257)
+            throw new IllegalArgumentException("Contrato de origen/licencia no válido");
         JSONArray array=root.getJSONArray("ejercicios");
-        if(array.length()!=1324)throw new IllegalArgumentException("Cantidad incompleta");
-        ArrayList<JSONObject> result=new ArrayList<>(1324);
+        if(array.length()!=expected)throw new IllegalArgumentException("Cantidad incompleta");
+        ArrayList<JSONObject> result=new ArrayList<>(expected);
         for(int i=0;i<array.length();i++){
             JSONObject entry=array.getJSONObject(i);
             if(entry.optString("nombre_es").isEmpty()
@@ -153,7 +157,9 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
                 throw new IllegalArgumentException("Ficha de importación inválida");
             result.add(entry);
         }
-        result.sort(Comparator.comparing(j->j.optString("id")));
+        result.sort(Comparator.comparing(j->
+                ("asterion".equals(j.optString("origen"))?"0":"1")
+                        +j.optString("id")));
         return result;
     }
 
@@ -178,11 +184,15 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
     private void renderPage() {
         list.removeAllViews();
         if(items.isEmpty()){
-            summary.setText("Cargando 1.324 fichas españolas...");
+            summary.setText("Cargando catálogo unificado...");
             return;
         }
-        summary.setText(matches.size()+" ejercicios disponibles para consultar. "
-                +"Títulos descriptivos provisionales y niveles por revisar.");
+        long originalCount=items.stream().filter(x->
+                "asterion".equals(x.optString("origen"))).count();
+        summary.setText(matches.size()+" coincidencias. Catálogo: "
+                +originalCount+" originales y "
+                +(items.size()-originalCount)+" incorporados sin coincidencia probable. "
+                +"Los posibles duplicados siguen en revisión.");
         if(matches.isEmpty()){
             list.addView(text("No hay coincidencias. Prueba otra categoría.",14));
             return;
@@ -190,7 +200,8 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         int limit=Math.min(matches.size(),(page+1)*PAGE_SIZE);
         for(int i=0;i<limit;i++) {
             final JSONObject x=matches.get(i);
-            Button b=button(x.optString("nombre_es"));
+            Button b=button(("asterion".equals(x.optString("origen"))
+                    ?"Asterion · ":"Nuevo · ")+x.optString("nombre_es"));
             b.setContentDescription("Consultar "+x.optString("nombre_es"));
             list.addView(b,new LinearLayout.LayoutParams(-1,dp(58)));
             b.setOnClickListener(v->details(x));
@@ -214,18 +225,27 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
 
     private void details(JSONObject x) {
         StringBuilder out=new StringBuilder();
-        out.append("Categoría: ").append(spanishCategory(x.optString("categoria")))
+        boolean original="asterion".equals(x.optString("origen"));
+        out.append("Origen: ").append(original?"Asterion original":"Nuevo · dataset MIT")
+                .append("\nCategoría: ").append(spanishCategory(x.optString("categoria")))
                 .append("\nRegión: ").append(x.optString("region_es"))
                 .append("\nMaterial: ").append(x.optString("material_es"))
-                .append("\nNivel técnico: pendiente de revisión")
+                .append("\nNivel técnico: ")
+                .append(original?x.optString("nivel_tecnico"):"pendiente de revisión")
                 .append("\n\nINSTRUCCIONES\n");
         JSONArray steps=x.optJSONArray("instrucciones_es");
-        if(steps!=null)for(int i=0;i<steps.length();i++)
-            out.append("\n").append(i+1).append(". ")
-                    .append(steps.optString(i));
-        out.append("\n\nDemostración GIF: pendiente de licencia de Gym visual.")
-                .append("\n© Gym visual — https://gymvisual.com/")
-                .append("\n\nConsulta informativa; no es una instrucción obligatoria.");
+        if(steps!=null && steps.length()>0) {
+            for(int i=0;i<steps.length();i++)
+                out.append("\n").append(i+1).append(". ")
+                        .append(steps.optString(i));
+        } else {
+            out.append("\nEjercicio del catálogo original. "
+                    +"Consulta su ejecución y la referencia del motor de Asterion.");
+        }
+        if(!original)out.append("\n\nGIF no incluido: requiere licencia de Gym visual.")
+                .append("\n© Gym visual — https://gymvisual.com/");
+        else out.append("\n\nDemostración 2D antigua retirada.");
+        out.append("\n\nConsulta informativa; no es una instrucción obligatoria.");
         new AlertDialog.Builder(this)
                 .setTitle(x.optString("nombre_es"))
                 .setMessage(out.toString())
