@@ -1,0 +1,58 @@
+name: Unificar catálogos españoles con prioridad Asterion
+on:
+  push:
+    branches:
+      - feature/unificar-catalogos-y-retirar-avatar-20261113
+    paths:
+      - 'tools/merge_catalogs_es.py'
+      - 'tools/test_merge_catalogs_es.py'
+      - '.github/workflows/merge-catalogs.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  comparar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Comparar catálogos y probar deduplicación
+        run: python -m unittest discover -s tools -p test_merge_catalogs_es.py
+      - name: Validar que se preserva origen y derechos
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          a=pathlib.Path('app/src/main/assets/unified_exercises/v1/catalogo_es.json')
+          d=json.loads(a.read_text(encoding='utf-8'))
+          assert d['originales']==1257
+          assert d['duplicados_confirmados']==5
+          assert d['total']==len(d['ejercicios'])
+          assert d['posibles_duplicados_en_revision']>0
+          assert len({x['id'] for x in d['ejercicios']})==d['total']
+          assert not list(pathlib.Path('app/src/main/assets/unified_exercises')
+                          .rglob('*.gif'))
+          assert not list(pathlib.Path('app/src/main/assets/unified_exercises')
+                          .rglob('*.jpg'))
+          PY
+      - name: Guardar catálogo unificado y auditoría en rama de revisión
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/src/main/assets/unified_exercises/v1/ docs/datos/comparacion_catalogos_es.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "data(catalog): publicar comparación completa y catálogo unificado sin duplicados probables"
+            git push origin "HEAD:${{ github.ref_name }}"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: auditoria-catalogos-unificados-es
+          path: |
+            app/src/main/assets/unified_exercises/v1/
+            docs/datos/comparacion_catalogos_es.csv
+          retention-days: 30
