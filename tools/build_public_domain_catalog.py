@@ -208,6 +208,8 @@ def equivalence(external,originals,old_by_kind):
     return ("nuevo_por_evaluar","","sin_solapamiento_detectado")
 
 def build(source_rows):
+    if len(source_rows)!=EXPECTED_COUNT:
+        raise ValueError("El catálogo de origen no está completo")
     original_families=tsv("families.tsv")
     original_types=tsv("types.tsv")
     original_variants=tsv("variants.tsv")
