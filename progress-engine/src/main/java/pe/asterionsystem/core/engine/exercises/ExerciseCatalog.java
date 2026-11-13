@@ -173,7 +173,7 @@ public final class ExerciseCatalog {
         String q = normalized(query);
         ArrayList<ExerciseVariant> hits = new ArrayList<>();
         for (ExerciseVariant variant : variants) {
-            if (variant.difficulty() > maximumDifficulty) continue;
+            if (variant.difficulty() == 0 || variant.difficulty() > maximumDifficulty) continue;
             if (equipment != null && !variant.equipment().contains(equipment)) continue;
             if (execution != null && !variant.execution().equals(execution)) continue;
             ExerciseType type = byType.get(variant.typeId());
