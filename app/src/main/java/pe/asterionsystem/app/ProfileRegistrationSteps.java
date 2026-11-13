@@ -300,9 +300,20 @@ final class ProfileRegistrationSteps {
         addInfo(routineExtra,"¿Cómo prefieres seguir tu rutina?");
         radios(routineExtra,"sequence",new String[]{"rondas","series"},
                 new String[]{"Sesiones por rondas","Sesiones por series"},"rondas");
-        addInfo(routineExtra,"Tiempo disponible por sesión");
-        spinner(routineExtra,"minutes",new String[]{"10","15","20","30","45","60"},"30");
         out.addView(missionExtra);out.addView(routineExtra);
+        // This preference belongs to the profile, independently of its current mode.
+        // It must remain visible when "Misiones" is selected.
+        TextView routineDurationHeading=text("Tiempo disponible para rutinas",16,WHITE);
+        routineDurationHeading.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        LinearLayout.LayoutParams durationHeadingLayout=
+                new LinearLayout.LayoutParams(-1,-2);
+        durationHeadingLayout.topMargin=dp(19);
+        durationHeadingLayout.bottomMargin=dp(8);
+        out.addView(routineDurationHeading,durationHeadingLayout);
+        addInfo(out,"Selecciona cuánto tiempo prefieres reservar por rutina. "
+                +"Puedes cambiarlo después desde Mi perfil o desde Rutinas; "
+                +"es orientativo y no una duración obligatoria.");
+        spinner(out,"minutes",RoutineDurationPreference.optionStrings(),"30");
         Runnable showMode=()->{
             boolean missions=get("mode","misiones").equals("misiones");
             missionExtra.setVisibility(missions?View.VISIBLE:View.GONE);
