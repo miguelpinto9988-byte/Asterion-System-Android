@@ -29,7 +29,7 @@ import pe.asterionsystem.core.engine.missions.RoutineGenerator;
  * daily missions and Monarca. No forced targets, timed exertion or auto level-up.
  */
 public final class RoutinesActivity extends ComponentActivity {
-    private static final int[] MINUTES={10,15,20,30,45,60};
+    private static final int[] MINUTES=RoutineDurationPreference.options();
     private static final String[] LEVELS={"basico","intermedio","avanzado"};
     private static final String[] LEVEL_NAMES={"Básico","Intermedio","Avanzado"};
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
@@ -37,17 +37,22 @@ public final class RoutinesActivity extends ComponentActivity {
     private MissionPlanner.Profile profile;
     private LinearLayout body;
     private boolean light,closed;
-    private int categoryIndex=0,minutes=20,levelIndex=0,variation=0;
+    private int categoryIndex=0,minutes=RoutineDurationPreference.DEFAULT_MINUTES,
+            lastProfileMinutes=RoutineDurationPreference.DEFAULT_MINUTES,
+            levelIndex=0,variation=0;
     private float density;
 
     @Override protected void onCreate(Bundle saved) {
         super.onCreate(saved);
         density=getResources().getDisplayMetrics().density;
         light="light".equals(ProfileStore.getRegistration(this).optString("theme","light"));
+        lastProfileMinutes=RoutineDurationPreference.parse(
+                ProfileStore.getRegistration(this).optString("minutes","30"));
+        minutes=lastProfileMinutes;
         if(saved!=null) {
             categoryIndex=Math.max(0,Math.min(4,saved.getInt("category",0)));
-            int wanted=saved.getInt("minutes",20);
-            for(int option:MINUTES)if(option==wanted)minutes=wanted;
+            int wanted=saved.getInt("minutes",lastProfileMinutes);
+            if(RoutineDurationPreference.isSupported(wanted))minutes=wanted;
             levelIndex=Math.max(0,Math.min(2,saved.getInt("level",0)));
             variation=Math.max(0,Math.min(999,saved.getInt("variation",0)));
         }
@@ -91,6 +96,14 @@ public final class RoutinesActivity extends ComponentActivity {
 
     @Override protected void onResume() {
         super.onResume();
+        // Keep a local one-session choice unless the saved profile preference changed.
+        int savedMinutes=RoutineDurationPreference.parse(
+                ProfileStore.getRegistration(this).optString("minutes","30"));
+        if(savedMinutes!=lastProfileMinutes) {
+            minutes=savedMinutes;
+            lastProfileMinutes=savedMinutes;
+            variation=0;
+        }
         if(catalog!=null) {
             profile=MissionProfileAdapter.fromRegistration(
                     ProfileStore.getRegistration(this));
@@ -120,8 +133,7 @@ public final class RoutinesActivity extends ComponentActivity {
                             categoryIndex=index;variation=0;d.dismiss();render();
                         }).setNegativeButton("Cancelar",null).show());
         choose("Tiempo disponible · "+minutes+" min",()->{
-            String[] options={"10 minutos","15 minutos","20 minutos",
-                    "30 minutos","45 minutos","60 minutos"};
+            String[] options=RoutineDurationPreference.displayOptions();
             new AlertDialog.Builder(this).setTitle("Tiempo disponible (orientativo)")
                     .setSingleChoiceItems(options,indexOfMinutes(),(d,index)->{
                         minutes=MINUTES[index];variation=0;d.dismiss();render();
@@ -186,8 +198,7 @@ public final class RoutinesActivity extends ComponentActivity {
     }
 
     private int indexOfMinutes() {
-        for(int i=0;i<MINUTES.length;i++)if(MINUTES[i]==minutes)return i;
-        return 2;
+        return RoutineDurationPreference.indexOf(minutes);
     }
 
     private void preview(RoutineGenerator.Offer offer,int number) {
