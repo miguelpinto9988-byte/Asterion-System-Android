@@ -303,7 +303,13 @@ final class ProfileRegistrationSteps {
         out.addView(missionExtra);out.addView(routineExtra);
         // This preference belongs to the profile, independently of its current mode.
         // It must remain visible when "Misiones" is selected.
-        addHeading(out,"Tiempo disponible para rutinas");
+        TextView routineDurationHeading=text("Tiempo disponible para rutinas",16,WHITE);
+        routineDurationHeading.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        LinearLayout.LayoutParams durationHeadingLayout=
+                new LinearLayout.LayoutParams(-1,-2);
+        durationHeadingLayout.topMargin=dp(19);
+        durationHeadingLayout.bottomMargin=dp(8);
+        out.addView(routineDurationHeading,durationHeadingLayout);
         addInfo(out,"Selecciona cuánto tiempo prefieres reservar por rutina. "
                 +"Puedes cambiarlo después desde Mi perfil o desde Rutinas; "
                 +"es orientativo y no una duración obligatoria.");
