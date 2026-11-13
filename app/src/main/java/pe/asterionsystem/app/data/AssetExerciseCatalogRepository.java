@@ -15,7 +15,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseCatalogLoader;
  * Call from a worker; creating this index does not write to SQLite v5.
  */
 public final class AssetExerciseCatalogRepository {
-    private static final String DIRECTORY = "asterion_exercises/v1/";
+    private static final String DIRECTORY = "asterion_exercises/v2/";
     private final Context context;
 
     public AssetExerciseCatalogRepository(Context context) {
