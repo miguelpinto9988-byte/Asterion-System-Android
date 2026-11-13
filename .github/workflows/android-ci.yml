@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - preview/avatar-lote02-perfil-duracion-rutinas-20261113
       # Stacked feature PR is based on the catalog PR, not yet on main.
       - feature/rutinas-calendario-aleatoriedad-20261111
       - feature/avatar-2d-nativo-android-20261111
