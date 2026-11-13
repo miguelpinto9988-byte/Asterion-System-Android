@@ -57,7 +57,7 @@ class PublicDomainImportTest(unittest.TestCase):
             self.assertNotIn("gymvisual",json.dumps(x).lower())
         self.assertTrue(self.data["no_incluye_contenido_mit_previo"])
 
-    def test_all_five_categories_and Spanish_copy(self):
+    def test_all_five_categories_and_spanish_copy(self):
         cats={x["categoria"] for x in self.data["ejercicios"]
               if x["origen"]=="dominio_publico"}
         self.assertEqual(cats,{"tren_superior","tren_central","tren_inferior","movilidad","cardio"})
