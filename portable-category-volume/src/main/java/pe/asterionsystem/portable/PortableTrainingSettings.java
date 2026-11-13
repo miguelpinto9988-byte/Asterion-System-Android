@@ -44,7 +44,7 @@ public final class PortableTrainingSettings {
         String experience=props.getProperty("nivel_experiencia","principiante").trim();
         if(!List.of("principiante","intermedio","avanzado").contains(experience))
             throw new IllegalArgumentException("Experiencia inválida");
-        int count=Integer.parseInt(props.getProperty("actividades_diarias","3").trim());
+        int count=Integer.parseInt(props.getProperty("actividades_diarias","5").trim());
         if(count<1||count>7)throw new IllegalArgumentException("Actividades fuera de 1..7");
         String raw=props.getProperty("sugerencias_volumen","false").trim();
         if(!raw.equals("true")&&!raw.equals("false"))
