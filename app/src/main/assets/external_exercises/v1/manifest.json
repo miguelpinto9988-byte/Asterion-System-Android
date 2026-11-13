@@ -1,0 +1,16 @@
+{
+  "total": 1324,
+  "categorias": {
+    "tren_central": 168,
+    "movilidad": 56,
+    "tren_superior": 816,
+    "tren_inferior": 255,
+    "cardio": 29
+  },
+  "espanol": 1324,
+  "niveles_sin_validar": 1324,
+  "gifs_incluidos": 0,
+  "imagenes_incluidas": 0,
+  "fuente_sha": "7455efae41b330c265e7cd4b78dfa848e7ce5ebd",
+  "sha256": "935a15452b0f0ab9ea7b44c8e8be11e514863f1dc2b12a59bb3ded4969a4f9fd"
+}
