@@ -108,6 +108,8 @@ public final class RoutinesActivity extends ComponentActivity {
     private void render() {
         if(catalog==null||profile==null)return;
         body.removeAllViews();
+        choose("Explorar 1.324 ejercicios en español (nuevo catálogo)",()->
+                startActivity(new Intent(this,ImportedExerciseCatalogActivity.class)));
         choose("Ver avatares 2D animados · Sin internet",()->
                 startActivity(new Intent(this,NativeAvatarActivity.class)));
         body.addView(label("CONFIGURACIÓN",16,true));
