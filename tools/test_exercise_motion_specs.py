@@ -24,6 +24,18 @@ class MotionSpecTest(unittest.TestCase):
             self.assertIn(record["gif_estado"],
                           ("pendiente_produccion","archivo_presente_pendiente_revision"))
 
+    def test_all_variants_have_unique_mp4_paths_and_honest_status(self):
+        self.assertEqual("mp4_h264",self.result["formato_preferido"])
+        self.assertEqual(2104-self.result["videos_mp4_fisicos"],
+                         self.result["videos_mp4_pendientes"])
+        all_paths={x["mp4_ruta"] for x in self.entries.values()}
+        self.assertEqual(2104,len(all_paths))
+        for id,record in self.entries.items():
+            self.assertEqual("exercise_mp4/v1/"+id+".mp4",record["mp4_ruta"])
+            self.assertFalse(record["video_tecnica_validada"])
+            self.assertIn(record["mp4_estado"],
+                          ("pendiente_produccion","archivo_presente_pendiente_revision"))
+
     def test_pushup_variants_have_distinct_motion_constraints(self):
         standard=self.entries["flexiones_v04"]
         close=self.entries["pd_e_0565"]
