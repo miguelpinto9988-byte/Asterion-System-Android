@@ -243,7 +243,8 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         JSONObject manifest=new JSONObject(new String(bytes,StandardCharsets.UTF_8));
         if(!"asterion.exercise-motion.es.v1".equals(manifest.optString("schema"))
                 ||manifest.optInt("total")!=2104
-                ||manifest.optInt("gifs_pendientes")!=2104)
+                ||manifest.optInt("gifs_pendientes")<0
+                ||manifest.optInt("gifs_pendientes")>2104)
             throw new IllegalArgumentException("Contrato de GIF y variantes incompleto");
         JSONArray specs=manifest.getJSONArray("ejercicios");
         if(specs.length()!=2104)throw new IllegalArgumentException("Rutas GIF incompletas");
