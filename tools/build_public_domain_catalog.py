@@ -541,7 +541,11 @@ def build(source_rows):
             "categoria_asterion":category(item),
             "estado":result,
             "id_asterion_relacionado":match,
-            "regla":reason
+            "nombre_asterion_comparado":old_by_id[match]["name"] if match else "",
+            "equipo_asterion_comparado":old_by_id[match]["equipment"] if match else "",
+            "regla":reason,
+            "fuente_unlicense":"https://github.com/yuhonas/free-exercise-db/blob/"
+                +UPSTREAM_COMMIT+"/exercises/"+item["id"]+".json"
         })
         if result!="nuevo_por_evaluar":continue
         code="pd_e_"+f"{index:04d}"
@@ -602,7 +606,9 @@ def build(source_rows):
         variants.append({"variant_id":id,"type_id":"pd_t_"+id[5:],
             "name":e["nombre_es"][:115],"level":"0",
             "equipment":e["material_cod"],"execution":"consulta","supervision":"1"})
-        unit="SECONDS" if e["categoria"]=="movilidad" else "REPETITIONS"
+        source=source_rows[int(id[-4:])-1]
+        unit=("SECONDS" if source["category"] in
+              ("stretching","cardio","plyometrics") else "REPETITIONS")
         volumes.append({"variant_id":id,"unit":unit,"initial_sets":"1",
           "initial_value":"10" if unit=="SECONDS" else "5","minimum_value":"1",
           "maximum_value":"180" if unit=="SECONDS" else "20","increment":"1"})
@@ -649,7 +655,16 @@ def build(source_rows):
       "origen_dominio_publico":UPSTREAM_URL,"revision_origen":UPSTREAM_COMMIT,
       "sin_datos_ni_gifs_del_repositorio_mit_anterior":True,
       "nuevos_bloqueados_hasta_revision_tecnica":len(extra),
-      "candidatos_del_lote_cerrados":len(REVIEWED_22)}
+      "candidatos_del_lote_cerrados":len(REVIEWED_22),
+      "duplicados_confirmados_en_lote":sum(
+          x[0]=="duplicado_verificado" for x in REVIEWED_22.values()),
+      "nuevas_variantes_diferenciadas_en_lote":sum(
+          x[0]=="nuevo_por_evaluar" for x in REVIEWED_22.values()),
+      "fichas_nuevas_con_guia_editorial_es":sum(
+          bool(x["instrucciones_es"]) for x in extra),
+      "fichas_nuevas_con_pasos_fuente_en":sum(
+          bool(x["pasos_referencia_original_en"]) for x in extra),
+      "guia_editorial_pendiente_revision_humana":True}
     (VIEW/"manifest.json").write_text(
         json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(manifest,ensure_ascii=False,indent=2))
