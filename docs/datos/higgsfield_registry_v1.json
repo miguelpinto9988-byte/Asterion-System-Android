@@ -48,6 +48,18 @@
       "lote": 3,
       "id": "sentadilla_unilateral_v01",
       "job_id": "ecc5a4a4-daee-4c8c-9de1-d527f36dd1bc",
+      "estado": "completed",
+      "modelo": "seedance_2_0",
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3M5xmTb4Z1ENhME0j0IjVeOiEGH/hf_20261114_140746_ecc5a4a4-daee-4c8c-9de1-d527f36dd1bc.mp4",
+      "aprobado": false,
+      "estado_revision": "pendiente_revision_visual_y_biomecanica",
+      "bloquea_nuevos_lotes": false,
+      "no_reenviar_automaticamente": true
+    },
+    {
+      "lote": 4,
+      "id": "zancada_estatica_v03",
+      "job_id": "f945a41c-5965-4118-bd60-ad4dc6a84e1b",
       "estado": "pending",
       "modelo": "seedance_2_0",
       "url": null,
@@ -110,7 +122,7 @@
     "criterio_reanudacion": "Siguiente lote de hasta seis variantes distintas no iniciadas, mediante modalidad ilimitada incluida y solo si el proveedor acepta; HTTP 429 implica detener el intento sin cobro.",
     "ultimo_intento": {
       "fecha": "2026-11-14",
-      "lote": 3,
+      "lote": 4,
       "solicitados": 6,
       "aceptados": 1,
       "rechazados_429": 5,
@@ -121,7 +133,7 @@
         "sentadilla_unilateral_v02",
         "zancada_estatica_v02"
       ],
-      "observacion": "Esperar a resolver sentadilla_unilateral_v01; no reenviar ID aceptado."
+      "observacion": "Esperar al job zancada_estatica_v03; no repetir el ID aceptado."
     }
   }
 }
