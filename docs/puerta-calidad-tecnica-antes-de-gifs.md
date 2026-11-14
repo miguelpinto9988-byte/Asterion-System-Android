@@ -45,3 +45,21 @@ Los cinco nombres sin instrucciones en la fuente requieren contrastar una refere
 - Referencia biomecánica (contrastar hechos, no copiar descripciones): https://exrx.net/
 
 La auditoría automática prueba integridad de datos, no idoneidad médica, seguridad individual ni validez biomecánica profesional. No declarar una ficha revisada solo por estar completa.
+
+
+## Cinco expedientes que necesitan investigación de ejecución adicional
+Las fichas del dataset de dominio público carecen de pasos originales. Estas
+referencias contrastan hechos y categorías, no constituyen aprobación técnica.
+
+| ID de fuente | Identidad o problema | Referencia de contraste | Publicación |
+|---|---|---|---|
+| Iron_Cross | Nombre ambiguo entre gesto con mancuernas y figura gimnástica distinta; confirmar variante por equipamiento | https://www.nasm.org/resource-center/exercise-library/iron-cross | Bloqueada |
+| One-Arm_Kettlebell_Swings | Movimiento dinámico unilateral; postura, trayectoria y control del equipo requieren verificación especializada | https://exrx.net/Lists/KettlebellExercises | Bloqueada |
+| Push_Press | Levantamiento técnico de barra por encima de la cabeza clasificado expert en la fuente | https://exrx.net/Lists/OlympicWeightlifting | Bloqueada |
+| Side_Bridge | Posición estática lateral; la unidad de volumen debe ser tiempo y la postura debe contrastarse | https://www.acefitness.org/resources/everyone/exercise-library/303/side-plank/ | Bloqueada |
+| Side_Jackknife | Variante exacta de flexión lateral no identificada por pasos; no sustituirla por abdominal genérico | https://exrx.net/Lists/Directory | Bloqueada |
+
+Todo dato de una página con derechos reservados se utiliza solo para
+contrastar hechos sobre el movimiento; nunca se reproducen imágenes ni
+instrucciones protegidas. Ninguna de las cinco se recomienda automáticamente
+ni está lista para crear un GIF instructivo publicable.
