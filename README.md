@@ -6,6 +6,15 @@
 
 Proyecto Java nativo Android con vistas XML. El HTML se utiliza **solo como previsualización externa**. No se han incorporado HTML, JavaScript, CSS, WebView o Compose a las pantallas Android.
 
+## Visor de ejercicios v10 — pre-release
+
+[Descargar el visor y los GIFs](https://github.com/miguelpinto9988-byte/Asterion-System-Android/releases/download/v10.0.0-calisthenics-preview.1/asterion-exercise-viewer-v10-calisthenics.zip) · [Notas de la pre-release](https://github.com/miguelpinto9988-byte/Asterion-System-Android/releases/tag/v10.0.0-calisthenics-preview.1).
+
+El paquete estático incluye 2.123 ejercicios y 2.123 GIFs por ID, además de 19 PNG auxiliares. El ZIP pesa aproximadamente 410 MB y ocupa 445 MB descomprimido; se distribuye aparte y no se incorpora a la APK Android. Tras descomprimirlo, ejecuta `python3 -m http.server 8000` desde la carpeta raíz extraída y abre `http://localhost:8000/build/exercise-viewer/`.
+
+Es una vista previa: la auditoría registra 0 fallos técnicos, 128 alertas semánticas y 10 casos de movimiento bajo inesperado. Cada animación aún requiere revisión de correspondencia y técnica; no constituye validación médica. Esta pre-release del visor no es una release de distribución de la app Android.
+
+
 ## Identidad visual oficial — ícono permanente
 
 **Regla obligatoria del proyecto:** el ícono de caballero sombra aprobado por el propietario es la identidad visual definitiva de Asterion System. **No se permite reemplazarlo, rediseñarlo, recolorearlo ni alterarlo en actualizaciones futuras**, tanto de la app como de sus pantallas de carga y materiales vinculados. El archivo de lanzamiento oficial está en [`app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp`](app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp). Su integridad se verifica mediante `tests/branding_icon_lock.py` en GitHub Actions. Véase [la política de identidad visual permanente](docs/identidad/ICONO_OFICIAL_INMUTABLE.md).
