@@ -64,6 +64,32 @@ class PublicDomainImportTest(unittest.TestCase):
         self.assertTrue(all(x["nombre_es"] and x["material_es"] for x in
                             self.data["ejercicios"]))
 
+    def test_verified_duplicates_keep_historic_identity(self):
+        with catalog.AUDIT.open(encoding="utf-8",newline="") as handle:
+            decisions={x["id_fuente_publico"]:x for x in csv.DictReader(handle)}
+        self.assertEqual(
+            decisions["Bodyweight_Squat"]["id_asterion_relacionado"],
+            "sentadilla_bilateral_v03")
+        self.assertEqual(
+            decisions["Front_Barbell_Squat"]["id_asterion_relacionado"],
+            "sentadilla_bilateral_v07")
+        self.assertEqual(decisions["Bodyweight_Squat"]["estado"],
+                         "duplicado_verificado")
+        self.assertEqual(decisions["External_Rotation_with_Band"]["estado"],
+                         "duplicado_verificado")
+
+    def test_different_biomechanics_are_not_confirmed_as_same(self):
+        with catalog.AUDIT.open(encoding="utf-8",newline="") as handle:
+            decisions={x["id_fuente_publico"]:x for x in csv.DictReader(handle)}
+        self.assertNotEqual(decisions["Barbell_Squat"]["estado"],
+                            "duplicado_verificado")
+        self.assertNotEqual(decisions["Barbell_Full_Squat"]["estado"],
+                            "duplicado_verificado")
+        self.assertNotEqual(decisions["Internal_Rotation_with_Band"]["estado"],
+                            "duplicado_verificado")
+        self.assertNotEqual(decisions["Incline_Push-Up"]["estado"],
+                            "duplicado_verificado")
+
     def test_unknown_source_schema_is_rejected(self):
         with self.assertRaises(ValueError):catalog.build([])
         with self.assertRaises(ValueError):
