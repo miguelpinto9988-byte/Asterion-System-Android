@@ -1256,105 +1256,126 @@ pasos_circuito_suave_v01	pasos_circuito_suave	Secuencia corta de pasos entre mar
 pasos_circuito_suave_v02	pasos_circuito_suave	Circuito de coordinación caminando sin saltos	2	sin_equipo	controlado	1
 marcha_y_paso_lateral_v01	marcha_y_paso_lateral	Marcha suave seguida de paso lateral corto	1	sin_equipo	controlado	1
 marcha_y_paso_lateral_v02	marcha_y_paso_lateral	Alternancia de marcha y lateralidad sin impacto	2	sin_equipo	controlado	1
+pd_e_0001	pd_t_0001	Incorporación abdominal · peso corporal · PD0001	0	sin_equipo	consulta	1
 pd_e_0002	pd_t_0002	Movimiento de isquiotibiales · peso corporal · PD0002	0	sin_equipo	consulta	1
-pd_e_0003	pd_t_0003	Trabajo abdominal · máquina · PD0003	0	maquina	consulta	1
-pd_e_0004	pd_t_0004	Movimiento de abdomen · material específico · PD0004	0	material_especifico	consulta	1
-pd_e_0005	pd_t_0005	Movimiento de aductores · rodillo de espuma · PD0005	0	rodillo	consulta	1
-pd_e_0006	pd_t_0006	Movimiento de aductores · material por verificar · PD0006	0	material_por_revisar	consulta	1
-pd_e_0007	pd_t_0007	Movimiento de abdomen · pesa rusa · PD0007	0	kettlebell	consulta	1
+pd_e_0003	pd_t_0003	Encogimiento abdominal · máquina · PD0003	0	maquina	consulta	1
+pd_e_0004	pd_t_0004	Rodamiento abdominal · material específico · PD0004	0	material_especifico	consulta	1
+pd_e_0005	pd_t_0005	Aducción de cadera · rodillo de espuma · PD0005	0	rodillo	consulta	1
+pd_e_0006	pd_t_0006	Aducción de cadera · material por verificar · PD0006	0	material_por_revisar	consulta	1
+pd_e_0007	pd_t_0007	Molino con pesa rusa · pesa rusa · PD0007	0	kettlebell	consulta	1
 pd_e_0008	pd_t_0008	Movimiento de abdomen · peso corporal · PD0008	0	sin_equipo	consulta	1
 pd_e_0011	pd_t_0011	Movimiento de abdomen alternada · peso corporal · PD0011	0	sin_equipo	consulta	1
 pd_e_0012	pd_t_0012	Curl alternada, inclinada · mancuernas · PD0012	0	mancuerna	consulta	1
 pd_e_0013	pd_t_0013	Movimiento de cuádriceps alternada · material por verificar · PD0013	0	material_por_revisar	consulta	1
 pd_e_0014	pd_t_0014	Press de hombros alternada · polea · PD0014	0	polea	consulta	1
 pd_e_0015	pd_t_0015	Elevación alternada · mancuernas · PD0015	0	mancuerna	consulta	1
-pd_e_0016	pd_t_0016	Press alternada · pesa rusa · PD0016	0	kettlebell	consulta	1
-pd_e_0017	pd_t_0017	Movimiento de isquiotibiales alternada · pesa rusa · PD0017	0	kettlebell	consulta	1
+pd_e_0016	pd_t_0016	Press en el suelo alternada, en el suelo · pesa rusa · PD0016	0	kettlebell	consulta	1
+pd_e_0017	pd_t_0017	Levantamiento técnico alternada · pesa rusa · PD0017	0	kettlebell	consulta	1
 pd_e_0018	pd_t_0018	Press alternada · pesa rusa · PD0018	0	kettlebell	consulta	1
 pd_e_0019	pd_t_0019	Remo alternada · pesa rusa · PD0019	0	kettlebell	consulta	1
 pd_e_0020	pd_t_0020	Remo alternada · pesa rusa · PD0020	0	kettlebell	consulta	1
-pd_e_0021	pd_t_0021	Movimiento de pantorrillas · material por verificar · PD0021	0	material_por_revisar	consulta	1
+pd_e_0021	pd_t_0021	Círculos de tobillo · material por verificar · PD0021	0	material_por_revisar	consulta	1
 pd_e_0022	pd_t_0022	Movimiento de glúteos · material por verificar · PD0022	0	material_por_revisar	consulta	1
-pd_e_0023	pd_t_0023	Movimiento de pantorrillas · material específico · PD0023	0	material_especifico	consulta	1
-pd_e_0025	pd_t_0025	Movimiento de hombros · material por verificar · PD0025	0	material_por_revisar	consulta	1
+pd_e_0023	pd_t_0023	Trabajo tibial · material específico · PD0023	0	material_especifico	consulta	1
+pd_e_0025	pd_t_0025	Círculos de brazos · material por verificar · PD0025	0	material_por_revisar	consulta	1
 pd_e_0027	pd_t_0027	Movimiento de pecho · mancuernas · PD0027	0	mancuerna	consulta	1
 pd_e_0028	pd_t_0028	Movimiento de zona lumbar · material específico · PD0028	0	material_especifico	consulta	1
 pd_e_0029	pd_t_0029	Movimiento de zona lumbar · material específico · PD0029	0	material_especifico	consulta	1
 pd_e_0030	pd_t_0030	Peso muerto · material específico · PD0030	0	material_especifico	consulta	1
 pd_e_0032	pd_t_0032	Movimiento de cuádriceps posterior · material específico · PD0032	0	material_especifico	consulta	1
-pd_e_0033	pd_t_0033	Movimiento de hombros posterior · balón medicinal · PD0033	0	balon	consulta	1
-pd_e_0034	pd_t_0034	Movimiento de pantorrillas · material específico · PD0034	0	material_especifico	consulta	1
+pd_e_0033	pd_t_0033	Lanzamiento con balón posterior · balón medicinal · PD0033	0	balon	consulta	1
+pd_e_0034	pd_t_0034	Ejercicio de equilibrio · material específico · PD0034	0	material_especifico	consulta	1
 pd_e_0035	pd_t_0035	Curl · pelota de ejercicio · PD0035	0	pelota	consulta	1
 pd_e_0036	pd_t_0036	Dominada asistida · material específico · PD0036	0	material_especifico	consulta	1
 pd_e_0037	pd_t_0037	Movimiento de isquiotibiales · banda elástica · PD0037	0	banda	consulta	1
 pd_e_0038	pd_t_0038	Tracción · banda elástica · PD0038	0	banda	consulta	1
-pd_e_0039	pd_t_0039	Movimiento de aductores · banda elástica · PD0039	0	banda	consulta	1
+pd_e_0039	pd_t_0039	Aducción de cadera · banda elástica · PD0039	0	banda	consulta	1
 pd_e_0040	pd_t_0040	Tracción · banda elástica · PD0040	0	banda	consulta	1
 pd_e_0041	pd_t_0041	Movimiento de tríceps · banda elástica · PD0041	0	banda	consulta	1
-pd_e_0042	pd_t_0042	Movimiento de abdomen · barra · PD0042	0	barra	consulta	1
-pd_e_0043	pd_t_0043	Movimiento de abdomen · barra · PD0043	0	barra	consulta	1
+pd_e_0042	pd_t_0042	Rodamiento abdominal · barra · PD0042	0	barra	consulta	1
+pd_e_0043	pd_t_0043	Rodamiento abdominal con rodillas apoyadas · barra · PD0043	0	barra	consulta	1
+pd_e_0044	pd_t_0044	Press de pecho sobre banco · barra · PD0044	0	barra	consulta	1
 pd_e_0045	pd_t_0045	Curl · barra · PD0045	0	barra	consulta	1
 pd_e_0046	pd_t_0046	Movimiento de bíceps acostada, inclinada · barra · PD0046	0	barra	consulta	1
-pd_e_0047	pd_t_0047	Peso muerto · barra · PD0047	0	barra	consulta	1
+pd_e_0048	pd_t_0048	Sentadilla · barra · PD0048	0	barra	consulta	1
+pd_e_0050	pd_t_0050	Press de pecho sobre banco · barra · PD0050	0	barra	consulta	1
+pd_e_0051	pd_t_0051	Sentadilla · barra · PD0051	0	barra	consulta	1
+pd_e_0053	pd_t_0053	Press de pecho sobre banco, inclinada · barra · PD0053	0	barra	consulta	1
 pd_e_0054	pd_t_0054	Elevación inclinada · barra · PD0054	0	barra	consulta	1
-pd_e_0057	pd_t_0057	Movimiento de abdomen · barra · PD0057	0	barra	consulta	1
+pd_e_0056	pd_t_0056	Remo posterior · barra · PD0056	0	barra	consulta	1
+pd_e_0057	pd_t_0057	Rodamiento abdominal sobre banco · barra · PD0057	0	barra	consulta	1
 pd_e_0058	pd_t_0058	Elevación de talones sentada · barra · PD0058	0	barra	consulta	1
 pd_e_0059	pd_t_0059	Press de hombros · barra · PD0059	0	barra	consulta	1
-pd_e_0060	pd_t_0060	Movimiento de trapecios · barra · PD0060	0	barra	consulta	1
-pd_e_0061	pd_t_0061	Movimiento de trapecios · barra · PD0061	0	barra	consulta	1
-pd_e_0062	pd_t_0062	Movimiento de abdomen lateral · barra · PD0062	0	barra	consulta	1
+pd_e_0060	pd_t_0060	Encogimiento de hombros · barra · PD0060	0	barra	consulta	1
+pd_e_0061	pd_t_0061	Encogimiento de hombros · barra · PD0061	0	barra	consulta	1
+pd_e_0062	pd_t_0062	Inclinación lateral lateral · barra · PD0062	0	barra	consulta	1
 pd_e_0063	pd_t_0063	Sentadilla lateral · barra · PD0063	0	barra	consulta	1
+pd_e_0064	pd_t_0064	Sentadilla · barra · PD0064	0	barra	consulta	1
+pd_e_0065	pd_t_0065	Sentadilla sobre banco · barra · PD0065	0	barra	consulta	1
 pd_e_0066	pd_t_0066	Subida al escalón · barra · PD0066	0	barra	consulta	1
 pd_e_0068	pd_t_0068	Movimiento de hombros · material específico · PD0068	0	material_especifico	consulta	1
-pd_e_0069	pd_t_0069	Movimiento de cuádriceps · material específico · PD0069	0	material_especifico	consulta	1
+pd_e_0069	pd_t_0069	Desplazamiento de oso · material específico · PD0069	0	material_especifico	consulta	1
 pd_e_0070	pd_t_0070	Estiramiento · material específico · PD0070	0	material_especifico	consulta	1
-pd_e_0071	pd_t_0071	Fondo · peso corporal · PD0071	0	sin_equipo	consulta	1
-pd_e_0076	pd_t_0076	Movimiento de cuádriceps · material específico · PD0076	0	material_especifico	consulta	1
-pd_e_0077	pd_t_0077	Movimiento de dorsales · barra · PD0077	0	barra	consulta	1
-pd_e_0078	pd_t_0078	Movimiento de pecho · mancuernas · PD0078	0	mancuerna	consulta	1
-pd_e_0081	pd_t_0081	Elevación posterior · mancuernas · PD0081	0	mancuerna	consulta	1
+pd_e_0071	pd_t_0071	Fondo sobre banco · peso corporal · PD0071	0	sin_equipo	consulta	1
+pd_e_0072	pd_t_0072	Salto sobre banco · peso corporal · PD0072	0	sin_equipo	consulta	1
+pd_e_0073	pd_t_0073	Press de pecho sobre banco · barra · PD0073	0	barra	consulta	1
+pd_e_0074	pd_t_0074	Press de pecho sobre banco · banda elástica · PD0074	0	banda	consulta	1
+pd_e_0075	pd_t_0075	Press de pecho sobre banco · barra · PD0075	0	barra	consulta	1
+pd_e_0076	pd_t_0076	Movimiento de cuádriceps sobre banco · material específico · PD0076	0	material_especifico	consulta	1
+pd_e_0077	pd_t_0077	Pullover · barra · PD0077	0	barra	consulta	1
+pd_e_0079	pd_t_0079	Elevación de cadera · peso corporal · PD0079	0	sin_equipo	consulta	1
+pd_e_0081	pd_t_0081	Elevación sobre banco, posterior · mancuernas · PD0081	0	mancuerna	consulta	1
 pd_e_0082	pd_t_0082	Movimiento de hombros lateral · polea · PD0082	0	polea	consulta	1
+pd_e_0083	pd_t_0083	Remo a un brazo · barra · PD0083	0	barra	consulta	1
 pd_e_0087	pd_t_0087	Press · pesa rusa · PD0087	0	kettlebell	consulta	1
-pd_e_0088	pd_t_0088	Movimiento de cuádriceps · material específico · PD0088	0	material_especifico	consulta	1
-pd_e_0089	pd_t_0089	Movimiento de cuádriceps · máquina · PD0089	0	maquina	consulta	1
+pd_e_0088	pd_t_0088	Pedaleo · material específico · PD0088	0	material_especifico	consulta	1
+pd_e_0089	pd_t_0089	Pedaleo · máquina · PD0089	0	maquina	consulta	1
 pd_e_0091	pd_t_0091	Movimiento de tríceps · peso corporal · PD0091	0	sin_equipo	consulta	1
 pd_e_0093	pd_t_0093	Apertura · barra Z · PD0093	0	barra	consulta	1
 pd_e_0094	pd_t_0094	Remo · material específico · PD0094	0	material_especifico	consulta	1
 pd_e_0096	pd_t_0096	Zancada · material por verificar · PD0096	0	material_por_revisar	consulta	1
-pd_e_0098	pd_t_0098	Movimiento de antebrazos · pesa rusa · PD0098	0	kettlebell	consulta	1
+pd_e_0098	pd_t_0098	Levantamiento técnico · pesa rusa · PD0098	0	kettlebell	consulta	1
 pd_e_0099	pd_t_0099	Movimiento de abdomen · peso corporal · PD0099	0	sin_equipo	consulta	1
 pd_e_0100	pd_t_0100	Salto · material específico · PD0100	0	material_especifico	consulta	1
 pd_e_0101	pd_t_0101	Movimiento de isquiotibiales · material específico · PD0101	0	material_especifico	consulta	1
-pd_e_0105	pd_t_0105	Movimiento de bíceps · rodillo de espuma · PD0105	0	rodillo	consulta	1
+pd_e_0102	pd_t_0102	Sentadilla · barra · PD0102	0	barra	consulta	1
+pd_e_0103	pd_t_0103	Sentadilla · barra · PD0103	0	barra	consulta	1
+pd_e_0104	pd_t_0104	Sentadilla · barra · PD0104	0	barra	consulta	1
+pd_e_0105	pd_t_0105	Automasaje con rodillo · rodillo de espuma · PD0105	0	rodillo	consulta	1
 pd_e_0106	pd_t_0106	Movimiento de hombros · barra · PD0106	0	barra	consulta	1
 pd_e_0107	pd_t_0107	Movimiento de abdomen · peso corporal · PD0107	0	sin_equipo	consulta	1
 pd_e_0109	pd_t_0109	Movimiento de pecho · máquina · PD0109	0	maquina	consulta	1
 pd_e_0110	pd_t_0110	Press de pecho · polea · PD0110	0	polea	consulta	1
-pd_e_0111	pd_t_0111	Movimiento de pecho · polea · PD0111	0	polea	consulta	1
+pd_e_0111	pd_t_0111	Cruce o empuje de poleas · polea · PD0111	0	polea	consulta	1
 pd_e_0113	pd_t_0113	Peso muerto · polea · PD0113	0	polea	consulta	1
-pd_e_0115	pd_t_0115	Movimiento de cuádriceps · polea · PD0115	0	polea	consulta	1
+pd_e_0114	pd_t_0114	Curl de bíceps · polea · PD0114	0	polea	consulta	1
+pd_e_0115	pd_t_0115	Aducción de cadera · polea · PD0115	0	polea	consulta	1
 pd_e_0116	pd_t_0116	Movimiento de dorsales inclinada · polea · PD0116	0	polea	consulta	1
+pd_e_0117	pd_t_0117	Extensión de tríceps inclinada · polea · PD0117	0	polea	consulta	1
+pd_e_0118	pd_t_0118	Rotación de hombro · polea · PD0118	0	polea	consulta	1
 pd_e_0119	pd_t_0119	Movimiento de pecho · polea · PD0119	0	polea	consulta	1
 pd_e_0120	pd_t_0120	Movimiento de abdomen · polea · PD0120	0	polea	consulta	1
 pd_e_0122	pd_t_0122	Extensión a un brazo · polea · PD0122	0	polea	consulta	1
+pd_e_0123	pd_t_0123	Curl de bíceps · polea · PD0123	0	polea	consulta	1
 pd_e_0124	pd_t_0124	Movimiento de hombros posterior · polea · PD0124	0	polea	consulta	1
+pd_e_0125	pd_t_0125	Encogimiento abdominal posterior · polea · PD0125	0	polea	consulta	1
 pd_e_0127	pd_t_0127	Movimiento de hombros posterior · polea · PD0127	0	polea	consulta	1
 pd_e_0128	pd_t_0128	Giro · polea · PD0128	0	polea	consulta	1
 pd_e_0130	pd_t_0130	Elevación lateral lateral, sentada · polea · PD0130	0	polea	consulta	1
 pd_e_0131	pd_t_0131	Press de hombros · polea · PD0131	0	polea	consulta	1
-pd_e_0132	pd_t_0132	Movimiento de trapecios · polea · PD0132	0	polea	consulta	1
-pd_e_0133	pd_t_0133	Curl · polea · PD0133	0	polea	consulta	1
-pd_e_0134	pd_t_0134	Movimiento de trapecios · máquina · PD0134	0	maquina	consulta	1
+pd_e_0132	pd_t_0132	Encogimiento de hombros · polea · PD0132	0	polea	consulta	1
+pd_e_0133	pd_t_0133	Flexión de muñeca · polea · PD0133	0	polea	consulta	1
+pd_e_0134	pd_t_0134	Encogimiento de hombros · máquina · PD0134	0	maquina	consulta	1
 pd_e_0137	pd_t_0137	Elevación de talones · mancuernas · PD0137	0	mancuerna	consulta	1
 pd_e_0138	pd_t_0138	Elevación de talones · banda elástica · PD0138	0	banda	consulta	1
 pd_e_0139	pd_t_0139	Estiramiento · material por verificar · PD0139	0	material_por_revisar	consulta	1
 pd_e_0140	pd_t_0140	Estiramiento · material por verificar · PD0140	0	material_por_revisar	consulta	1
-pd_e_0141	pd_t_0141	Movimiento de pantorrillas · rodillo de espuma · PD0141	0	rodillo	consulta	1
+pd_e_0141	pd_t_0141	Automasaje de pantorrillas · rodillo de espuma · PD0141	0	rodillo	consulta	1
 pd_e_0142	pd_t_0142	Peso muerto · material específico · PD0142	0	material_especifico	consulta	1
 pd_e_0143	pd_t_0143	Movimiento de hombros · barra · PD0143	0	barra	consulta	1
-pd_e_0144	pd_t_0144	Movimiento de aductores · material por verificar · PD0144	0	material_por_revisar	consulta	1
-pd_e_0145	pd_t_0145	Estiramiento · material por verificar · PD0145	0	material_por_revisar	consulta	1
-pd_e_0146	pd_t_0146	Movimiento de dorsales · balón medicinal · PD0146	0	balon	consulta	1
+pd_e_0144	pd_t_0144	Paso cruzado carioca · material por verificar · PD0144	0	material_por_revisar	consulta	1
+pd_e_0145	pd_t_0145	Movilidad de columna · material por verificar · PD0145	0	material_por_revisar	consulta	1
+pd_e_0146	pd_t_0146	Lanzamiento con balón · balón medicinal · PD0146	0	balon	consulta	1
 pd_e_0147	pd_t_0147	Extensión · material específico · PD0147	0	material_especifico	consulta	1
 pd_e_0148	pd_t_0148	Press · material específico · PD0148	0	material_especifico	consulta	1
 pd_e_0149	pd_t_0149	Estiramiento · material específico · PD0149	0	material_especifico	consulta	1
@@ -1362,22 +1383,29 @@ pd_e_0150	pd_t_0150	Estiramiento · material por verificar · PD0150	0	material_
 pd_e_0151	pd_t_0151	Sentadilla · máquina · PD0151	0	maquina	consulta	1
 pd_e_0152	pd_t_0152	Estiramiento · material específico · PD0152	0	material_especifico	consulta	1
 pd_e_0153	pd_t_0153	Estiramiento frontal · material específico · PD0153	0	material_especifico	consulta	1
-pd_e_0154	pd_t_0154	Movimiento de pecho · balón medicinal · PD0154	0	balon	consulta	1
-pd_e_0155	pd_t_0155	Movimiento de pecho · balón medicinal · PD0155	0	balon	consulta	1
-pd_e_0156	pd_t_0156	Movimiento de pecho · balón medicinal · PD0156	0	balon	consulta	1
+pd_e_0154	pd_t_0154	Cruce o empuje de poleas · balón medicinal · PD0154	0	balon	consulta	1
+pd_e_0155	pd_t_0155	Cruce o empuje de poleas · balón medicinal · PD0155	0	balon	consulta	1
+pd_e_0156	pd_t_0156	Cruce o empuje de poleas · balón medicinal · PD0156	0	balon	consulta	1
+pd_e_0157	pd_t_0157	Cruce o empuje de poleas · balón medicinal · PD0157	0	balon	consulta	1
 pd_e_0158	pd_t_0158	Estiramiento · pelota de ejercicio · PD0158	0	pelota	consulta	1
-pd_e_0159	pd_t_0159	Movimiento de zona lumbar · material por verificar · PD0159	0	material_por_revisar	consulta	1
+pd_e_0159	pd_t_0159	Movilidad de columna · material por verificar · PD0159	0	material_por_revisar	consulta	1
 pd_e_0160	pd_t_0160	Dominada · peso corporal · PD0160	0	sin_equipo	consulta	1
 pd_e_0161	pd_t_0161	Estiramiento · material por verificar · PD0161	0	material_por_revisar	consulta	1
 pd_e_0162	pd_t_0162	Movimiento de hombros · material específico · PD0162	0	material_especifico	consulta	1
-pd_e_0163	pd_t_0163	Movimiento de isquiotibiales · barra · PD0163	0	barra	consulta	1
-pd_e_0165	pd_t_0165	Tracción · barra · PD0165	0	barra	consulta	1
-pd_e_0166	pd_t_0166	Movimiento de trapecios · barra · PD0166	0	barra	consulta	1
-pd_e_0167	pd_t_0167	Movimiento de hombros · barra · PD0167	0	barra	consulta	1
-pd_e_0169	pd_t_0169	Movimiento de cuádriceps · barra · PD0169	0	barra	consulta	1
+pd_e_0163	pd_t_0163	Levantamiento técnico · barra · PD0163	0	barra	consulta	1
+pd_e_0164	pd_t_0164	Levantamiento técnico · barra · PD0164	0	barra	consulta	1
+pd_e_0165	pd_t_0165	Levantamiento técnico · barra · PD0165	0	barra	consulta	1
+pd_e_0166	pd_t_0166	Encogimiento de hombros · barra · PD0166	0	barra	consulta	1
+pd_e_0167	pd_t_0167	Levantamiento técnico · barra · PD0167	0	barra	consulta	1
+pd_e_0168	pd_t_0168	Levantamiento técnico · barra · PD0168	0	barra	consulta	1
+pd_e_0169	pd_t_0169	Levantamiento técnico · barra · PD0169	0	barra	consulta	1
+pd_e_0171	pd_t_0171	Press de pecho con agarre cerrado, sobre banco · barra · PD0171	0	barra	consulta	1
+pd_e_0172	pd_t_0172	Press con agarre cerrado · mancuernas · PD0172	0	mancuerna	consulta	1
 pd_e_0173	pd_t_0173	Curl con agarre cerrado · barra Z · PD0173	0	barra	consulta	1
+pd_e_0174	pd_t_0174	Press con agarre cerrado · barra Z · PD0174	0	barra	consulta	1
 pd_e_0175	pd_t_0175	Curl con agarre cerrado · barra · PD0175	0	barra	consulta	1
 pd_e_0176	pd_t_0176	Movimiento de dorsales con agarre cerrado, frontal · polea · PD0176	0	polea	consulta	1
+pd_e_0177	pd_t_0177	Flexión de brazos con agarre cerrado · peso corporal · PD0177	0	sin_equipo	consulta	1
 pd_e_0178	pd_t_0178	Curl con agarre cerrado, de pie · barra · PD0178	0	barra	consulta	1
 pd_e_0179	pd_t_0179	Movimiento de abdomen · peso corporal · PD0179	0	sin_equipo	consulta	1
 pd_e_0180	pd_t_0180	Movimiento de cuádriceps · material específico · PD0180	0	material_especifico	consulta	1
@@ -1385,66 +1413,83 @@ pd_e_0184	pd_t_0184	Movimiento de pecho · banda elástica · PD0184	0	banda	con
 pd_e_0185	pd_t_0185	Zancada posterior · material por verificar · PD0185	0	material_por_revisar	consulta	1
 pd_e_0186	pd_t_0186	Movimiento de hombros · material específico · PD0186	0	material_especifico	consulta	1
 pd_e_0191	pd_t_0191	Estiramiento · material por verificar · PD0191	0	material_por_revisar	consulta	1
-pd_e_0192	pd_t_0192	Movimiento de abdomen · peso corporal · PD0192	0	sin_equipo	consulta	1
-pd_e_0193	pd_t_0193	Peso muerto · barra · PD0193	0	barra	consulta	1
-pd_e_0194	pd_t_0194	Peso muerto · barra · PD0194	0	barra	consulta	1
-pd_e_0196	pd_t_0196	Movimiento de tríceps con agarre cerrado, declinada · barra · PD0196	0	barra	consulta	1
+pd_e_0195	pd_t_0195	Press de pecho sobre banco, declinada · barra · PD0195	0	barra	consulta	1
+pd_e_0196	pd_t_0196	Movimiento de tríceps con agarre cerrado, sobre banco, declinada · barra · PD0196	0	barra	consulta	1
+pd_e_0197	pd_t_0197	Encogimiento abdominal declinada · peso corporal · PD0197	0	sin_equipo	consulta	1
+pd_e_0198	pd_t_0198	Press de pecho sobre banco, declinada · mancuernas · PD0198	0	mancuerna	consulta	1
+pd_e_0199	pd_t_0199	Apertura declinada · mancuernas · PD0199	0	mancuerna	consulta	1
+pd_e_0200	pd_t_0200	Extensión de tríceps declinada · mancuernas · PD0200	0	mancuerna	consulta	1
 pd_e_0201	pd_t_0201	Extensión de tríceps declinada · barra · PD0201	0	barra	consulta	1
+pd_e_0202	pd_t_0202	Encogimiento abdominal declinada · peso corporal · PD0202	0	sin_equipo	consulta	1
 pd_e_0203	pd_t_0203	Flexión de brazos declinada · material por verificar · PD0203	0	material_por_revisar	consulta	1
-pd_e_0204	pd_t_0204	Trabajo abdominal declinada, posterior · peso corporal · PD0204	0	sin_equipo	consulta	1
+pd_e_0204	pd_t_0204	Encogimiento abdominal declinada, posterior · peso corporal · PD0204	0	sin_equipo	consulta	1
 pd_e_0205	pd_t_0205	Press declinada · máquina · PD0205	0	maquina	consulta	1
-pd_e_0206	pd_t_0206	Peso muerto · barra · PD0206	0	barra	consulta	1
 pd_e_0207	pd_t_0207	Salto · material específico · PD0207	0	material_especifico	consulta	1
+pd_e_0208	pd_t_0208	Fondo · máquina · PD0208	0	maquina	consulta	1
 pd_e_0209	pd_t_0209	Fondo · material específico · PD0209	0	material_especifico	consulta	1
 pd_e_0210	pd_t_0210	Fondo · peso corporal · PD0210	0	sin_equipo	consulta	1
 pd_e_0211	pd_t_0211	Elevación de talones · material específico · PD0211	0	material_especifico	consulta	1
-pd_e_0212	pd_t_0212	Movimiento de isquiotibiales alternada · pesa rusa · PD0212	0	kettlebell	consulta	1
-pd_e_0213	pd_t_0213	Movimiento de hombros · pesa rusa · PD0213	0	kettlebell	consulta	1
+pd_e_0212	pd_t_0212	Levantamiento técnico alternada · pesa rusa · PD0212	0	kettlebell	consulta	1
+pd_e_0213	pd_t_0213	Levantamiento técnico · pesa rusa · PD0213	0	kettlebell	consulta	1
 pd_e_0214	pd_t_0214	Press · pesa rusa · PD0214	0	kettlebell	consulta	1
-pd_e_0215	pd_t_0215	Movimiento de hombros · pesa rusa · PD0215	0	kettlebell	consulta	1
-pd_e_0216	pd_t_0216	Movimiento de abdomen · pesa rusa · PD0216	0	kettlebell	consulta	1
+pd_e_0215	pd_t_0215	Levantamiento técnico · pesa rusa · PD0215	0	kettlebell	consulta	1
+pd_e_0216	pd_t_0216	Molino con pesa rusa · pesa rusa · PD0216	0	kettlebell	consulta	1
 pd_e_0217	pd_t_0217	Patada · peso corporal · PD0217	0	sin_equipo	consulta	1
 pd_e_0218	pd_t_0218	Movimiento de glúteos · pelota de ejercicio · PD0218	0	pelota	consulta	1
 pd_e_0219	pd_t_0219	Curl · barra · PD0219	0	barra	consulta	1
 pd_e_0220	pd_t_0220	Movimiento de pecho · material específico · PD0220	0	material_especifico	consulta	1
 pd_e_0221	pd_t_0221	Curl alternada · mancuernas · PD0221	0	mancuerna	consulta	1
+pd_e_0223	pd_t_0223	Press de pecho con agarre neutro, sobre banco · mancuernas · PD0223	0	mancuerna	consulta	1
 pd_e_0224	pd_t_0224	Curl · mancuernas · PD0224	0	mancuerna	consulta	1
-pd_e_0225	pd_t_0225	Movimiento de isquiotibiales · mancuernas · PD0225	0	mancuerna	consulta	1
+pd_e_0225	pd_t_0225	Levantamiento técnico · mancuernas · PD0225	0	mancuerna	consulta	1
+pd_e_0226	pd_t_0226	Press en el suelo en el suelo · mancuernas · PD0226	0	mancuerna	consulta	1
+pd_e_0228	pd_t_0228	Remo inclinada · mancuernas · PD0228	0	mancuerna	consulta	1
 pd_e_0229	pd_t_0229	Elevación inclinada · mancuernas · PD0229	0	mancuerna	consulta	1
 pd_e_0231	pd_t_0231	Elevación lateral acostada, lateral, posterior, a un brazo · mancuernas · PD0231	0	mancuerna	consulta	1
 pd_e_0232	pd_t_0232	Movimiento de antebrazos acostada · mancuernas · PD0232	0	mancuerna	consulta	1
 pd_e_0233	pd_t_0233	Elevación lateral acostada, lateral, posterior · mancuernas · PD0233	0	mancuerna	consulta	1
 pd_e_0234	pd_t_0234	Movimiento de antebrazos acostada · mancuernas · PD0234	0	mancuerna	consulta	1
 pd_e_0235	pd_t_0235	Press de hombros a un brazo · mancuernas · PD0235	0	mancuerna	consulta	1
+pd_e_0236	pd_t_0236	Extensión de tríceps a un brazo · mancuernas · PD0236	0	mancuerna	consulta	1
+pd_e_0237	pd_t_0237	Remo a un brazo · mancuernas · PD0237	0	mancuerna	consulta	1
 pd_e_0238	pd_t_0238	Curl inclinada · mancuernas · PD0238	0	mancuerna	consulta	1
 pd_e_0239	pd_t_0239	Elevación · mancuernas · PD0239	0	mancuerna	consulta	1
-pd_e_0241	pd_t_0241	Movimiento de hombros · mancuernas · PD0241	0	mancuerna	consulta	1
+pd_e_0240	pd_t_0240	Zancada posterior · mancuernas · PD0240	0	mancuerna	consulta	1
+pd_e_0241	pd_t_0241	Elevación escapular · mancuernas · PD0241	0	mancuerna	consulta	1
 pd_e_0242	pd_t_0242	Salto sentada · mancuernas · PD0242	0	mancuerna	consulta	1
 pd_e_0243	pd_t_0243	Elevación de talones sentada, a una pierna · mancuernas · PD0243	0	mancuerna	consulta	1
-pd_e_0245	pd_t_0245	Movimiento de trapecios · mancuernas · PD0245	0	mancuerna	consulta	1
-pd_e_0246	pd_t_0246	Movimiento de abdomen lateral · mancuernas · PD0246	0	mancuerna	consulta	1
+pd_e_0245	pd_t_0245	Encogimiento de hombros · mancuernas · PD0245	0	mancuerna	consulta	1
+pd_e_0246	pd_t_0246	Inclinación lateral lateral · mancuernas · PD0246	0	mancuerna	consulta	1
+pd_e_0248	pd_t_0248	Sentadilla sobre banco · mancuernas · PD0248	0	mancuerna	consulta	1
 pd_e_0251	pd_t_0251	Estiramiento · material por verificar · PD0251	0	material_por_revisar	consulta	1
 pd_e_0252	pd_t_0252	Estiramiento · material por verificar · PD0252	0	material_por_revisar	consulta	1
 pd_e_0253	pd_t_0253	Curl · barra Z · PD0253	0	barra	consulta	1
 pd_e_0254	pd_t_0254	Movimiento de tríceps · barra Z · PD0254	0	barra	consulta	1
-pd_e_0255	pd_t_0255	Movimiento de hombros · material por verificar · PD0255	0	material_por_revisar	consulta	1
+pd_e_0255	pd_t_0255	Círculos de codos · material por verificar · PD0255	0	material_por_revisar	consulta	1
 pd_e_0256	pd_t_0256	Movimiento de abdomen · peso corporal · PD0256	0	sin_equipo	consulta	1
 pd_e_0257	pd_t_0257	Movimiento de pecho · material por verificar · PD0257	0	material_por_revisar	consulta	1
 pd_e_0259	pd_t_0259	Movimiento de dorsales · polea · PD0259	0	polea	consulta	1
-pd_e_0260	pd_t_0260	Movimiento de cuádriceps · máquina · PD0260	0	maquina	consulta	1
+pd_e_0260	pd_t_0260	Entrenamiento en elíptica · máquina · PD0260	0	maquina	consulta	1
 pd_e_0262	pd_t_0262	Tracción · pelota de ejercicio · PD0262	0	pelota	consulta	1
-pd_e_0263	pd_t_0263	Press a un brazo · pesa rusa · PD0263	0	kettlebell	consulta	1
+pd_e_0263	pd_t_0263	Press en el suelo en el suelo, a un brazo · pesa rusa · PD0263	0	kettlebell	consulta	1
+pd_e_0264	pd_t_0264	Rotación de hombro · mancuernas · PD0264	0	mancuerna	consulta	1
+pd_e_0266	pd_t_0266	Rotación de hombro · polea · PD0266	0	polea	consulta	1
 pd_e_0267	pd_t_0267	Tracción · polea · PD0267	0	polea	consulta	1
 pd_e_0268	pd_t_0268	Caminata · material específico · PD0268	0	material_especifico	consulta	1
-pd_e_0269	pd_t_0269	Movimiento de cuádriceps · peso corporal · PD0269	0	sin_equipo	consulta	1
-pd_e_0270	pd_t_0270	Movimiento de antebrazos · barra · PD0270	0	barra	consulta	1
-pd_e_0272	pd_t_0272	Tracción · peso corporal · PD0272	0	sin_equipo	consulta	1
-pd_e_0273	pd_t_0273	Elevación de piernas acostada · peso corporal · PD0273	0	sin_equipo	consulta	1
+pd_e_0269	pd_t_0269	Pasos rápidos · peso corporal · PD0269	0	sin_equipo	consulta	1
+pd_e_0270	pd_t_0270	Flexión de muñeca · barra · PD0270	0	barra	consulta	1
+pd_e_0271	pd_t_0271	Apertura sobre banco · polea · PD0271	0	polea	consulta	1
+pd_e_0272	pd_t_0272	Tracción sobre banco · peso corporal · PD0272	0	sin_equipo	consulta	1
+pd_e_0273	pd_t_0273	Elevación de piernas acostada, sobre banco · peso corporal · PD0273	0	sin_equipo	consulta	1
 pd_e_0274	pd_t_0274	Movimiento de bíceps inclinada · mancuernas · PD0274	0	mancuerna	consulta	1
-pd_e_0275	pd_t_0275	Elevación · material por verificar · PD0275	0	material_por_revisar	consulta	1
-pd_e_0279	pd_t_0279	Movimiento de pantorrillas · material específico · PD0279	0	material_especifico	consulta	1
+pd_e_0275	pd_t_0275	Extensión de isquiotibiales en el suelo · material por verificar · PD0275	0	material_por_revisar	consulta	1
+pd_e_0276	pd_t_0276	Press en el suelo en el suelo · barra · PD0276	0	barra	consulta	1
+pd_e_0277	pd_t_0277	Press en el suelo en el suelo · barra · PD0277	0	barra	consulta	1
+pd_e_0279	pd_t_0279	Automasaje con rodillo · material específico · PD0279	0	material_especifico	consulta	1
 pd_e_0280	pd_t_0280	Press · material específico · PD0280	0	material_especifico	consulta	1
-pd_e_0283	pd_t_0283	Movimiento de cuádriceps · material por verificar · PD0283	0	material_por_revisar	consulta	1
+pd_e_0281	pd_t_0281	Sentadilla · barra · PD0281	0	barra	consulta	1
+pd_e_0283	pd_t_0283	Salto de rana · material por verificar · PD0283	0	material_por_revisar	consulta	1
+pd_e_0286	pd_t_0286	Sentadilla sobre banco, frontal · barra · PD0286	0	barra	consulta	1
 pd_e_0287	pd_t_0287	Salto frontal · material específico · PD0287	0	material_especifico	consulta	1
 pd_e_0288	pd_t_0288	Elevación frontal · polea · PD0288	0	polea	consulta	1
 pd_e_0289	pd_t_0289	Movimiento de cuádriceps frontal · material específico · PD0289	0	material_especifico	consulta	1
@@ -1452,51 +1497,62 @@ pd_e_0290	pd_t_0290	Elevación frontal · mancuernas · PD0290	0	mancuerna	consu
 pd_e_0291	pd_t_0291	Elevación frontal, inclinada · mancuernas · PD0291	0	mancuerna	consulta	1
 pd_e_0292	pd_t_0292	Elevación de piernas frontal · peso corporal · PD0292	0	sin_equipo	consulta	1
 pd_e_0293	pd_t_0293	Elevación frontal · material específico · PD0293	0	material_especifico	consulta	1
-pd_e_0294	pd_t_0294	Elevación frontal frontal · barra · PD0294	0	barra	consulta	1
+pd_e_0294	pd_t_0294	Pullover frontal · barra · PD0294	0	barra	consulta	1
+pd_e_0295	pd_t_0295	Levantamiento técnico frontal · barra · PD0295	0	barra	consulta	1
 pd_e_0296	pd_t_0296	Sentadilla frontal · pesa rusa · PD0296	0	kettlebell	consulta	1
 pd_e_0297	pd_t_0297	Elevación frontal · mancuernas · PD0297	0	mancuerna	consulta	1
 pd_e_0298	pd_t_0298	Movimiento de dorsales · polea · PD0298	0	polea	consulta	1
 pd_e_0299	pd_t_0299	Giro · material específico · PD0299	0	material_especifico	consulta	1
-pd_e_0300	pd_t_0300	Elevación · máquina · PD0300	0	maquina	consulta	1
+pd_e_0300	pd_t_0300	Extensión de isquiotibiales · máquina · PD0300	0	maquina	consulta	1
 pd_e_0302	pd_t_0302	Sentadilla · pesa rusa · PD0302	0	kettlebell	consulta	1
 pd_e_0303	pd_t_0303	Movimiento de isquiotibiales · barra · PD0303	0	barra	consulta	1
 pd_e_0304	pd_t_0304	Movimiento de isquiotibiales · barra · PD0304	0	barra	consulta	1
 pd_e_0306	pd_t_0306	Estiramiento · material por verificar · PD0306	0	material_por_revisar	consulta	1
 pd_e_0307	pd_t_0307	Movimiento de aductores · peso corporal · PD0307	0	sin_equipo	consulta	1
 pd_e_0308	pd_t_0308	Sentadilla · máquina · PD0308	0	maquina	consulta	1
-pd_e_0311	pd_t_0311	Movimiento de isquiotibiales · rodillo de espuma · PD0311	0	rodillo	consulta	1
+pd_e_0310	pd_t_0310	Press de pecho sobre banco, inclinada · mancuernas · PD0310	0	mancuerna	consulta	1
+pd_e_0311	pd_t_0311	Automasaje con rodillo · rodillo de espuma · PD0311	0	rodillo	consulta	1
 pd_e_0312	pd_t_0312	Estiramiento · material por verificar · PD0312	0	material_por_revisar	consulta	1
-pd_e_0314	pd_t_0314	Movimiento de cuádriceps · barra · PD0314	0	barra	consulta	1
-pd_e_0315	pd_t_0315	Movimiento de cuádriceps · barra · PD0315	0	barra	consulta	1
-pd_e_0316	pd_t_0316	Movimiento de isquiotibiales · barra · PD0316	0	barra	consulta	1
-pd_e_0317	pd_t_0317	Movimiento de isquiotibiales · barra · PD0317	0	barra	consulta	1
+pd_e_0314	pd_t_0314	Levantamiento técnico · barra · PD0314	0	barra	consulta	1
+pd_e_0315	pd_t_0315	Levantamiento técnico · barra · PD0315	0	barra	consulta	1
+pd_e_0316	pd_t_0316	Levantamiento técnico · barra · PD0316	0	barra	consulta	1
+pd_e_0317	pd_t_0317	Levantamiento técnico · barra · PD0317	0	barra	consulta	1
 pd_e_0318	pd_t_0318	Movimiento de isquiotibiales · barra · PD0318	0	barra	consulta	1
 pd_e_0319	pd_t_0319	Elevación de piernas · peso corporal · PD0319	0	sin_equipo	consulta	1
-pd_e_0320	pd_t_0320	Movimiento de abdomen · peso corporal · PD0320	0	sin_equipo	consulta	1
-pd_e_0321	pd_t_0321	Movimiento de cuádriceps · barra · PD0321	0	barra	consulta	1
+pd_e_0320	pd_t_0320	Elevación abdominal en suspensión · peso corporal · PD0320	0	sin_equipo	consulta	1
+pd_e_0321	pd_t_0321	Levantamiento técnico · barra · PD0321	0	barra	consulta	1
 pd_e_0322	pd_t_0322	Movimiento de pecho · material específico · PD0322	0	material_especifico	consulta	1
 pd_e_0323	pd_t_0323	Movimiento de bíceps · polea · PD0323	0	polea	consulta	1
-pd_e_0324	pd_t_0324	Movimiento de abductores · peso corporal · PD0324	0	sin_equipo	consulta	1
-pd_e_0326	pd_t_0326	Movimiento de cuádriceps · banda elástica · PD0326	0	banda	consulta	1
-pd_e_0327	pd_t_0327	Movimiento de glúteos · banda elástica · PD0327	0	banda	consulta	1
+pd_e_0324	pd_t_0324	Círculos de cadera · peso corporal · PD0324	0	sin_equipo	consulta	1
+pd_e_0326	pd_t_0326	Flexión de cadera · banda elástica · PD0326	0	banda	consulta	1
+pd_e_0327	pd_t_0327	Elevación de cadera · banda elástica · PD0327	0	banda	consulta	1
 pd_e_0328	pd_t_0328	Movimiento de zona lumbar · pelota de ejercicio · PD0328	0	pelota	consulta	1
-pd_e_0329	pd_t_0329	Movimiento de zona lumbar · material por verificar · PD0329	0	material_por_revisar	consulta	1
+pd_e_0329	pd_t_0329	Flexión de rodillas hacia pecho · material por verificar · PD0329	0	material_por_revisar	consulta	1
 pd_e_0330	pd_t_0330	Movimiento de isquiotibiales · material específico · PD0330	0	material_especifico	consulta	1
 pd_e_0331	pd_t_0331	Extensión · material específico · PD0331	0	material_especifico	consulta	1
-pd_e_0332	pd_t_0332	Movimiento de zona lumbar · peso corporal · PD0332	0	sin_equipo	consulta	1
+pd_e_0332	pd_t_0332	Movimiento de zona lumbar sobre banco · peso corporal · PD0332	0	sin_equipo	consulta	1
 pd_e_0333	pd_t_0333	Estiramiento · material específico · PD0333	0	material_especifico	consulta	1
-pd_e_0334	pd_t_0334	Movimiento de abductores · rodillo de espuma · PD0334	0	rodillo	consulta	1
+pd_e_0334	pd_t_0334	Automasaje con rodillo · rodillo de espuma · PD0334	0	rodillo	consulta	1
 pd_e_0335	pd_t_0335	Movimiento de isquiotibiales · peso corporal · PD0335	0	sin_equipo	consulta	1
 pd_e_0336	pd_t_0336	Extensión de tríceps inclinada · barra · PD0336	0	barra	consulta	1
-pd_e_0337	pd_t_0337	Tracción inclinada · barra · PD0337	0	barra	consulta	1
+pd_e_0337	pd_t_0337	Tracción sobre banco, inclinada · barra · PD0337	0	barra	consulta	1
 pd_e_0338	pd_t_0338	Press de pecho inclinada · polea · PD0338	0	polea	consulta	1
-pd_e_0340	pd_t_0340	Movimiento de pecho inclinada · mancuernas · PD0340	0	mancuerna	consulta	1
+pd_e_0339	pd_t_0339	Apertura inclinada · polea · PD0339	0	polea	consulta	1
+pd_e_0340	pd_t_0340	Movimiento de pecho sobre banco, inclinada · mancuernas · PD0340	0	mancuerna	consulta	1
 pd_e_0341	pd_t_0341	Curl inclinada · mancuernas · PD0341	0	mancuerna	consulta	1
+pd_e_0342	pd_t_0342	Apertura inclinada · mancuernas · PD0342	0	mancuerna	consulta	1
+pd_e_0343	pd_t_0343	Apertura inclinada · mancuernas · PD0343	0	mancuerna	consulta	1
+pd_e_0345	pd_t_0345	Curl de bíceps inclinada · mancuernas · PD0345	0	mancuerna	consulta	1
+pd_e_0346	pd_t_0346	Curl de bíceps inclinada · mancuernas · PD0346	0	mancuerna	consulta	1
+pd_e_0347	pd_t_0347	Flexión de brazos inclinada · peso corporal · PD0347	0	sin_equipo	consulta	1
 pd_e_0348	pd_t_0348	Flexión de brazos con agarre cerrado, inclinada · peso corporal · PD0348	0	sin_equipo	consulta	1
 pd_e_0349	pd_t_0349	Flexión de brazos inclinada · material específico · PD0349	0	material_especifico	consulta	1
-pd_e_0351	pd_t_0351	Flexión de brazos inclinada, posterior · peso corporal · PD0351	0	sin_equipo	consulta	1
+pd_e_0350	pd_t_0350	Flexión de brazos inclinada · peso corporal · PD0350	0	sin_equipo	consulta	1
+pd_e_0351	pd_t_0351	Flexión de brazos con agarre inverso, inclinada, posterior · peso corporal · PD0351	0	sin_equipo	consulta	1
+pd_e_0352	pd_t_0352	Flexión de brazos inclinada · peso corporal · PD0352	0	sin_equipo	consulta	1
 pd_e_0353	pd_t_0353	Estiramiento · material específico · PD0353	0	material_especifico	consulta	1
 pd_e_0354	pd_t_0354	Estiramiento · material específico · PD0354	0	material_especifico	consulta	1
+pd_e_0355	pd_t_0355	Rotación de hombro · banda elástica · PD0355	0	banda	consulta	1
 pd_e_0356	pd_t_0356	Remo · material por verificar · PD0356	0	material_por_revisar	consulta	1
 pd_e_0357	pd_t_0357	Remo · material específico · PD0357	0	material_especifico	consulta	1
 pd_e_0358	pd_t_0358	Movimiento de hombros · mancuernas · PD0358	0	mancuerna	consulta	1
@@ -1505,15 +1561,20 @@ pd_e_0360	pd_t_0360	Movimiento de pecho isométrica · peso corporal · PD0360	0
 pd_e_0361	pd_t_0361	Movimiento de cuello frontal, isométrica · peso corporal · PD0361	0	sin_equipo	consulta	1
 pd_e_0362	pd_t_0362	Movimiento de cuello isométrica · peso corporal · PD0362	0	sin_equipo	consulta	1
 pd_e_0363	pd_t_0363	Movimiento de pecho isométrica · peso corporal · PD0363	0	sin_equipo	consulta	1
-pd_e_0368	pd_t_0368	Movimiento de hombros · barra · PD0368	0	barra	consulta	1
+pd_e_0365	pd_t_0365	Incorporación abdominal · peso corporal · PD0365	0	sin_equipo	consulta	1
+pd_e_0366	pd_t_0366	Incorporación abdominal · peso corporal · PD0366	0	sin_equipo	consulta	1
+pd_e_0367	pd_t_0367	Sentadilla · barra · PD0367	0	barra	consulta	1
+pd_e_0368	pd_t_0368	Levantamiento técnico · barra · PD0368	0	barra	consulta	1
+pd_e_0369	pd_t_0369	Levantamiento técnico · barra · PD0369	0	barra	consulta	1
 pd_e_0370	pd_t_0370	Movimiento de cuádriceps · máquina · PD0370	0	maquina	consulta	1
 pd_e_0371	pd_t_0371	Movimiento de zona lumbar · material específico · PD0371	0	material_especifico	consulta	1
 pd_e_0372	pd_t_0372	Press · pesa rusa · PD0372	0	kettlebell	consulta	1
-pd_e_0373	pd_t_0373	Movimiento de isquiotibiales · pesa rusa · PD0373	0	kettlebell	consulta	1
+pd_e_0373	pd_t_0373	Levantamiento técnico · pesa rusa · PD0373	0	kettlebell	consulta	1
 pd_e_0374	pd_t_0374	Movimiento de abdomen · pesa rusa · PD0374	0	kettlebell	consulta	1
 pd_e_0375	pd_t_0375	Movimiento de hombros · pesa rusa · PD0375	0	kettlebell	consulta	1
 pd_e_0376	pd_t_0376	Extensión · pesa rusa · PD0376	0	kettlebell	consulta	1
-pd_e_0377	pd_t_0377	Movimiento de isquiotibiales · pesa rusa · PD0377	0	kettlebell	consulta	1
+pd_e_0377	pd_t_0377	Levantamiento técnico · pesa rusa · PD0377	0	kettlebell	consulta	1
+pd_e_0378	pd_t_0378	Peso muerto a una pierna · pesa rusa · PD0378	0	kettlebell	consulta	1
 pd_e_0379	pd_t_0379	Extensión de tríceps · pesa rusa · PD0379	0	kettlebell	consulta	1
 pd_e_0380	pd_t_0380	Movimiento de abdomen · pesa rusa · PD0380	0	kettlebell	consulta	1
 pd_e_0381	pd_t_0381	Movimiento de hombros · pesa rusa · PD0381	0	kettlebell	consulta	1
@@ -1524,38 +1585,42 @@ pd_e_0385	pd_t_0385	Tracción · pesa rusa · PD0385	0	kettlebell	consulta	1
 pd_e_0386	pd_t_0386	Movimiento de hombros · pesa rusa · PD0386	0	kettlebell	consulta	1
 pd_e_0387	pd_t_0387	Zancada · pesa rusa · PD0387	0	kettlebell	consulta	1
 pd_e_0388	pd_t_0388	Sentadilla · pesa rusa · PD0388	0	kettlebell	consulta	1
-pd_e_0389	pd_t_0389	Movimiento de abdomen · pesa rusa · PD0389	0	kettlebell	consulta	1
+pd_e_0389	pd_t_0389	Molino con pesa rusa · pesa rusa · PD0389	0	kettlebell	consulta	1
 pd_e_0390	pd_t_0390	Movimiento de dorsales · material específico · PD0390	0	material_especifico	consulta	1
 pd_e_0391	pd_t_0391	Movimiento de glúteos · material por verificar · PD0391	0	material_por_revisar	consulta	1
-pd_e_0392	pd_t_0392	Movimiento de pantorrillas · peso corporal · PD0392	0	sin_equipo	consulta	1
-pd_e_0393	pd_t_0393	Elevación · material específico · PD0393	0	material_especifico	consulta	1
+pd_e_0392	pd_t_0392	Círculos de rodilla · peso corporal · PD0392	0	sin_equipo	consulta	1
+pd_e_0393	pd_t_0393	Elevación de cadera · material específico · PD0393	0	material_especifico	consulta	1
 pd_e_0395	pd_t_0395	Movimiento de hombros · material por verificar · PD0395	0	material_por_revisar	consulta	1
 pd_e_0398	pd_t_0398	Estiramiento · material por verificar · PD0398	0	material_por_revisar	consulta	1
 pd_e_0400	pd_t_0400	Movimiento de cuádriceps · material por verificar · PD0400	0	material_por_revisar	consulta	1
+pd_e_0401	pd_t_0401	Sentadilla · barra · PD0401	0	barra	consulta	1
 pd_e_0402	pd_t_0402	Remo a un brazo · polea · PD0402	0	polea	consulta	1
+pd_e_0403	pd_t_0403	Sentadilla · barra · PD0403	0	barra	consulta	1
 pd_e_0404	pd_t_0404	Movimiento de abdomen · barra · PD0404	0	barra	consulta	1
 pd_e_0405	pd_t_0405	Movimiento de hombros · barra · PD0405	0	barra	consulta	1
 pd_e_0406	pd_t_0406	Movimiento de aductores lateral · peso corporal · PD0406	0	sin_equipo	consulta	1
 pd_e_0407	pd_t_0407	Salto lateral · material específico · PD0407	0	material_especifico	consulta	1
 pd_e_0408	pd_t_0408	Movimiento de aductores lateral · material específico · PD0408	0	material_especifico	consulta	1
-pd_e_0410	pd_t_0410	Movimiento de dorsales · rodillo de espuma · PD0410	0	rodillo	consulta	1
-pd_e_0411	pd_t_0411	Press · pesa rusa · PD0411	0	kettlebell	consulta	1
+pd_e_0410	pd_t_0410	Automasaje con rodillo · rodillo de espuma · PD0410	0	rodillo	consulta	1
+pd_e_0411	pd_t_0411	Press en el suelo en el suelo · pesa rusa · PD0411	0	kettlebell	consulta	1
 pd_e_0412	pd_t_0412	Estiramiento · material por verificar · PD0412	0	material_por_revisar	consulta	1
 pd_e_0413	pd_t_0413	Extensión de rodilla · máquina · PD0413	0	maquina	consulta	1
 pd_e_0414	pd_t_0414	Movimiento de glúteos · peso corporal · PD0414	0	sin_equipo	consulta	1
 pd_e_0415	pd_t_0415	Press · máquina · PD0415	0	maquina	consulta	1
 pd_e_0416	pd_t_0416	Tracción · peso corporal · PD0416	0	sin_equipo	consulta	1
 pd_e_0418	pd_t_0418	Peso muerto · máquina · PD0418	0	maquina	consulta	1
+pd_e_0419	pd_t_0419	Press de pecho declinada · máquina · PD0419	0	maquina	consulta	1
+pd_e_0421	pd_t_0421	Press de pecho inclinada · máquina · PD0421	0	maquina	consulta	1
 pd_e_0423	pd_t_0423	Press de hombros · máquina · PD0423	0	maquina	consulta	1
-pd_e_0424	pd_t_0424	Movimiento de trapecios · máquina · PD0424	0	maquina	consulta	1
+pd_e_0424	pd_t_0424	Encogimiento de hombros · máquina · PD0424	0	maquina	consulta	1
 pd_e_0425	pd_t_0425	Movimiento de isquiotibiales · material por verificar · PD0425	0	material_por_revisar	consulta	1
 pd_e_0426	pd_t_0426	Movimiento de isquiotibiales · material por verificar · PD0426	0	material_por_revisar	consulta	1
 pd_e_0427	pd_t_0427	Salto · material específico · PD0427	0	material_especifico	consulta	1
 pd_e_0428	pd_t_0428	Movimiento de hombros · material específico · PD0428	0	material_especifico	consulta	1
 pd_e_0429	pd_t_0429	Puente de cadera · material específico · PD0429	0	material_especifico	consulta	1
 pd_e_0430	pd_t_0430	Movimiento de cuádriceps · material por verificar · PD0430	0	material_por_revisar	consulta	1
-pd_e_0431	pd_t_0431	Movimiento de pecho · polea · PD0431	0	polea	consulta	1
-pd_e_0434	pd_t_0434	Movimiento de zona lumbar · rodillo de espuma · PD0434	0	rodillo	consulta	1
+pd_e_0431	pd_t_0431	Cruce o empuje de poleas · polea · PD0431	0	polea	consulta	1
+pd_e_0434	pd_t_0434	Automasaje con rodillo · rodillo de espuma · PD0434	0	rodillo	consulta	1
 pd_e_0435	pd_t_0435	Curl · peso corporal · PD0435	0	sin_equipo	consulta	1
 pd_e_0436	pd_t_0436	Zancada · pesa rusa · PD0436	0	kettlebell	consulta	1
 pd_e_0437	pd_t_0437	Zancada · máquina · PD0437	0	maquina	consulta	1
@@ -1569,13 +1634,14 @@ pd_e_0446	pd_t_0446	Movimiento de cuello acostada · material específico · PD0
 pd_e_0447	pd_t_0447	Movimiento de cuello acostada · material específico · PD0447	0	material_especifico	consulta	1
 pd_e_0448	pd_t_0448	Movimiento de glúteos acostada · peso corporal · PD0448	0	sin_equipo	consulta	1
 pd_e_0449	pd_t_0449	Movimiento de isquiotibiales acostada · material específico · PD0449	0	material_especifico	consulta	1
-pd_e_0450	pd_t_0450	Curl acostada · barra · PD0450	0	barra	consulta	1
+pd_e_0450	pd_t_0450	Curl acostada, sobre banco · barra · PD0450	0	barra	consulta	1
 pd_e_0451	pd_t_0451	Movimiento de isquiotibiales acostada · máquina · PD0451	0	maquina	consulta	1
 pd_e_0452	pd_t_0452	Sentadilla acostada · máquina · PD0452	0	maquina	consulta	1
 pd_e_0453	pd_t_0453	Elevación lateral acostada, lateral, a un brazo · mancuernas · PD0453	0	mancuerna	consulta	1
 pd_e_0454	pd_t_0454	Movimiento de cuádriceps acostada · peso corporal · PD0454	0	sin_equipo	consulta	1
 pd_e_0455	pd_t_0455	Elevación acostada, posterior · mancuernas · PD0455	0	mancuerna	consulta	1
 pd_e_0456	pd_t_0456	Curl acostada · mancuernas · PD0456	0	mancuerna	consulta	1
+pd_e_0459	pd_t_0459	Press de pecho sobre banco · máquina · PD0459	0	maquina	consulta	1
 pd_e_0460	pd_t_0460	Curl · máquina · PD0460	0	maquina	consulta	1
 pd_e_0461	pd_t_0461	Curl de bíceps · máquina · PD0461	0	maquina	consulta	1
 pd_e_0462	pd_t_0462	Press · máquina · PD0462	0	maquina	consulta	1
@@ -1583,78 +1649,91 @@ pd_e_0463	pd_t_0463	Extensión de tríceps · máquina · PD0463	0	maquina	consu
 pd_e_0464	pd_t_0464	Movimiento de pecho · balón medicinal · PD0464	0	balon	consulta	1
 pd_e_0465	pd_t_0465	Giro · balón medicinal · PD0465	0	balon	consulta	1
 pd_e_0466	pd_t_0466	Movimiento de hombros · balón medicinal · PD0466	0	balon	consulta	1
-pd_e_0467	pd_t_0467	Movimiento de espalda · mancuernas · PD0467	0	mancuerna	consulta	1
+pd_e_0467	pd_t_0467	Encogimiento de hombros · mancuernas · PD0467	0	mancuerna	consulta	1
 pd_e_0468	pd_t_0468	Estiramiento · material por verificar · PD0468	0	material_por_revisar	consulta	1
 pd_e_0469	pd_t_0469	Movimiento de espalda · material específico · PD0469	0	material_especifico	consulta	1
 pd_e_0471	pd_t_0471	Movimiento de cuádriceps · material por verificar · PD0471	0	material_por_revisar	consulta	1
 pd_e_0472	pd_t_0472	Movimiento de isquiotibiales · material por verificar · PD0472	0	material_por_revisar	consulta	1
-pd_e_0473	pd_t_0473	Movimiento de isquiotibiales · barra · PD0473	0	barra	consulta	1
+pd_e_0473	pd_t_0473	Levantamiento técnico · barra · PD0473	0	barra	consulta	1
 pd_e_0474	pd_t_0474	Movimiento de dorsales · material específico · PD0474	0	material_especifico	consulta	1
 pd_e_0475	pd_t_0475	Sentadilla · máquina · PD0475	0	maquina	consulta	1
 pd_e_0476	pd_t_0476	Press · máquina · PD0476	0	maquina	consulta	1
-pd_e_0479	pd_t_0479	Movimiento de cuello · material específico · PD0479	0	material_especifico	consulta	1
+pd_e_0477	pd_t_0477	Sentadilla · barra · PD0477	0	barra	consulta	1
+pd_e_0478	pd_t_0478	Extensión de isquiotibiales · peso corporal · PD0478	0	sin_equipo	consulta	1
+pd_e_0479	pd_t_0479	Automasaje con rodillo · material específico · PD0479	0	material_especifico	consulta	1
+pd_e_0482	pd_t_0482	Encogimiento abdominal en el suelo · peso corporal · PD0482	0	sin_equipo	consulta	1
+pd_e_0483	pd_t_0483	Sentadilla · barra · PD0483	0	barra	consulta	1
 pd_e_0484	pd_t_0484	Estiramiento · material específico · PD0484	0	material_especifico	consulta	1
 pd_e_0485	pd_t_0485	Estiramiento lateral · material por verificar · PD0485	0	material_por_revisar	consulta	1
+pd_e_0486	pd_t_0486	Remo a un brazo · mancuernas · PD0486	0	mancuerna	consulta	1
+pd_e_0487	pd_t_0487	Apertura sobre banco, a un brazo · mancuernas · PD0487	0	mancuerna	consulta	1
 pd_e_0488	pd_t_0488	Movimiento de abdomen lateral, a un brazo · polea · PD0488	0	polea	consulta	1
 pd_e_0489	pd_t_0489	Elevación lateral inclinada, lateral, a un brazo · mancuernas · PD0489	0	mancuerna	consulta	1
-pd_e_0490	pd_t_0490	Movimiento de isquiotibiales a un brazo · pesa rusa · PD0490	0	kettlebell	consulta	1
-pd_e_0491	pd_t_0491	Movimiento de hombros a un brazo · pesa rusa · PD0491	0	kettlebell	consulta	1
-pd_e_0492	pd_t_0492	Press a un brazo · pesa rusa · PD0492	0	kettlebell	consulta	1
-pd_e_0493	pd_t_0493	Movimiento de hombros a un brazo · pesa rusa · PD0493	0	kettlebell	consulta	1
+pd_e_0490	pd_t_0490	Levantamiento técnico a un brazo · pesa rusa · PD0490	0	kettlebell	consulta	1
+pd_e_0491	pd_t_0491	Levantamiento técnico a un brazo · pesa rusa · PD0491	0	kettlebell	consulta	1
+pd_e_0492	pd_t_0492	Press en el suelo en el suelo, a un brazo · pesa rusa · PD0492	0	kettlebell	consulta	1
+pd_e_0493	pd_t_0493	Levantamiento técnico a un brazo · pesa rusa · PD0493	0	kettlebell	consulta	1
 pd_e_0494	pd_t_0494	Press de hombros lateral, a un brazo · pesa rusa · PD0494	0	kettlebell	consulta	1
 pd_e_0495	pd_t_0495	Press a un brazo · pesa rusa · PD0495	0	kettlebell	consulta	1
 pd_e_0496	pd_t_0496	Press a un brazo · pesa rusa · PD0496	0	kettlebell	consulta	1
 pd_e_0497	pd_t_0497	Remo a un brazo · pesa rusa · PD0497	0	kettlebell	consulta	1
-pd_e_0498	pd_t_0498	Movimiento de hombros a un brazo · pesa rusa · PD0498	0	kettlebell	consulta	1
-pd_e_0499	pd_t_0499	Movimiento de hombros a un brazo · pesa rusa · PD0499	0	kettlebell	consulta	1
-pd_e_0500	pd_t_0500	Movimiento de hombros a un brazo · pesa rusa · PD0500	0	kettlebell	consulta	1
+pd_e_0498	pd_t_0498	Levantamiento técnico a un brazo · pesa rusa · PD0498	0	kettlebell	consulta	1
+pd_e_0499	pd_t_0499	Levantamiento técnico a un brazo · pesa rusa · PD0499	0	kettlebell	consulta	1
+pd_e_0500	pd_t_0500	Levantamiento técnico a un brazo · pesa rusa · PD0500	0	kettlebell	consulta	1
 pd_e_0501	pd_t_0501	Movimiento de isquiotibiales a un brazo · pesa rusa · PD0501	0	kettlebell	consulta	1
+pd_e_0502	pd_t_0502	Remo a un brazo · barra · PD0502	0	barra	consulta	1
 pd_e_0503	pd_t_0503	Movimiento de abdomen a un brazo · balón medicinal · PD0503	0	balon	consulta	1
-pd_e_0504	pd_t_0504	Movimiento de isquiotibiales a un brazo · pesa rusa · PD0504	0	kettlebell	consulta	1
+pd_e_0504	pd_t_0504	Levantamiento técnico a un brazo · pesa rusa · PD0504	0	kettlebell	consulta	1
 pd_e_0505	pd_t_0505	Sentadilla a un brazo · pesa rusa · PD0505	0	kettlebell	consulta	1
 pd_e_0506	pd_t_0506	Peso muerto lateral, a un brazo · barra · PD0506	0	barra	consulta	1
 pd_e_0507	pd_t_0507	Movimiento de hombros lateral, a un brazo · mancuernas · PD0507	0	mancuerna	consulta	1
 pd_e_0508	pd_t_0508	Patada a una pierna · polea · PD0508	0	polea	consulta	1
 pd_e_0509	pd_t_0509	Movimiento de dorsales a un brazo · material por verificar · PD0509	0	material_por_revisar	consulta	1
 pd_e_0510	pd_t_0510	Dominada a un brazo · material específico · PD0510	0	material_especifico	consulta	1
+pd_e_0511	pd_t_0511	Press de pecho sobre banco, a un brazo · mancuernas · PD0511	0	mancuerna	consulta	1
+pd_e_0512	pd_t_0512	Curl de bíceps a un brazo · mancuernas · PD0512	0	mancuerna	consulta	1
+pd_e_0513	pd_t_0513	Press en el suelo en el suelo, a un brazo · barra · PD0513	0	barra	consulta	1
 pd_e_0514	pd_t_0514	Movimiento de dorsales a un brazo · polea · PD0514	0	polea	consulta	1
+pd_e_0515	pd_t_0515	Extensión de tríceps a un brazo · mancuernas · PD0515	0	mancuerna	consulta	1
+pd_e_0516	pd_t_0516	Extensión de tríceps a un brazo · mancuernas · PD0516	0	mancuerna	consulta	1
 pd_e_0517	pd_t_0517	Movimiento de cuádriceps · material por verificar · PD0517	0	material_por_revisar	consulta	1
 pd_e_0518	pd_t_0518	Movimiento de dorsales · material específico · PD0518	0	material_especifico	consulta	1
 pd_e_0519	pd_t_0519	Movimiento de glúteos · material por verificar · PD0519	0	material_por_revisar	consulta	1
 pd_e_0520	pd_t_0520	Sentadilla a una pierna · barra · PD0520	0	barra	consulta	1
-pd_e_0521	pd_t_0521	Movimiento de isquiotibiales · pesa rusa · PD0521	0	kettlebell	consulta	1
+pd_e_0521	pd_t_0521	Levantamiento técnico · pesa rusa · PD0521	0	kettlebell	consulta	1
 pd_e_0522	pd_t_0522	Movimiento de abdomen · material específico · PD0522	0	material_especifico	consulta	1
 pd_e_0523	pd_t_0523	Curl · polea · PD0523	0	polea	consulta	1
 pd_e_0524	pd_t_0524	Movimiento de dorsales · material específico · PD0524	0	material_especifico	consulta	1
 pd_e_0525	pd_t_0525	Movimiento de dorsales · balón medicinal · PD0525	0	balon	consulta	1
+pd_e_0526	pd_t_0526	Sentadilla · barra · PD0526	0	barra	consulta	1
 pd_e_0527	pd_t_0527	Estiramiento · material por verificar · PD0527	0	material_por_revisar	consulta	1
 pd_e_0528	pd_t_0528	Movimiento de tríceps · peso corporal · PD0528	0	sin_equipo	consulta	1
-pd_e_0531	pd_t_0531	Curl · mancuernas · PD0531	0	mancuerna	consulta	1
-pd_e_0532	pd_t_0532	Curl · barra · PD0532	0	barra	consulta	1
-pd_e_0533	pd_t_0533	Curl · barra · PD0533	0	barra	consulta	1
-pd_e_0534	pd_t_0534	Curl · mancuernas · PD0534	0	mancuerna	consulta	1
+pd_e_0531	pd_t_0531	Flexión de muñeca sobre banco · mancuernas · PD0531	0	mancuerna	consulta	1
+pd_e_0532	pd_t_0532	Flexión de muñeca sobre banco · barra · PD0532	0	barra	consulta	1
+pd_e_0533	pd_t_0533	Flexión de muñeca sobre banco · barra · PD0533	0	barra	consulta	1
+pd_e_0534	pd_t_0534	Flexión de muñeca sobre banco · mancuernas · PD0534	0	mancuerna	consulta	1
 pd_e_0535	pd_t_0535	Fondo · material específico · PD0535	0	material_especifico	consulta	1
 pd_e_0536	pd_t_0536	Puente de cadera · material por verificar · PD0536	0	material_por_revisar	consulta	1
-pd_e_0537	pd_t_0537	Movimiento de pantorrillas · rodillo de espuma · PD0537	0	rodillo	consulta	1
+pd_e_0537	pd_t_0537	Automasaje con rodillo · rodillo de espuma · PD0537	0	rodillo	consulta	1
 pd_e_0538	pd_t_0538	Estiramiento · material específico · PD0538	0	material_especifico	consulta	1
 pd_e_0539	pd_t_0539	Puente de cadera · pelota de ejercicio · PD0539	0	pelota	consulta	1
 pd_e_0540	pd_t_0540	Movimiento de tríceps · barra · PD0540	0	barra	consulta	1
-pd_e_0541	pd_t_0541	Movimiento de glúteos · rodillo de espuma · PD0541	0	rodillo	consulta	1
+pd_e_0541	pd_t_0541	Automasaje con rodillo · rodillo de espuma · PD0541	0	rodillo	consulta	1
 pd_e_0543	pd_t_0543	Movimiento de antebrazos · material específico · PD0543	0	material_especifico	consulta	1
 pd_e_0544	pd_t_0544	Giro · material específico · PD0544	0	material_especifico	consulta	1
 pd_e_0545	pd_t_0545	Movimiento de isquiotibiales · material específico · PD0545	0	material_especifico	consulta	1
 pd_e_0547	pd_t_0547	Movimiento de pecho · pesa rusa · PD0547	0	kettlebell	consulta	1
 pd_e_0548	pd_t_0548	Flexión de brazos · peso corporal · PD0548	0	sin_equipo	consulta	1
-pd_e_0549	pd_t_0549	Estiramiento · material específico · PD0549	0	material_especifico	consulta	1
-pd_e_0550	pd_t_0550	Movimiento de isquiotibiales · barra · PD0550	0	barra	consulta	1
-pd_e_0551	pd_t_0551	Movimiento de isquiotibiales · barra · PD0551	0	barra	consulta	1
-pd_e_0552	pd_t_0552	Movimiento de cuádriceps · barra · PD0552	0	barra	consulta	1
+pd_e_0549	pd_t_0549	Trabajo tibial · material específico · PD0549	0	material_especifico	consulta	1
+pd_e_0550	pd_t_0550	Levantamiento técnico · barra · PD0550	0	barra	consulta	1
+pd_e_0551	pd_t_0551	Levantamiento técnico · barra · PD0551	0	barra	consulta	1
+pd_e_0552	pd_t_0552	Levantamiento técnico · barra · PD0552	0	barra	consulta	1
 pd_e_0553	pd_t_0553	Movimiento de hombros · mancuernas · PD0553	0	mancuerna	consulta	1
-pd_e_0554	pd_t_0554	Movimiento de isquiotibiales · barra · PD0554	0	barra	consulta	1
-pd_e_0555	pd_t_0555	Movimiento de cuádriceps · barra · PD0555	0	barra	consulta	1
+pd_e_0554	pd_t_0554	Levantamiento técnico · barra · PD0554	0	barra	consulta	1
+pd_e_0555	pd_t_0555	Levantamiento técnico · barra · PD0555	0	barra	consulta	1
 pd_e_0556	pd_t_0556	Movimiento de isquiotibiales · material específico · PD0556	0	material_especifico	consulta	1
 pd_e_0558	pd_t_0558	Curl · mancuernas · PD0558	0	mancuerna	consulta	1
-pd_e_0559	pd_t_0559	Trabajo abdominal · barra · PD0559	0	barra	consulta	1
+pd_e_0559	pd_t_0559	Incorporación abdominal · barra · PD0559	0	barra	consulta	1
 pd_e_0560	pd_t_0560	Movimiento de isquiotibiales · material por verificar · PD0560	0	material_por_revisar	consulta	1
 pd_e_0561	pd_t_0561	Movimiento de isquiotibiales · material específico · PD0561	0	material_especifico	consulta	1
 pd_e_0562	pd_t_0562	Tracción · polea · PD0562	0	polea	consulta	1
@@ -1664,7 +1743,7 @@ pd_e_0571	pd_t_0571	Movimiento de pecho · peso corporal · PD0571	0	sin_equipo	
 pd_e_0572	pd_t_0572	Movimiento de pecho · peso corporal · PD0572	0	sin_equipo	consulta	1
 pd_e_0573	pd_t_0573	Movimiento de zona lumbar · pelota de ejercicio · PD0573	0	pelota	consulta	1
 pd_e_0574	pd_t_0574	Estiramiento · material específico · PD0574	0	material_especifico	consulta	1
-pd_e_0575	pd_t_0575	Movimiento de cuádriceps · rodillo de espuma · PD0575	0	rodillo	consulta	1
+pd_e_0575	pd_t_0575	Automasaje con rodillo · rodillo de espuma · PD0575	0	rodillo	consulta	1
 pd_e_0576	pd_t_0576	Movimiento de cuádriceps · material específico · PD0576	0	material_especifico	consulta	1
 pd_e_0577	pd_t_0577	Movimiento de hombros · barra · PD0577	0	barra	consulta	1
 pd_e_0578	pd_t_0578	Tracción · barra · PD0578	0	barra	consulta	1
@@ -1672,16 +1751,24 @@ pd_e_0579	pd_t_0579	Movimiento de zona lumbar · barra · PD0579	0	barra	consult
 pd_e_0580	pd_t_0580	Elevación de piernas posterior · peso corporal · PD0580	0	sin_equipo	consulta	1
 pd_e_0581	pd_t_0581	Movimiento de cuádriceps · máquina · PD0581	0	maquina	consulta	1
 pd_e_0582	pd_t_0582	Movimiento de hombros · balón medicinal · PD0582	0	balon	consulta	1
+pd_e_0583	pd_t_0583	Press de pecho sobre banco, posterior · barra · PD0583	0	barra	consulta	1
 pd_e_0584	pd_t_0584	Sentadilla posterior · barra · PD0584	0	barra	consulta	1
 pd_e_0585	pd_t_0585	Peso muerto posterior · barra · PD0585	0	barra	consulta	1
 pd_e_0586	pd_t_0586	Sentadilla posterior · barra · PD0586	0	barra	consulta	1
+pd_e_0587	pd_t_0587	Peso muerto posterior · barra · PD0587	0	barra	consulta	1
 pd_e_0588	pd_t_0588	Curl posterior · barra · PD0588	0	barra	consulta	1
+pd_e_0589	pd_t_0589	Curl de bíceps posterior · barra Z · PD0589	0	barra	consulta	1
 pd_e_0590	pd_t_0590	Curl posterior · polea · PD0590	0	polea	consulta	1
-pd_e_0594	pd_t_0594	Movimiento de espalda posterior · barra · PD0594	0	barra	consulta	1
-pd_e_0595	pd_t_0595	Movimiento de tríceps posterior · polea · PD0595	0	polea	consulta	1
+pd_e_0591	pd_t_0591	Encogimiento abdominal posterior · peso corporal · PD0591	0	sin_equipo	consulta	1
+pd_e_0592	pd_t_0592	Apertura posterior · mancuernas · PD0592	0	mancuerna	consulta	1
+pd_e_0593	pd_t_0593	Rotación de hombro posterior · mancuernas · PD0593	0	mancuerna	consulta	1
+pd_e_0594	pd_t_0594	Movimiento de espalda con agarre inverso, posterior · barra · PD0594	0	barra	consulta	1
+pd_e_0595	pd_t_0595	Movimiento de tríceps con agarre inverso, posterior · polea · PD0595	0	polea	consulta	1
 pd_e_0596	pd_t_0596	Movimiento de isquiotibiales posterior · máquina · PD0596	0	maquina	consulta	1
+pd_e_0597	pd_t_0597	Apertura posterior · máquina · PD0597	0	maquina	consulta	1
 pd_e_0598	pd_t_0598	Movimiento de bíceps posterior · material específico · PD0598	0	material_especifico	consulta	1
-pd_e_0600	pd_t_0600	Movimiento de espalda · rodillo de espuma · PD0600	0	rodillo	consulta	1
+pd_e_0599	pd_t_0599	Press de pecho sobre banco, posterior · barra · PD0599	0	barra	consulta	1
+pd_e_0600	pd_t_0600	Automasaje con rodillo · rodillo de espuma · PD0600	0	rodillo	consulta	1
 pd_e_0601	pd_t_0601	Movimiento de antebrazos · material específico · PD0601	0	material_especifico	consulta	1
 pd_e_0602	pd_t_0602	Peso muerto · material específico · PD0602	0	material_especifico	consulta	1
 pd_e_0603	pd_t_0603	Fondo · material específico · PD0603	0	material_especifico	consulta	1
@@ -1699,6 +1786,7 @@ pd_e_0620	pd_t_0620	Patada · peso corporal · PD0620	0	sin_equipo	consulta	1
 pd_e_0622	pd_t_0622	Curl sentada · material específico · PD0622	0	material_especifico	consulta	1
 pd_e_0623	pd_t_0623	Press de hombros sentada · barra · PD0623	0	barra	consulta	1
 pd_e_0624	pd_t_0624	Giro sentada · barra · PD0624	0	barra	consulta	1
+pd_e_0625	pd_t_0625	Extensión de tríceps sentada, a un brazo · mancuernas · PD0625	0	mancuerna	consulta	1
 pd_e_0626	pd_t_0626	Elevación posterior, sentada · mancuernas · PD0626	0	mancuerna	consulta	1
 pd_e_0628	pd_t_0628	Movimiento de bíceps sentada · peso corporal · PD0628	0	sin_equipo	consulta	1
 pd_e_0629	pd_t_0629	Movimiento de espalda sentada · polea · PD0629	0	polea	consulta	1
@@ -1706,10 +1794,10 @@ pd_e_0630	pd_t_0630	Press de hombros sentada · polea · PD0630	0	polea	consulta
 pd_e_0632	pd_t_0632	Estiramiento sentada · material por verificar · PD0632	0	material_por_revisar	consulta	1
 pd_e_0633	pd_t_0633	Curl con agarre cerrado, sentada · barra · PD0633	0	barra	consulta	1
 pd_e_0634	pd_t_0634	Curl sentada · mancuernas · PD0634	0	mancuerna	consulta	1
-pd_e_0636	pd_t_0636	Curl sentada · mancuernas · PD0636	0	mancuerna	consulta	1
-pd_e_0637	pd_t_0637	Curl sentada · mancuernas · PD0637	0	mancuerna	consulta	1
-pd_e_0639	pd_t_0639	Tracción sentada · peso corporal · PD0639	0	sin_equipo	consulta	1
-pd_e_0640	pd_t_0640	Estiramiento sentada · material por verificar · PD0640	0	material_por_revisar	consulta	1
+pd_e_0636	pd_t_0636	Flexión de muñeca sentada · mancuernas · PD0636	0	mancuerna	consulta	1
+pd_e_0637	pd_t_0637	Flexión de muñeca sentada · mancuernas · PD0637	0	mancuerna	consulta	1
+pd_e_0639	pd_t_0639	Tracción sobre banco, sentada · peso corporal · PD0639	0	sin_equipo	consulta	1
+pd_e_0640	pd_t_0640	Estiramiento sentada, en el suelo · material por verificar · PD0640	0	material_por_revisar	consulta	1
 pd_e_0641	pd_t_0641	Movimiento de hombros frontal, sentada · peso corporal · PD0641	0	sin_equipo	consulta	1
 pd_e_0642	pd_t_0642	Movimiento de glúteos sentada · peso corporal · PD0642	0	sin_equipo	consulta	1
 pd_e_0643	pd_t_0643	Movimiento de zona lumbar sentada · barra · PD0643	0	barra	consulta	1
@@ -1717,17 +1805,18 @@ pd_e_0644	pd_t_0644	Movimiento de isquiotibiales sentada · material por verific
 pd_e_0645	pd_t_0645	Estiramiento sentada · material específico · PD0645	0	material_especifico	consulta	1
 pd_e_0646	pd_t_0646	Movimiento de cuello sentada · material específico · PD0646	0	material_especifico	consulta	1
 pd_e_0648	pd_t_0648	Movimiento de abdomen sentada · peso corporal · PD0648	0	sin_equipo	consulta	1
-pd_e_0649	pd_t_0649	Curl sentada, a un brazo · mancuernas · PD0649	0	mancuerna	consulta	1
-pd_e_0650	pd_t_0650	Curl sentada, a un brazo · mancuernas · PD0650	0	mancuerna	consulta	1
+pd_e_0649	pd_t_0649	Flexión de muñeca sentada, a un brazo · mancuernas · PD0649	0	mancuerna	consulta	1
+pd_e_0650	pd_t_0650	Flexión de muñeca sentada, a un brazo · mancuernas · PD0650	0	mancuerna	consulta	1
 pd_e_0651	pd_t_0651	Movimiento de espalda sentada, a un brazo · polea · PD0651	0	polea	consulta	1
 pd_e_0652	pd_t_0652	Estiramiento sentada · material por verificar · PD0652	0	material_por_revisar	consulta	1
-pd_e_0653	pd_t_0653	Curl sentada · barra · PD0653	0	barra	consulta	1
-pd_e_0654	pd_t_0654	Curl sentada · barra · PD0654	0	barra	consulta	1
-pd_e_0657	pd_t_0657	Curl sentada · polea · PD0657	0	polea	consulta	1
+pd_e_0653	pd_t_0653	Flexión de muñeca sentada · barra · PD0653	0	barra	consulta	1
+pd_e_0654	pd_t_0654	Flexión de muñeca sentada · barra · PD0654	0	barra	consulta	1
+pd_e_0657	pd_t_0657	Flexión de muñeca sentada · polea · PD0657	0	polea	consulta	1
 pd_e_0660	pd_t_0660	Movimiento de hombros · material por verificar · PD0660	0	material_por_revisar	consulta	1
+pd_e_0661	pd_t_0661	Press de hombros · banda elástica · PD0661	0	banda	consulta	1
 pd_e_0662	pd_t_0662	Elevación · material por verificar · PD0662	0	material_por_revisar	consulta	1
 pd_e_0663	pd_t_0663	Estiramiento · material por verificar · PD0663	0	material_por_revisar	consulta	1
-pd_e_0664	pd_t_0664	Estiramiento acostada, lateral · material por verificar · PD0664	0	material_por_revisar	consulta	1
+pd_e_0664	pd_t_0664	Estiramiento acostada, lateral, en el suelo · material por verificar · PD0664	0	material_por_revisar	consulta	1
 pd_e_0666	pd_t_0666	Movimiento de cuádriceps lateral · material específico · PD0666	0	material_especifico	consulta	1
 pd_e_0667	pd_t_0667	Movimiento de abdomen lateral · peso corporal · PD0667	0	sin_equipo	consulta	1
 pd_e_0670	pd_t_0670	Elevación de piernas lateral · peso corporal · PD0670	0	sin_equipo	consulta	1
@@ -1737,8 +1826,9 @@ pd_e_0673	pd_t_0673	Salto de pie, lateral · material por verificar · PD0673	0	
 pd_e_0674	pd_t_0674	Movimiento de dorsales lateral · material específico · PD0674	0	material_especifico	consulta	1
 pd_e_0675	pd_t_0675	Tracción lateral · material por verificar · PD0675	0	material_por_revisar	consulta	1
 pd_e_0676	pd_t_0676	Movimiento de cuádriceps lateral · material específico · PD0676	0	material_especifico	consulta	1
-pd_e_0677	pd_t_0677	Movimiento de pecho a un brazo · polea · PD0677	0	polea	consulta	1
+pd_e_0677	pd_t_0677	Cruce o empuje de poleas a un brazo · polea · PD0677	0	polea	consulta	1
 pd_e_0678	pd_t_0678	Movimiento de hombros a un brazo · barra · PD0678	0	barra	consulta	1
+pd_e_0679	pd_t_0679	Flexión de brazos a un brazo · peso corporal · PD0679	0	sin_equipo	consulta	1
 pd_e_0680	pd_t_0680	Movimiento de cuádriceps · material específico · PD0680	0	material_especifico	consulta	1
 pd_e_0681	pd_t_0681	Sentadilla a una pierna · material específico · PD0681	0	material_especifico	consulta	1
 pd_e_0682	pd_t_0682	Movimiento de cuádriceps a una pierna · material específico · PD0682	0	material_especifico	consulta	1
@@ -1748,6 +1838,7 @@ pd_e_0685	pd_t_0685	Salto a una pierna · material específico · PD0685	0	mater
 pd_e_0686	pd_t_0686	Elevación · mancuernas · PD0686	0	mancuerna	consulta	1
 pd_e_0687	pd_t_0687	Patada a una pierna · peso corporal · PD0687	0	sin_equipo	consulta	1
 pd_e_0689	pd_t_0689	Movimiento de cuádriceps a una pierna · material específico · PD0689	0	material_especifico	consulta	1
+pd_e_0690	pd_t_0690	Incorporación abdominal · peso corporal · PD0690	0	sin_equipo	consulta	1
 pd_e_0691	pd_t_0691	Sentadilla · material por verificar · PD0691	0	material_por_revisar	consulta	1
 pd_e_0692	pd_t_0692	Movimiento de cuádriceps · material específico · PD0692	0	material_especifico	consulta	1
 pd_e_0693	pd_t_0693	Movimiento de cuádriceps · material específico · PD0693	0	material_especifico	consulta	1
@@ -1758,28 +1849,41 @@ pd_e_0697	pd_t_0697	Apertura posterior · material específico · PD0697	0	mater
 pd_e_0698	pd_t_0698	Remo · material específico · PD0698	0	material_especifico	consulta	1
 pd_e_0699	pd_t_0699	Movimiento de abdomen · material específico · PD0699	0	material_especifico	consulta	1
 pd_e_0700	pd_t_0700	Elevación inclinada · barra · PD0700	0	barra	consulta	1
-pd_e_0701	pd_t_0701	Movimiento de trapecios · máquina · PD0701	0	maquina	consulta	1
+pd_e_0701	pd_t_0701	Encogimiento de hombros · máquina · PD0701	0	maquina	consulta	1
+pd_e_0702	pd_t_0702	Press de pecho sobre banco · máquina · PD0702	0	maquina	consulta	1
+pd_e_0705	pd_t_0705	Press de pecho con agarre cerrado, sobre banco · máquina · PD0705	0	maquina	consulta	1
 pd_e_0706	pd_t_0706	Press declinada · máquina · PD0706	0	maquina	consulta	1
-pd_e_0707	pd_t_0707	Movimiento de isquiotibiales · máquina · PD0707	0	maquina	consulta	1
+pd_e_0707	pd_t_0707	Levantamiento técnico · máquina · PD0707	0	maquina	consulta	1
+pd_e_0708	pd_t_0708	Elevación de cadera · máquina · PD0708	0	maquina	consulta	1
+pd_e_0709	pd_t_0709	Press de pecho sobre banco, inclinada · máquina · PD0709	0	maquina	consulta	1
 pd_e_0710	pd_t_0710	Press · máquina · PD0710	0	maquina	consulta	1
+pd_e_0711	pd_t_0711	Remo a un brazo · máquina · PD0711	0	maquina	consulta	1
 pd_e_0712	pd_t_0712	Press de hombros · máquina · PD0712	0	maquina	consulta	1
 pd_e_0713	pd_t_0713	Sentadilla · máquina · PD0713	0	maquina	consulta	1
+pd_e_0714	pd_t_0714	Elevación de talones posterior · máquina · PD0714	0	maquina	consulta	1
 pd_e_0715	pd_t_0715	Sentadilla · máquina · PD0715	0	maquina	consulta	1
 pd_e_0716	pd_t_0716	Peso muerto · máquina · PD0716	0	maquina	consulta	1
 pd_e_0718	pd_t_0718	Sentadilla a una pierna · máquina · PD0718	0	maquina	consulta	1
-pd_e_0719	pd_t_0719	Movimiento de cuádriceps · barra · PD0719	0	barra	consulta	1
-pd_e_0720	pd_t_0720	Movimiento de cuádriceps · barra · PD0720	0	barra	consulta	1
-pd_e_0722	pd_t_0722	Tracción · barra · PD0722	0	barra	consulta	1
-pd_e_0723	pd_t_0723	Movimiento de trapecios · barra · PD0723	0	barra	consulta	1
-pd_e_0724	pd_t_0724	Movimiento de cuádriceps · barra · PD0724	0	barra	consulta	1
+pd_e_0719	pd_t_0719	Levantamiento técnico · barra · PD0719	0	barra	consulta	1
+pd_e_0720	pd_t_0720	Levantamiento técnico · barra · PD0720	0	barra	consulta	1
+pd_e_0721	pd_t_0721	Levantamiento técnico · barra · PD0721	0	barra	consulta	1
+pd_e_0722	pd_t_0722	Levantamiento técnico · barra · PD0722	0	barra	consulta	1
+pd_e_0723	pd_t_0723	Encogimiento de hombros · barra · PD0723	0	barra	consulta	1
+pd_e_0724	pd_t_0724	Levantamiento técnico · barra · PD0724	0	barra	consulta	1
 pd_e_0725	pd_t_0725	Movimiento de tríceps · banda elástica · PD0725	0	banda	consulta	1
+pd_e_0726	pd_t_0726	Sentadilla · barra · PD0726	0	barra	consulta	1
+pd_e_0727	pd_t_0727	Sentadilla · barra · PD0727	0	barra	consulta	1
 pd_e_0728	pd_t_0728	Movimiento de abdomen · mancuernas · PD0728	0	mancuerna	consulta	1
 pd_e_0729	pd_t_0729	Movimiento de abdomen · peso corporal · PD0729	0	sin_equipo	consulta	1
 pd_e_0731	pd_t_0731	Estiramiento · material por verificar · PD0731	0	material_por_revisar	consulta	1
-pd_e_0732	pd_t_0732	Movimiento de cuádriceps · barra · PD0732	0	barra	consulta	1
-pd_e_0733	pd_t_0733	Movimiento de cuádriceps · barra · PD0733	0	barra	consulta	1
-pd_e_0735	pd_t_0735	Movimiento de isquiotibiales · barra · PD0735	0	barra	consulta	1
+pd_e_0732	pd_t_0732	Levantamiento técnico · barra · PD0732	0	barra	consulta	1
+pd_e_0733	pd_t_0733	Levantamiento técnico · barra · PD0733	0	barra	consulta	1
+pd_e_0735	pd_t_0735	Levantamiento técnico · barra · PD0735	0	barra	consulta	1
 pd_e_0737	pd_t_0737	Sentadilla · material por verificar · PD0737	0	material_por_revisar	consulta	1
+pd_e_0738	pd_t_0738	Levantamiento técnico · barra · PD0738	0	barra	consulta	1
+pd_e_0739	pd_t_0739	Sentadilla · barra · PD0739	0	barra	consulta	1
+pd_e_0740	pd_t_0740	Sentadilla · barra · PD0740	0	barra	consulta	1
+pd_e_0741	pd_t_0741	Sentadilla · barra · PD0741	0	barra	consulta	1
 pd_e_0742	pd_t_0742	Sentadilla · banda elástica · PD0742	0	banda	consulta	1
 pd_e_0743	pd_t_0743	Movimiento de cuádriceps · máquina · PD0743	0	maquina	consulta	1
 pd_e_0745	pd_t_0745	Elevación de talones de pie · barra · PD0745	0	barra	consulta	1
@@ -1796,7 +1900,7 @@ pd_e_0763	pd_t_0763	Estiramiento de pie · material específico · PD0763	0	mate
 pd_e_0764	pd_t_0764	Elevación de pie, frontal · barra · PD0764	0	barra	consulta	1
 pd_e_0765	pd_t_0765	Estiramiento de pie · material por verificar · PD0765	0	material_por_revisar	consulta	1
 pd_e_0766	pd_t_0766	Estiramiento de pie · material específico · PD0766	0	material_especifico	consulta	1
-pd_e_0767	pd_t_0767	Movimiento de abductores de pie · peso corporal · PD0767	0	sin_equipo	consulta	1
+pd_e_0767	pd_t_0767	Círculos de cadera de pie · peso corporal · PD0767	0	sin_equipo	consulta	1
 pd_e_0768	pd_t_0768	Movimiento de cuádriceps de pie · material por verificar · PD0768	0	material_por_revisar	consulta	1
 pd_e_0770	pd_t_0770	Estiramiento de pie, lateral · material por verificar · PD0770	0	material_por_revisar	consulta	1
 pd_e_0771	pd_t_0771	Curl de pie · máquina · PD0771	0	maquina	consulta	1
@@ -1805,38 +1909,37 @@ pd_e_0774	pd_t_0774	Extensión de tríceps de pie, a un brazo · polea · PD0774
 pd_e_0775	pd_t_0775	Press de hombros de pie · barra · PD0775	0	barra	consulta	1
 pd_e_0776	pd_t_0776	Movimiento de antebrazos de pie · material específico · PD0776	0	material_especifico	consulta	1
 pd_e_0777	pd_t_0777	Curl de pie, a un brazo · polea · PD0777	0	polea	consulta	1
-pd_e_0778	pd_t_0778	Curl de pie, inclinada, a un brazo · mancuernas · PD0778	0	mancuerna	consulta	1
+pd_e_0778	pd_t_0778	Curl sobre banco, de pie, inclinada, a un brazo · mancuernas · PD0778	0	mancuerna	consulta	1
 pd_e_0779	pd_t_0779	Extensión de tríceps de pie, a un brazo · mancuernas · PD0779	0	mancuerna	consulta	1
 pd_e_0780	pd_t_0780	Extensión de tríceps de pie · barra · PD0780	0	barra	consulta	1
 pd_e_0781	pd_t_0781	Press de pie, a un brazo · mancuernas · PD0781	0	mancuerna	consulta	1
-pd_e_0783	pd_t_0783	Curl de pie · barra · PD0783	0	barra	consulta	1
+pd_e_0783	pd_t_0783	Flexión de muñeca de pie · barra · PD0783	0	barra	consulta	1
 pd_e_0784	pd_t_0784	Movimiento de zona lumbar de pie · material por verificar · PD0784	0	material_por_revisar	consulta	1
 pd_e_0786	pd_t_0786	Estiramiento de pie · material por verificar · PD0786	0	material_por_revisar	consulta	1
 pd_e_0787	pd_t_0787	Movimiento de isquiotibiales de pie · material por verificar · PD0787	0	material_por_revisar	consulta	1
 pd_e_0788	pd_t_0788	Extensión de tríceps de pie · peso corporal · PD0788	0	sin_equipo	consulta	1
-pd_e_0789	pd_t_0789	Movimiento de hombros de pie · balón medicinal · PD0789	0	balon	consulta	1
+pd_e_0789	pd_t_0789	Lanzamiento con balón de pie · balón medicinal · PD0789	0	balon	consulta	1
 pd_e_0791	pd_t_0791	Subida al escalón · peso corporal · PD0791	0	sin_equipo	consulta	1
 pd_e_0792	pd_t_0792	Movimiento de cuádriceps · máquina · PD0792	0	maquina	consulta	1
 pd_e_0795	pd_t_0795	Movimiento de zona lumbar · barra · PD0795	0	barra	consulta	1
 pd_e_0796	pd_t_0796	Movimiento de abdomen · peso corporal · PD0796	0	sin_equipo	consulta	1
-pd_e_0797	pd_t_0797	Movimiento de pecho · mancuernas · PD0797	0	mancuerna	consulta	1
 pd_e_0798	pd_t_0798	Movimiento de dorsales · polea · PD0798	0	polea	consulta	1
-pd_e_0799	pd_t_0799	Movimiento de espalda · barra · PD0799	0	barra	consulta	1
-pd_e_0800	pd_t_0800	Elevación inclinada · barra · PD0800	0	barra	consulta	1
+pd_e_0799	pd_t_0799	Movimiento de espalda sobre banco · barra · PD0799	0	barra	consulta	1
+pd_e_0800	pd_t_0800	Elevación sobre banco, inclinada · barra · PD0800	0	barra	consulta	1
 pd_e_0801	pd_t_0801	Salto · material específico · PD0801	0	material_especifico	consulta	1
 pd_e_0805	pd_t_0805	Movimiento de zona lumbar · peso corporal · PD0805	0	sin_equipo	consulta	1
 pd_e_0806	pd_t_0806	Movimiento de tríceps · balón medicinal · PD0806	0	balon	consulta	1
-pd_e_0807	pd_t_0807	Movimiento de abdomen a un brazo · balón medicinal · PD0807	0	balon	consulta	1
-pd_e_0808	pd_t_0808	Movimiento de abdomen · balón medicinal · PD0808	0	balon	consulta	1
+pd_e_0807	pd_t_0807	Lanzamiento con balón a un brazo · balón medicinal · PD0807	0	balon	consulta	1
+pd_e_0808	pd_t_0808	Lanzamiento con balón · balón medicinal · PD0808	0	balon	consulta	1
 pd_e_0809	pd_t_0809	Movimiento de abdomen · material específico · PD0809	0	material_especifico	consulta	1
 pd_e_0810	pd_t_0810	Flexión de brazos · material específico · PD0810	0	material_especifico	consulta	1
-pd_e_0811	pd_t_0811	Trabajo abdominal posterior · material específico · PD0811	0	material_especifico	consulta	1
+pd_e_0811	pd_t_0811	Encogimiento abdominal posterior · material específico · PD0811	0	material_especifico	consulta	1
 pd_e_0812	pd_t_0812	Remo · material específico · PD0812	0	material_especifico	consulta	1
 pd_e_0813	pd_t_0813	Sentadilla · material específico · PD0813	0	material_especifico	consulta	1
 pd_e_0814	pd_t_0814	Press · material específico · PD0814	0	material_especifico	consulta	1
 pd_e_0817	pd_t_0817	Movimiento de isquiotibiales · material por verificar · PD0817	0	material_por_revisar	consulta	1
-pd_e_0818	pd_t_0818	Movimiento de abductores · máquina · PD0818	0	maquina	consulta	1
-pd_e_0819	pd_t_0819	Movimiento de aductores · máquina · PD0819	0	maquina	consulta	1
+pd_e_0818	pd_t_0818	Abducción de cadera · máquina · PD0818	0	maquina	consulta	1
+pd_e_0819	pd_t_0819	Aducción de cadera · máquina · PD0819	0	maquina	consulta	1
 pd_e_0820	pd_t_0820	Movimiento de cuádriceps · material específico · PD0820	0	material_especifico	consulta	1
 pd_e_0821	pd_t_0821	Movimiento de abdomen · peso corporal · PD0821	0	sin_equipo	consulta	1
 pd_e_0822	pd_t_0822	Rotación · pelota de ejercicio · PD0822	0	pelota	consulta	1
@@ -1844,12 +1947,13 @@ pd_e_0823	pd_t_0823	Carrera · material por verificar · PD0823	0	material_por_r
 pd_e_0824	pd_t_0824	Peso muerto · material específico · PD0824	0	material_especifico	consulta	1
 pd_e_0825	pd_t_0825	Patada · mancuernas · PD0825	0	mancuerna	consulta	1
 pd_e_0826	pd_t_0826	Estiramiento lateral · material por verificar · PD0826	0	material_por_revisar	consulta	1
+pd_e_0827	pd_t_0827	Extensión · polea · PD0827	0	polea	consulta	1
 pd_e_0828	pd_t_0828	Movimiento de tríceps · polea · PD0828	0	polea	consulta	1
 pd_e_0829	pd_t_0829	Movimiento de tríceps · polea · PD0829	0	polea	consulta	1
 pd_e_0830	pd_t_0830	Movimiento de tríceps · polea · PD0830	0	polea	consulta	1
 pd_e_0831	pd_t_0831	Estiramiento · material por verificar · PD0831	0	material_por_revisar	consulta	1
-pd_e_0834	pd_t_0834	Movimiento de hombros · pesa rusa · PD0834	0	kettlebell	consulta	1
-pd_e_0835	pd_t_0835	Movimiento de hombros · pesa rusa · PD0835	0	kettlebell	consulta	1
+pd_e_0834	pd_t_0834	Levantamiento técnico · pesa rusa · PD0834	0	kettlebell	consulta	1
+pd_e_0835	pd_t_0835	Levantamiento técnico · pesa rusa · PD0835	0	kettlebell	consulta	1
 pd_e_0836	pd_t_0836	Press de hombros · pesa rusa · PD0836	0	kettlebell	consulta	1
 pd_e_0837	pd_t_0837	Remo · pesa rusa · PD0837	0	kettlebell	consulta	1
 pd_e_0838	pd_t_0838	Movimiento de dorsales · polea · PD0838	0	polea	consulta	1
@@ -1861,18 +1965,22 @@ pd_e_0846	pd_t_0846	Movimiento de dorsales · peso corporal · PD0846	0	sin_equi
 pd_e_0847	pd_t_0847	Movimiento de isquiotibiales · mancuernas · PD0847	0	mancuerna	consulta	1
 pd_e_0848	pd_t_0848	Caminata · máquina · PD0848	0	maquina	consulta	1
 pd_e_0849	pd_t_0849	Movimiento de zona lumbar · pelota de ejercicio · PD0849	0	pelota	consulta	1
-pd_e_0850	pd_t_0850	Movimiento de abdomen lateral · pelota de ejercicio · PD0850	0	pelota	consulta	1
-pd_e_0851	pd_t_0851	Fondo · material específico · PD0851	0	material_especifico	consulta	1
-pd_e_0852	pd_t_0852	Trabajo abdominal · balón medicinal · PD0852	0	balon	consulta	1
+pd_e_0850	pd_t_0850	Inclinación lateral lateral · pelota de ejercicio · PD0850	0	pelota	consulta	1
+pd_e_0851	pd_t_0851	Fondo sobre banco · material específico · PD0851	0	material_especifico	consulta	1
+pd_e_0852	pd_t_0852	Encogimiento abdominal · balón medicinal · PD0852	0	balon	consulta	1
+pd_e_0853	pd_t_0853	Sentadilla · barra · PD0853	0	barra	consulta	1
 pd_e_0854	pd_t_0854	Dominada · material específico · PD0854	0	material_especifico	consulta	1
+pd_e_0855	pd_t_0855	Sentadilla · barra · PD0855	0	barra	consulta	1
 pd_e_0856	pd_t_0856	Trabajo abdominal · material específico · PD0856	0	material_especifico	consulta	1
 pd_e_0857	pd_t_0857	Sentadilla · material específico · PD0857	0	material_especifico	consulta	1
-pd_e_0859	pd_t_0859	Press de pecho con agarre ancho, declinada · barra · PD0859	0	barra	consulta	1
-pd_e_0860	pd_t_0860	Movimiento de pecho con agarre ancho, declinada · barra · PD0860	0	barra	consulta	1
+pd_e_0858	pd_t_0858	Press de pecho con agarre ancho, sobre banco · barra · PD0858	0	barra	consulta	1
+pd_e_0859	pd_t_0859	Press de pecho con agarre ancho, sobre banco, declinada · barra · PD0859	0	barra	consulta	1
+pd_e_0860	pd_t_0860	Pullover con agarre ancho, declinada · barra · PD0860	0	barra	consulta	1
 pd_e_0861	pd_t_0861	Movimiento de dorsales con agarre ancho · polea · PD0861	0	polea	consulta	1
 pd_e_0862	pd_t_0862	Movimiento de dorsales con agarre ancho · polea · PD0862	0	polea	consulta	1
 pd_e_0863	pd_t_0863	Dominada con agarre ancho, posterior · peso corporal · PD0863	0	sin_equipo	consulta	1
 pd_e_0864	pd_t_0864	Curl con agarre ancho, de pie · barra · PD0864	0	barra	consulta	1
+pd_e_0865	pd_t_0865	Sentadilla · barra · PD0865	0	barra	consulta	1
 pd_e_0866	pd_t_0866	Movimiento de isquiotibiales · barra · PD0866	0	barra	consulta	1
 pd_e_0867	pd_t_0867	Movimiento de abdomen · peso corporal · PD0867	0	sin_equipo	consulta	1
 pd_e_0868	pd_t_0868	Movimiento de abductores · material por verificar · PD0868	0	material_por_revisar	consulta	1
@@ -1881,4 +1989,5 @@ pd_e_0870	pd_t_0870	Movimiento de antebrazos · peso corporal · PD0870	0	sin_eq
 pd_e_0871	pd_t_0871	Movimiento de antebrazos · material específico · PD0871	0	material_especifico	consulta	1
 pd_e_0872	pd_t_0872	Rotación · barra · PD0872	0	barra	consulta	1
 pd_e_0873	pd_t_0873	Caminata · material específico · PD0873	0	material_especifico	consulta	1
+pd_e_0874	pd_t_0874	Sentadilla · barra · PD0874	0	barra	consulta	1
 pd_e_0875	pd_t_0875	Curl · mancuernas · PD0875	0	mancuerna	consulta	1
