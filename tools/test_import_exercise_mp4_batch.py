@@ -24,7 +24,7 @@ class ImportExerciseMp4BatchTest(unittest.TestCase):
             subprocess.run(
                 ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
                  "-f", "lavfi", "-i",
-                 "color=c=" + color + ":size=480x640:rate=10",
+                 "color=c=" + color + ":size=640x360:rate=10",
                  "-t", "1.2", "-an", "-c:v", "libx264",
                  "-pix_fmt", "yuv420p", str(file)],
                 check=True)
