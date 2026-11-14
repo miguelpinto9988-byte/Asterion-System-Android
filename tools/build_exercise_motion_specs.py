@@ -123,9 +123,13 @@ def build():
         "formato_recomendado":{"ancho_px":480,"alto_px":640,
             "frames":12,"ms_por_frame":120,"max_bytes":800000,
             "presentacion":"adaptar_sin_recortar_en_movil"},
-        "formato_mp4_recomendado":{"codec":"h264","ancho_px":480,
-          "alto_px":640,"sin_audio":True,"fondo":"gimnasio_moderno",
-          "bucle":True,"bytes_objetivo_max":400000},
+        "formato_mp4_recomendado":{"codec":"h264","ancho_px":640,
+          "alto_px":360,"fps":25,"sin_audio":True,
+          "fondo":"gimnasio_moderno_estatico",
+          "bucle":True,"bytes_objetivo_max":400000,
+          "bytes_maximos":800000,"sin_interpolacion_borrosa":True},
+        "politica_multimedia":"solo_mp4_no_generar_gif",
+        "personaje_visual":"hombre_anime_original_polo_negro_aura_azul_profundo",
         "categorias":dict(sorted(Counter(x["categoria"] for x in rows).items())),
         "ejercicios":rows}
     OUT.parent.mkdir(parents=True,exist_ok=True)
