@@ -46,6 +46,47 @@ EQUIPMENT={
  "exercise ball":("pelota","pelota de ejercicio"),
  "e-z curl bar":("barra","barra Z")
 }
+MOVEMENT_SPECIFIC=[
+ ("circulos_tobillo",r"\bankle circles?\b"),
+ ("circulos_brazo",r"\barm circles?\b"),
+ ("circulos_codo",r"\belbow circles?\b"),
+ ("elevacion_cadera",r"\bhip (?:lift|raise|thrust)\b"),
+ ("balanceo_pesa",r"\bwindmill\b"),
+ ("rodillo_abdominal",r"\bab roller\b|\bab rollout\b|\bbarbell rollout\b|\brollout\b"),
+ ("encogimiento_hombros",r"\bshrugs?\b"),
+ ("aduccion_cadera",r"\bhip adductions?\b|\badductor\b"),
+ ("abduccion_cadera",r"\bhip abductions?\b|\babductor\b"),
+ ("inclinacion_lateral",r"\bside bend\b"),
+ ("pulover",r"\bpullovers?\b"),
+ ("carrera_bicicleta",r"\bbicycling\b|\bstationary bike\b"),
+ ("eliptica",r"\belliptical\b"),
+ ("movilidad_espinal",r"\bcat stretch\b|\bchild'?s pose\b"),
+ ("levantamiento_olimpico",r"\bclean\b|\bsnatch\b|\bjerk\b"),
+ ("bicho_muerto",r"\bdead bug\b"),
+ ("press_suelo",r"\bfloor press\b"),
+ ("trabajo_tibial",r"\btibialis\b"),
+ ("caminata_oso",r"\bbear crawl\b"),
+ ("paso_carioca",r"\bcarioca\b"),
+ ("salto_rana",r"\bfrog hops?\b"),
+ ("puente_isquiotibiales",r"\bglute.ham raise\b"),
+ ("flexion_muneca",r"\bfinger curls?\b|\bwrist curls?\b"),
+ ("estiramiento",r"\bstretch\b|\bstretching\b"),
+ ("empuje_poleas",r"\bcable crossover\b|\bchest push\b"),
+ ("abdominal_corto",r"\bcrunch(?:es)?\b"),
+ ("abdominal_situp",r"\bsit.up\b"),
+ ("gemelos_rodillo",r"\bcalves.smr\b"),
+ ("rodillo_muscular",r"\b.smr\b"),
+ ("flexion_cadera",r"\bhip flexion\b"),
+ ("giro_cadera",r"\bhip circles?\b"),
+ ("circulos_rodilla",r"\bknee circles?\b"),
+ ("caminata_rodillas",r"\bhug knees to chest\b"),
+ ("plancha_abdominal",r"\bhanging pike\b"),
+ ("pasos_rapidos",r"\bquick step\b|\bfast skipping\b"),
+ ("giro_hombro",r"\bshoulder rotation\b|\binternal rotation\b|\bexternal rotation\b"),
+ ("trabajo_mancuerna",r"\bscaption\b"),
+ ("lanzamiento_balon",r"\b(?:ball throw|overhead throw|medicine ball throw)\b"),
+ ("entrenamiento_equilibrio",r"\bbalance board\b"),
+]
 MOVEMENTS=[
  ("sentadilla",r"\bsquat\b|\bsquats\b|\bsentadilla"),
  ("zancada",r"\blung(e|es)\b|\bzancada|\bdesplante"),
@@ -99,6 +140,11 @@ QUALIFIERS=[
  ("agarre_cerrado",r"\bclose.grip|\bnarrow.grip|\bgrip cerrado"),
  ("alternado",r"\balternat|\balternad"),
  ("isometrico",r"\bisometric|\bisom[eé]tric"),
+ ("rodillas_apoyadas",r"\b(?:on|from) knees\b|\b(?:rodillas apoyadas|con rodillas)\b"),
+ ("banco",r"\bbench\b|\bbanco\b"),
+ ("suelo",r"\bfloor\b|\bsuelo\b"),
+ ("agarre_neutro",r"\bneutral grip\b|\bgrip neutro\b"),
+ ("agarre_inverso",r"\breverse grip\b|\bgrip inverso\b"),
 ]
 ES_NAMES={
  "sentadilla":"Sentadilla","zancada":"Zancada","peso_muerto":"Peso muerto",
@@ -117,17 +163,70 @@ ES_NAMES={
  "press":"Press","extension":"Extensión","elevacion":"Elevación",
  "remada":"Tracción"
 }
+ES_NAMES.update({
+ "circulos_tobillo":"Círculos de tobillo",
+ "circulos_brazo":"Círculos de brazos",
+ "circulos_codo":"Círculos de codos",
+ "elevacion_cadera":"Elevación de cadera",
+ "balanceo_pesa":"Molino con pesa rusa",
+ "rodillo_abdominal":"Rodamiento abdominal",
+ "encogimiento_hombros":"Encogimiento de hombros",
+ "aduccion_cadera":"Aducción de cadera",
+ "abduccion_cadera":"Abducción de cadera",
+ "inclinacion_lateral":"Inclinación lateral",
+ "pulover":"Pullover",
+ "carrera_bicicleta":"Pedaleo",
+ "eliptica":"Entrenamiento en elíptica",
+ "movilidad_espinal":"Movilidad de columna",
+ "levantamiento_olimpico":"Levantamiento técnico",
+ "bicho_muerto":"Control abdominal tipo bicho muerto",
+ "press_suelo":"Press en el suelo",
+ "trabajo_tibial":"Trabajo tibial",
+ "caminata_oso":"Desplazamiento de oso",
+ "paso_carioca":"Paso cruzado carioca",
+ "salto_rana":"Salto de rana",
+ "puente_isquiotibiales":"Extensión de isquiotibiales",
+ "flexion_muneca":"Flexión de muñeca",
+ "empuje_poleas":"Cruce o empuje de poleas",
+ "abdominal_corto":"Encogimiento abdominal",
+ "abdominal_situp":"Incorporación abdominal",
+ "gemelos_rodillo":"Automasaje de pantorrillas",
+ "rodillo_muscular":"Automasaje con rodillo",
+ "flexion_cadera":"Flexión de cadera",
+ "giro_cadera":"Círculos de cadera",
+ "circulos_rodilla":"Círculos de rodilla",
+ "caminata_rodillas":"Flexión de rodillas hacia pecho",
+ "plancha_abdominal":"Elevación abdominal en suspensión",
+ "pasos_rapidos":"Pasos rápidos",
+ "giro_hombro":"Rotación de hombro",
+ "trabajo_mancuerna":"Elevación escapular",
+ "lanzamiento_balon":"Lanzamiento con balón",
+ "entrenamiento_equilibrio":"Ejercicio de equilibrio"
+})
 ES_QUALIFIERS={
  "inclinado":"inclinada","declinado":"declinada","frontal":"frontal",
  "posterior":"posterior","lateral":"lateral","sentado":"sentada",
  "de_pie":"de pie","acostado":"acostada","asistido":"asistida",
  "una_pierna":"a una pierna","un_brazo":"a un brazo",
  "agarre_ancho":"con agarre ancho","agarre_cerrado":"con agarre cerrado",
- "alternado":"alternada","isometrico":"isométrica"
+ "alternado":"alternada","isometrico":"isométrica",
+ "rodillas_apoyadas":"con rodillas apoyadas","banco":"sobre banco",
+ "suelo":"en el suelo","agarre_neutro":"con agarre neutro",
+ "agarre_inverso":"con agarre inverso"
 }
 # No inventar correspondencias: las coincidencias dudosas se excluyen
 # del motor y se conservan en el informe para verificación individual.
-NAME_EXACT_OVERRIDES={}  # Revisiones positivas reales pueden declararse aquí.
+# Equivalencias evaluadas individualmente (nombres, gestos y equipamiento).
+# Asterion conserva siempre su ID original. No se mezclan variantes genéricas
+# con versiones frontales, asistidas o con apoyo distinto.
+NAME_EXACT_OVERRIDES={
+ "Bodyweight_Squat":"sentadilla_bilateral_v03",
+ "Front_Barbell_Squat":"sentadilla_bilateral_v07",
+ "Barbell_Hip_Thrust":"hip_thrust_v06",
+ "External_Rotation_with_Band":"rotacion_externa_v02",
+ "Lateral_Raise_-_With_Bands":"elevacion_lateral_v02",
+ "Dumbbell_Step_Ups":"step_up_v04",
+}
 
 def normalize(text):
     norm=unicodedata.normalize("NFKD",text.lower())
@@ -135,7 +234,7 @@ def normalize(text):
 
 def movement(text):
     value=normalize(text)
-    for key,pattern in MOVEMENTS:
+    for key,pattern in MOVEMENT_SPECIFIC+MOVEMENTS:
         if re.search(pattern,value):return key
     return None
 
@@ -146,6 +245,13 @@ def modifiers(text):
 def category(item):
     if item["category"]=="stretching":return "movilidad"
     if item["category"] in ("cardio","plyometrics"):return "cardio"
+    # Priorizar la clasificación del gesto en compuestos claros.
+    kind=movement(item["name"])
+    if kind in ("sentadilla","zancada","peso_muerto",
+                "puente","elevacion_cadera","subida_escalon"):
+        return "tren_inferior"
+    if kind in ("carrera_bicicleta","eliptica","pasos_rapidos"):
+        return "cardio"
     muscle=(item.get("primaryMuscles") or [""])[0]
     if muscle not in MUSCLES:raise ValueError("Músculo primario desconocido: "+muscle)
     return MUSCLES[muscle][0]
@@ -200,6 +306,12 @@ def equivalence(external,originals,old_by_kind):
         if oldgear.issubset({"sin_equipo","colchoneta"}):oldgear.add("sin_equipo")
         if equip not in oldgear:continue
         oldmods=modifiers(old["name"])
+        # Los calificadores estructurales no son intercambiables.
+        critical={"inclinado","declinado","frontal","posterior","asistido",
+                  "una_pierna","un_brazo","agarre_ancho","agarre_cerrado",
+                  "agarre_neutro","agarre_inverso","rodillas_apoyadas",
+                  "banco","suelo","isometrico"}
+        if (newmods.symmetric_difference(oldmods)) & critical:continue
         if len(newmods.symmetric_difference(oldmods))>1:continue
         candidates.append(old)
     if candidates:
@@ -227,7 +339,7 @@ def build(source_rows):
     for old in original_variants:
         typ=types[old["type_id"]]
         family=fam[typ["family_id"]]
-        kind=movement(old["name"]) or movement(typ["name"])
+        kind=movement(old["name"])
         if kind:old_by_kind[(family["category"],kind)].append(old)
     counts=Counter()
     rows=[]
