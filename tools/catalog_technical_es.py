@@ -99,6 +99,31 @@ TAG_TEXT={
     "agarre_ancho":"Comprueba una posición cómoda de los hombros antes de utilizar el agarre.",
     "agarre_cerrado":"Comprueba que el agarre no fuerce las muñecas.",
 }
+# Estos cinco IDs carecen de pasos en la fuente Unlicense. La diferencia
+# entre descripción factual y demostración técnica queda explícita.
+SOURCE_WITHOUT_STEPS={
+    "Iron_Cross":(
+        "Identidad ambigua: la fuente registra mancuernas, pero el nombre "
+        "también se usa para un elemento gimnástico distinto.",
+        "identidad_ambigua_y_sin_instrucciones"),
+    "One-Arm_Kettlebell_Swings":(
+        "Patrón unilateral y dinámico con pesa rusa: requiere revisar "
+        "trayectoria, estabilidad y seguridad del implemento.",
+        "balistico_unilateral_sin_instrucciones"),
+    "Push_Press":(
+        "Movimiento técnico de levantamiento por encima de la cabeza "
+        "con barra: requiere supervisión especializada.",
+        "levantamiento_tecnico_sin_instrucciones"),
+    "Side_Bridge":(
+        "Ejercicio estático lateral: debe confirmarse la postura y el "
+        "tipo de apoyo antes de fijar la demostración.",
+        "estatico_sin_instrucciones"),
+    "Side_Jackknife":(
+        "La variante exacta de flexión lateral necesita identificarse "
+        "antes de crear pasos o animaciones.",
+        "variante_ambigua_sin_instrucciones"),
+}
+
 def technique(item, movement_key, qualifiers, muscle_es, material_es):
     """Produces editorial orientation and preserves unmodified Unlicense steps.
 
@@ -111,7 +136,16 @@ def technique(item, movement_key, qualifiers, muscle_es, material_es):
     category=item.get("category","")
     advanced=(category in SPECIALIZED_CATEGORIES or item.get("level")=="expert")
     intro=f"Identifica el movimiento y verifica el material indicado: {material_es}. El grupo principal descrito es {muscle_es}."
-    if advanced:
+    if item["id"] in SOURCE_WITHOUT_STEPS and not english:
+        description,reason=SOURCE_WITHOUT_STEPS[item["id"]]
+        steps=[
+            intro,
+            description,
+            "La fuente no aporta instrucciones de ejecución para esta "
+            "variante. No generar demostración instructiva ni activarla "
+            "en rutinas hasta una verificación técnica individual."
+        ]
+    elif advanced:
         steps=[
             intro,
             "Es un patrón técnico especializado. Sus posiciones, agarres y trayectorias necesitan una demostración y revisión profesional individual.",
@@ -140,4 +174,9 @@ def technique(item, movement_key, qualifiers, muscle_es, material_es):
        "fuente_tecnica_id":item["id"],
        "pasos_fuente_cantidad":len(english),
        "revision_tecnica_individual":False,
+       "fuente_sin_pasos":not bool(english),
+       "razon_bloqueo_es":(
+           SOURCE_WITHOUT_STEPS[item["id"]][1] if
+           item["id"] in SOURCE_WITHOUT_STEPS and not english else
+           "pendiente_revision_tecnica_individual"),
     }
