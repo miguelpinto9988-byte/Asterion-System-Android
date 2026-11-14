@@ -11,6 +11,7 @@ import re
 import unicodedata
 import urllib.request
 from collections import Counter, defaultdict
+from catalog_technical_es import technique
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parent.parent
@@ -514,6 +515,8 @@ def build(source_rows):
             "animacion_propia":None,
             "origen":"dominio_publico"
         }
+        new.update(technique(item,movement(item["name"]),modifiers(item["name"]),
+                             MUSCLES[muscle][1],EQUIPMENT[item["equipment"]][1]))
         extra.append(new)
     if sum(counts.values())!=EXPECTED_COUNT:
         raise ValueError("Inconsistencia en clasificación")
