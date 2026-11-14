@@ -10,5 +10,10 @@
   "revision_origen": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
   "sin_datos_ni_gifs_del_repositorio_mit_anterior": true,
   "nuevos_bloqueados_hasta_revision_tecnica": 847,
-  "candidatos_del_lote_cerrados": 22
+  "candidatos_del_lote_cerrados": 22,
+  "duplicados_confirmados_en_lote": 8,
+  "nuevas_variantes_diferenciadas_en_lote": 14,
+  "fichas_nuevas_con_guia_editorial_es": 847,
+  "fichas_nuevas_con_pasos_fuente_en": 842,
+  "guia_editorial_pendiente_revision_humana": true
 }
