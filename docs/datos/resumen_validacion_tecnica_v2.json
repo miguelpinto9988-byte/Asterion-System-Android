@@ -1,0 +1,23 @@
+{
+  "schema": "asterion.technical-readiness.v1",
+  "total": 2104,
+  "historicos_sin_pasos_individuales_en_visor": 1257,
+  "nuevos_con_orientacion_es": 847,
+  "nuevos_con_pasos_fuente_ingles": 842,
+  "nuevos_sin_pasos_fuente": 5,
+  "ids_sin_pasos_fuente": [
+    "pd_e_0358",
+    "pd_e_0501",
+    "pd_e_0568",
+    "pd_e_0665",
+    "pd_e_0667"
+  ],
+  "validaciones_profesionales_documentadas": 0,
+  "validaciones_sin_evidencia_que_se_puedan_afirmar": 0,
+  "registros_con_requisito_de_aprobacion": 2104,
+  "animaciones_publicables_con_la_evidencia_actual": 0,
+  "pruebas_documentales_automaticas": "completas",
+  "documentacion_tecnica_individual": "pendiente_revision",
+  "apto_para_comenzar_storyboards_internos": true,
+  "apto_para_publicacion_de_demostraciones": false
+}

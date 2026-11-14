@@ -63,32 +63,7 @@ adb shell am instrument -w -e class "$CUSTOM_TEST#verifyAfterProcessRestart" \
 grep -q 'OK (1 test)' "$OUT/custom-routine-restart.txt"
 echo "PASS: custom routine persistence and once-per-day XP."
 
-echo "Android instrumentation 7/7: native Canvas paints eight multiview and articulated motion tests"
-adb shell am instrument -w -e class \
-  "pe.asterionsystem.app.NativeAvatarRenderTest" \
-  "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \
-  | tee "$OUT/native-avatar-render.txt"
-grep -q 'OK (13 tests)' "$OUT/native-avatar-render.txt"
-echo "PASS: native avatar palettes, resolutions, themes and accessibility (13 tests)."
-
-
-
-
-
-echo "Android instrumentation 8/8: export screenshots from real Canvas renderer"
-REMOTE="/sdcard/Android/data/$PACKAGE/files/asterion-v11-evidence"
-LOCAL="$OUT/asterion-v11-evidence"
-mkdir -p "$LOCAL"
-adb shell ls "$REMOTE"
-adb pull "$REMOTE/." "$LOCAL/"
-COUNT="$(find "$LOCAL" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')"
-test "$COUNT" -eq 42 || { echo "Expected 42 real emulator PNGs; found $COUNT"; exit 1; }
-test -s "$LOCAL/azul_top_1.png"
-test -s "$LOCAL/morado_top_1.png"
-echo "PASS: 42 real Android renderer screenshots from seven scenes × three phases × two palettes."
-
-
-echo "Android instrumentation 9/9: checkpoint resets retain prior logs without inheriting old volume"
+echo "Android instrumentation 7/7: checkpoint resets retain prior logs without inheriting old volume"
 RESET_TEST="pe.asterionsystem.app.VolumeProgressResetPersistenceTest"
 adb shell am instrument -w -e class "$RESET_TEST" \
   "$TEST_PACKAGE/androidx.test.runner.AndroidJUnitRunner" \

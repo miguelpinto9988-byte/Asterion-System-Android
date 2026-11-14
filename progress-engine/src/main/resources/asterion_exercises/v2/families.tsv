@@ -1,0 +1,161 @@
+family_id	name	category	pattern
+sentadillas	Sentadillas	tren_inferior	sentadilla
+zancadas	Zancadas y desplantes	tren_inferior	zancada
+bisagra_cadera	Bisagra de cadera	tren_inferior	bisagra
+puentes_cadera	Puentes y extensión de cadera	tren_inferior	extension_cadera
+subida_escalon	Subidas y descensos de escalón	tren_inferior	paso_vertical
+pantorrillas	Pantorrillas y tobillo	tren_inferior	flexion_tobillo
+flexion_rodilla	Flexión de rodilla	tren_inferior	flexion_rodilla
+control_cadera	Abducción y aducción de cadera	tren_inferior	control_cadera
+extension_rodilla	Extensión de rodilla	tren_inferior	extension_rodilla
+empuje_horizontal	Empuje horizontal	tren_superior	empuje_horizontal
+empuje_vertical	Empuje vertical	tren_superior	empuje_vertical
+aperturas_pecho	Aperturas de pecho	tren_superior	aduccion_hombro
+extension_codo	Extensión de codo	tren_superior	extension_codo
+traccion_horizontal	Tracción horizontal	tren_superior	traccion_horizontal
+traccion_vertical	Tracción vertical	tren_superior	traccion_vertical
+flexion_codo	Flexión de codo	tren_superior	flexion_codo
+elevaciones_hombro	Elevaciones de hombro	tren_superior	elevacion_hombro
+escapulas	Control escapular	tren_superior	control_escapular
+rotacion_hombro	Rotación del hombro	tren_superior	rotacion_hombro
+extension_espalda	Extensión y estabilidad posterior	tren_central	extension_tronco
+core_antextension	Estabilidad anterior del tronco	tren_central	anti_extension
+core_anti_rotacion	Control antirrotación	tren_central	anti_rotacion
+core_flexion	Flexión de tronco	tren_central	flexion_tronco
+core_rotacion	Rotación de tronco	tren_central	rotacion_tronco
+equilibrio	Equilibrio y control postural	movilidad	equilibrio
+transportes	Transportes de cargas	tren_central	transporte
+caminata	Caminatas y marcha	cardio	marcha
+carrera	Carrera y trote recreativo	cardio	carrera
+bicicleta	Ciclismo	cardio	ciclismo
+remo_cardio	Remo cardiovascular	cardio	remo_cardio
+eliptica	Elíptica cardiovascular	cardio	eliptica
+escalon_aerobico	Escalones aeróbicos	cardio	escalon
+coordinacion	Coordinación y desplazamientos	movilidad	coordinacion
+movilidad_cadera	Movilidad de cadera	movilidad	movilidad_cadera
+movilidad_columna	Movilidad de columna	movilidad	movilidad_columna
+movilidad_hombro	Movilidad de hombro	movilidad	movilidad_hombro
+movilidad_tobillo	Movilidad de tobillo	movilidad	movilidad_tobillo
+flexibilidad_piernas	Flexibilidad de piernas	movilidad	flexibilidad
+respiracion_postura	Respiración y postura	movilidad	control_postural
+manos_agarre	Agarre y control de manos	tren_superior	agarre
+control_muneca_fuerza	Control activo de muñeca	tren_superior	control_muneca
+estabilidad_cuadrupedia	Estabilidad en cuadrupedia	tren_central	estabilidad_cuadrupedia
+postura_tronco_sentado	Control del tronco sentado	tren_central	estabilidad_sedente
+motricidad_pies	Control de los dedos del pie	tren_inferior	motricidad_pie
+extension_cadera_pie	Extensión de cadera fuera de puente	tren_inferior	extension_cadera_pie
+movilidad_cervical	Movilidad suave de cuello	movilidad	movilidad_cuello
+movilidad_dedos_manos	Movilidad de dedos y pulgar	movilidad	movilidad_dedos
+pasos_aerobicos_suaves	Pasos aeróbicos de bajo impacto	cardio	pasos_aerobicos
+danza_bajo_impacto	Danza recreativa de bajo impacto	cardio	danza_recreativa
+serrato_escapular	Control del serrato y cintura escapular	tren_superior	control_serrato
+press_alternativos	Press horizontal con apoyos y ángulos	tren_superior	press_horizontal_alternativo
+remadas_soportadas	Remos con soporte y resistencia	tren_superior	remo_soportado
+antebrazo_rotacional	Pronación y supinación del antebrazo	tren_superior	rotacion_antebrazo
+coordinacion_brazos_pelota	Coordinación de brazos con pelota	tren_superior	coordinacion_brazos
+pilates_suelo_inicial	Pilates de control en suelo	tren_central	control_suelo
+control_tronco_pie	Estabilidad de tronco de pie	tren_central	estabilidad_bipeda
+rotacion_diagonal_tronco	Patrones diagonales del tronco	tren_central	alcance_diagonal
+yoga_estabilidad_general	Posturas suaves de yoga y control postural	tren_central	yoga_estabilidad
+apoyo_lateral_tronco	Apoyos laterales y control del costado	tren_central	estabilidad_lateral
+isometrias_piernas	Isometrías de piernas y apoyos estables	tren_inferior	isometria_inferior
+abductores_acostado	Control lateral de cadera acostado	tren_inferior	cadera_lateral
+deslizamientos_rodilla	Movimiento de rodilla mediante deslizamiento	tren_inferior	deslizamiento_rodilla
+pasos_direcciones	Pasos funcionales en distintas direcciones	tren_inferior	desplazamientos_cortos
+saltos_recreativos	Saltos recreativos catalogados	tren_inferior	salto_recreativo
+flexibilidad_antebrazos	Flexibilidad de manos y antebrazos	movilidad	flexibilidad_antebrazo
+movilidad_torax_pie	Movilidad torácica de pie	movilidad	movilidad_torax
+flexibilidad_cadera_suelo	Flexibilidad de cadera en el suelo	movilidad	estiramiento_cadera
+equilibrio_tandem	Equilibrio de talón y punta	movilidad	equilibrio_tandem
+yoga_movilidad_restaurativa	Yoga de movilidad y posturas restaurativas	movilidad	yoga_movilidad
+natacion_recreativa	Natación y actividades aeróbicas acuáticas	cardio	actividad_acuatica
+danza_recreativa_diversa	Bailes recreativos de diferentes estilos	cardio	danza
+pelota_deportiva_recreativa	Actividades recreativas con pelota	cardio	deporte_pelota
+cuerda_saltar_recreativa	Saltos recreativos con cuerda	cardio	cuerda_salto
+deportes_raqueta_recreativos	Deportes recreativos de raqueta	cardio	raqueta
+recorridos_al_aire_libre	Recreación aeróbica al aire libre	cardio	recorrido_exterior
+elevacion_brazos_funcional	Elevaciones funcionales de brazos	tren_superior	elevacion_controlada
+alcances_pared_brazos	Alcances de brazos con pared	tren_superior	alcance_pared
+control_brazos_cruzados	Control de brazos cruzados	tren_superior	cruce_brazos
+apoyos_superiores_estables	Apoyos superiores estables	tren_superior	apoyo_superior
+destreza_manos_brazos	Destreza de manos y brazos	tren_superior	destreza_superior
+alineacion_tronco_suave	Alineación suave del tronco	tren_central	alineacion_tronco
+alcances_tronco_asistidos	Alcances de tronco con apoyo	tren_central	alcance_tronco
+coordinacion_tronco_pie	Coordinación del tronco al caminar en el sitio	tren_central	coordinacion_tronco
+respiracion_movimiento_tronco	Respiración asociada a movimiento de tronco	tren_central	respiracion_tronco
+control_pelvis_suelo	Control de pelvis en suelo	tren_central	control_pelvis
+movilidad_rodilla_sentada	Control de rodilla sentado	tren_inferior	control_rodilla
+pasos_cortos_funcionales	Pasos cortos funcionales	tren_inferior	pasos_cortos
+tobillo_control_equilibrio	Control de tobillo y equilibrio	tren_inferior	control_tobillo
+cadera_lateral_pie	Control lateral de cadera de pie	tren_inferior	cadera_lateral_pie
+transiciones_silla_estable	Transiciones con silla estable	tren_inferior	transicion_silla
+movilidad_hombros_sentada	Movilidad de hombros sentado	movilidad	movilidad_hombro_sentado
+movilidad_cadera_silla	Movilidad de cadera desde silla	movilidad	movilidad_cadera_silla
+movilidad_rodilla_suave	Movilidad funcional suave de rodilla	movilidad	movilidad_rodilla
+movilidad_pies_suelo	Movilidad de pies en apoyo	movilidad	movilidad_pies
+movilidad_toracica_silla	Movilidad de tórax con silla	movilidad	movilidad_torax_silla
+marcha_en_sitio_bajoimpacto	Marcha de bajo impacto en sitio	cardio	marcha_suave
+pasos_aerobicos_direcciones	Pasos aeróbicos en distintas direcciones	cardio	pasos_bajoimpacto
+ritmos_brazos_pasos	Ritmos suaves de brazos y pasos	cardio	ritmo_pasos
+cardio_desde_silla	Cardio recreativo desde silla	cardio	cardio_sentado
+juegos_pasos_recreativos	Juegos recreativos de pasos suaves	cardio	juego_pasos
+deporte_empujes_superiores	Empujes y apoyos superiores deportivos	tren_superior	empujes_superiores
+deporte_tracciones_superiores	Tracciones deportivas de brazos	tren_superior	tracciones_superiores
+deporte_estabilidad_hombros	Estabilidad de hombros y escápulas	tren_superior	estabilidad_hombros
+deporte_gestos_implementos	Gestos superiores con implementos	tren_superior	gestos_implementos
+deporte_control_brazos_prono	Control de brazos en apoyo prono	tren_superior	control_brazos_prono
+deporte_centro_estabilidad	Estabilidad central en deportes	tren_central	centro_estabilidad
+deporte_centro_rotacion	Rotación y antirotación del tronco	tren_central	centro_rotacion
+deporte_centro_respiracion	Control respiratorio central	tren_central	centro_respiracion
+deporte_centro_acuatico	Control central acuático	tren_central	centro_acuatico
+deporte_centro_transiciones	Transiciones con estabilización del tronco	tren_central	centro_transiciones
+deporte_piernas_potencia	Patrones de potencia de piernas	tren_inferior	piernas_potencia
+deporte_pies_agilidad	Agilidad y técnica de pies	tren_inferior	pies_agilidad
+deporte_fuerza_piernas	Fuerza funcional de piernas	tren_inferior	fuerza_piernas
+deporte_piernas_pilates	Control de piernas en pilates	tren_inferior	piernas_pilates
+deporte_piernas_danza	Movimientos de piernas en danza	tren_inferior	piernas_danza
+deporte_deslizamientos	Deslizamientos y patinaje en seco	tren_inferior	deslizamientos
+deporte_mov_yoga	Posturas de movilidad de yoga	movilidad	mov_yoga
+deporte_mov_articular	Movilidad de articulaciones y estiramientos	movilidad	mov_articular
+deporte_mov_equilibrio	Equilibrio deportivo y marcha	movilidad	mov_equilibrio
+deporte_mov_tecnica	Movilidad de gestos deportivos	movilidad	mov_tecnica
+deporte_cardio_carrera	Carrera técnica y desplazamientos	cardio	cardio_carrera
+deporte_cardio_ritmo	Movimientos rítmicos cardiovasculares	cardio	cardio_ritmo
+deporte_cardio_agua	Actividad cardiovascular acuática y remo	cardio	cardio_agua
+deporte_cardio_adaptado	Cardio con equipamiento adaptado	cardio	cardio_adaptado
+deporte_cardio_funcional	Movimientos cardiovasculares funcionales	cardio	cardio_funcional
+calistenia_suspension	Calistenia: control de suspensión	tren_superior	suspension_asistida
+gimnasio_maquinas_superior	Gimnasio: máquinas de tren superior	tren_superior	maquinas_superior
+voleibol_toques	Voleibol: contactos de balón	tren_superior	contacto_voleibol
+raqueta_golpes	Deportes de raqueta: golpes técnicos	tren_superior	golpes_raqueta
+hockey_control_palo	Hockey: manejo técnico de implemento	tren_superior	manejo_palo
+balonmano_pases	Balonmano: pases y recepción	tren_superior	pases_balonmano
+pilates_control_respiracion	Pilates: control de respiración y tronco	tren_central	pilates_control
+tronco_antirotacion_deporte	Tronco: control antirrotacional deportivo	tren_central	antirotacion_deporte
+tronco_tecnica_remo	Tronco: coordinación para remo	tren_central	control_remo
+postura_nadador_en_seco	Natación: control de tronco en seco	tren_central	postura_nadador
+tronco_control_balon	Tronco: control de balón deportivo	tren_central	control_balon_tronco
+tronco_yoga_equilibrio	Yoga: equilibrio del tronco	tren_central	yoga_tronco
+futbol_pases_recepciones	Fútbol: pases y control del balón	tren_inferior	tecnica_pie_balon
+gimnasio_maquinas_inferior	Gimnasio: máquinas de piernas	tren_inferior	maquinas_pierna
+baloncesto_pivotes	Baloncesto: pivotes y apoyo de pies	tren_inferior	pivotes_basket
+atletismo_despegue_control	Atletismo: control de despegue	tren_inferior	despegue_pista
+patinaje_apoyos_seco	Patinaje: apoyos en superficie firme	tren_inferior	patinaje_seco
+beisbol_pasos_bases	Béisbol: desplazamientos de bases recreativos	tren_inferior	pasos_beisbol
+movilidad_hombro_raqueta	Movilidad para deportes de raqueta	movilidad	movilidad_raqueta
+movilidad_atletismo_pista	Movilidad general de atletismo	movilidad	movilidad_atleta
+movilidad_nadador_hombros	Movilidad previa a natación en seco	movilidad	movilidad_nado
+movilidad_patinaje_cadera	Movilidad para patinaje y hockey	movilidad	movilidad_patinar
+movilidad_deportiva_manos	Movilidad de manos para deportes con balón	movilidad	movilidad_manos_deporte
+movilidad_danza_yoga	Movilidad de danza y yoga recreativos	movilidad	movilidad_danza
+atletismo_cadencia	Atletismo: coordinación de carrera	cardio	cadencia_carrera
+relevos_movimiento	Atletismo: relevos recreativos	cardio	relevo_pista
+futbol_conduccion	Fútbol: conducción y desplazamientos	cardio	conduccion_futbol
+baloncesto_bote	Baloncesto: bote y control de balón	cardio	bote_basket
+hockey_desplazamientos	Hockey: coordinación y desplazamientos	cardio	pasos_hockey
+acondicionamiento_multideporte	Acondicionamiento deportivo diverso	cardio	movimiento_global
+pd_tren_superior	Variantes adicionales de tren superior	tren_superior	externo_pendiente
+pd_tren_central	Variantes adicionales de tren central	tren_central	externo_pendiente
+pd_tren_inferior	Variantes adicionales de tren inferior	tren_inferior	externo_pendiente
+pd_movilidad	Variantes adicionales de movilidad	movilidad	externo_pendiente
+pd_cardio	Variantes adicionales de cardio	cardio	externo_pendiente
