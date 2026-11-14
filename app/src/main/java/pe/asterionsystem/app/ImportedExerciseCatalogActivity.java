@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Imported entries are NOT currently eligible for automatic workout planning.
  */
 public final class ImportedExerciseCatalogActivity extends ComponentActivity {
-    private static final String ASSET="unified_exercises/v1/catalogo_es.json";
+    private static final String ASSET="unified_exercises/v2/catalogo_es.json";
     private static final String[] CATEGORIES={
             "Todas las categorías","Tren superior","Tren central",
             "Tren inferior","Movilidad","Cardio"};
@@ -63,15 +63,15 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         LinearLayout root=column();
         root.setPadding(dp(16),dp(12),dp(16),dp(12));
         root.setBackgroundColor(background());
-        TextView heading=text("CATÁLOGO UNIFICADO · ESPAÑOL",21);
+        TextView heading=text("CATÁLOGO INDEPENDIENTE · ESPAÑOL",21);
         root.addView(heading);
-        root.addView(text("Asterion conserva sus ejercicios originales; "
-                +"solo se suman variantes nuevas sin duplicado probable. "
-                +"Los nuevos requieren validar nivel y traducción antes "
-                +"de entrar en rutinas automáticas.",13));
-        root.addView(text("El antiguo avatar 2D de demostraciones se ha retirado. "
-                +"Los GIFs del catálogo externo requieren una licencia independiente "
-                +"de Gym visual; no se incluyen.",12));
+        root.addView(text("Se conservan todos los ejercicios históricos. "
+                +"Las variantes nuevas proceden de datos de dominio público y "
+                +"tienen nombre descriptivo en español. Su nivel debe revisarse "
+                +"antes de incluirlas en propuestas automáticas.",13));
+        root.addView(text("Las demostraciones anteriores han sido retiradas. "
+                +"Las animaciones nuevas se podrán añadir como creaciones propias "
+                +"en una versión posterior.",12));
         search=new EditText(this);
         search.setSingleLine(true);
         search.setHint("Buscar un ejercicio en español");
@@ -226,24 +226,23 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
     private void details(JSONObject x) {
         StringBuilder out=new StringBuilder();
         boolean original="asterion".equals(x.optString("origen"));
-        out.append("Origen: ").append(original?"Asterion original":"Nuevo · dataset MIT")
+        out.append("Origen: ").append(original?"Asterion original":"Nuevo · dominio público")
                 .append("\nCategoría: ").append(spanishCategory(x.optString("categoria")))
                 .append("\nRegión: ").append(x.optString("region_es"))
                 .append("\nMaterial: ").append(x.optString("material_es"))
                 .append("\nNivel técnico: ")
                 .append(original?x.optString("nivel_tecnico"):"pendiente de revisión")
-                .append("\n\nINSTRUCCIONES\n");
+                .append("\n\nINFORMACIÓN\n");
         JSONArray steps=x.optJSONArray("instrucciones_es");
         if(steps!=null && steps.length()>0) {
             for(int i=0;i<steps.length();i++)
                 out.append("\n").append(i+1).append(". ")
                         .append(steps.optString(i));
         } else {
-            out.append("\nEjercicio del catálogo original. "
-                    +"Consulta su ejecución y la referencia del motor de Asterion.");
+            out.append("\n").append(x.optString("descripcion_es",
+                    "Información técnica pendiente de revisión."));
         }
-        if(!original)out.append("\n\nGIF no incluido: requiere licencia de Gym visual.")
-                .append("\n© Gym visual — https://gymvisual.com/");
+        if(!original)out.append("\n\nAnimación propia pendiente de creación.");
         else out.append("\n\nDemostración 2D antigua retirada.");
         out.append("\n\nConsulta informativa; no es una instrucción obligatoria.");
         new AlertDialog.Builder(this)
