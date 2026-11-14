@@ -9,6 +9,8 @@ on:
       - 'tools/encode_exercise_mp4.py'
       - 'tools/plan_exercise_mp4_batches.py'
       - 'tools/validate_exercise_mp4.py'
+      - 'tools/import_exercise_mp4_batch.py'
+      - 'tools/test_import_exercise_mp4_batch.py'
       - '.github/workflows/prepare-exercise-mp4.yml'
   workflow_dispatch:
 permissions:
@@ -33,6 +35,7 @@ jobs:
           python3 tools/plan_exercise_mp4_batches.py
           python3 -m unittest discover -s tools -p test_exercise_motion_specs.py -v
           python3 tools/validate_exercise_mp4.py
+          python3 -m unittest discover -s tools -p test_import_exercise_mp4_batch.py -v
       - name: Prohibir afirmaciones de animaciones inexistentes
         run: |
           python3 - <<'PY'
