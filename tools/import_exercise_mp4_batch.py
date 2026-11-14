@@ -23,7 +23,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SPECS = ROOT / "app/src/main/assets/exercise_gifs/v1/specs_es.json"
-MAX_MP4_SIZE = 400_000
+MAX_MP4_SIZE = 800_000
 VALID_ID = re.compile(r"[a-z0-9_-]+")
 VALID_MODES = {"debug", "release"}
 
@@ -39,8 +39,8 @@ def inspect_mp4(path: Path) -> dict:
     video = [s for s in streams if s.get("codec_type") == "video"]
     if len(video) != 1 or video[0]["codec_name"] != "h264":
         raise ValueError("El archivo no contiene un único vídeo H.264")
-    if (video[0]["width"], video[0]["height"]) != (480, 640):
-        raise ValueError("La resolución debe ser 480 × 640")
+    if (video[0]["width"], video[0]["height"]) != (640, 360):
+        raise ValueError("La resolución debe ser 640 × 360 (16:9)")
     if any(s["codec_type"] == "audio" for s in streams):
         raise ValueError("Las demostraciones MP4 deben ser silenciosas")
     duration = float(data["format"].get("duration", 0))
