@@ -1,0 +1,24 @@
+name: Verificar registro lote 0001 GIFs Asterion
+
+on:
+  push:
+    paths:
+      - 'docs/datos/lote_0001_gifs_transparentes.json'
+      - 'docs/datos/biblioteca_fondos_gif_v1.json'
+      - 'docs/datos/produccion_mp4_por_variante.csv'
+      - 'tools/test_gif_batch_registry.py'
+      - '.github/workflows/validate-gif-lote-0001.yml'
+  pull_request:
+    paths:
+      - 'docs/datos/lote_0001_gifs_transparentes.json'
+      - 'docs/datos/biblioteca_fondos_gif_v1.json'
+      - 'docs/datos/produccion_mp4_por_variante.csv'
+      - 'tools/test_gif_batch_registry.py'
+
+jobs:
+  comprobar-lote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar manifiesto y asociación
+        run: python3 tools/test_gif_batch_registry.py
