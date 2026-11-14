@@ -22,14 +22,15 @@
       "lote": 1,
       "id": "sentadilla_bilateral_v01",
       "job_id": "fb60ee94-03e8-463c-b477-8897b34fc885",
-      "estado": "waiting",
+      "estado": "completed",
       "modelo": "seedance_2_5",
-      "url": null,
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3M5xmTb4Z1ENhME0j0IjVeOiEGH/hf_20261114_112020_fb60ee94-03e8-463c-b477-8897b34fc885.mp4",
       "aprobado": false,
       "estado_operativo": "apartado_por_espera_prolongada",
       "bloquea_nuevos_lotes": false,
       "no_reenviar_automaticamente": true,
-      "observacion": "Descartado de la tanda operativa por solicitud del usuario el 2026-11-14. El proveedor sigue informando waiting; NO se ha cancelado ni borrado remotamente ni se considera MP4 completado. Pendiente de revisión manual si alguna vez entrega resultado."
+      "observacion": "Higgsfield devolvió completed y URL el 2026-11-14; job apartado por el usuario. No validado visualmente ni convertido, no contado como aprobado o integrado en APK. No reenviar.",
+      "estado_revision": "pendiente_revision_manual_por_job_apartado"
     }
   ],
   "prototipos_locales": [
