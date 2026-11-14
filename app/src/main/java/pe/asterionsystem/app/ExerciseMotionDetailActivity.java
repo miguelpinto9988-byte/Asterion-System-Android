@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -85,29 +86,49 @@ public final class ExerciseMotionDetailActivity extends Activity {
                 new int[]{0xFF242939,0xFF10131D});
         gradient.setCornerRadius(dp(16));
         demo.setBackground(gradient);
+        String mp4Path=spec.optString("mp4_ruta","");
+        boolean mp4Available=mp4Path.equals("exercise_mp4/v1/"+id+".mp4")
+                &&fileExists(getAssets(),mp4Path);
+        // GIF transparente en v2, siempre asociado al ID exacto.
+        String gifPath="exercise_gifs/v2/"+id+".gif";
+        boolean gifAvailable=fileExists(getAssets(),gifPath);
         int displayWidth=getResources().getDisplayMetrics().widthPixels-dp(48);
-        int displayHeight=Math.min(dp(430),Math.round(displayWidth*9f/16f));
+        int displayHeight=Math.min(dp(430),
+                Math.round(displayWidth*(mp4Available ? 9f/16f : 466f/551f)));
+        FrameLayout stage=new FrameLayout(this);
+        ImageView backgroundLayer=new ImageView(this);
+        backgroundLayer.setScaleType(ImageView.ScaleType.FIT_XY);
+        stage.addView(backgroundLayer,new FrameLayout.LayoutParams(-1,-1));
+        if(!mp4Available && gifAvailable) {
+            String backgroundId=backgroundForId(id);
+            String backgroundPath="exercise_backgrounds/v1/"+backgroundId+".webp";
+            if(backgroundId.matches("BG_[0-9]{3}")
+                    &&fileExists(getAssets(),backgroundPath)) {
+                try(java.io.InputStream input=getAssets().open(backgroundPath)) {
+                    Drawable image=Drawable.createFromStream(input,null);
+                    backgroundLayer.setImageDrawable(image);
+                } catch(IOException ignored) {
+                    // No asignar otro gimnasio si falta el fondo propio.
+                }
+            }
+        }
         animation=new ImageView(this);
         animation.setScaleType(ImageView.ScaleType.FIT_CENTER);
         animation.setAdjustViewBounds(true);
         animation.setContentDescription("Animación específica de "+name);
-        demo.addView(animation,new LinearLayout.LayoutParams(-1,displayHeight));
+        stage.addView(animation,new FrameLayout.LayoutParams(-1,-1));
+        demo.addView(stage,new LinearLayout.LayoutParams(-1,displayHeight));
         TextView mediaStatus=label("",13,false);
         mediaStatus.setGravity(Gravity.CENTER);
         demo.addView(mediaStatus);
         content.addView(demo);
 
-        String mp4Path=spec.optString("mp4_ruta","");
-        String path=spec.optString("gif_ruta","");
-        boolean mp4Available=mp4Path.equals("exercise_mp4/v1/"+id+".mp4")
-                &&fileExists(getAssets(),mp4Path);
-        // Formato oficial: MP4 H.264, 16:9. Sin sustitucion por GIF.
-        boolean available=false; // Asterion produce y reproduce solo MP4.
+        boolean available=gifAvailable;
         if(mp4Available) {
             try {
                 player=new OfflineExerciseMp4Player(this,id,mp4Path);
                 animation.setVisibility(View.GONE);
-                demo.addView(player,0,new LinearLayout.LayoutParams(-1,displayHeight));
+                stage.addView(player,1,new FrameLayout.LayoutParams(-1,-1));
                 mediaStatus.setText("MP4 original de este ejercicio · técnica por verificar");
                 Button toggle=button("Pausar o reanudar MP4");
                 toggle.setOnClickListener(v->{
@@ -121,14 +142,14 @@ public final class ExerciseMotionDetailActivity extends Activity {
                 demo.addView(pending);
             }
         } else if(available) {
-            Uri local=Uri.parse("file:///android_asset/"+path);
+            Uri local=Uri.parse("file:///android_asset/"+gifPath);
             boolean reducedMotion=Settings.Global.getFloat(getContentResolver(),
                     Settings.Global.ANIMATOR_DURATION_SCALE,1f)==0f;
             if(reducedMotion) {
                 mediaStatus.setText("Fotograma estático: animaciones reducidas en Android.");
                 Glide.with(this).asBitmap().load(local).into(animation);
             } else {
-                mediaStatus.setText("Vista previa de esta variante · técnica por verificar");
+                mediaStatus.setText("GIF transparente de esta variante · técnica por verificar");
                 Glide.with(this).asGif().load(local).into(animation);
                 Button toggle=button("Pausar o reanudar animación");
                 toggle.setOnClickListener(v->{
@@ -176,8 +197,25 @@ public final class ExerciseMotionDetailActivity extends Activity {
                 +"una demostración verificada ni una rutina obligatoria.",12,false));
     }
 
+    private String backgroundForId(String id) {
+        try(java.io.InputStream in=getAssets().open(
+                "exercise_gifs/v2/backgrounds_by_id.json")) {
+            java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();
+            byte[] part=new byte[4096];
+            for(int n;(n=in.read(part))!=-1;)bytes.write(part,0,n);
+            JSONObject root=new JSONObject(new String(bytes.toByteArray(),
+                    java.nio.charset.StandardCharsets.UTF_8));
+            JSONObject assignments=root.optJSONObject("asignaciones");
+            return assignments==null ? "" : assignments.optString(id,"");
+        } catch(Exception missing) {
+            return "";
+        }
+    }
+
     private boolean fileExists(AssetManager assets,String file) {
         if(!file.matches("(exercise_gifs/v1/[a-z0-9_-]+\\.gif)"
+                +"|(exercise_gifs/v2/[a-z0-9_-]+\\.gif)"
+                +"|(exercise_backgrounds/v1/BG_[0-9]{3}\\.webp)"
                 +"|(exercise_mp4/v1/[a-z0-9_-]+\\.mp4)"))return false;
         try(java.io.InputStream stream=assets.open(file)){return stream.read()!=-1;}
         catch(IOException missing){return false;}
