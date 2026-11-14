@@ -481,6 +481,8 @@ pd_t_0005	pd_movilidad	Aducción de cadera · rodillo de espuma · PD0005
 pd_t_0006	pd_movilidad	Aducción de cadera · material por verificar · PD0006
 pd_t_0007	pd_tren_central	Molino con pesa rusa · pesa rusa · PD0007
 pd_t_0008	pd_tren_central	Movimiento de abdomen · peso corporal · PD0008
+pd_t_0009	pd_movilidad	Estiramiento · peso corporal · PD0009
+pd_t_0010	pd_tren_superior	Curl de bíceps alternada · mancuernas · PD0010
 pd_t_0011	pd_tren_central	Movimiento de abdomen alternada · peso corporal · PD0011
 pd_t_0012	pd_tren_superior	Curl alternada, inclinada · mancuernas · PD0012
 pd_t_0013	pd_cardio	Movimiento de cuádriceps alternada · material por verificar · PD0013
@@ -494,11 +496,13 @@ pd_t_0020	pd_tren_superior	Remo alternada · pesa rusa · PD0020
 pd_t_0021	pd_movilidad	Círculos de tobillo · material por verificar · PD0021
 pd_t_0022	pd_movilidad	Movimiento de glúteos · material por verificar · PD0022
 pd_t_0023	pd_movilidad	Trabajo tibial · material específico · PD0023
+pd_t_0024	pd_tren_superior	Press · barra · PD0024
 pd_t_0025	pd_movilidad	Círculos de brazos · material por verificar · PD0025
 pd_t_0027	pd_tren_superior	Movimiento de pecho · mancuernas · PD0027
 pd_t_0028	pd_tren_central	Movimiento de zona lumbar · material específico · PD0028
 pd_t_0029	pd_tren_central	Movimiento de zona lumbar · material específico · PD0029
 pd_t_0030	pd_tren_inferior	Peso muerto · material específico · PD0030
+pd_t_0031	pd_tren_superior	Apertura · banda elástica · PD0031
 pd_t_0032	pd_tren_inferior	Movimiento de cuádriceps posterior · material específico · PD0032
 pd_t_0033	pd_cardio	Lanzamiento con balón posterior · balón medicinal · PD0033
 pd_t_0034	pd_tren_inferior	Ejercicio de equilibrio · material específico · PD0034
@@ -514,7 +518,9 @@ pd_t_0043	pd_tren_central	Rodamiento abdominal con rodillas apoyadas · barra ·
 pd_t_0044	pd_tren_superior	Press de pecho sobre banco · barra · PD0044
 pd_t_0045	pd_tren_superior	Curl · barra · PD0045
 pd_t_0046	pd_tren_superior	Movimiento de bíceps acostada, inclinada · barra · PD0046
+pd_t_0047	pd_tren_inferior	Peso muerto · barra · PD0047
 pd_t_0048	pd_tren_inferior	Sentadilla · barra · PD0048
+pd_t_0049	pd_tren_inferior	Puente de cadera · barra · PD0049
 pd_t_0050	pd_tren_superior	Press de pecho sobre banco · barra · PD0050
 pd_t_0051	pd_tren_inferior	Sentadilla · barra · PD0051
 pd_t_0053	pd_tren_superior	Press de pecho sobre banco, inclinada · barra · PD0053
@@ -530,6 +536,7 @@ pd_t_0063	pd_tren_inferior	Sentadilla lateral · barra · PD0063
 pd_t_0064	pd_tren_inferior	Sentadilla · barra · PD0064
 pd_t_0065	pd_tren_inferior	Sentadilla sobre banco · barra · PD0065
 pd_t_0066	pd_tren_inferior	Subida al escalón · barra · PD0066
+pd_t_0067	pd_tren_inferior	Zancada · barra · PD0067
 pd_t_0068	pd_tren_superior	Movimiento de hombros · material específico · PD0068
 pd_t_0069	pd_tren_inferior	Desplazamiento de oso · material específico · PD0069
 pd_t_0070	pd_movilidad	Estiramiento · material específico · PD0070
@@ -544,13 +551,19 @@ pd_t_0079	pd_tren_inferior	Elevación de cadera · peso corporal · PD0079
 pd_t_0081	pd_tren_superior	Elevación sobre banco, posterior · mancuernas · PD0081
 pd_t_0082	pd_tren_superior	Movimiento de hombros lateral · polea · PD0082
 pd_t_0083	pd_tren_superior	Remo a un brazo · barra · PD0083
+pd_t_0084	pd_tren_superior	Remo · barra · PD0084
+pd_t_0085	pd_tren_superior	Remo · mancuernas · PD0085
+pd_t_0086	pd_tren_superior	Remo · mancuernas · PD0086
 pd_t_0087	pd_tren_central	Press · pesa rusa · PD0087
 pd_t_0088	pd_cardio	Pedaleo · material específico · PD0088
 pd_t_0089	pd_cardio	Pedaleo · máquina · PD0089
+pd_t_0090	pd_tren_superior	Press · barra · PD0090
 pd_t_0091	pd_tren_superior	Movimiento de tríceps · peso corporal · PD0091
+pd_t_0092	pd_tren_superior	Press · peso corporal · PD0092
 pd_t_0093	pd_tren_superior	Apertura · barra Z · PD0093
 pd_t_0094	pd_tren_superior	Remo · material específico · PD0094
 pd_t_0096	pd_tren_inferior	Zancada · material por verificar · PD0096
+pd_t_0097	pd_tren_central	Encogimiento abdominal lateral · polea · PD0097
 pd_t_0098	pd_tren_superior	Levantamiento técnico · pesa rusa · PD0098
 pd_t_0099	pd_tren_central	Movimiento de abdomen · peso corporal · PD0099
 pd_t_0100	pd_cardio	Salto · material específico · PD0100
@@ -572,12 +585,15 @@ pd_t_0117	pd_tren_superior	Extensión de tríceps inclinada · polea · PD0117
 pd_t_0118	pd_tren_superior	Rotación de hombro · polea · PD0118
 pd_t_0119	pd_tren_superior	Movimiento de pecho · polea · PD0119
 pd_t_0120	pd_tren_central	Movimiento de abdomen · polea · PD0120
+pd_t_0121	pd_tren_superior	Extensión de tríceps acostada · polea · PD0121
 pd_t_0122	pd_tren_superior	Extensión a un brazo · polea · PD0122
 pd_t_0123	pd_tren_superior	Curl de bíceps · polea · PD0123
 pd_t_0124	pd_tren_superior	Movimiento de hombros posterior · polea · PD0124
 pd_t_0125	pd_tren_central	Encogimiento abdominal posterior · polea · PD0125
+pd_t_0126	pd_tren_superior	Extensión de tríceps · polea · PD0126
 pd_t_0127	pd_tren_superior	Movimiento de hombros posterior · polea · PD0127
 pd_t_0128	pd_tren_central	Giro · polea · PD0128
+pd_t_0129	pd_tren_central	Encogimiento abdominal sentada · polea · PD0129
 pd_t_0130	pd_tren_superior	Elevación lateral lateral, sentada · polea · PD0130
 pd_t_0131	pd_tren_superior	Press de hombros · polea · PD0131
 pd_t_0132	pd_tren_superior	Encogimiento de hombros · polea · PD0132
@@ -616,6 +632,7 @@ pd_t_0166	pd_tren_superior	Encogimiento de hombros · barra · PD0166
 pd_t_0167	pd_tren_superior	Levantamiento técnico · barra · PD0167
 pd_t_0168	pd_tren_superior	Levantamiento técnico · barra · PD0168
 pd_t_0169	pd_tren_inferior	Levantamiento técnico · barra · PD0169
+pd_t_0170	pd_tren_superior	Flexión de brazos · peso corporal · PD0170
 pd_t_0171	pd_tren_superior	Press de pecho con agarre cerrado, sobre banco · barra · PD0171
 pd_t_0172	pd_tren_superior	Press con agarre cerrado · mancuernas · PD0172
 pd_t_0173	pd_tren_superior	Curl con agarre cerrado · barra Z · PD0173
@@ -626,10 +643,18 @@ pd_t_0177	pd_tren_superior	Flexión de brazos con agarre cerrado · peso corpora
 pd_t_0178	pd_tren_superior	Curl con agarre cerrado, de pie · barra · PD0178
 pd_t_0179	pd_tren_central	Movimiento de abdomen · peso corporal · PD0179
 pd_t_0180	pd_tren_inferior	Movimiento de cuádriceps · material específico · PD0180
+pd_t_0181	pd_tren_superior	Curl de bíceps · mancuernas · PD0181
+pd_t_0182	pd_tren_central	Encogimiento abdominal · peso corporal · PD0182
+pd_t_0183	pd_tren_superior	Curl de bíceps · mancuernas · PD0183
 pd_t_0184	pd_tren_superior	Movimiento de pecho · banda elástica · PD0184
 pd_t_0185	pd_movilidad	Zancada posterior · material por verificar · PD0185
 pd_t_0186	pd_tren_superior	Movimiento de hombros · material específico · PD0186
+pd_t_0187	pd_tren_central	Encogimiento abdominal · peso corporal · PD0187
+pd_t_0188	pd_tren_central	Encogimiento abdominal · peso corporal · PD0188
+pd_t_0190	pd_tren_superior	Press · mancuernas · PD0190
 pd_t_0191	pd_movilidad	Estiramiento · material por verificar · PD0191
+pd_t_0193	pd_tren_inferior	Peso muerto · barra · PD0193
+pd_t_0194	pd_tren_inferior	Peso muerto · barra · PD0194
 pd_t_0195	pd_tren_superior	Press de pecho sobre banco, declinada · barra · PD0195
 pd_t_0196	pd_tren_superior	Movimiento de tríceps con agarre cerrado, sobre banco, declinada · barra · PD0196
 pd_t_0197	pd_tren_central	Encogimiento abdominal declinada · peso corporal · PD0197
@@ -641,6 +666,7 @@ pd_t_0202	pd_tren_central	Encogimiento abdominal declinada · peso corporal · P
 pd_t_0203	pd_tren_superior	Flexión de brazos declinada · material por verificar · PD0203
 pd_t_0204	pd_tren_central	Encogimiento abdominal declinada, posterior · peso corporal · PD0204
 pd_t_0205	pd_tren_superior	Press declinada · máquina · PD0205
+pd_t_0206	pd_tren_inferior	Peso muerto · barra · PD0206
 pd_t_0207	pd_cardio	Salto · material específico · PD0207
 pd_t_0208	pd_tren_superior	Fondo · máquina · PD0208
 pd_t_0209	pd_tren_superior	Fondo · material específico · PD0209
@@ -660,6 +686,7 @@ pd_t_0223	pd_tren_superior	Press de pecho con agarre neutro, sobre banco · manc
 pd_t_0224	pd_tren_superior	Curl · mancuernas · PD0224
 pd_t_0225	pd_tren_inferior	Levantamiento técnico · mancuernas · PD0225
 pd_t_0226	pd_tren_superior	Press en el suelo en el suelo · mancuernas · PD0226
+pd_t_0227	pd_tren_superior	Apertura · mancuernas · PD0227
 pd_t_0228	pd_tren_superior	Remo inclinada · mancuernas · PD0228
 pd_t_0229	pd_tren_superior	Elevación inclinada · mancuernas · PD0229
 pd_t_0231	pd_tren_superior	Elevación lateral acostada, lateral, posterior, a un brazo · mancuernas · PD0231
@@ -677,7 +704,9 @@ pd_t_0242	pd_cardio	Salto sentada · mancuernas · PD0242
 pd_t_0243	pd_tren_inferior	Elevación de talones sentada, a una pierna · mancuernas · PD0243
 pd_t_0245	pd_tren_superior	Encogimiento de hombros · mancuernas · PD0245
 pd_t_0246	pd_tren_central	Inclinación lateral lateral · mancuernas · PD0246
+pd_t_0247	pd_tren_inferior	Sentadilla · mancuernas · PD0247
 pd_t_0248	pd_tren_inferior	Sentadilla sobre banco · mancuernas · PD0248
+pd_t_0250	pd_tren_superior	Extensión · mancuernas · PD0250
 pd_t_0251	pd_movilidad	Estiramiento · material por verificar · PD0251
 pd_t_0252	pd_movilidad	Estiramiento · material por verificar · PD0252
 pd_t_0253	pd_tren_superior	Curl · barra Z · PD0253
@@ -685,6 +714,7 @@ pd_t_0254	pd_tren_superior	Movimiento de tríceps · barra Z · PD0254
 pd_t_0255	pd_movilidad	Círculos de codos · material por verificar · PD0255
 pd_t_0256	pd_tren_central	Movimiento de abdomen · peso corporal · PD0256
 pd_t_0257	pd_movilidad	Movimiento de pecho · material por verificar · PD0257
+pd_t_0258	pd_tren_inferior	Zancada · barra · PD0258
 pd_t_0259	pd_tren_superior	Movimiento de dorsales · polea · PD0259
 pd_t_0260	pd_cardio	Entrenamiento en elíptica · máquina · PD0260
 pd_t_0262	pd_tren_central	Tracción · pelota de ejercicio · PD0262
@@ -702,10 +732,13 @@ pd_t_0274	pd_tren_superior	Movimiento de bíceps inclinada · mancuernas · PD02
 pd_t_0275	pd_tren_inferior	Extensión de isquiotibiales en el suelo · material por verificar · PD0275
 pd_t_0276	pd_tren_superior	Press en el suelo en el suelo · barra · PD0276
 pd_t_0277	pd_tren_superior	Press en el suelo en el suelo · barra · PD0277
+pd_t_0278	pd_tren_inferior	Patada · peso corporal · PD0278
 pd_t_0279	pd_movilidad	Automasaje con rodillo · material específico · PD0279
 pd_t_0280	pd_tren_superior	Press · material específico · PD0280
 pd_t_0281	pd_tren_inferior	Sentadilla · barra · PD0281
+pd_t_0282	pd_tren_inferior	Sentadilla · peso corporal · PD0282
 pd_t_0283	pd_movilidad	Salto de rana · material por verificar · PD0283
+pd_t_0284	pd_tren_central	Trabajo abdominal · peso corporal · PD0284
 pd_t_0286	pd_tren_inferior	Sentadilla sobre banco, frontal · barra · PD0286
 pd_t_0287	pd_cardio	Salto frontal · material específico · PD0287
 pd_t_0288	pd_tren_superior	Elevación frontal · polea · PD0288
@@ -721,15 +754,19 @@ pd_t_0297	pd_tren_superior	Elevación frontal · mancuernas · PD0297
 pd_t_0298	pd_tren_superior	Movimiento de dorsales · polea · PD0298
 pd_t_0299	pd_tren_superior	Giro · material específico · PD0299
 pd_t_0300	pd_tren_inferior	Extensión de isquiotibiales · máquina · PD0300
+pd_t_0301	pd_tren_inferior	Patada · peso corporal · PD0301
 pd_t_0302	pd_tren_inferior	Sentadilla · pesa rusa · PD0302
 pd_t_0303	pd_tren_inferior	Movimiento de isquiotibiales · barra · PD0303
 pd_t_0304	pd_tren_inferior	Movimiento de isquiotibiales · barra · PD0304
+pd_t_0305	pd_tren_central	Encogimiento abdominal · peso corporal · PD0305
 pd_t_0306	pd_movilidad	Estiramiento · material por verificar · PD0306
 pd_t_0307	pd_movilidad	Movimiento de aductores · peso corporal · PD0307
 pd_t_0308	pd_tren_inferior	Sentadilla · máquina · PD0308
+pd_t_0309	pd_tren_superior	Curl de bíceps · mancuernas · PD0309
 pd_t_0310	pd_tren_superior	Press de pecho sobre banco, inclinada · mancuernas · PD0310
 pd_t_0311	pd_movilidad	Automasaje con rodillo · rodillo de espuma · PD0311
 pd_t_0312	pd_movilidad	Estiramiento · material por verificar · PD0312
+pd_t_0313	pd_tren_superior	Flexión de brazos · peso corporal · PD0313
 pd_t_0314	pd_tren_inferior	Levantamiento técnico · barra · PD0314
 pd_t_0315	pd_tren_inferior	Levantamiento técnico · barra · PD0315
 pd_t_0316	pd_tren_inferior	Levantamiento técnico · barra · PD0316
@@ -741,6 +778,7 @@ pd_t_0321	pd_tren_inferior	Levantamiento técnico · barra · PD0321
 pd_t_0322	pd_cardio	Movimiento de pecho · material específico · PD0322
 pd_t_0323	pd_tren_superior	Movimiento de bíceps · polea · PD0323
 pd_t_0324	pd_movilidad	Círculos de cadera · peso corporal · PD0324
+pd_t_0325	pd_tren_inferior	Extensión · banda elástica · PD0325
 pd_t_0326	pd_tren_inferior	Flexión de cadera · banda elástica · PD0326
 pd_t_0327	pd_tren_inferior	Elevación de cadera · banda elástica · PD0327
 pd_t_0328	pd_movilidad	Movimiento de zona lumbar · pelota de ejercicio · PD0328
@@ -778,6 +816,7 @@ pd_t_0360	pd_cardio	Movimiento de pecho isométrica · peso corporal · PD0360
 pd_t_0361	pd_movilidad	Movimiento de cuello frontal, isométrica · peso corporal · PD0361
 pd_t_0362	pd_movilidad	Movimiento de cuello isométrica · peso corporal · PD0362
 pd_t_0363	pd_tren_superior	Movimiento de pecho isométrica · peso corporal · PD0363
+pd_t_0364	pd_tren_superior	Press · barra · PD0364
 pd_t_0365	pd_tren_central	Incorporación abdominal · peso corporal · PD0365
 pd_t_0366	pd_tren_central	Incorporación abdominal · peso corporal · PD0366
 pd_t_0367	pd_tren_inferior	Sentadilla · barra · PD0367
@@ -807,8 +846,11 @@ pd_t_0390	pd_tren_superior	Movimiento de dorsales · material específico · PD0
 pd_t_0391	pd_movilidad	Movimiento de glúteos · material por verificar · PD0391
 pd_t_0392	pd_movilidad	Círculos de rodilla · peso corporal · PD0392
 pd_t_0393	pd_tren_inferior	Elevación de cadera · material específico · PD0393
+pd_t_0394	pd_cardio	Salto · peso corporal · PD0394
 pd_t_0395	pd_cardio	Movimiento de hombros · material por verificar · PD0395
+pd_t_0397	pd_tren_superior	Extensión de tríceps · polea · PD0397
 pd_t_0398	pd_movilidad	Estiramiento · material por verificar · PD0398
+pd_t_0399	pd_tren_superior	Remo · polea · PD0399
 pd_t_0400	pd_movilidad	Movimiento de cuádriceps · material por verificar · PD0400
 pd_t_0401	pd_tren_inferior	Sentadilla · barra · PD0401
 pd_t_0402	pd_tren_superior	Remo a un brazo · polea · PD0402
@@ -837,16 +879,19 @@ pd_t_0428	pd_tren_superior	Movimiento de hombros · material específico · PD04
 pd_t_0429	pd_tren_inferior	Puente de cadera · material específico · PD0429
 pd_t_0430	pd_movilidad	Movimiento de cuádriceps · material por verificar · PD0430
 pd_t_0431	pd_tren_superior	Cruce o empuje de poleas · polea · PD0431
+pd_t_0433	pd_tren_superior	Remo · polea · PD0433
 pd_t_0434	pd_movilidad	Automasaje con rodillo · rodillo de espuma · PD0434
 pd_t_0435	pd_movilidad	Curl · peso corporal · PD0435
 pd_t_0436	pd_tren_inferior	Zancada · pesa rusa · PD0436
 pd_t_0437	pd_tren_inferior	Zancada · máquina · PD0437
 pd_t_0438	pd_movilidad	Movimiento de aductores acostada · material específico · PD0438
 pd_t_0439	pd_tren_superior	Curl acostada · polea · PD0439
+pd_t_0440	pd_tren_superior	Remo acostada · barra · PD0440
 pd_t_0441	pd_tren_superior	Curl acostada, con agarre cerrado · polea · PD0441
 pd_t_0442	pd_tren_superior	Extensión de tríceps acostada, con agarre cerrado · barra · PD0442
 pd_t_0443	pd_tren_superior	Press acostada, con agarre cerrado · barra Z · PD0443
 pd_t_0444	pd_movilidad	Movimiento de abductores acostada · peso corporal · PD0444
+pd_t_0445	pd_tren_superior	Extensión acostada · mancuernas · PD0445
 pd_t_0446	pd_movilidad	Movimiento de cuello acostada · material específico · PD0446
 pd_t_0447	pd_movilidad	Movimiento de cuello acostada · material específico · PD0447
 pd_t_0448	pd_movilidad	Movimiento de glúteos acostada · peso corporal · PD0448
@@ -858,6 +903,8 @@ pd_t_0453	pd_tren_superior	Elevación lateral acostada, lateral, a un brazo · m
 pd_t_0454	pd_movilidad	Movimiento de cuádriceps acostada · peso corporal · PD0454
 pd_t_0455	pd_tren_superior	Elevación acostada, posterior · mancuernas · PD0455
 pd_t_0456	pd_tren_superior	Curl acostada · mancuernas · PD0456
+pd_t_0457	pd_tren_superior	Remo acostada · máquina · PD0457
+pd_t_0458	pd_tren_superior	Press acostada · barra Z · PD0458
 pd_t_0459	pd_tren_superior	Press de pecho sobre banco · máquina · PD0459
 pd_t_0460	pd_tren_superior	Curl · máquina · PD0460
 pd_t_0461	pd_tren_superior	Curl de bíceps · máquina · PD0461
@@ -878,6 +925,8 @@ pd_t_0476	pd_tren_inferior	Press · máquina · PD0476
 pd_t_0477	pd_tren_inferior	Sentadilla · barra · PD0477
 pd_t_0478	pd_tren_inferior	Extensión de isquiotibiales · peso corporal · PD0478
 pd_t_0479	pd_movilidad	Automasaje con rodillo · material específico · PD0479
+pd_t_0480	pd_tren_superior	Press · barra · PD0480
+pd_t_0481	pd_tren_central	Encogimiento abdominal · peso corporal · PD0481
 pd_t_0482	pd_tren_central	Encogimiento abdominal en el suelo · peso corporal · PD0482
 pd_t_0483	pd_tren_inferior	Sentadilla · barra · PD0483
 pd_t_0484	pd_movilidad	Estiramiento · material específico · PD0484
@@ -925,6 +974,7 @@ pd_t_0525	pd_cardio	Movimiento de dorsales · balón medicinal · PD0525
 pd_t_0526	pd_tren_inferior	Sentadilla · barra · PD0526
 pd_t_0527	pd_movilidad	Estiramiento · material por verificar · PD0527
 pd_t_0528	pd_movilidad	Movimiento de tríceps · peso corporal · PD0528
+pd_t_0530	pd_tren_central	Rotación · polea · PD0530
 pd_t_0531	pd_tren_superior	Flexión de muñeca sobre banco · mancuernas · PD0531
 pd_t_0532	pd_tren_superior	Flexión de muñeca sobre banco · barra · PD0532
 pd_t_0533	pd_tren_superior	Flexión de muñeca sobre banco · barra · PD0533
@@ -939,6 +989,7 @@ pd_t_0541	pd_movilidad	Automasaje con rodillo · rodillo de espuma · PD0541
 pd_t_0543	pd_tren_superior	Movimiento de antebrazos · material específico · PD0543
 pd_t_0544	pd_tren_central	Giro · material específico · PD0544
 pd_t_0545	pd_tren_inferior	Movimiento de isquiotibiales · material específico · PD0545
+pd_t_0546	pd_tren_inferior	Sentadilla · mancuernas · PD0546
 pd_t_0547	pd_tren_superior	Movimiento de pecho · pesa rusa · PD0547
 pd_t_0548	pd_cardio	Flexión de brazos · peso corporal · PD0548
 pd_t_0549	pd_movilidad	Trabajo tibial · material específico · PD0549
@@ -949,13 +1000,20 @@ pd_t_0553	pd_tren_superior	Movimiento de hombros · mancuernas · PD0553
 pd_t_0554	pd_tren_inferior	Levantamiento técnico · barra · PD0554
 pd_t_0555	pd_tren_inferior	Levantamiento técnico · barra · PD0555
 pd_t_0556	pd_tren_inferior	Movimiento de isquiotibiales · material específico · PD0556
+pd_t_0557	pd_tren_superior	Curl de bíceps · barra · PD0557
 pd_t_0558	pd_tren_superior	Curl · mancuernas · PD0558
 pd_t_0559	pd_tren_central	Incorporación abdominal · barra · PD0559
 pd_t_0560	pd_tren_inferior	Movimiento de isquiotibiales · material por verificar · PD0560
 pd_t_0561	pd_cardio	Movimiento de isquiotibiales · material específico · PD0561
 pd_t_0562	pd_tren_inferior	Tracción · polea · PD0562
 pd_t_0563	pd_tren_superior	Movimiento de dorsales · peso corporal · PD0563
+pd_t_0564	pd_tren_superior	Flexión de brazos · peso corporal · PD0564
+pd_t_0565	pd_tren_superior	Flexión de brazos · peso corporal · PD0565
+pd_t_0566	pd_tren_superior	Flexión de brazos · peso corporal · PD0566
 pd_t_0567	pd_tren_superior	Flexión de brazos · pelota de ejercicio · PD0567
+pd_t_0568	pd_tren_superior	Press · barra · PD0568
+pd_t_0569	pd_tren_superior	Press · barra · PD0569
+pd_t_0570	pd_tren_superior	Flexión de brazos lateral · peso corporal · PD0570
 pd_t_0571	pd_tren_superior	Movimiento de pecho · peso corporal · PD0571
 pd_t_0572	pd_tren_superior	Movimiento de pecho · peso corporal · PD0572
 pd_t_0573	pd_movilidad	Movimiento de zona lumbar · pelota de ejercicio · PD0573
@@ -989,17 +1047,21 @@ pd_t_0600	pd_movilidad	Automasaje con rodillo · rodillo de espuma · PD0600
 pd_t_0601	pd_tren_superior	Movimiento de antebrazos · material específico · PD0601
 pd_t_0602	pd_tren_inferior	Peso muerto · material específico · PD0602
 pd_t_0603	pd_tren_superior	Fondo · material específico · PD0603
+pd_t_0604	pd_cardio	Salto · peso corporal · PD0604
 pd_t_0605	pd_tren_inferior	Elevación de talones de pie · barra · PD0605
 pd_t_0606	pd_tren_superior	Dominada · material específico · PD0606
+pd_t_0608	pd_tren_inferior	Peso muerto · barra · PD0608
 pd_t_0609	pd_tren_superior	Movimiento de dorsales · material específico · PD0609
 pd_t_0611	pd_cardio	Salto · material específico · PD0611
 pd_t_0612	pd_tren_superior	Movimiento de dorsales · polea · PD0612
 pd_t_0613	pd_movilidad	Estiramiento · material específico · PD0613
 pd_t_0615	pd_movilidad	Estiramiento · material por verificar · PD0615
 pd_t_0616	pd_cardio	Carrera · máquina · PD0616
+pd_t_0617	pd_tren_central	Giro · peso corporal · PD0617
 pd_t_0618	pd_tren_inferior	Movimiento de cuádriceps · material específico · PD0618
 pd_t_0619	pd_tren_superior	Dominada · material por verificar · PD0619
 pd_t_0620	pd_movilidad	Patada · peso corporal · PD0620
+pd_t_0621	pd_cardio	Salto · peso corporal · PD0621
 pd_t_0622	pd_tren_inferior	Curl sentada · material específico · PD0622
 pd_t_0623	pd_tren_superior	Press de hombros sentada · barra · PD0623
 pd_t_0624	pd_tren_central	Giro sentada · barra · PD0624
@@ -1008,6 +1070,7 @@ pd_t_0626	pd_tren_superior	Elevación posterior, sentada · mancuernas · PD0626
 pd_t_0628	pd_movilidad	Movimiento de bíceps sentada · peso corporal · PD0628
 pd_t_0629	pd_tren_superior	Movimiento de espalda sentada · polea · PD0629
 pd_t_0630	pd_tren_superior	Press de hombros sentada · polea · PD0630
+pd_t_0631	pd_tren_inferior	Elevación de talones sentada · máquina · PD0631
 pd_t_0632	pd_movilidad	Estiramiento sentada · material por verificar · PD0632
 pd_t_0633	pd_tren_superior	Curl con agarre cerrado, sentada · barra · PD0633
 pd_t_0634	pd_tren_superior	Curl sentada · mancuernas · PD0634
@@ -1028,14 +1091,19 @@ pd_t_0651	pd_tren_superior	Movimiento de espalda sentada, a un brazo · polea ·
 pd_t_0652	pd_movilidad	Estiramiento sentada · material por verificar · PD0652
 pd_t_0653	pd_tren_superior	Flexión de muñeca sentada · barra · PD0653
 pd_t_0654	pd_tren_superior	Flexión de muñeca sentada · barra · PD0654
+pd_t_0656	pd_tren_superior	Press sentada · mancuernas · PD0656
 pd_t_0657	pd_tren_superior	Flexión de muñeca sentada · polea · PD0657
+pd_t_0658	pd_tren_superior	Press alternada, lateral · mancuernas · PD0658
+pd_t_0659	pd_tren_superior	Remo · polea · PD0659
 pd_t_0660	pd_movilidad	Movimiento de hombros · material por verificar · PD0660
 pd_t_0661	pd_tren_superior	Press de hombros · banda elástica · PD0661
 pd_t_0662	pd_movilidad	Elevación · material por verificar · PD0662
 pd_t_0663	pd_movilidad	Estiramiento · material por verificar · PD0663
 pd_t_0664	pd_movilidad	Estiramiento acostada, lateral, en el suelo · material por verificar · PD0664
+pd_t_0665	pd_tren_inferior	Puente de cadera lateral · peso corporal · PD0665
 pd_t_0666	pd_cardio	Movimiento de cuádriceps lateral · material específico · PD0666
 pd_t_0667	pd_tren_central	Movimiento de abdomen lateral · peso corporal · PD0667
+pd_t_0669	pd_tren_superior	Elevación frontal frontal, lateral · mancuernas · PD0669
 pd_t_0670	pd_movilidad	Elevación de piernas lateral · peso corporal · PD0670
 pd_t_0671	pd_movilidad	Estiramiento acostada, lateral · material por verificar · PD0671
 pd_t_0672	pd_movilidad	Estiramiento lateral · material por verificar · PD0672
@@ -1068,6 +1136,8 @@ pd_t_0699	pd_cardio	Movimiento de abdomen · material específico · PD0699
 pd_t_0700	pd_tren_superior	Elevación inclinada · barra · PD0700
 pd_t_0701	pd_tren_superior	Encogimiento de hombros · máquina · PD0701
 pd_t_0702	pd_tren_superior	Press de pecho sobre banco · máquina · PD0702
+pd_t_0703	pd_tren_superior	Remo · máquina · PD0703
+pd_t_0704	pd_tren_inferior	Elevación de talones · máquina · PD0704
 pd_t_0705	pd_tren_superior	Press de pecho con agarre cerrado, sobre banco · máquina · PD0705
 pd_t_0706	pd_tren_superior	Press declinada · máquina · PD0706
 pd_t_0707	pd_tren_inferior	Levantamiento técnico · máquina · PD0707
@@ -1080,6 +1150,7 @@ pd_t_0713	pd_tren_inferior	Sentadilla · máquina · PD0713
 pd_t_0714	pd_tren_inferior	Elevación de talones posterior · máquina · PD0714
 pd_t_0715	pd_tren_inferior	Sentadilla · máquina · PD0715
 pd_t_0716	pd_tren_inferior	Peso muerto · máquina · PD0716
+pd_t_0717	pd_tren_superior	Remo · máquina · PD0717
 pd_t_0718	pd_tren_inferior	Sentadilla a una pierna · máquina · PD0718
 pd_t_0719	pd_tren_inferior	Levantamiento técnico · barra · PD0719
 pd_t_0720	pd_tren_inferior	Levantamiento técnico · barra · PD0720
@@ -1092,10 +1163,13 @@ pd_t_0726	pd_tren_inferior	Sentadilla · barra · PD0726
 pd_t_0727	pd_tren_inferior	Sentadilla · barra · PD0727
 pd_t_0728	pd_tren_central	Movimiento de abdomen · mancuernas · PD0728
 pd_t_0729	pd_tren_central	Movimiento de abdomen · peso corporal · PD0729
+pd_t_0730	pd_tren_superior	Curl de bíceps · barra Z · PD0730
 pd_t_0731	pd_movilidad	Estiramiento · material por verificar · PD0731
 pd_t_0732	pd_tren_inferior	Levantamiento técnico · barra · PD0732
 pd_t_0733	pd_tren_inferior	Levantamiento técnico · barra · PD0733
+pd_t_0734	pd_cardio	Salto · peso corporal · PD0734
 pd_t_0735	pd_tren_inferior	Levantamiento técnico · barra · PD0735
+pd_t_0736	pd_tren_inferior	Sentadilla · mancuernas · PD0736
 pd_t_0737	pd_movilidad	Sentadilla · material por verificar · PD0737
 pd_t_0738	pd_tren_inferior	Levantamiento técnico · barra · PD0738
 pd_t_0739	pd_tren_inferior	Sentadilla · barra · PD0739
@@ -1103,24 +1177,33 @@ pd_t_0740	pd_tren_inferior	Sentadilla · barra · PD0740
 pd_t_0741	pd_tren_inferior	Sentadilla · barra · PD0741
 pd_t_0742	pd_tren_inferior	Sentadilla · banda elástica · PD0742
 pd_t_0743	pd_cardio	Movimiento de cuádriceps · máquina · PD0743
+pd_t_0744	pd_tren_superior	Press alternada, de pie · mancuernas · PD0744
 pd_t_0745	pd_tren_inferior	Elevación de talones de pie · barra · PD0745
+pd_t_0746	pd_tren_superior	Press de pie · barra · PD0746
 pd_t_0747	pd_tren_superior	Extensión de tríceps de pie, a un brazo · mancuernas · PD0747
+pd_t_0748	pd_tren_superior	Extensión de tríceps de pie · mancuernas · PD0748
 pd_t_0749	pd_tren_superior	Curl de pie · polea · PD0749
 pd_t_0750	pd_movilidad	Estiramiento de pie · material específico · PD0750
+pd_t_0751	pd_tren_superior	Press de pie · barra · PD0751
 pd_t_0752	pd_tren_superior	Press de pecho de pie · polea · PD0752
 pd_t_0753	pd_tren_central	Movimiento de abdomen de pie · polea · PD0753
 pd_t_0754	pd_tren_central	Movimiento de abdomen de pie · polea · PD0754
+pd_t_0756	pd_tren_superior	Curl de bíceps de pie · mancuernas · PD0756
 pd_t_0757	pd_tren_inferior	Elevación de talones de pie · mancuernas · PD0757
+pd_t_0758	pd_tren_superior	Press de pie · mancuernas · PD0758
 pd_t_0759	pd_tren_superior	Curl de pie, posterior · mancuernas · PD0759
 pd_t_0760	pd_tren_superior	Elevación de pie, frontal · mancuernas · PD0760
+pd_t_0762	pd_tren_superior	Remo de pie · mancuernas · PD0762
 pd_t_0763	pd_movilidad	Estiramiento de pie · material específico · PD0763
 pd_t_0764	pd_tren_superior	Elevación de pie, frontal · barra · PD0764
 pd_t_0765	pd_movilidad	Estiramiento de pie · material por verificar · PD0765
 pd_t_0766	pd_movilidad	Estiramiento de pie · material específico · PD0766
 pd_t_0767	pd_movilidad	Círculos de cadera de pie · peso corporal · PD0767
 pd_t_0768	pd_movilidad	Movimiento de cuádriceps de pie · material por verificar · PD0768
+pd_t_0769	pd_tren_superior	Curl de bíceps de pie · mancuernas · PD0769
 pd_t_0770	pd_movilidad	Estiramiento de pie, lateral · material por verificar · PD0770
 pd_t_0771	pd_tren_inferior	Curl de pie · máquina · PD0771
+pd_t_0772	pd_cardio	Salto de pie · peso corporal · PD0772
 pd_t_0773	pd_tren_superior	Elevación de pie · polea · PD0773
 pd_t_0774	pd_tren_superior	Extensión de tríceps de pie, a un brazo · polea · PD0774
 pd_t_0775	pd_tren_superior	Press de hombros de pie · barra · PD0775
@@ -1130,20 +1213,27 @@ pd_t_0778	pd_tren_superior	Curl sobre banco, de pie, inclinada, a un brazo · ma
 pd_t_0779	pd_tren_superior	Extensión de tríceps de pie, a un brazo · mancuernas · PD0779
 pd_t_0780	pd_tren_superior	Extensión de tríceps de pie · barra · PD0780
 pd_t_0781	pd_tren_superior	Press de pie, a un brazo · mancuernas · PD0781
+pd_t_0782	pd_tren_superior	Press de pie · mancuernas · PD0782
 pd_t_0783	pd_tren_superior	Flexión de muñeca de pie · barra · PD0783
 pd_t_0784	pd_movilidad	Movimiento de zona lumbar de pie · material por verificar · PD0784
+pd_t_0785	pd_tren_central	Encogimiento abdominal de pie · polea · PD0785
 pd_t_0786	pd_movilidad	Estiramiento de pie · material por verificar · PD0786
 pd_t_0787	pd_movilidad	Movimiento de isquiotibiales de pie · material por verificar · PD0787
 pd_t_0788	pd_tren_superior	Extensión de tríceps de pie · peso corporal · PD0788
 pd_t_0789	pd_cardio	Lanzamiento con balón de pie · balón medicinal · PD0789
+pd_t_0790	pd_cardio	Salto · peso corporal · PD0790
 pd_t_0791	pd_tren_inferior	Subida al escalón · peso corporal · PD0791
 pd_t_0792	pd_cardio	Movimiento de cuádriceps · máquina · PD0792
+pd_t_0793	pd_tren_inferior	Peso muerto · barra · PD0793
 pd_t_0795	pd_tren_central	Movimiento de zona lumbar · barra · PD0795
 pd_t_0796	pd_movilidad	Movimiento de abdomen · peso corporal · PD0796
 pd_t_0798	pd_tren_superior	Movimiento de dorsales · polea · PD0798
 pd_t_0799	pd_tren_superior	Movimiento de espalda sobre banco · barra · PD0799
 pd_t_0800	pd_tren_superior	Elevación sobre banco, inclinada · barra · PD0800
 pd_t_0801	pd_cardio	Salto · material específico · PD0801
+pd_t_0802	pd_tren_inferior	Peso muerto · barra · PD0802
+pd_t_0803	pd_tren_inferior	Peso muerto · barra · PD0803
+pd_t_0804	pd_tren_inferior	Peso muerto · barra · PD0804
 pd_t_0805	pd_movilidad	Movimiento de zona lumbar · peso corporal · PD0805
 pd_t_0806	pd_cardio	Movimiento de tríceps · balón medicinal · PD0806
 pd_t_0807	pd_cardio	Lanzamiento con balón a un brazo · balón medicinal · PD0807
@@ -1154,6 +1244,8 @@ pd_t_0811	pd_tren_central	Encogimiento abdominal posterior · material específi
 pd_t_0812	pd_tren_superior	Remo · material específico · PD0812
 pd_t_0813	pd_tren_inferior	Sentadilla · material específico · PD0813
 pd_t_0814	pd_tren_superior	Press · material específico · PD0814
+pd_t_0815	pd_tren_superior	Remo · barra · PD0815
+pd_t_0816	pd_tren_superior	Press · mancuernas · PD0816
 pd_t_0817	pd_movilidad	Movimiento de isquiotibiales · material por verificar · PD0817
 pd_t_0818	pd_tren_inferior	Abducción de cadera · máquina · PD0818
 pd_t_0819	pd_tren_inferior	Aducción de cadera · máquina · PD0819
@@ -1169,6 +1261,8 @@ pd_t_0828	pd_tren_superior	Movimiento de tríceps · polea · PD0828
 pd_t_0829	pd_tren_superior	Movimiento de tríceps · polea · PD0829
 pd_t_0830	pd_tren_superior	Movimiento de tríceps · polea · PD0830
 pd_t_0831	pd_movilidad	Estiramiento · material por verificar · PD0831
+pd_t_0832	pd_tren_central	Encogimiento abdominal · peso corporal · PD0832
+pd_t_0833	pd_tren_superior	Curl de bíceps · mancuernas · PD0833
 pd_t_0834	pd_tren_superior	Levantamiento técnico · pesa rusa · PD0834
 pd_t_0835	pd_tren_superior	Levantamiento técnico · pesa rusa · PD0835
 pd_t_0836	pd_tren_superior	Press de hombros · pesa rusa · PD0836
@@ -1176,6 +1270,9 @@ pd_t_0837	pd_tren_superior	Remo · pesa rusa · PD0837
 pd_t_0838	pd_tren_superior	Movimiento de dorsales · polea · PD0838
 pd_t_0839	pd_movilidad	Movimiento de isquiotibiales · material por verificar · PD0839
 pd_t_0840	pd_movilidad	Estiramiento · material por verificar · PD0840
+pd_t_0841	pd_tren_superior	Remo · barra · PD0841
+pd_t_0842	pd_tren_superior	Remo · polea · PD0842
+pd_t_0843	pd_tren_superior	Remo · banda elástica · PD0843
 pd_t_0844	pd_movilidad	Estiramiento · material por verificar · PD0844
 pd_t_0845	pd_tren_superior	Movimiento de dorsales · polea · PD0845
 pd_t_0846	pd_tren_superior	Movimiento de dorsales · peso corporal · PD0846
@@ -1208,3 +1305,4 @@ pd_t_0872	pd_tren_superior	Rotación · barra · PD0872
 pd_t_0873	pd_tren_inferior	Caminata · material específico · PD0873
 pd_t_0874	pd_tren_inferior	Sentadilla · barra · PD0874
 pd_t_0875	pd_tren_superior	Curl · mancuernas · PD0875
+pd_t_0876	pd_tren_superior	Curl de bíceps · mancuernas · PD0876
