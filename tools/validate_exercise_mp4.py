@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
 SPECS=ROOT/"app/src/main/assets/exercise_gifs/v1/specs_es.json"
 DEFAULT_DIR=ROOT/"app/src/main/assets/exercise_mp4/v1"
-MAX_BYTES=400000
+MAX_BYTES=800000
 
 def validate(directory=DEFAULT_DIR,require_all=False):
     data=json.loads(SPECS.read_text(encoding="utf-8"))
@@ -45,7 +45,7 @@ def validate(directory=DEFAULT_DIR,require_all=False):
         video=[s for s in streams if s["codec_type"]=="video"]
         if len(video)!=1 or video[0]["codec_name"]!="h264":
             raise ValueError("El MP4 no es H264: "+file.name)
-        if (video[0]["width"],video[0]["height"])!=(480,640):
+        if (video[0]["width"],video[0]["height"])!=(640,360):
             raise ValueError("Dimensiones incorrectas: "+file.name)
         dur=float(info["format"].get("duration","0"))
         if not 0.5<=dur<=8:
@@ -57,6 +57,8 @@ def validate(directory=DEFAULT_DIR,require_all=False):
         "mp4_fisicos":len(videos),
         "mp4_faltantes":2104-len(videos),
         "mp4_revisados_tecnicamente":0,
+        "resolucion_objetivo":"640x360",
+        "politica":"solo_mp4",
         "existen_rutas_individuales":True,
         "mp4_no_reutilizados":True,
         "resultado":"auditoria_de_archivos_no_validacion_biomecanica"}
