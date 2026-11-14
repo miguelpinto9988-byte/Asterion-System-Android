@@ -19,6 +19,7 @@ LEGACY=ROOT/"progress-engine/src/main/resources/asterion_exercises/v1"
 DEST=ROOT/"progress-engine/src/main/resources/asterion_exercises/v2"
 VIEW=ROOT/"app/src/main/assets/unified_exercises/v2"
 AUDIT=ROOT/"docs/datos/auditoria_dominio_publico.csv"
+REVIEW_REPORT=ROOT/"docs/datos/revision_22_casos_cerrados.csv"
 UPSTREAM_COMMIT="f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5"
 UPSTREAM_BLOB="37beaac6031b34f7a7322b3150d201182c49a71b"
 UPSTREAM_URL="https://github.com/yuhonas/free-exercise-db"
@@ -626,6 +627,12 @@ def build(source_rows):
     with AUDIT.open("w",encoding="utf-8",newline="") as f:
         writer=csv.DictWriter(f,fieldnames=list(rows[0]))
         writer.writeheader();writer.writerows(rows)
+    reviewed_rows=[x for x in rows if x["id_fuente_publico"] in REVIEWED_22]
+    if len(reviewed_rows)!=22 or counts["posible_duplicado"]!=0:
+        raise ValueError("Casos candidatos aún sin cerrar")
+    with REVIEW_REPORT.open("w",encoding="utf-8",newline="") as f:
+        writer=csv.DictWriter(f,fieldnames=list(rows[0]))
+        writer.writeheader();writer.writerows(reviewed_rows)
     # No se copia texto de instrucciones ni metadatos del dataset MIT anterior.
     # La vista utiliza sólo títulos originales en español elaborados para Asterion.
     index=[{
