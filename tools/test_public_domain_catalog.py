@@ -29,7 +29,8 @@ class PublicDomainImportTest(unittest.TestCase):
             self.manifest["candidatos_de_duplicado"]+
             self.manifest["duplicados_verificados"])
         self.assertGreater(self.manifest["nuevos"],0)
-        self.assertGreater(self.manifest["candidatos_de_duplicado"],0)
+        self.assertEqual(0,self.manifest["candidatos_de_duplicado"])
+        self.assertEqual(22,self.manifest["candidatos_del_lote_cerrados"])
 
     def test_original_ids_and_volume_reference_are_unchanged(self):
         for filename in ("families.tsv","types.tsv","variants.tsv","volume_profiles.tsv"):
@@ -53,8 +54,15 @@ class PublicDomainImportTest(unittest.TestCase):
         for x in self.data["ejercicios"]:
             self.assertFalse(x.get("gif_incluido"))
             self.assertFalse(x.get("imagen_incluida"))
-            self.assertFalse(x.get("instrucciones_es"))
             self.assertNotIn("gymvisual",json.dumps(x).lower())
+            if x.get("origen")=="dominio_publico":
+                self.assertGreaterEqual(len(x["instrucciones_es"]),3)
+                self.assertEqual(x["fuente_tecnica_licencia"],"Unlicense")
+                self.assertFalse(x["revision_tecnica_individual"])
+                self.assertEqual(x["pasos_fuente_cantidad"],
+                                 len(x["pasos_referencia_original_en"]))
+                self.assertEqual(x["instrucciones_es_estado"],
+                                 "orientacion_editorial_no_validada")
         self.assertTrue(self.data["no_incluye_contenido_mit_previo"])
 
     def test_all_five_categories_and_spanish_copy(self):
@@ -89,6 +97,25 @@ class PublicDomainImportTest(unittest.TestCase):
                             "duplicado_verificado")
         self.assertNotEqual(decisions["Incline_Push-Up"]["estado"],
                             "duplicado_verificado")
+
+    def test_22_pending_cases_are_resolved_individually(self):
+        self.assertEqual(22,len(catalog.REVIEWED_22))
+        with catalog.AUDIT.open(encoding="utf-8",newline="") as handle:
+            decisions={x["id_fuente_publico"]:x for x in csv.DictReader(handle)}
+        for id,(decision,old_id,reason) in catalog.REVIEWED_22.items():
+            self.assertIn(id,decisions)
+            self.assertEqual(decision,decisions[id]["estado"],id)
+            self.assertEqual(old_id,decisions[id]["id_asterion_relacionado"],id)
+            self.assertTrue(decisions[id]["regla"].startswith("auditoria_individual:"),id)
+            self.assertTrue(reason)
+        self.assertEqual(0,sum(x["estado"]=="posible_duplicado"
+                              for x in decisions.values()))
+        self.assertEqual("duplicado_verificado",
+                         decisions["Seated_Side_Lateral_Raise"]["estado"])
+        self.assertEqual("elevacion_lateral_v04",
+                         decisions["Seated_Side_Lateral_Raise"]["id_asterion_relacionado"])
+        self.assertEqual("press_hombros_v02",
+                         decisions["Seated_Dumbbell_Press"]["id_asterion_relacionado"])
 
     def test_unknown_source_schema_is_rejected(self):
         with self.assertRaises(ValueError):catalog.build([])
