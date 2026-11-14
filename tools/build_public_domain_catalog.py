@@ -609,7 +609,8 @@ def build(source_rows):
             "equipment":e["material_cod"],"execution":"consulta","supervision":"1"})
         source=source_rows[int(id[-4:])-1]
         unit=("SECONDS" if source["category"] in
-              ("stretching","cardio","plyometrics") else "REPETITIONS")
+              ("stretching","cardio","plyometrics") or
+              source.get("force")=="static" else "REPETITIONS")
         volumes.append({"variant_id":id,"unit":unit,"initial_sets":"1",
           "initial_value":"10" if unit=="SECONDS" else "5","minimum_value":"1",
           "maximum_value":"180" if unit=="SECONDS" else "20","increment":"1"})
