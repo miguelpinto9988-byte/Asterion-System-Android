@@ -245,6 +245,59 @@ NAME_EXACT_OVERRIDES={
  "Single_Leg_Glute_Bridge":"puente_gluteo_v06",
 }
 
+
+# Auditoría individual de los 22 candidatos del comparador anterior.
+# Cada decisión coteja la ficha técnica Unlicense, la variante de Asterion
+# (nombre, equipo, postura, trayectoria) y el patrón mecánico. Cuando no hay
+# equivalencia inequívoca se conserva la variante específica como ficha nueva
+# no elegible para recomendaciones, sin afirmar que el gesto sea idéntico.
+REVIEWED_22={
+ "Barbell_Lunge":("nuevo_por_evaluar","zancada_estatica_v06",
+   "Zancada con paso adelante y retorno frente a posición dividida estática"),
+ "Bent-Arm_Dumbbell_Pullover":("nuevo_por_evaluar","dep_107_pullover_con_mancuerna_v01",
+   "Pullover específico de codos flexionados; el original no fija ese ángulo"),
+ "Cable_Crunch":("duplicado_verificado","crunch_v06",
+   "Flexión abdominal arrodillada con polea alta y cuerda"),
+ "Calf_Press":("nuevo_por_evaluar","dep_029_elevacion_de_talones_en_maquina_calf_r_v01",
+   "Prensa de gemelos en máquina desde asiento, distinta de elevación de talones en máquina"),
+ "Calf_Press_On_The_Leg_Press_Machine":("nuevo_por_evaluar","dep_029_elevacion_de_talones_en_maquina_calf_r_v01",
+   "Empuje de plataforma en prensa de piernas, no máquina de gemelos convencional"),
+ "Dead_Bug":("duplicado_verificado","dead_bug_v03",
+   "Extensión alterna de una pierna con tronco y brazos estabilizados"),
+ "Dumbbell_Lunges":("nuevo_por_evaluar","zancada_estatica_v05",
+   "Zancada con paso y retorno, diferente de zancada estática con mancuernas"),
+ "Dumbbell_Shoulder_Press":("duplicado_verificado","press_hombros_v02",
+   "Press bilateral sentado en banco con respaldo y mancuernas"),
+ "Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists":("nuevo_por_evaluar","crunch_v06",
+   "Añade rotaciones oblicuas alternas al crunch arrodillado"),
+ "Leverage_High_Row":("nuevo_por_evaluar","remo_v03",
+   "Remo alto desde asas superiores; trayectoria diferente de remo con apoyo de pecho"),
+ "Leverage_Iso_Row":("nuevo_por_evaluar","remo_v03",
+   "Remo independiente a altura de pecho, diferente de máquina de apoyo genérica"),
+ "Low_Cable_Triceps_Extension":("nuevo_por_evaluar","extension_triceps_v03",
+   "Extensión de tríceps supina con polea baja versus polea con cuerda en posición erguida"),
+ "Rope_Crunch":("duplicado_verificado","crunch_v06",
+   "Mismo crunch arrodillado con cuerda en polea alta"),
+ "Rowing_Stationary":("duplicado_verificado","remo_ergometro_v02",
+   "Remo cíclico en ergómetro; Asterion ya tiene la misma modalidad y patrón"),
+ "Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension":("nuevo_por_evaluar","extension_triceps_v04",
+   "Tronco inclinado en banco y brazos hacia atrás frente a extensión sentada genérica"),
+ "Seated_Dumbbell_Inner_Biceps_Curl":("nuevo_por_evaluar","curl_biceps_v02",
+   "Curl hacia fuera con rotación específica frente a curl sentado genérico"),
+ "Seated_Dumbbell_Press":("duplicado_verificado","press_hombros_v02",
+   "Press sentado con mancuernas sin rotación; no es press Arnold v04"),
+ "Seated_Side_Lateral_Raise":("duplicado_verificado","elevacion_lateral_v04",
+   "Elevación lateral sentada con mancuernas, variante exacta ya presente"),
+ "Standing_Calf_Raises":("duplicado_verificado","dep_029_elevacion_de_talones_en_maquina_calf_r_v01",
+   "Elevación de talones de pie en máquina de gemelos"),
+ "Standing_Dumbbell_Triceps_Extension":("nuevo_por_evaluar","extension_triceps_v06",
+   "Posición de pie y una mancuerna a dos manos; el original no confirma esa combinación"),
+ "Stiff-Legged_Dumbbell_Deadlift":("nuevo_por_evaluar","peso_muerto_v03",
+   "Bisagra con rodillas casi fijas frente a peso muerto con mancuerna genérico"),
+ "Straight-Arm_Dumbbell_Pullover":("nuevo_por_evaluar","dep_107_pullover_con_mancuerna_v01",
+   "Pullover específico de brazos extendidos, no equivalente al de codos flexionados"),
+}
+
 # Revisión semántica de fichas de dominio público: las siguientes
 # NO son la variante original sugerida por el algoritmo (postura,
 # dirección, equipamiento, patrón o técnica diferentes). La ficha sigue
@@ -413,6 +466,11 @@ def data_source():
     return sorted(records,key=lambda x:x["id"])
 
 def equivalence(external,originals,old_by_kind):
+    if external["id"] in REVIEWED_22:
+        decision,oldid,reason=REVIEWED_22[external["id"]]
+        if oldid not in originals:
+            raise ValueError("Variante antigua no encontrada: "+oldid)
+        return (decision,oldid,"auditoria_individual: "+reason)
     if external["id"] in DISTINCT_BY_MECHANICS:
         return ("nuevo_por_evaluar","","diferente_por_descriptores_mecanicos")
     if external["id"] in NAME_EXACT_OVERRIDES:
@@ -590,7 +648,8 @@ def build(source_rows):
       "registros_fuente_revisados":EXPECTED_COUNT,
       "origen_dominio_publico":UPSTREAM_URL,"revision_origen":UPSTREAM_COMMIT,
       "sin_datos_ni_gifs_del_repositorio_mit_anterior":True,
-      "nuevos_bloqueados_hasta_revision_tecnica":len(extra)}
+      "nuevos_bloqueados_hasta_revision_tecnica":len(extra),
+      "candidatos_del_lote_cerrados":len(REVIEWED_22)}
     (VIEW/"manifest.json").write_text(
         json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(manifest,ensure_ascii=False,indent=2))
