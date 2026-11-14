@@ -37,7 +37,7 @@ jobs:
           d=json.load(open(p,encoding='utf-8'))
           assert d['total']==2104
           assert d['gifs_producidos_por_este_importador']==0
-          assert d['gifs_pendientes']==2104
+          assert d['gifs_pendientes']==2104-d['gifs_fisicos']
           assert all(not x['gif_validado'] for x in d['ejercicios'])
           assert len({x['gif_ruta'] for x in d['ejercicios']})==2104
           PY
