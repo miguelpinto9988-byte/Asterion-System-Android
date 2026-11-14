@@ -9,7 +9,7 @@
     "contiene_audio": false,
     "limite_bytes": 800000
   },
-  "lotes_activos": 0,
+  "lotes_activos": 1,
   "videos_publicados_apk": 0,
   "protocolos": [
     "No asignar video sin ID identico a catalogo",
@@ -31,6 +31,18 @@
       "no_reenviar_automaticamente": true,
       "observacion": "Higgsfield devolvió completed y URL el 2026-11-14; job apartado por el usuario. No validado visualmente ni convertido, no contado como aprobado o integrado en APK. No reenviar.",
       "estado_revision": "pendiente_revision_manual_por_job_apartado"
+    },
+    {
+      "lote": 2,
+      "id": "sentadilla_bilateral_v05",
+      "job_id": "bbc34708-571b-4007-822f-1a6c990e2631",
+      "estado": "pending",
+      "modelo": "seedance_2_0",
+      "url": null,
+      "aprobado": false,
+      "estado_revision": "pendiente_generacion",
+      "bloquea_nuevos_lotes": true,
+      "no_reenviar_automaticamente": true
     }
   ],
   "prototipos_locales": [
@@ -83,6 +95,21 @@
       "sentadilla_bilateral_v01"
     ],
     "no_cancelado_en_higgsfield": true,
-    "criterio_reanudacion": "Siguiente lote de hasta seis variantes distintas no iniciadas, mediante modalidad ilimitada incluida y solo si el proveedor acepta; HTTP 429 implica detener el intento sin cobro."
+    "criterio_reanudacion": "Siguiente lote de hasta seis variantes distintas no iniciadas, mediante modalidad ilimitada incluida y solo si el proveedor acepta; HTTP 429 implica detener el intento sin cobro.",
+    "ultimo_intento": {
+      "fecha": "2026-11-14",
+      "lote": 2,
+      "solicitados": 6,
+      "aceptados": 1,
+      "rechazados_429": 5,
+      "ids_rechazados": [
+        "sentadilla_bilateral_v02",
+        "sentadilla_bilateral_v06",
+        "sentadilla_bilateral_v07",
+        "sentadilla_unilateral_v01",
+        "sentadilla_unilateral_v02"
+      ],
+      "observacion": "No reintentar estos IDs dentro de la misma ejecución. Esperar a resolver job aceptado."
+    }
   }
 }
