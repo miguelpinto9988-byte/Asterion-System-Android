@@ -184,8 +184,8 @@ jobs:
           ls -lh "$APK"
           sha256sum "$APK"
 
-      - name: Confirmar que la APK no contiene archivos SVG
-        run: python3 tests/no_svg_artifact_contract.py --apk app/build/outputs/apk/debug/app-debug.apk
+      - name: Confirmar los 2123 GIFs por ID y que la APK no contiene SVG
+        run: python3 tests/no_svg_artifact_contract.py --apk app/build/outputs/apk/debug/app-debug.apk --require-exercise-gifs
 
       - name: Publicar APK del paquete principal como artefacto CI
         uses: actions/upload-artifact@v4
