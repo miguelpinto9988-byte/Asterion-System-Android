@@ -86,7 +86,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
         gradient.setCornerRadius(dp(16));
         demo.setBackground(gradient);
         int displayWidth=getResources().getDisplayMetrics().widthPixels-dp(48);
-        int displayHeight=Math.min(dp(430),Math.round(displayWidth*4f/3f));
+        int displayHeight=Math.min(dp(430),Math.round(displayWidth*9f/16f));
         animation=new ImageView(this);
         animation.setScaleType(ImageView.ScaleType.FIT_CENTER);
         animation.setAdjustViewBounds(true);
@@ -101,9 +101,8 @@ public final class ExerciseMotionDetailActivity extends Activity {
         String path=spec.optString("gif_ruta","");
         boolean mp4Available=mp4Path.equals("exercise_mp4/v1/"+id+".mp4")
                 &&fileExists(getAssets(),mp4Path);
-        // Fallback GIF únicamente si no existe MP4 de este mismo ID.
-        boolean available=path.equals("exercise_gifs/v1/"+id+".gif")
-                &&fileExists(getAssets(),path);
+        // Formato oficial: MP4 H.264, 16:9. Sin sustitucion por GIF.
+        boolean available=false; // Asterion produce y reproduce solo MP4.
         if(mp4Available) {
             try {
                 player=new OfflineExerciseMp4Player(this,id,mp4Path);
