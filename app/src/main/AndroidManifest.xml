@@ -29,6 +29,7 @@
         <activity android:name=".CalendarActivity" android:exported="false" />
         <activity android:name=".RoutinesActivity" android:exported="false" />
         <activity android:name=".ImportedExerciseCatalogActivity" android:exported="false" />
+        <activity android:name=".ExerciseMotionDetailActivity" android:exported="false" />
         <activity
             android:name=".RoutineStepActivity"
             android:exported="false" />
