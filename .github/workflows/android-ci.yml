@@ -8,6 +8,7 @@ on:
       - main
       - feature/unificar-catalogos-y-retirar-avatar-20261113
       - feature/gifs-por-variante-y-fichas-moviles-20261114
+      - feature/mp4-aura-gimnasio-2104-20261114
       # Stacked feature PR is based on the catalog PR, not yet on main.
       - feature/rutinas-calendario-aleatoriedad-20261111
       - feature/avatar-2d-nativo-android-20261111
@@ -82,6 +83,7 @@ jobs:
           python3 tools/build_exercise_motion_specs.py
           python3 -m unittest discover -s tools -p test_exercise_motion_specs.py -v
           python3 tools/validate_exercise_gifs.py
+          python3 tools/validate_exercise_mp4.py
 
       - name: Verificar recursos XML y contratos de fase 03/16 sin compilar
         shell: bash
