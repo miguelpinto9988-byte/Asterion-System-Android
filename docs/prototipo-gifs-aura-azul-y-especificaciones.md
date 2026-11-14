@@ -1,27 +1,25 @@
-# Asterion: GIF propios por variante y ficha móvil
+# Asterion: GIF por variante y ficha móvil
 
 ## Identidad aprobada
-Personaje masculino original con estética anime de cazador oscuro,
-ropa deportiva negra y aura azul. Mantener el mismo personaje a través
-de todos los movimientos; NO reproducir la identidad de personajes protegidos.
+La colección visual se conserva como fue entregada; no se atribuye un personaje común a todos los GIFs. No reproducir la identidad de personajes protegidos.
 
 ## Contrato móvil
-- Objetivo por GIF: 480 × 640 píxeles (vertical 3:4).
-- 12 fotogramas orientativos, 120 ms/fotograma, reproducción en bucle.
+- El paquete v10 trae GIF cuadrados de 500 × 500 píxeles y 8 fotogramas.
+- La duración de los fotogramas varía; reproducir el GIF tal como se entrega.
 - Formato GIF89a y objetivo máximo 800 KB.
 - Mostrar manos, pies, articulaciones y apoyos sin cortes.
 - Reproductor Android offline con FIT_CENTER, sin recorte y con botón de pausa.
-- Si falta el GIF exacto del ID, mostrar «pendiente» y nunca otra variante.
+- Si falta el GIF exacto del ID, mostrar un error claro y nunca otra variante.
 - Todas las animaciones requieren revisión técnica antes de publicarse.
 
 ## Cobertura comprobada
-- 2.104 ejercicios con un ID y una ruta GIF esperada diferentes.
+- 2.123 ejercicios con un ID y una ruta GIF exclusiva; 19 calistenia se agregan como catálogo auxiliar.
 - 0 GIF nuevos creados por el generador de cuadros.
 - tools/build_exercise_motion_specs.py: genera las fichas técnicas preliminares.
 - tools/test_exercise_motion_specs.py: verifica cobertura y diferencias.
 - tools/render_exercise_gifs.py: convierte fotogramas originales de cada ID en GIF.
 - tools/validate_exercise_gifs.py: impide duplicados binarios y archivos erróneos.
-- app/src/main/assets/exercise_gifs/v1/specs_es.json: índice de 2.104 cuadros.
+- app/src/main/assets/exercise_gifs/v10/specs_es.json: índice local de 2.123 cuadros.
 - El GIF del personaje aura azul para flexión convencional se entrega
   por separado como prototipo visual; no equivale a validación biomecánica.
 
@@ -38,8 +36,9 @@ de todos los movimientos; NO reproducir la identidad de personajes protegidos.
 Una flexión en diamante es otra variante: pulgares e índices forman
 una figura de rombo. Tiene un posicionamiento distinto del agarre
 cerrado genérico, y puede requerir precaución adicional para muñecas.
-No hay en este catálogo una ficha «diamante» aprobada. Si se agrega,
-tendrá un ID propio, especificaciones individualizadas y su GIF propio.
+La colección de calistenia ya agrega la flexión diamante con el ID
+`cal_casa_flexion_diamante_v01`, ficha individual preliminar y GIF propio;
+su revisión técnica todavía no está aprobada.
 
 ## Proceso por lote sin falsificar movimientos
 1. Revisar la variante, agarre, postura y trayectoria con criterio técnico.
@@ -53,13 +52,11 @@ tendrá un ID propio, especificaciones individualizadas y su GIF propio.
    Para exigir cobertura total, añadir --require-all.
 7. Registrar aprobación humana antes de publicar como demostración.
 
-2.104 GIF de 600 KB ocuparían unos 1,26 GB, excesivo para una APK única.
-Se recomienda futuro empaquetado modular offline por categorías. El APK
-actual no solicita internet ni descarga automáticamente contenido.
+El paquete entregado ocupa unos 410 MB comprimido y 445 MB descomprimido. Se incorpora completo en la APK debug, según autorización del propietario; Gradle descarga el paquete verificado durante la compilación y la app no descarga contenido en ejecución.
 
 ## Mejoras siguientes
-- Producir y revisar de verdad los otros 2.103 GIFs diferenciados.
-- Paquetes offline por categoría y manifest de versiones.
+- Revisar individualmente la correspondencia y técnica de los 2.123 GIFs.
+- Mantener el paquete offline versionado y su hash de integridad.
 - Modo reducido de movimiento con imagen de póster estática.
 - Revisión de técnica individual de nuevas fichas antes de habilitar
   sugerencias automáticas.

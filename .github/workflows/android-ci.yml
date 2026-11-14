@@ -42,7 +42,7 @@ jobs:
   build:
     name: Validar y compilar Android Java
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - name: Descargar código
         uses: actions/checkout@v4
@@ -75,13 +75,15 @@ jobs:
           yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses >/dev/null || true
           "$SDKMANAGER" --sdk_root="$SDK_ROOT" 'platforms;android-36' 'build-tools;35.0.0'
 
-      - name: Preparar cuadros de variante para el visor móvil
+      - name: Descargar y preparar los 2123 GIFs locales de Android
+        run: python3 tools/prepare_android_exercise_assets.py
+
+      - name: Validar cuadros y los 2123 GIFs por ID
         shell: bash
         run: |
           set -euo pipefail
-          python3 tools/build_exercise_motion_specs.py
           python3 -m unittest discover -s tools -p test_exercise_motion_specs.py -v
-          python3 tools/validate_exercise_gifs.py
+          python3 tools/validate_exercise_gifs.py --require-all
 
       - name: Verificar recursos XML y contratos de fase 03/16 sin compilar
         shell: bash
@@ -192,6 +194,7 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
+          compression-level: 0
 
       - name: Publicar APK instrumental para comprobar persistencia
         uses: actions/upload-artifact@v4
@@ -205,7 +208,7 @@ jobs:
     name: Probar arranque real en emulador Android 16
     runs-on: ubuntu-24.04
     needs: build
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - name: Descargar código
         uses: actions/checkout@v4

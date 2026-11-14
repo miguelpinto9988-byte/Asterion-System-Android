@@ -30,3 +30,6 @@ secrets.properties
 *.apk
 *.aab
 *.log
+
+# GIF bundle is fetched from the pinned release during Android builds
+/app/src/main/assets/exercise_gifs/v10/*.gif

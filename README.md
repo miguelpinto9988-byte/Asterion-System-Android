@@ -10,9 +10,9 @@ Proyecto Java nativo Android con vistas XML. El HTML se utiliza **solo como prev
 
 [Descargar el visor y los GIFs](https://github.com/miguelpinto9988-byte/Asterion-System-Android/releases/download/v10.0.0-calisthenics-preview.1/asterion-exercise-viewer-v10-calisthenics.zip) · [Notas de la pre-release](https://github.com/miguelpinto9988-byte/Asterion-System-Android/releases/tag/v10.0.0-calisthenics-preview.1).
 
-El paquete estático incluye 2.123 ejercicios y 2.123 GIFs por ID, además de 19 PNG auxiliares. El ZIP pesa aproximadamente 410 MB y ocupa 445 MB descomprimido; se distribuye aparte y no se incorpora a la APK Android. Tras descomprimirlo, ejecuta `python3 -m http.server 8000` desde la carpeta raíz extraída y abre `http://localhost:8000/build/exercise-viewer/`.
+El paquete contiene 2.123 ejercicios y 2.123 GIFs por ID, además de 19 PNG auxiliares. El flujo Android descarga ese archivo con SHA-256 fijado, verifica y empaqueta los 2.123 GIFs como recursos locales de la APK debug. La APK resultante supera los 400 MB; Gradle prepara los recursos automáticamente y la aplicación no necesita red para reproducirlos. También puedes descomprimir el ZIP y ejecutar `python3 -m http.server 8000` desde la carpeta raíz extraída para abrir `http://localhost:8000/build/exercise-viewer/`.
 
-Es una vista previa: la auditoría registra 0 fallos técnicos, 128 alertas semánticas y 10 casos de movimiento bajo inesperado. Cada animación aún requiere revisión de correspondencia y técnica; no constituye validación médica. Esta pre-release del visor no es una release de distribución de la app Android.
+Es una vista previa: la auditoría registra 0 fallos técnicos, 128 alertas semánticas y 10 casos de movimiento bajo inesperado. La app muestra cada animación por ID y mantiene pendiente su revisión individual de correspondencia y técnica; no constituye validación médica. La APK debug se publica como artefacto de GitHub Actions, no como release de distribución.
 
 
 ## Identidad visual oficial — ícono permanente

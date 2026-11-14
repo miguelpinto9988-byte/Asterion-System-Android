@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Specs por ID para GIF propios. Un GIF pendiente JAMÁS se presenta como creado."""
+"""Genera fichas preliminares por variante sin declarar aprobación técnica."""
 import json
 import re
 import unicodedata
@@ -8,8 +8,9 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parent.parent
 SOURCE=ROOT/"app/src/main/assets/unified_exercises/v2/catalogo_es.json"
-OUT=ROOT/"app/src/main/assets/exercise_gifs/v1/specs_es.json"
-CURRENT_SCHEMA="asterion.exercise-motion.es.v1"
+OVERLAY=ROOT/"app/src/main/assets/unified_exercises/v2/calistenia_casa_es.json"
+OUT=ROOT/"app/src/main/assets/exercise_gifs/v10/specs_es.json"
+CURRENT_SCHEMA="asterion.exercise-motion.es.v2"
 
 def simple(value):
     return "".join(c for c in unicodedata.normalize("NFKD",str(value).lower())
@@ -82,7 +83,7 @@ def specs(x):
         "recorrido_general":base,"criterio_diferenciador":difference,
         "instrucciones_es":x.get("instrucciones_es",[]),
         "estado_tecnico":"orientacion_no_validada_para_gif",
-        "gif_ruta":"exercise_gifs/v1/"+id+".gif",
+        "gif_ruta":"exercise_gifs/v10/"+id+".gif",
         "gif_estado":"pendiente_produccion",
         "gif_validado":False,
         "nota":"No es una ficha técnica individual aprobada por profesional."
@@ -90,27 +91,31 @@ def specs(x):
 
 def build():
     d=json.loads(SOURCE.read_text(encoding="utf-8"))
+    extra=json.loads(OVERLAY.read_text(encoding="utf-8"))
     if d.get("schema")!="asterion.public-domain-unified.es.v2" or d.get("total")!=2104:
-        raise ValueError("Catálogo v2 ajeno o incompleto")
-    rows=[specs(x) for x in d["ejercicios"]]
+        raise ValueError("Catálogo base v2 ajeno o incompleto")
+    if (extra.get("schema")!="asterion.public-domain-unified.es.v2"
+            or extra.get("idioma")!="es" or extra.get("total")!=19):
+        raise ValueError("Colección de calistenia incompleta")
+    source_rows=d["ejercicios"]+extra["ejercicios"]
+    rows=[specs(x) for x in source_rows]
     ids=[x["id"] for x in rows]
-    if len(rows)!=2104 or len(set(ids))!=len(ids):
+    expected=len(source_rows)
+    if expected!=2123 or len(set(ids))!=expected:
         raise ValueError("Fichas de origen repetidas o incompletas")
-    if len({x["gif_ruta"] for x in rows})!=2104:
-        raise ValueError("Cada variante requiere un GIF propio")
+    if len({x["gif_ruta"] for x in rows})!=expected:
+        raise ValueError("Cada variante requiere una ruta GIF exclusiva")
     physically_present=sum(1 for x in rows
         if (OUT.parent/(x["id"]+".gif")).is_file())
     for row in rows:
         if (OUT.parent/(row["id"]+".gif")).is_file():
             row["gif_estado"]="archivo_presente_pendiente_revision"
-    result={"schema":CURRENT_SCHEMA,"idioma":"es","total":2104,
+    result={"schema":CURRENT_SCHEMA,"idioma":"es","total":expected,
         "gifs_producidos_por_este_importador":0,
         "gifs_fisicos":physically_present,
-        "gifs_pendientes":2104-physically_present,
-        "personaje":"cazador_anime_original_aura_azul",
-        "formato_recomendado":{"ancho_px":480,"alto_px":640,
-            "frames":12,"ms_por_frame":120,"max_bytes":800000,
-            "presentacion":"adaptar_sin_recortar_en_movil"},
+        "gifs_pendientes":expected-physically_present,
+        "formato_fuente":{"ancho_px":500,"alto_px":500,"frames_por_gif":8,
+            "max_bytes":800000,"presentacion":"fit_center_sin_recortar"},
         "categorias":dict(sorted(Counter(x["categoria"] for x in rows).items())),
         "ejercicios":rows}
     OUT.parent.mkdir(parents=True,exist_ok=True)

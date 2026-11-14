@@ -7,15 +7,17 @@ on:
       - 'tools/build_exercise_motion_specs.py'
       - 'tools/test_exercise_motion_specs.py'
       - 'tools/validate_exercise_gifs.py'
+      - 'tools/prepare_android_exercise_assets.py'
+      - 'app/src/main/assets/unified_exercises/v2/calistenia_casa_es.json'
       - '.github/workflows/prepare-exercise-gif-specs.yml'
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
   fichas:
-    name: Generar y auditar 2104 especificaciones de GIF
+    name: Generar y auditar 2123 especificaciones de GIF
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,34 +26,37 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Generar cuadro por variante y rutas de 2104 GIF
+      - name: Descargar y preparar el paquete de GIFs
+        run: python3 tools/prepare_android_exercise_assets.py
+      - name: Generar y validar cuadros de las 2123 variantes
         run: |
-          python3 tools/build_exercise_motion_specs.py
           python3 -m unittest discover -s tools -p test_exercise_motion_specs.py -v
-          python3 tools/validate_exercise_gifs.py
+          python3 tools/validate_exercise_gifs.py --require-all
       - name: Comprobar que no se inventan GIFs o aprobación técnica
         run: |
           python3 - <<'PY'
           import json
-          p='app/src/main/assets/exercise_gifs/v1/specs_es.json'
+          p='app/src/main/assets/exercise_gifs/v10/specs_es.json'
           d=json.load(open(p,encoding='utf-8'))
-          assert d['total']==2104
+          assert d['total']==2123
+          assert d['gifs_fisicos']==2123
+          assert d['gifs_pendientes']==0
           assert d['gifs_producidos_por_este_importador']==0
-          assert d['gifs_pendientes']==2104-d['gifs_fisicos']
           assert all(not x['gif_validado'] for x in d['ejercicios'])
-          assert len({x['gif_ruta'] for x in d['ejercicios']})==2104
+          assert len({x['gif_ruta'] for x in d['ejercicios']})==2123
           PY
-      - name: Guardar en rama los cuadros generados
+      - name: Guardar manifiesto de cuadros generado
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add app/src/main/assets/exercise_gifs/v1/specs_es.json
+          git add app/src/main/assets/exercise_gifs/v10/specs_es.json
           if ! git diff --cached --quiet; then
-            git commit -m 'data(motion): generar 2104 cuadros técnicos y nombres de GIF exclusivos'
+            git commit -m 'data(motion): indexar 2123 GIFs locales por variante'
             git push origin 'HEAD:${{ github.ref_name }}'
           fi
       - uses: actions/upload-artifact@v4
         with:
           name: asterion-gifs-por-variante-y-fichas-es
-          path: app/src/main/assets/exercise_gifs/v1/specs_es.json
+          path: app/src/main/assets/exercise_gifs/v10/specs_es.json
+          if-no-files-found: error
           retention-days: 30

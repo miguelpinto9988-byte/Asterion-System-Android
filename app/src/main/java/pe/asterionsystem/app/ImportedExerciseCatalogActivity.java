@@ -34,13 +34,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Spanish educational catalogue from MIT metadata. Media rights are NOT
- * inherited from the source dataset: do not load GIF or image paths here.
- * Imported entries are NOT currently eligible for automatic workout planning.
+ * Spanish educational catalogue. The verified GIF bundle is packaged separately
+ * from its metadata and loaded only by exact exercise ID. Imported entries are
+ * not currently eligible for automatic workout planning.
  */
 public final class ImportedExerciseCatalogActivity extends ComponentActivity {
     private static final String ASSET="unified_exercises/v2/catalogo_es.json";
-    private static final String MOTION_ASSET="exercise_gifs/v1/specs_es.json";
+    private static final String CALISTHENICS_ASSET="unified_exercises/v2/calistenia_casa_es.json";
+    private static final String MOTION_ASSET="exercise_gifs/v10/specs_es.json";
+    private static final int BASE_EXERCISES=2104;
+    private static final int CALISTHENICS_EXERCISES=19;
+    private static final int EXERCISE_COUNT=2123;
     private static final String[] CATEGORIES={
             "Todas las categorías","Tren superior","Tren central",
             "Tren inferior","Movilidad","Cardio"};
@@ -71,12 +75,12 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         TextView heading=text("CATÁLOGO INDEPENDIENTE · ESPAÑOL",21);
         root.addView(heading);
         root.addView(text("Se conservan todos los ejercicios históricos. "
-                +"Las variantes nuevas proceden de datos de dominio público y "
+                +"Las variantes nuevas proceden de fuentes documentadas y "
                 +"tienen nombre descriptivo en español. Su nivel debe revisarse "
                 +"antes de incluirlas en propuestas automáticas.",13));
-        root.addView(text("Cada variante tiene un cuadro técnico propio "
-                +"y una ruta GIF exclusiva. Cuando aún no exista su GIF, "
-                +"se indica claramente en la ficha.",12));
+        root.addView(text("La app incluye un GIF local por variante. "
+                +"Cada ficha mantiene su ID exacto; la correspondencia y la técnica "
+                +"siguen pendientes de revisión individual.",12));
         search=new EditText(this);
         search.setSingleLine(true);
         search.setHint("Buscar un ejercicio en español");
@@ -118,7 +122,7 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         executor.execute(()->{
             try {
                 List<JSONObject> parsed=load();
-                Map<String,JSONObject> parsedSpecs=loadMotionSpecs();
+                Map<String,JSONObject> parsedSpecs=loadMotionSpecs(parsed);
                 runOnUiThread(()->{
                     if(closed||isFinishing())return;
                     items.clear();
@@ -130,45 +134,63 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
             } catch(Exception error) {
                 runOnUiThread(()->{
                     if(closed||isFinishing())return;
-                    summary.setText("No se pudo cargar el catálogo unificado. "
-                            +"Comprueba el informe de comparación de catálogos.");
+                    summary.setText("No se pudo cargar el catálogo de 2123 ejercicios y sus GIFs. "
+                            +"Comprueba que la compilación haya preparado los recursos.");
                 });
             }
         });
     }
 
     private List<JSONObject> load() throws Exception {
+        JSONObject base=readCatalog(ASSET);
+        JSONObject calisthenics=readCatalog(CALISTHENICS_ASSET);
+        ArrayList<JSONObject> result=new ArrayList<>(EXERCISE_COUNT);
+        Map<String,Boolean> ids=new HashMap<>(EXERCISE_COUNT);
+        appendCatalog(base,BASE_EXERCISES,1257,result,ids);
+        appendCatalog(calisthenics,CALISTHENICS_EXERCISES,0,result,ids);
+        if(result.size()!=EXERCISE_COUNT)
+            throw new IllegalArgumentException("Catálogo combinado incompleto");
+        result.sort(Comparator.comparing(j->
+                ("asterion".equals(j.optString("origen"))?"0":"1")
+                        +j.optString("id")));
+        return result;
+    }
+
+    private JSONObject readCatalog(String asset) throws Exception {
         byte[] bytes;
-        try(InputStream stream=getAssets().open(ASSET);
+        try(InputStream stream=getAssets().open(asset);
             ByteArrayOutputStream buffer=new ByteArrayOutputStream()) {
             byte[] chunk=new byte[16384];
             int n;
             while((n=stream.read(chunk))!=-1)buffer.write(chunk,0,n);
             bytes=buffer.toByteArray();
         }
-        JSONObject root=new JSONObject(new String(bytes,StandardCharsets.UTF_8));
-        int expected=root.optInt("total");
-        if(!"es".equals(root.optString("idioma"))
-                ||root.optBoolean("multimedia_incluida",true)
-                ||root.optInt("originales")!=1257
-                ||expected<1257)
-            throw new IllegalArgumentException("Contrato de origen/licencia no válido");
-        JSONArray array=root.getJSONArray("ejercicios");
+        return new JSONObject(new String(bytes,StandardCharsets.UTF_8));
+    }
+
+    private void appendCatalog(JSONObject catalog,int expected,int originals,
+            List<JSONObject> result,Map<String,Boolean> ids) throws Exception {
+        if(!"asterion.public-domain-unified.es.v2".equals(catalog.optString("schema"))
+                ||!"es".equals(catalog.optString("idioma"))
+                ||catalog.optBoolean("multimedia_incluida",true)
+                ||catalog.optInt("originales",-1)!=originals
+                ||catalog.optInt("nuevos",-1)!=expected-originals)
+            throw new IllegalArgumentException("Contrato del catálogo no válido");
+        JSONArray array=catalog.getJSONArray("ejercicios");
         if(array.length()!=expected)throw new IllegalArgumentException("Cantidad incompleta");
-        ArrayList<JSONObject> result=new ArrayList<>(expected);
         for(int i=0;i<array.length();i++){
             JSONObject entry=array.getJSONObject(i);
+            String id=entry.optString("id");
             if(entry.optString("nombre_es").isEmpty()
                     ||entry.optJSONArray("instrucciones_es")==null
                     ||entry.optBoolean("gif_incluido",true)
-                    ||entry.optBoolean("apto_para_rutinas_automaticas",true))
+                    ||entry.optBoolean("imagen_incluida",true)
+                    ||entry.optBoolean("apto_para_rutinas_automaticas",true)
+                    ||!id.matches("[a-z0-9_-]+")
+                    ||ids.put(id,Boolean.TRUE)!=null)
                 throw new IllegalArgumentException("Ficha de importación inválida");
             result.add(entry);
         }
-        result.sort(Comparator.comparing(j->
-                ("asterion".equals(j.optString("origen"))?"0":"1")
-                        +j.optString("id")));
-        return result;
     }
 
     private void refresh() {
@@ -231,7 +253,7 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         details(sorted.get(new Random(seed).nextInt(sorted.size())));
     }
 
-    private Map<String,JSONObject> loadMotionSpecs() throws Exception {
+    private Map<String,JSONObject> loadMotionSpecs(List<JSONObject> exercises) throws Exception {
         byte[] bytes;
         try(InputStream stream=getAssets().open(MOTION_ASSET);
             ByteArrayOutputStream buffer=new ByteArrayOutputStream()) {
@@ -241,21 +263,29 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
             bytes=buffer.toByteArray();
         }
         JSONObject manifest=new JSONObject(new String(bytes,StandardCharsets.UTF_8));
-        if(!"asterion.exercise-motion.es.v1".equals(manifest.optString("schema"))
-                ||manifest.optInt("total")!=2104
-                ||manifest.optInt("gifs_pendientes")<0
-                ||manifest.optInt("gifs_pendientes")>2104)
-            throw new IllegalArgumentException("Contrato de GIF y variantes incompleto");
+        if(!"asterion.exercise-motion.es.v2".equals(manifest.optString("schema"))
+                ||manifest.optInt("total")!=EXERCISE_COUNT
+                ||manifest.optInt("gifs_fisicos")!=EXERCISE_COUNT
+                ||manifest.optInt("gifs_pendientes")!=0)
+            throw new IllegalArgumentException("El paquete de GIF no está completo");
         JSONArray specs=manifest.getJSONArray("ejercicios");
-        if(specs.length()!=2104)throw new IllegalArgumentException("Rutas GIF incompletas");
-        Map<String,JSONObject> records=new HashMap<>(2104);
+        if(specs.length()!=EXERCISE_COUNT)
+            throw new IllegalArgumentException("Rutas GIF incompletas");
+        Map<String,JSONObject> records=new HashMap<>(EXERCISE_COUNT);
         for(int i=0;i<specs.length();i++) {
             JSONObject entry=specs.getJSONObject(i);
             String id=entry.getString("id");
             if(!id.matches("[a-z0-9_-]+")
-                    ||!entry.optString("gif_ruta").equals("exercise_gifs/v1/"+id+".gif")
+                    ||!entry.optString("gif_ruta").equals("exercise_gifs/v10/"+id+".gif")
+                    ||entry.optBoolean("gif_validado",true)
                     ||records.put(id,entry)!=null)
                 throw new IllegalArgumentException("GIF de variante repetido o inválido: "+id);
+        }
+        if(records.size()!=exercises.size())
+            throw new IllegalArgumentException("Catálogo y GIFs no tienen el mismo tamaño");
+        for(JSONObject exercise:exercises) {
+            if(!records.containsKey(exercise.optString("id")))
+                throw new IllegalArgumentException("Falta GIF para "+exercise.optString("id"));
         }
         return records;
     }

@@ -28,7 +28,7 @@ import java.io.IOException;
  */
 public final class ExerciseMotionDetailActivity extends Activity {
     public static final String EXTRA_EXERCISE="exercise_v2_json";
-    public static final String EXTRA_MOTION_SPEC="motion_spec_v1_json";
+    public static final String EXTRA_MOTION_SPEC="motion_spec_v2_json";
     private ImageView animation;
     private boolean dark;
     private int fg;
@@ -73,7 +73,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
         String name=exercise.optString("nombre_es");
         content.addView(label(name,19,true));
         content.addView(label("ID único · "+id,12,false));
-        content.addView(label("Personaje original · anime oscuro · aura azul",12,false));
+        content.addView(label("Animación local de esta variante · técnica por verificar",12,false));
 
         // El área gráfica se ajusta al dispositivo y nunca recorta la postura.
         LinearLayout demo=column();
@@ -97,7 +97,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
 
         String path=spec.optString("gif_ruta","");
         // Exactitud: no se carga el GIF de flexión estándar para la variante diamante.
-        boolean available=path.equals("exercise_gifs/v1/"+id+".gif")
+        boolean available=path.equals("exercise_gifs/v10/"+id+".gif")
                 &&fileExists(getAssets(),path);
         if(available) {
             Uri local=Uri.parse("file:///android_asset/"+path);
@@ -123,7 +123,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
         } else {
             animation.setBackgroundColor(0xFF191F2E);
             animation.setImageDrawable(null);
-            TextView placeholder=label("GIF DE ESTA VARIANTE PENDIENTE",14,true);
+            TextView placeholder=label("GIF NO DISPONIBLE EN ESTA COMPILACIÓN",14,true);
             placeholder.setGravity(Gravity.CENTER);
             demo.addView(placeholder);
             mediaStatus.setText("No se sustituye por un ejercicio parecido.");
@@ -156,7 +156,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
     }
 
     private boolean fileExists(AssetManager assets,String file) {
-        if(!file.matches("exercise_gifs/v1/[a-z0-9_-]+\\.gif"))return false;
+        if(!file.matches("exercise_gifs/v10/[a-z0-9_-]+\\.gif"))return false;
         try(java.io.InputStream stream=assets.open(file)){return stream.read()!=-1;}
         catch(IOException missing){return false;}
     }

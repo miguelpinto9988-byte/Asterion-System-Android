@@ -56,9 +56,21 @@ dependencies {
     implementation project(':core')
     implementation project(':progress-engine')
     implementation 'androidx.activity:activity:1.11.0'
-    // GIF locales con control de ciclo de vida; nunca descargar imágenes de terceros.
+    // GIF locales por ID; descarga y verificación ocurren durante el build, no en la app.
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.6.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+}
+
+
+tasks.register('prepareExerciseGifAssets', Exec) {
+    group = 'build setup'
+    description = 'Descarga el paquete de GIF verificado y genera el manifiesto local.'
+    workingDir rootProject.projectDir
+    commandLine 'python3', 'tools/prepare_android_exercise_assets.py', '--if-missing'
+}
+
+tasks.named('preBuild').configure {
+    dependsOn tasks.named('prepareExerciseGifAssets')
 }

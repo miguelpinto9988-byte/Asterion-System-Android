@@ -1,4 +1,3 @@
-import csv
 import json
 import sys
 import unittest
@@ -7,19 +6,21 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import build_exercise_motion_specs as generator
 
+EXPECTED=2123
+
 class MotionSpecTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.result=generator.build()
         cls.entries={x["id"]:x for x in cls.result["ejercicios"]}
 
-    def test_all_2104_get_unique_gif_identities_not_fake_assets(self):
-        self.assertEqual(2104,len(self.entries))
+    def test_all_2123_have_unique_asset_paths_without_fake_approval(self):
+        self.assertEqual(EXPECTED,len(self.entries))
         self.assertEqual(0,self.result["gifs_producidos_por_este_importador"])
-        self.assertEqual(2104-self.result["gifs_fisicos"],self.result["gifs_pendientes"])
-        self.assertEqual(2104,len(set(x["gif_ruta"] for x in self.entries.values())))
+        self.assertEqual(EXPECTED-self.result["gifs_fisicos"],self.result["gifs_pendientes"])
+        self.assertEqual(EXPECTED,len(set(x["gif_ruta"] for x in self.entries.values())))
         for id,record in self.entries.items():
-            self.assertEqual("exercise_gifs/v1/"+id+".gif",record["gif_ruta"])
+            self.assertEqual("exercise_gifs/v10/"+id+".gif",record["gif_ruta"])
             self.assertFalse(record["gif_validado"])
             self.assertIn(record["gif_estado"],
                           ("pendiente_produccion","archivo_presente_pendiente_revision"))
@@ -46,7 +47,7 @@ class MotionSpecTest(unittest.TestCase):
     def test_originals_and_new_variants_are_conserved(self):
         original=sum(1 for x in self.entries.values() if x["origen"]=="asterion")
         self.assertEqual(1257,original)
-        self.assertEqual(847,len(self.entries)-original)
+        self.assertEqual(866,len(self.entries)-original)
         self.assertEqual(
             {"tren_superior","tren_inferior","tren_central","movilidad","cardio"},
             set(self.result["categorias"]))
