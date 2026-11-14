@@ -53,7 +53,7 @@ Barbell_Hack_Squat,Barbell Hack Squat,tren_inferior,nuevo_por_evaluar,,sin_solap
 Barbell_Hip_Thrust,Barbell Hip Thrust,tren_inferior,duplicado_verificado,hip_thrust_v06,equivalencia_individual
 Barbell_Incline_Bench_Press_-_Medium_Grip,Barbell Incline Bench Press - Medium Grip,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Barbell_Incline_Shoulder_Raise,Barbell Incline Shoulder Raise,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Barbell_Lunge,Barbell Lunge,tren_inferior,posible_duplicado,zancada_estatica_v06,familia_categoria_material_y_modificadores
+Barbell_Lunge,Barbell Lunge,tren_inferior,nuevo_por_evaluar,zancada_estatica_v06,auditoria_individual: Zancada con paso adelante y retorno frente a posición dividida estática
 Barbell_Rear_Delt_Row,Barbell Rear Delt Row,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Barbell_Rollout_from_Bench,Barbell Rollout from Bench,tren_central,nuevo_por_evaluar,,sin_solapamiento_detectado
 Barbell_Seated_Calf_Raise,Barbell Seated Calf Raise,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
@@ -76,7 +76,7 @@ Bench_Press_-_With_Bands,Bench Press - With Bands,tren_superior,nuevo_por_evalua
 Bench_Press_with_Chains,Bench Press with Chains,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Bench_Sprint,Bench Sprint,cardio,nuevo_por_evaluar,,movimiento_sin_candidato
 Bent-Arm_Barbell_Pullover,Bent-Arm Barbell Pullover,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Bent-Arm_Dumbbell_Pullover,Bent-Arm Dumbbell Pullover,tren_superior,posible_duplicado,dep_107_pullover_con_mancuerna_v01,familia_categoria_material_y_modificadores
+Bent-Arm_Dumbbell_Pullover,Bent-Arm Dumbbell Pullover,tren_superior,nuevo_por_evaluar,dep_107_pullover_con_mancuerna_v01,auditoria_individual: Pullover específico de codos flexionados; el original no fija ese ángulo
 Bent-Knee_Hip_Raise,Bent-Knee Hip Raise,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Bent_Over_Barbell_Row,Bent Over Barbell Row,tren_superior,duplicado_verificado,dep_013_remo_con_flexion_de_tronco_barbell_row_v01,equivalencia_individual
 Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench,Bent Over Dumbbell Rear Delt Raise With Head On Bench,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
@@ -110,7 +110,7 @@ Butt_Lift_Bridge,Butt Lift (Bridge),tren_inferior,duplicado_verificado,puente_gl
 Butterfly,Butterfly,tren_superior,nuevo_por_evaluar,,movimiento_sin_candidato
 Cable_Chest_Press,Cable Chest Press,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Cable_Crossover,Cable Crossover,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Cable_Crunch,Cable Crunch,tren_central,posible_duplicado,crunch_v06,familia_categoria_material_y_modificadores
+Cable_Crunch,Cable Crunch,tren_central,duplicado_verificado,crunch_v06,auditoria_individual: Flexión abdominal arrodillada con polea alta y cuerda
 Cable_Deadlifts,Cable Deadlifts,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Cable_Hammer_Curls_-_Rope_Attachment,Cable Hammer Curls - Rope Attachment,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Cable_Hip_Adduction,Cable Hip Adduction,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
@@ -133,8 +133,8 @@ Cable_Shoulder_Press,Cable Shoulder Press,tren_superior,nuevo_por_evaluar,,sin_s
 Cable_Shrugs,Cable Shrugs,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Cable_Wrist_Curl,Cable Wrist Curl,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Calf-Machine_Shoulder_Shrug,Calf-Machine Shoulder Shrug,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Calf_Press,Calf Press,tren_inferior,posible_duplicado,dep_029_elevacion_de_talones_en_maquina_calf_r_v01,familia_categoria_material_y_modificadores
-Calf_Press_On_The_Leg_Press_Machine,Calf Press On The Leg Press Machine,tren_inferior,posible_duplicado,dep_029_elevacion_de_talones_en_maquina_calf_r_v01,familia_categoria_material_y_modificadores
+Calf_Press,Calf Press,tren_inferior,nuevo_por_evaluar,dep_029_elevacion_de_talones_en_maquina_calf_r_v01,"auditoria_individual: Prensa de gemelos en máquina desde asiento, distinta de elevación de talones en máquina"
+Calf_Press_On_The_Leg_Press_Machine,Calf Press On The Leg Press Machine,tren_inferior,nuevo_por_evaluar,dep_029_elevacion_de_talones_en_maquina_calf_r_v01,"auditoria_individual: Empuje de plataforma en prensa de piernas, no máquina de gemelos convencional"
 Calf_Raise_On_A_Dumbbell,Calf Raise On A Dumbbell,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Calf_Raises_-_With_Bands,Calf Raises - With Bands,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Calf_Stretch_Elbows_Against_Wall,Calf Stretch Elbows Against Wall,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
@@ -190,7 +190,7 @@ Crunch_-_Legs_On_Exercise_Ball,Crunch - Legs On Exercise Ball,tren_central,nuevo
 Crunches,Crunches,tren_central,duplicado_verificado,crunch_v02,equivalencia_individual
 Cuban_Press,Cuban Press,tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Dancers_Stretch,Dancer's Stretch,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
-Dead_Bug,Dead Bug,tren_central,posible_duplicado,dead_bug_v02,familia_categoria_material_y_modificadores
+Dead_Bug,Dead Bug,tren_central,duplicado_verificado,dead_bug_v03,auditoria_individual: Extensión alterna de una pierna con tronco y brazos estabilizados
 Deadlift_with_Bands,Deadlift with Bands,tren_inferior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Deadlift_with_Chains,Deadlift with Chains,tren_inferior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Decline_Barbell_Bench_Press,Decline Barbell Bench Press,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
@@ -228,7 +228,7 @@ Dumbbell_Floor_Press,Dumbbell Floor Press,tren_superior,nuevo_por_evaluar,,sin_s
 Dumbbell_Flyes,Dumbbell Flyes,tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Dumbbell_Incline_Row,Dumbbell Incline Row,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Dumbbell_Incline_Shoulder_Raise,Dumbbell Incline Shoulder Raise,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Dumbbell_Lunges,Dumbbell Lunges,tren_inferior,posible_duplicado,zancada_estatica_v05,familia_categoria_material_y_modificadores
+Dumbbell_Lunges,Dumbbell Lunges,tren_inferior,nuevo_por_evaluar,zancada_estatica_v05,"auditoria_individual: Zancada con paso y retorno, diferente de zancada estática con mancuernas"
 Dumbbell_Lying_One-Arm_Rear_Lateral_Raise,Dumbbell Lying One-Arm Rear Lateral Raise,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Dumbbell_Lying_Pronation,Dumbbell Lying Pronation,tren_superior,nuevo_por_evaluar,,movimiento_sin_candidato
 Dumbbell_Lying_Rear_Lateral_Raise,Dumbbell Lying Rear Lateral Raise,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
@@ -242,7 +242,7 @@ Dumbbell_Rear_Lunge,Dumbbell Rear Lunge,tren_inferior,nuevo_por_evaluar,,sin_sol
 Dumbbell_Scaption,Dumbbell Scaption,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Dumbbell_Seated_Box_Jump,Dumbbell Seated Box Jump,cardio,nuevo_por_evaluar,,sin_solapamiento_detectado
 Dumbbell_Seated_One-Leg_Calf_Raise,Dumbbell Seated One-Leg Calf Raise,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Dumbbell_Shoulder_Press,Dumbbell Shoulder Press,tren_superior,posible_duplicado,press_hombros_v02,familia_categoria_material_y_modificadores
+Dumbbell_Shoulder_Press,Dumbbell Shoulder Press,tren_superior,duplicado_verificado,press_hombros_v02,auditoria_individual: Press bilateral sentado en banco con respaldo y mancuernas
 Dumbbell_Shrug,Dumbbell Shrug,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Dumbbell_Side_Bend,Dumbbell Side Bend,tren_central,nuevo_por_evaluar,,sin_solapamiento_detectado
 Dumbbell_Squat,Dumbbell Squat,tren_inferior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
@@ -394,7 +394,7 @@ Knee_Circles,Knee Circles,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectad
 Knee_Hip_Raise_On_Parallel_Bars,Knee/Hip Raise On Parallel Bars,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Knee_Tuck_Jump,Knee Tuck Jump,cardio,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Kneeling_Arm_Drill,Kneeling Arm Drill,cardio,nuevo_por_evaluar,,movimiento_sin_candidato
-Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists,Kneeling Cable Crunch With Alternating Oblique Twists,tren_central,posible_duplicado,crunch_v06,familia_categoria_material_y_modificadores
+Kneeling_Cable_Crunch_With_Alternating_Oblique_Twists,Kneeling Cable Crunch With Alternating Oblique Twists,tren_central,nuevo_por_evaluar,crunch_v06,auditoria_individual: Añade rotaciones oblicuas alternas al crunch arrodillado
 Kneeling_Cable_Triceps_Extension,Kneeling Cable Triceps Extension,tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Kneeling_Forearm_Stretch,Kneeling Forearm Stretch,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
 Kneeling_High_Pulley_Row,Kneeling High Pulley Row,tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
@@ -418,9 +418,9 @@ Leg_Pull-In,Leg Pull-In,tren_central,nuevo_por_evaluar,,sin_solapamiento_detecta
 Leverage_Chest_Press,Leverage Chest Press,tren_superior,duplicado_verificado,press_pecho_v02,equivalencia_individual
 Leverage_Deadlift,Leverage Deadlift,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Leverage_Decline_Chest_Press,Leverage Decline Chest Press,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Leverage_High_Row,Leverage High Row,tren_superior,posible_duplicado,remo_v03,familia_categoria_material_y_modificadores
+Leverage_High_Row,Leverage High Row,tren_superior,nuevo_por_evaluar,remo_v03,auditoria_individual: Remo alto desde asas superiores; trayectoria diferente de remo con apoyo de pecho
 Leverage_Incline_Chest_Press,Leverage Incline Chest Press,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Leverage_Iso_Row,Leverage Iso Row,tren_superior,posible_duplicado,remo_v03,familia_categoria_material_y_modificadores
+Leverage_Iso_Row,Leverage Iso Row,tren_superior,nuevo_por_evaluar,remo_v03,"auditoria_individual: Remo independiente a altura de pecho, diferente de máquina de apoyo genérica"
 Leverage_Shoulder_Press,Leverage Shoulder Press,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Leverage_Shrug,Leverage Shrug,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Linear_3-Part_Start_Technique,Linear 3-Part Start Technique,cardio,nuevo_por_evaluar,,movimiento_sin_candidato
@@ -430,7 +430,7 @@ Log_Lift,Log Lift,tren_superior,nuevo_por_evaluar,,movimiento_sin_candidato
 London_Bridges,London Bridges,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Looking_At_Ceiling,Looking At Ceiling,movilidad,nuevo_por_evaluar,,movimiento_sin_candidato
 Low_Cable_Crossover,Low Cable Crossover,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Low_Cable_Triceps_Extension,Low Cable Triceps Extension,tren_superior,posible_duplicado,extension_triceps_v03,familia_categoria_material_y_modificadores
+Low_Cable_Triceps_Extension,Low Cable Triceps Extension,tren_superior,nuevo_por_evaluar,extension_triceps_v03,auditoria_individual: Extensión de tríceps supina con polea baja versus polea con cuerda en posición erguida
 Low_Pulley_Row_To_Neck,Low Pulley Row To Neck,tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Lower_Back-SMR,Lower Back-SMR,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
 Lower_Back_Curl,Lower Back Curl,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
@@ -608,11 +608,11 @@ Rocky_Pull-Ups_Pulldowns,Rocky Pull-Ups/Pulldowns,tren_superior,nuevo_por_evalua
 Romanian_Deadlift,Romanian Deadlift,tren_inferior,duplicado_verificado,peso_muerto_rumano_v06,equivalencia_individual
 Romanian_Deadlift_from_Deficit,Romanian Deadlift from Deficit,tren_inferior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Rope_Climb,Rope Climb,tren_superior,nuevo_por_evaluar,,movimiento_sin_candidato
-Rope_Crunch,Rope Crunch,tren_central,posible_duplicado,crunch_v06,familia_categoria_material_y_modificadores
+Rope_Crunch,Rope Crunch,tren_central,duplicado_verificado,crunch_v06,auditoria_individual: Mismo crunch arrodillado con cuerda en polea alta
 Rope_Jumping,Rope Jumping,cardio,nuevo_por_evaluar,,sin_solapamiento_detectado
 Rope_Straight-Arm_Pulldown,Rope Straight-Arm Pulldown,tren_superior,nuevo_por_evaluar,,movimiento_sin_candidato
 Round_The_World_Shoulder_Stretch,Round The World Shoulder Stretch,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
-Rowing_Stationary,"Rowing, Stationary",cardio,posible_duplicado,dep_043_remo_adaptado_en_maquina_v01,familia_categoria_material_y_modificadores
+Rowing_Stationary,"Rowing, Stationary",cardio,duplicado_verificado,remo_ergometro_v02,auditoria_individual: Remo cíclico en ergómetro; Asterion ya tiene la misma modalidad y patrón
 Runners_Stretch,Runner's Stretch,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
 Running_Treadmill,"Running, Treadmill",cardio,nuevo_por_evaluar,,sin_solapamiento_detectado
 Russian_Twist,Russian Twist,tren_central,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
@@ -625,7 +625,7 @@ Seated_Barbell_Military_Press,Seated Barbell Military Press,tren_superior,nuevo_
 Seated_Barbell_Twist,Seated Barbell Twist,tren_central,nuevo_por_evaluar,,sin_solapamiento_detectado
 Seated_Bent-Over_One-Arm_Dumbbell_Triceps_Extension,Seated Bent-Over One-Arm Dumbbell Triceps Extension,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Seated_Bent-Over_Rear_Delt_Raise,Seated Bent-Over Rear Delt Raise,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension,Seated Bent-Over Two-Arm Dumbbell Triceps Extension,tren_superior,posible_duplicado,extension_triceps_v04,familia_categoria_material_y_modificadores
+Seated_Bent-Over_Two-Arm_Dumbbell_Triceps_Extension,Seated Bent-Over Two-Arm Dumbbell Triceps Extension,tren_superior,nuevo_por_evaluar,extension_triceps_v04,auditoria_individual: Tronco inclinado en banco y brazos hacia atrás frente a extensión sentada genérica
 Seated_Biceps,Seated Biceps,movilidad,nuevo_por_evaluar,,movimiento_sin_candidato
 Seated_Cable_Rows,Seated Cable Rows,tren_superior,nuevo_por_evaluar,,movimiento_sin_candidato
 Seated_Cable_Shoulder_Press,Seated Cable Shoulder Press,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
@@ -633,10 +633,10 @@ Seated_Calf_Raise,Seated Calf Raise,tren_inferior,nuevo_por_evaluar,,diferente_p
 Seated_Calf_Stretch,Seated Calf Stretch,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
 Seated_Close-Grip_Concentration_Barbell_Curl,Seated Close-Grip Concentration Barbell Curl,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Seated_Dumbbell_Curl,Seated Dumbbell Curl,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Seated_Dumbbell_Inner_Biceps_Curl,Seated Dumbbell Inner Biceps Curl,tren_superior,posible_duplicado,curl_biceps_v02,familia_categoria_material_y_modificadores
+Seated_Dumbbell_Inner_Biceps_Curl,Seated Dumbbell Inner Biceps Curl,tren_superior,nuevo_por_evaluar,curl_biceps_v02,auditoria_individual: Curl hacia fuera con rotación específica frente a curl sentado genérico
 Seated_Dumbbell_Palms-Down_Wrist_Curl,Seated Dumbbell Palms-Down Wrist Curl,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Seated_Dumbbell_Palms-Up_Wrist_Curl,Seated Dumbbell Palms-Up Wrist Curl,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Seated_Dumbbell_Press,Seated Dumbbell Press,tren_superior,posible_duplicado,press_hombros_v04,familia_categoria_material_y_modificadores
+Seated_Dumbbell_Press,Seated Dumbbell Press,tren_superior,duplicado_verificado,press_hombros_v02,auditoria_individual: Press sentado con mancuernas sin rotación; no es press Arnold v04
 Seated_Flat_Bench_Leg_Pull-In,Seated Flat Bench Leg Pull-In,tren_central,nuevo_por_evaluar,,sin_solapamiento_detectado
 Seated_Floor_Hamstring_Stretch,Seated Floor Hamstring Stretch,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
 Seated_Front_Deltoid,Seated Front Deltoid,movilidad,nuevo_por_evaluar,,movimiento_sin_candidato
@@ -653,7 +653,7 @@ Seated_One-arm_Cable_Pulley_Rows,Seated One-arm Cable Pulley Rows,tren_superior,
 Seated_Overhead_Stretch,Seated Overhead Stretch,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
 Seated_Palm-Up_Barbell_Wrist_Curl,Seated Palm-Up Barbell Wrist Curl,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Seated_Palms-Down_Barbell_Wrist_Curl,Seated Palms-Down Barbell Wrist Curl,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Seated_Side_Lateral_Raise,Seated Side Lateral Raise,tren_superior,posible_duplicado,elevacion_lateral_v03,familia_categoria_material_y_modificadores
+Seated_Side_Lateral_Raise,Seated Side Lateral Raise,tren_superior,duplicado_verificado,elevacion_lateral_v04,"auditoria_individual: Elevación lateral sentada con mancuernas, variante exacta ya presente"
 Seated_Triceps_Press,Seated Triceps Press,tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Seated_Two-Arm_Palms-Up_Low-Pulley_Wrist_Curl,Seated Two-Arm Palms-Up Low-Pulley Wrist Curl,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 See-Saw_Press_Alternating_Side_Press,See-Saw Press (Alternating Side Press),tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
@@ -753,13 +753,13 @@ Standing_Bradford_Press,Standing Bradford Press,tren_superior,nuevo_por_evaluar,
 Standing_Cable_Chest_Press,Standing Cable Chest Press,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Standing_Cable_Lift,Standing Cable Lift,tren_central,nuevo_por_evaluar,,movimiento_sin_candidato
 Standing_Cable_Wood_Chop,Standing Cable Wood Chop,tren_central,nuevo_por_evaluar,,movimiento_sin_candidato
-Standing_Calf_Raises,Standing Calf Raises,tren_inferior,posible_duplicado,dep_029_elevacion_de_talones_en_maquina_calf_r_v01,familia_categoria_material_y_modificadores
+Standing_Calf_Raises,Standing Calf Raises,tren_inferior,duplicado_verificado,dep_029_elevacion_de_talones_en_maquina_calf_r_v01,auditoria_individual: Elevación de talones de pie en máquina de gemelos
 Standing_Concentration_Curl,Standing Concentration Curl,tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Standing_Dumbbell_Calf_Raise,Standing Dumbbell Calf Raise,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Standing_Dumbbell_Press,Standing Dumbbell Press,tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Standing_Dumbbell_Reverse_Curl,Standing Dumbbell Reverse Curl,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Standing_Dumbbell_Straight-Arm_Front_Delt_Raise_Above_Head,Standing Dumbbell Straight-Arm Front Delt Raise Above Head,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
-Standing_Dumbbell_Triceps_Extension,Standing Dumbbell Triceps Extension,tren_superior,posible_duplicado,extension_triceps_v06,familia_categoria_material_y_modificadores
+Standing_Dumbbell_Triceps_Extension,Standing Dumbbell Triceps Extension,tren_superior,nuevo_por_evaluar,extension_triceps_v06,auditoria_individual: Posición de pie y una mancuerna a dos manos; el original no confirma esa combinación
 Standing_Dumbbell_Upright_Row,Standing Dumbbell Upright Row,tren_superior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
 Standing_Elevated_Quad_Stretch,Standing Elevated Quad Stretch,movilidad,nuevo_por_evaluar,,sin_solapamiento_detectado
 Standing_Front_Barbell_Raise_Over_Head,Standing Front Barbell Raise Over Head,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
@@ -792,10 +792,10 @@ Star_Jump,Star Jump,cardio,nuevo_por_evaluar,,diferente_por_descriptores_mecanic
 Step-up_with_Knee_Raise,Step-up with Knee Raise,tren_inferior,nuevo_por_evaluar,,sin_solapamiento_detectado
 Step_Mill,Step Mill,cardio,nuevo_por_evaluar,,movimiento_sin_candidato
 Stiff-Legged_Barbell_Deadlift,Stiff-Legged Barbell Deadlift,tren_inferior,nuevo_por_evaluar,,diferente_por_descriptores_mecanicos
-Stiff-Legged_Dumbbell_Deadlift,Stiff-Legged Dumbbell Deadlift,tren_inferior,posible_duplicado,peso_muerto_v03,familia_categoria_material_y_modificadores
+Stiff-Legged_Dumbbell_Deadlift,Stiff-Legged Dumbbell Deadlift,tren_inferior,nuevo_por_evaluar,peso_muerto_v03,auditoria_individual: Bisagra con rodillas casi fijas frente a peso muerto con mancuerna genérico
 Stiff_Leg_Barbell_Good_Morning,Stiff Leg Barbell Good Morning,tren_central,nuevo_por_evaluar,,movimiento_sin_candidato
 Stomach_Vacuum,Stomach Vacuum,movilidad,nuevo_por_evaluar,,movimiento_sin_candidato
-Straight-Arm_Dumbbell_Pullover,Straight-Arm Dumbbell Pullover,tren_superior,posible_duplicado,dep_107_pullover_con_mancuerna_v01,familia_categoria_material_y_modificadores
+Straight-Arm_Dumbbell_Pullover,Straight-Arm Dumbbell Pullover,tren_superior,nuevo_por_evaluar,dep_107_pullover_con_mancuerna_v01,"auditoria_individual: Pullover específico de brazos extendidos, no equivalente al de codos flexionados"
 Straight-Arm_Pulldown,Straight-Arm Pulldown,tren_superior,nuevo_por_evaluar,,movimiento_sin_candidato
 Straight_Bar_Bench_Mid_Rows,Straight Bar Bench Mid Rows,tren_superior,nuevo_por_evaluar,,movimiento_sin_candidato
 Straight_Raises_on_Incline_Bench,Straight Raises on Incline Bench,tren_superior,nuevo_por_evaluar,,sin_solapamiento_detectado
