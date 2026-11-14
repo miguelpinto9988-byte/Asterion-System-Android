@@ -26,6 +26,9 @@ class MotionSpecTest(unittest.TestCase):
 
     def test_all_variants_have_unique_mp4_paths_and_honest_status(self):
         self.assertEqual("mp4_h264",self.result["formato_preferido"])
+        self.assertEqual("solo_mp4_no_generar_gif",self.result["politica_multimedia"])
+        self.assertEqual(640,self.result["formato_mp4_recomendado"]["ancho_px"])
+        self.assertEqual(360,self.result["formato_mp4_recomendado"]["alto_px"])
         self.assertEqual(2104-self.result["videos_mp4_fisicos"],
                          self.result["videos_mp4_pendientes"])
         all_paths={x["mp4_ruta"] for x in self.entries.values()}
