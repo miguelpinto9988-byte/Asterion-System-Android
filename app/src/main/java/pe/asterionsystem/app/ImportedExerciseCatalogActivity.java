@@ -1,6 +1,7 @@
 package pe.asterionsystem.app;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -37,6 +40,7 @@ import org.json.JSONObject;
  */
 public final class ImportedExerciseCatalogActivity extends ComponentActivity {
     private static final String ASSET="unified_exercises/v2/catalogo_es.json";
+    private static final String MOTION_ASSET="exercise_gifs/v1/specs_es.json";
     private static final String[] CATEGORIES={
             "Todas las categorías","Tren superior","Tren central",
             "Tren inferior","Movilidad","Cardio"};
@@ -47,6 +51,7 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
     private final ExecutorService executor=Executors.newSingleThreadExecutor();
     private final List<JSONObject> items=new ArrayList<>();
     private final List<JSONObject> matches=new ArrayList<>();
+    private final Map<String,JSONObject> motionSpecs=new HashMap<>();
     private LinearLayout list;
     private TextView summary;
     private EditText search;
@@ -69,9 +74,9 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
                 +"Las variantes nuevas proceden de datos de dominio público y "
                 +"tienen nombre descriptivo en español. Su nivel debe revisarse "
                 +"antes de incluirlas en propuestas automáticas.",13));
-        root.addView(text("Las demostraciones anteriores han sido retiradas. "
-                +"Las animaciones nuevas se podrán añadir como creaciones propias "
-                +"en una versión posterior.",12));
+        root.addView(text("Cada variante tiene un cuadro técnico propio "
+                +"y una ruta GIF exclusiva. Cuando aún no exista su GIF, "
+                +"se indica claramente en la ficha.",12));
         search=new EditText(this);
         search.setSingleLine(true);
         search.setHint("Buscar un ejercicio en español");
@@ -113,10 +118,13 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         executor.execute(()->{
             try {
                 List<JSONObject> parsed=load();
+                Map<String,JSONObject> parsedSpecs=loadMotionSpecs();
                 runOnUiThread(()->{
                     if(closed||isFinishing())return;
                     items.clear();
                     items.addAll(parsed);
+                    motionSpecs.clear();
+                    motionSpecs.putAll(parsedSpecs);
                     refresh();
                 });
             } catch(Exception error) {
@@ -192,7 +200,7 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         summary.setText(matches.size()+" coincidencias. Catálogo: "
                 +originalCount+" originales y "
                 +(items.size()-originalCount)+" incorporados sin coincidencia probable. "
-                +"Los posibles duplicados siguen en revisión.");
+                +"Cada variante dispone de una ficha de especificaciones.");
         if(matches.isEmpty()){
             list.addView(text("No hay coincidencias. Prueba otra categoría.",14));
             return;
@@ -223,41 +231,50 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         details(sorted.get(new Random(seed).nextInt(sorted.size())));
     }
 
-    private void details(JSONObject x) {
-        StringBuilder out=new StringBuilder();
-        boolean original="asterion".equals(x.optString("origen"));
-        out.append("Origen: ").append(original?"Asterion original":"Nuevo · dominio público")
-                .append("\nCategoría: ").append(spanishCategory(x.optString("categoria")))
-                .append("\nRegión: ").append(x.optString("region_es"))
-                .append("\nMaterial: ").append(x.optString("material_es"))
-                .append("\nNivel técnico: ")
-                .append(original?x.optString("nivel_tecnico"):"pendiente de revisión")
-                .append("\n\nINFORMACIÓN\n");
-        if(!original)out.append("\nLas siguientes son pautas editoriales generales "
-                +"en español, aún no verificadas ejercicio por ejercicio. "
-                +"No son una guía práctica certificada ni una propuesta automática.")
-                .append("\nFuente técnica: Free Exercise DB (Unlicense).")
-                .append("\nPasos originales de referencia: ")
-                .append(x.optInt("pasos_fuente_cantidad",0))
-                .append("\n");
-
-        JSONArray steps=x.optJSONArray("instrucciones_es");
-        if(steps!=null && steps.length()>0) {
-            for(int i=0;i<steps.length();i++)
-                out.append("\n").append(i+1).append(". ")
-                        .append(steps.optString(i));
-        } else {
-            out.append("\n").append(x.optString("descripcion_es",
-                    "Información técnica pendiente de revisión."));
+    private Map<String,JSONObject> loadMotionSpecs() throws Exception {
+        byte[] bytes;
+        try(InputStream stream=getAssets().open(MOTION_ASSET);
+            ByteArrayOutputStream buffer=new ByteArrayOutputStream()) {
+            byte[] part=new byte[16384];
+            int read;
+            while((read=stream.read(part))!=-1) buffer.write(part,0,read);
+            bytes=buffer.toByteArray();
         }
-        if(!original)out.append("\n\nAnimación propia pendiente de creación.");
-        else out.append("\n\nDemostración 2D antigua retirada.");
-        out.append("\n\nConsulta informativa; no es una instrucción obligatoria.");
-        new AlertDialog.Builder(this)
-                .setTitle(x.optString("nombre_es"))
-                .setMessage(out.toString())
-                .setPositiveButton("Cerrar",null)
-                .show();
+        JSONObject manifest=new JSONObject(new String(bytes,StandardCharsets.UTF_8));
+        if(!"asterion.exercise-motion.es.v1".equals(manifest.optString("schema"))
+                ||manifest.optInt("total")!=2104
+                ||manifest.optInt("gifs_pendientes")<0
+                ||manifest.optInt("gifs_pendientes")>2104)
+            throw new IllegalArgumentException("Contrato de GIF y variantes incompleto");
+        JSONArray specs=manifest.getJSONArray("ejercicios");
+        if(specs.length()!=2104)throw new IllegalArgumentException("Rutas GIF incompletas");
+        Map<String,JSONObject> records=new HashMap<>(2104);
+        for(int i=0;i<specs.length();i++) {
+            JSONObject entry=specs.getJSONObject(i);
+            String id=entry.getString("id");
+            if(!id.matches("[a-z0-9_-]+")
+                    ||!entry.optString("gif_ruta").equals("exercise_gifs/v1/"+id+".gif")
+                    ||records.put(id,entry)!=null)
+                throw new IllegalArgumentException("GIF de variante repetido o inválido: "+id);
+        }
+        return records;
+    }
+
+    private void details(JSONObject x) {
+        JSONObject spec=motionSpecs.get(x.optString("id"));
+        if(spec==null) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Ficha no disponible")
+                    .setMessage("El cuadro técnico de esta variante no se ha cargado. "
+                            +"No se mostrará una demostración de otro ejercicio.")
+                    .setPositiveButton("Cerrar",null)
+                    .show();
+            return;
+        }
+        Intent details=new Intent(this,ExerciseMotionDetailActivity.class);
+        details.putExtra(ExerciseMotionDetailActivity.EXTRA_EXERCISE,x.toString());
+        details.putExtra(ExerciseMotionDetailActivity.EXTRA_MOTION_SPEC,spec.toString());
+        startActivity(details);
     }
 
     private String spanishCategory(String id) {

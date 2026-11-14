@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - feature/unificar-catalogos-y-retirar-avatar-20261113
+      - feature/gifs-por-variante-y-fichas-moviles-20261114
       # Stacked feature PR is based on the catalog PR, not yet on main.
       - feature/rutinas-calendario-aleatoriedad-20261111
       - feature/avatar-2d-nativo-android-20261111
@@ -73,6 +74,14 @@ jobs:
           # intentaba instalar el paquete obsoleto 'tools'; por eso se omite.
           yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses >/dev/null || true
           "$SDKMANAGER" --sdk_root="$SDK_ROOT" 'platforms;android-36' 'build-tools;35.0.0'
+
+      - name: Preparar cuadros de variante para el visor móvil
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/build_exercise_motion_specs.py
+          python3 -m unittest discover -s tools -p test_exercise_motion_specs.py -v
+          python3 tools/validate_exercise_gifs.py
 
       - name: Verificar recursos XML y contratos de fase 03/16 sin compilar
         shell: bash

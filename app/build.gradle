@@ -56,6 +56,8 @@ dependencies {
     implementation project(':core')
     implementation project(':progress-engine')
     implementation 'androidx.activity:activity:1.11.0'
+    // GIF locales con control de ciclo de vida; nunca descargar imágenes de terceros.
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.6.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
