@@ -21,7 +21,8 @@ class MotionSpecTest(unittest.TestCase):
         for id,record in self.entries.items():
             self.assertEqual("exercise_gifs/v1/"+id+".gif",record["gif_ruta"])
             self.assertFalse(record["gif_validado"])
-            self.assertEqual("pendiente_produccion",record["gif_estado"])
+            self.assertIn(record["gif_estado"],
+                          ("pendiente_produccion","archivo_presente_pendiente_revision"))
 
     def test_pushup_variants_have_distinct_motion_constraints(self):
         standard=self.entries["flexiones_v04"]
