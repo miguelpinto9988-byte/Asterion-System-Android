@@ -296,7 +296,6 @@ def build(source_rows):
         variants.append({"variant_id":id,"type_id":"pd_t_"+id[5:],
             "name":e["nombre_es"][:115],"level":"0",
             "equipment":e["material_cod"],"execution":"consulta","supervision":"1"})
-        intensities.append({"variant_id":id,"intensity":"alta"})
         unit="SECONDS" if e["categoria"]=="movilidad" else "REPETITIONS"
         volumes.append({"variant_id":id,"unit":unit,"initial_sets":"1",
           "initial_value":"10" if unit=="SECONDS" else "5","minimum_value":"1",
