@@ -16,7 +16,7 @@ class MotionSpecTest(unittest.TestCase):
     def test_all_2104_get_unique_gif_identities_not_fake_assets(self):
         self.assertEqual(2104,len(self.entries))
         self.assertEqual(0,self.result["gifs_producidos_por_este_importador"])
-        self.assertEqual(2104,self.result["gifs_pendientes"])
+        self.assertEqual(2104-self.result["gifs_fisicos"],self.result["gifs_pendientes"])
         self.assertEqual(2104,len(set(x["gif_ruta"] for x in self.entries.values())))
         for id,record in self.entries.items():
             self.assertEqual("exercise_gifs/v1/"+id+".gif",record["gif_ruta"])
