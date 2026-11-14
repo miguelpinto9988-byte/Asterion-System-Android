@@ -373,6 +373,16 @@ def build(source_rows):
             "material_cod":EQUIPMENT[item["equipment"]][0],
             "nivel_tecnico":"pendiente_revision",
             "nivel_fuente_orientativo":item["level"],
+            "musculos_secundarios_es":[MUSCLES[m][1]
+                for m in item.get("secondaryMuscles",[]) if m in MUSCLES],
+            "patron_movimiento_es":{
+                "push":"empuje","pull":"tracción","static":"estático"
+            }.get(item.get("force"),"por determinar"),
+            "mecanica_es":{
+                "compound":"compuesto","isolation":"aislado"
+            }.get(item.get("mechanic"),"por determinar"),
+            "nombre_fuente_dominio_publico":item["name"],
+            "animacion_propia_esperada":"animaciones/"+code+".gif",
             "apto_para_rutinas_automaticas":False,
             "instrucciones_es":[],
             "descripcion_es":("Movimiento enfocado en "+MUSCLES[muscle][1]+
