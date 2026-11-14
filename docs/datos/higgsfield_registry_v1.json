@@ -9,7 +9,7 @@
     "contiene_audio": false,
     "limite_bytes": 800000
   },
-  "lotes_activos": 1,
+  "lotes_activos": 0,
   "videos_publicados_apk": 0,
   "protocolos": [
     "No asignar video sin ID identico a catalogo",
@@ -60,12 +60,12 @@
       "lote": 4,
       "id": "zancada_estatica_v03",
       "job_id": "f945a41c-5965-4118-bd60-ad4dc6a84e1b",
-      "estado": "pending",
+      "estado": "completed",
       "modelo": "seedance_2_0",
-      "url": null,
+      "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3M5xmTb4Z1ENhME0j0IjVeOiEGH/hf_20261114_151743_f945a41c-5965-4118-bd60-ad4dc6a84e1b.mp4",
       "aprobado": false,
-      "estado_revision": "pendiente_generacion",
-      "bloquea_nuevos_lotes": true,
+      "estado_revision": "pendiente_revision_visual_y_biomecanica",
+      "bloquea_nuevos_lotes": false,
       "no_reenviar_automaticamente": true
     }
   ],
@@ -134,6 +134,13 @@
         "zancada_estatica_v02"
       ],
       "observacion": "Esperar al job zancada_estatica_v03; no repetir el ID aceptado."
+    },
+    "ultimo_resultado": {
+      "id": "zancada_estatica_v03",
+      "job_id": "f945a41c-5965-4118-bd60-ad4dc6a84e1b",
+      "estado": "completed",
+      "revision": "pendiente",
+      "apk": "no_integrado"
     }
   }
 }
