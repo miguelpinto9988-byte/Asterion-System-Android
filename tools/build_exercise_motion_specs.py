@@ -83,6 +83,9 @@ def specs(x):
         "instrucciones_es":x.get("instrucciones_es",[]),
         "estado_tecnico":"orientacion_no_validada_para_gif",
         "gif_ruta":"exercise_gifs/v1/"+id+".gif",
+        "mp4_ruta":"exercise_mp4/v1/"+id+".mp4",
+        "mp4_estado":"pendiente_produccion",
+        "video_tecnica_validada":False,
         "gif_estado":"pendiente_produccion",
         "gif_validado":False,
         "nota":"No es una ficha técnica individual aprobada por profesional."
@@ -98,6 +101,11 @@ def build():
         raise ValueError("Fichas de origen repetidas o incompletas")
     if len({x["gif_ruta"] for x in rows})!=2104:
         raise ValueError("Cada variante requiere un GIF propio")
+    video_root=ROOT/"app/src/main/assets/exercise_mp4/v1"
+    video_present=sum(1 for x in rows if (video_root/(x["id"]+".mp4")).is_file())
+    for row in rows:
+        if (video_root/(row["id"]+".mp4")).is_file():
+            row["mp4_estado"]="archivo_presente_pendiente_revision"
     physically_present=sum(1 for x in rows
         if (OUT.parent/(x["id"]+".gif")).is_file())
     for row in rows:
@@ -106,11 +114,22 @@ def build():
     result={"schema":CURRENT_SCHEMA,"idioma":"es","total":2104,
         "gifs_producidos_por_este_importador":0,
         "gifs_fisicos":physically_present,
+        "videos_mp4_fisicos":video_present,
+        "videos_mp4_pendientes":2104-video_present,
+        "formato_preferido":"mp4_h264",
+        "estilo_video":"personaje_anime_original_aura_azul_gimnasio_moderno",
         "gifs_pendientes":2104-physically_present,
         "personaje":"cazador_anime_original_aura_azul",
         "formato_recomendado":{"ancho_px":480,"alto_px":640,
             "frames":12,"ms_por_frame":120,"max_bytes":800000,
             "presentacion":"adaptar_sin_recortar_en_movil"},
+        "formato_mp4_recomendado":{"codec":"h264","ancho_px":640,
+          "alto_px":360,"fps":25,"sin_audio":True,
+          "fondo":"gimnasio_moderno_estatico",
+          "bucle":True,"bytes_objetivo_max":400000,
+          "bytes_maximos":800000,"sin_interpolacion_borrosa":True},
+        "politica_multimedia":"solo_mp4_no_generar_gif",
+        "personaje_visual":"hombre_anime_original_polo_negro_aura_azul_profundo",
         "categorias":dict(sorted(Counter(x["categoria"] for x in rows).items())),
         "ejercicios":rows}
     OUT.parent.mkdir(parents=True,exist_ok=True)

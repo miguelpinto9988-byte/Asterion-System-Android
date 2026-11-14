@@ -1,0 +1,40 @@
+{
+  "schema": "asterion.produccion.mp4.16x9.lote_01",
+  "catalogo_total": 2104,
+  "estilo_aprobado": "polo_negro_aura_azul_profundo_gimnasio_estatico",
+  "formato": "mp4_h264",
+  "ancho": 640,
+  "alto": 360,
+  "fps": 25,
+  "requisitos": [
+    "movimiento_individual_por_id",
+    "sin_gif",
+    "sin_interpolacion_borrosa",
+    "sin_audio",
+    "mantener_personaje_y_gimnasio",
+    "no_reutilizar_mp4_entre_variantes",
+    "validar_tecnica_antes_publicar"
+  ],
+  "videos_prototipo_creados_en_chat": 2,
+  "videos_binarios_incorporados_en_esta_rama": 0,
+  "videos_adicionales_por_generar": 2102,
+  "fuente_binarios": "Paquete descargable del chat Asterion-Lote-16x9-Solo-MP4-Para-Importar.zip",
+  "videos": [
+    {
+      "id": "flexiones_v04",
+      "archivo": "flexiones_v04.mp4",
+      "bytes": 406791,
+      "sha256": "c0b96ec09524fb8d463df11f28b967f93df1ac80717f6a4262eb1b8a08c7d2f4",
+      "duracion_segundos": 2.56,
+      "estado": "prototipo_visual_sin_validacion_tecnica"
+    },
+    {
+      "id": "sentadilla_bilateral_v03",
+      "archivo": "sentadilla_bilateral_v03.mp4",
+      "bytes": 145908,
+      "sha256": "1df3e6bf9fdaedf15cae5a3c6a4769a9d26f34d7e46d764bee9d875bb15d1c4c",
+      "duracion_segundos": 1.44,
+      "estado": "prototipo_visual_sin_validacion_tecnica"
+    }
+  ]
+}

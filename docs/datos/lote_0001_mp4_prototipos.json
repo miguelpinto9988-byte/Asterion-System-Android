@@ -1,0 +1,74 @@
+{
+  "schema": "asterion.prototipos.mp4.lote0001.v1",
+  "total_catalogo": 2104,
+  "videos_reales_entregados_en_chat": 5,
+  "videos_en_repositorio": 0,
+  "videos_adicionales_por_producir": 2099,
+  "archivo_zip_entregado": "Asterion-5-MP4-Reales-Aura-Azul-Gimnasio.zip",
+  "nota": "El ZIP de esta conversación es la entrega de los binarios; GitHub contiene el manifiesto y el importador, pero no los MP4.",
+  "fondo": "gimnasio_moderno",
+  "personaje": "cazador_anime_original_aura_azul",
+  "aprobacion_tecnica_documentada": 0,
+  "videos": [
+    {
+      "id": "flexiones_v04",
+      "ejercicio": "Flexión de brazos estándar",
+      "archivo": "flexiones_v04.mp4",
+      "codec": "h264",
+      "resolucion": "480x640",
+      "duracion_segundos": 1.44,
+      "fotogramas": 12,
+      "tamano_bytes": 113322,
+      "sha256": "952efaf0a6cbb589ebe2da9663f58e8be9781009c53b7807363d1571cb069f5f",
+      "estado": "prototipo_visual_sin_validacion_tecnica"
+    },
+    {
+      "id": "sentadilla_bilateral_v03",
+      "ejercicio": "Sentadilla libre",
+      "archivo": "sentadilla_bilateral_v03.mp4",
+      "codec": "h264",
+      "resolucion": "480x640",
+      "duracion_segundos": 1.44,
+      "fotogramas": 12,
+      "tamano_bytes": 159841,
+      "sha256": "9f7b000006497fe6f792966ad5ce4b628680254fbf36cc046b84f7b45b0be296",
+      "estado": "prototipo_visual_sin_validacion_tecnica"
+    },
+    {
+      "id": "sentadilla_bilateral_v04",
+      "ejercicio": "Sentadilla con pausa",
+      "archivo": "sentadilla_bilateral_v04.mp4",
+      "codec": "h264",
+      "resolucion": "480x640",
+      "duracion_segundos": 2.28,
+      "fotogramas": 19,
+      "tamano_bytes": 179789,
+      "sha256": "a82ef1295c219cdf5754a8807d453d27ea9e2a07c17cafe003df80a2cb30c967",
+      "estado": "prototipo_visual_sin_validacion_tecnica"
+    },
+    {
+      "id": "puente_gluteo_v02",
+      "ejercicio": "Puente de glúteos básico",
+      "archivo": "puente_gluteo_v02.mp4",
+      "codec": "h264",
+      "resolucion": "480x640",
+      "duracion_segundos": 1.44,
+      "fotogramas": 12,
+      "tamano_bytes": 133658,
+      "sha256": "61df28cb857ff9a0c3ac0214efdb63dc1493a6e38864f0afdce50bad16218b48",
+      "estado": "prototipo_visual_sin_validacion_tecnica"
+    },
+    {
+      "id": "puente_gluteo_v03",
+      "ejercicio": "Puente de glúteos con pausa",
+      "archivo": "puente_gluteo_v03.mp4",
+      "codec": "h264",
+      "resolucion": "480x640",
+      "duracion_segundos": 2.28,
+      "fotogramas": 19,
+      "tamano_bytes": 160502,
+      "sha256": "b6cf70da8a02e8ae3bb1fb066090dedab01f5db401b0d3e4e465e683168008b1",
+      "estado": "prototipo_visual_sin_validacion_tecnica"
+    }
+  ]
+}

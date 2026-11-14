@@ -1,0 +1,71 @@
+name: Validar MP4 por variante y ficha móvil
+on:
+  push:
+    branches:
+      - feature/mp4-aura-gimnasio-2104-20261114
+    paths:
+      - 'tools/build_exercise_motion_specs.py'
+      - 'tools/test_exercise_motion_specs.py'
+      - 'tools/encode_exercise_mp4.py'
+      - 'tools/plan_exercise_mp4_batches.py'
+      - 'tools/validate_exercise_mp4.py'
+      - 'tools/import_exercise_mp4_batch.py'
+      - 'tools/test_import_exercise_mp4_batch.py'
+      - '.github/workflows/prepare-exercise-mp4.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  contract:
+    name: Validar 2104 rutas y contar vídeos reales
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generar especificaciones y ejecutar pruebas
+        run: |
+          set -euo pipefail
+          python3 tools/build_exercise_motion_specs.py
+          python3 tools/plan_exercise_mp4_batches.py
+          python3 -m unittest discover -s tools -p test_exercise_motion_specs.py -v
+          python3 tools/validate_exercise_mp4.py
+          python3 -m unittest discover -s tools -p test_import_exercise_mp4_batch.py -v
+      - name: Prohibir afirmaciones de animaciones inexistentes
+        run: |
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('app/src/main/assets/exercise_gifs/v1/specs_es.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          assert d['total']==2104
+          assert d['formato_preferido']=='mp4_h264'
+          assert len({x['mp4_ruta'] for x in d['ejercicios']})==2104
+          assert d['videos_mp4_pendientes']==2104-d['videos_mp4_fisicos']
+          assert all(not x['video_tecnica_validada'] for x in d['ejercicios'])
+          import csv
+          with open('docs/datos/produccion_mp4_por_variante.csv',encoding='utf-8') as f:
+            job=list(csv.DictReader(f))
+          assert len(job)==2104 and len({x['id'] for x in job})==2104
+          assert d['estilo_video']=='personaje_anime_original_aura_azul_gimnasio_moderno'
+          PY
+      - name: Versionar especificaciones generadas
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/exercise_gifs/v1/specs_es.json docs/datos/produccion_mp4_por_variante.csv
+          if ! git diff --cached --quiet; then
+            git commit -m 'data(mp4): generar 2104 rutas de vídeo individuales'
+            git push origin 'HEAD:${{ github.ref_name }}'
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asterion-mp4-gimnasio-2104-specs
+          path: |
+            app/src/main/assets/exercise_gifs/v1/specs_es.json
+            docs/datos/produccion_mp4_por_variante.csv
+          retention-days: 30
