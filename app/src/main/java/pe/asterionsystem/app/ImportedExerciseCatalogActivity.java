@@ -233,6 +233,14 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
                 .append("\nNivel técnico: ")
                 .append(original?x.optString("nivel_tecnico"):"pendiente de revisión")
                 .append("\n\nINFORMACIÓN\n");
+        if(!original)out.append("\nLas siguientes son pautas editoriales generales "
+                +"en español, aún no verificadas ejercicio por ejercicio. "
+                +"No son una guía práctica certificada ni una propuesta automática.")
+                .append("\nFuente técnica: Free Exercise DB (Unlicense).")
+                .append("\nPasos originales de referencia: ")
+                .append(x.optInt("pasos_fuente_cantidad",0))
+                .append("\n");
+
         JSONArray steps=x.optJSONArray("instrucciones_es");
         if(steps!=null && steps.length()>0) {
             for(int i=0;i<steps.length();i++)
