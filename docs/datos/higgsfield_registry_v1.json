@@ -9,7 +9,7 @@
     "contiene_audio": false,
     "limite_bytes": 800000
   },
-  "lotes_activos": 0,
+  "lotes_activos": 1,
   "videos_publicados_apk": 0,
   "protocolos": [
     "No asignar video sin ID identico a catalogo",
@@ -67,6 +67,18 @@
       "estado_revision": "pendiente_revision_visual_y_biomecanica",
       "bloquea_nuevos_lotes": false,
       "no_reenviar_automaticamente": true
+    },
+    {
+      "lote": 5,
+      "id": "sentadilla_bilateral_v02",
+      "job_id": "d9c43de3-e138-4246-846f-9f71506269e5",
+      "estado": "pending",
+      "modelo": "seedance_2_0",
+      "url": null,
+      "aprobado": false,
+      "estado_revision": "pendiente_generacion",
+      "bloquea_nuevos_lotes": true,
+      "no_reenviar_automaticamente": true
     }
   ],
   "prototipos_locales": [
@@ -122,18 +134,18 @@
     "criterio_reanudacion": "Siguiente lote de hasta seis variantes distintas no iniciadas, mediante modalidad ilimitada incluida y solo si el proveedor acepta; HTTP 429 implica detener el intento sin cobro.",
     "ultimo_intento": {
       "fecha": "2026-11-14",
-      "lote": 4,
+      "lote": 5,
       "solicitados": 6,
       "aceptados": 1,
       "rechazados_429": 5,
       "ids_rechazados": [
-        "sentadilla_bilateral_v02",
         "sentadilla_bilateral_v06",
         "sentadilla_bilateral_v07",
         "sentadilla_unilateral_v02",
-        "zancada_estatica_v02"
+        "zancada_estatica_v02",
+        "zancada_estatica_v04"
       ],
-      "observacion": "Esperar al job zancada_estatica_v03; no repetir el ID aceptado."
+      "observacion": "Un job activo para sentadilla asistida en pared; esperar su resultado antes de nuevo lote."
     },
     "ultimo_resultado": {
       "id": "zancada_estatica_v03",
