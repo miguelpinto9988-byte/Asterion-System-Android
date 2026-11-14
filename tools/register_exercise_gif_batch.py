@@ -72,6 +72,11 @@ def ingest(folder, manifest_path=DEFAULT_MANIFEST, stage_debug=False):
             continue
         item = by_id[identifier]
         if item.get("gif_sha256") == details["sha256"]:
+            if stage_debug:
+                dest = DEBUG_ASSETS / (identifier + ".gif")
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(path, dest)
+                item["integrado_en_apk_debug"] = True
             outcome["sin_cambios"].append(identifier)
             continue
         if details["sha256"] in known_hashes:
@@ -102,7 +107,7 @@ def ingest(folder, manifest_path=DEFAULT_MANIFEST, stage_debug=False):
     manifest["gifs_aprobados"] = sum(
         bool(x.get("tecnica_revisada")) and bool(x.get("gif_sha256")) for x in items)
     manifest["gifs_integrados_apk"] = sum(bool(x.get("integrado_en_apk")) for x in items)
-    if outcome["nuevos"]:
+    if outcome["nuevos"] or (stage_debug and outcome["sin_cambios"]):
         manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
                                  encoding="utf-8")
     return outcome
