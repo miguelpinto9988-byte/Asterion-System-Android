@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +31,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
     public static final String EXTRA_EXERCISE="exercise_v2_json";
     public static final String EXTRA_MOTION_SPEC="motion_spec_v1_json";
     private ImageView animation;
+    private OfflineExerciseMp4Player player;
     private boolean dark;
     private int fg;
     private float density;
@@ -95,11 +97,31 @@ public final class ExerciseMotionDetailActivity extends Activity {
         demo.addView(mediaStatus);
         content.addView(demo);
 
+        String mp4Path=spec.optString("mp4_ruta","");
         String path=spec.optString("gif_ruta","");
-        // Exactitud: no se carga el GIF de flexión estándar para la variante diamante.
+        boolean mp4Available=mp4Path.equals("exercise_mp4/v1/"+id+".mp4")
+                &&fileExists(getAssets(),mp4Path);
+        // Fallback GIF únicamente si no existe MP4 de este mismo ID.
         boolean available=path.equals("exercise_gifs/v1/"+id+".gif")
                 &&fileExists(getAssets(),path);
-        if(available) {
+        if(mp4Available) {
+            try {
+                player=new OfflineExerciseMp4Player(this,id,mp4Path);
+                animation.setVisibility(View.GONE);
+                demo.addView(player,0,new LinearLayout.LayoutParams(-1,displayHeight));
+                mediaStatus.setText("MP4 original de este ejercicio · técnica por verificar");
+                Button toggle=button("Pausar o reanudar MP4");
+                toggle.setOnClickListener(v->{
+                    if(player!=null)player.toggle();
+                });
+                content.addView(toggle);
+            } catch(IOException failed) {
+                mediaStatus.setText("No se puede abrir el MP4 de esta variante.");
+                animation.setVisibility(View.VISIBLE);
+                TextView pending=label("Vista previa temporalmente no disponible.",13,false);
+                demo.addView(pending);
+            }
+        } else if(available) {
             Uri local=Uri.parse("file:///android_asset/"+path);
             boolean reducedMotion=Settings.Global.getFloat(getContentResolver(),
                     Settings.Global.ANIMATOR_DURATION_SCALE,1f)==0f;
@@ -123,7 +145,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
         } else {
             animation.setBackgroundColor(0xFF191F2E);
             animation.setImageDrawable(null);
-            TextView placeholder=label("GIF DE ESTA VARIANTE PENDIENTE",14,true);
+            TextView placeholder=label("MP4 DE ESTA VARIANTE PENDIENTE",14,true);
             placeholder.setGravity(Gravity.CENTER);
             demo.addView(placeholder);
             mediaStatus.setText("No se sustituye por un ejercicio parecido.");
@@ -156,7 +178,8 @@ public final class ExerciseMotionDetailActivity extends Activity {
     }
 
     private boolean fileExists(AssetManager assets,String file) {
-        if(!file.matches("exercise_gifs/v1/[a-z0-9_-]+\\.gif"))return false;
+        if(!file.matches("(exercise_gifs/v1/[a-z0-9_-]+\\.gif)"
+                +"|(exercise_mp4/v1/[a-z0-9_-]+\\.mp4)"))return false;
         try(java.io.InputStream stream=assets.open(file)){return stream.read()!=-1;}
         catch(IOException missing){return false;}
     }
@@ -195,7 +218,16 @@ public final class ExerciseMotionDetailActivity extends Activity {
         return button;
     }
     private int dp(int px){return Math.max(1,Math.round(px*density));}
+    @Override protected void onPause() {
+        if(player!=null)player.pauseForLifecycle();
+        super.onPause();
+    }
+    @Override protected void onResume() {
+        super.onResume();
+        if(player!=null)player.resumeForLifecycle();
+    }
     @Override protected void onDestroy() {
+        if(player!=null)player.release();
         if(animation!=null)Glide.with(this).clear(animation);
         super.onDestroy();
     }
