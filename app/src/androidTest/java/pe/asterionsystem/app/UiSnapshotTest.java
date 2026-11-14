@@ -124,6 +124,8 @@ public final class UiSnapshotTest {
         Button review = findButton(routines.getWindow().getDecorView(), "Revisar rutina 1");
         if (review != null) {
             instrument.runOnMainSync(review::performClick);
+            instrument.waitForIdleSync();
+            pause(500);
             capture("22_vista_previa_rutina");
         }
         captureRoutineStep();
