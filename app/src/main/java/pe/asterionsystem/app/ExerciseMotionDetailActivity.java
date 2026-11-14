@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -99,19 +100,26 @@ public final class ExerciseMotionDetailActivity extends Activity {
         boolean available=path.equals("exercise_gifs/v1/"+id+".gif")
                 &&fileExists(getAssets(),path);
         if(available) {
-            mediaStatus.setText("Vista previa de esta variante · técnica por verificar");
             Uri local=Uri.parse("file:///android_asset/"+path);
-            Glide.with(this).asGif().load(local).into(animation);
-            Button toggle=button("Pausar o reanudar animación");
-            toggle.setOnClickListener(v->{
-                Drawable shown=animation.getDrawable();
-                if(shown instanceof GifDrawable) {
-                    GifDrawable gif=(GifDrawable)shown;
-                    if(gif.isRunning()) gif.stop();
-                    else gif.start();
-                }
-            });
-            content.addView(toggle);
+            boolean reducedMotion=Settings.Global.getFloat(getContentResolver(),
+                    Settings.Global.ANIMATOR_DURATION_SCALE,1f)==0f;
+            if(reducedMotion) {
+                mediaStatus.setText("Fotograma estático: animaciones reducidas en Android.");
+                Glide.with(this).asBitmap().load(local).into(animation);
+            } else {
+                mediaStatus.setText("Vista previa de esta variante · técnica por verificar");
+                Glide.with(this).asGif().load(local).into(animation);
+                Button toggle=button("Pausar o reanudar animación");
+                toggle.setOnClickListener(v->{
+                    Drawable shown=animation.getDrawable();
+                    if(shown instanceof GifDrawable) {
+                        GifDrawable gif=(GifDrawable)shown;
+                        if(gif.isRunning()) gif.stop();
+                        else gif.start();
+                    }
+                });
+                content.addView(toggle);
+            }
         } else {
             animation.setBackgroundColor(0xFF191F2E);
             animation.setImageDrawable(null);
