@@ -9,7 +9,7 @@
     "contiene_audio": false,
     "limite_bytes": 800000
   },
-  "lotes_activos": 1,
+  "lotes_activos": 0,
   "videos_publicados_apk": 0,
   "protocolos": [
     "No asignar video sin ID identico a catalogo",
@@ -25,7 +25,11 @@
       "estado": "waiting",
       "modelo": "seedance_2_5",
       "url": null,
-      "aprobado": false
+      "aprobado": false,
+      "estado_operativo": "apartado_por_espera_prolongada",
+      "bloquea_nuevos_lotes": false,
+      "no_reenviar_automaticamente": true,
+      "observacion": "Descartado de la tanda operativa por solicitud del usuario el 2026-11-14. El proveedor sigue informando waiting; NO se ha cancelado ni borrado remotamente ni se considera MP4 completado. Pendiente de revisión manual si alguna vez entrega resultado."
     }
   ],
   "prototipos_locales": [
@@ -69,5 +73,15 @@
       "en_git_binario": false,
       "en_apk": false
     }
-  ]
+  ],
+  "control_cola": {
+    "tanda_anterior": "apartada_operativamente",
+    "trabajo_apartado": "fb60ee94-03e8-463c-b477-8897b34fc885",
+    "id_apartado": "sentadilla_bilateral_v01",
+    "excluir_ids_de_siguientes_envios_automaticos": [
+      "sentadilla_bilateral_v01"
+    ],
+    "no_cancelado_en_higgsfield": true,
+    "criterio_reanudacion": "Siguiente lote de hasta seis variantes distintas no iniciadas, mediante modalidad ilimitada incluida y solo si el proveedor acepta; HTTP 429 implica detener el intento sin cobro."
+  }
 }
