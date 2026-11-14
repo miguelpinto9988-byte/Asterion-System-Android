@@ -246,7 +246,7 @@ def category(item):
     if item["category"]=="stretching":return "movilidad"
     if item["category"] in ("cardio","plyometrics"):return "cardio"
     # Priorizar la clasificación del gesto en compuestos claros.
-    kind=movement(item["name"])
+    kind=movement(item.get("name",""))
     if kind in ("sentadilla","zancada","peso_muerto",
                 "puente","elevacion_cadera","subida_escalon"):
         return "tren_inferior"
