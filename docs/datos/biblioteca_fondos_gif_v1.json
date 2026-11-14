@@ -1,0 +1,79 @@
+{
+  "schema": "asterion.gif.backgrounds.v1",
+  "fecha": "2026-11-14",
+  "nota": "BG_001/BG_002 son prototipos externos pendientes de incorporación; BG_003 a BG_009 son únicamente fondos planificados. Ninguno figura integrado en APK por este registro.",
+  "fondos": [
+    {
+      "id": "BG_001",
+      "nombre": "Gimnasio claro y suelo",
+      "tipo": "pie_sin_equipamiento",
+      "ruta": "exercise_backgrounds/v1/BG_001.webp",
+      "disponibilidad": "pendiente_importacion",
+      "reutilizable": true
+    },
+    {
+      "id": "BG_002",
+      "nombre": "Gimnasio azul general",
+      "tipo": "mancuernas_y_ejercicios_de_pie",
+      "ruta": "exercise_backgrounds/v1/BG_002.webp",
+      "disponibilidad": "pendiente_importacion",
+      "reutilizable": true
+    },
+    {
+      "id": "BG_003",
+      "nombre": "Zona de suelo o colchoneta",
+      "tipo": "suelo",
+      "ruta": "exercise_backgrounds/v1/BG_003.webp",
+      "disponibilidad": "por_crear",
+      "reutilizable": true
+    },
+    {
+      "id": "BG_004",
+      "nombre": "Zona de banco",
+      "tipo": "banco",
+      "ruta": "exercise_backgrounds/v1/BG_004.webp",
+      "disponibilidad": "por_crear",
+      "reutilizable": true
+    },
+    {
+      "id": "BG_005",
+      "nombre": "Zona de silla",
+      "tipo": "silla",
+      "ruta": "exercise_backgrounds/v1/BG_005.webp",
+      "disponibilidad": "por_crear",
+      "reutilizable": true
+    },
+    {
+      "id": "BG_006",
+      "nombre": "Rack y barra",
+      "tipo": "rack_barra",
+      "ruta": "exercise_backgrounds/v1/BG_006.webp",
+      "disponibilidad": "por_crear",
+      "reutilizable": true
+    },
+    {
+      "id": "BG_007",
+      "nombre": "Poleas y maquinas",
+      "tipo": "polea_maquina",
+      "ruta": "exercise_backgrounds/v1/BG_007.webp",
+      "disponibilidad": "por_crear",
+      "reutilizable": true
+    },
+    {
+      "id": "BG_008",
+      "nombre": "Zona de escalones y plataforma",
+      "tipo": "escalon",
+      "ruta": "exercise_backgrounds/v1/BG_008.webp",
+      "disponibilidad": "por_crear",
+      "reutilizable": true
+    },
+    {
+      "id": "BG_009",
+      "nombre": "Pared de apoyo",
+      "tipo": "pared",
+      "ruta": "exercise_backgrounds/v1/BG_009.webp",
+      "disponibilidad": "por_crear",
+      "reutilizable": true
+    }
+  ]
+}
