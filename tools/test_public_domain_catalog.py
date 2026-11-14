@@ -122,6 +122,34 @@ class PublicDomainImportTest(unittest.TestCase):
         self.assertEqual("press_hombros_v02",
                          decisions["Seated_Dumbbell_Press"]["id_asterion_relacionado"])
 
+    def test_five_without_source_steps_are_flagged_for_technical_holds(self):
+        missing={
+            "Iron_Cross":"identidad_ambigua_y_sin_instrucciones",
+            "One-Arm_Kettlebell_Swings":"balistico_unilateral_sin_instrucciones",
+            "Push_Press":"levantamiento_tecnico_sin_instrucciones",
+            "Side_Bridge":"estatico_sin_instrucciones",
+            "Side_Jackknife":"variante_ambigua_sin_instrucciones",
+        }
+        new=[x for x in self.data["ejercicios"]
+             if x["origen"]=="dominio_publico"]
+        rows={x["source_public_domain_id"]:x for x in new}
+        for id,reason in missing.items():
+            self.assertTrue(rows[id]["fuente_sin_pasos"])
+            self.assertEqual(reason,rows[id]["razon_bloqueo_es"])
+            self.assertFalse(rows[id]["apto_para_rutinas_automaticas"])
+            self.assertIn("La fuente no aporta instrucciones",
+                          rows[id]["instrucciones_es"][-1])
+
+    def test_static_side_bridge_has_time_unit_not_repetitions(self):
+        new=[x for x in self.data["ejercicios"]
+             if x["origen"]=="dominio_publico"]
+        matched=[x for x in new if x["source_public_domain_id"]=="Side_Bridge"]
+        self.assertEqual(1,len(matched))
+        with (catalog.DEST/"volume_profiles.tsv").open(encoding="utf-8") as f:
+            volumes={x["variant_id"]:x
+                     for x in csv.DictReader(f,delimiter="\t")}
+        self.assertEqual("SECONDS",volumes[matched[0]["id"]]["unit"])
+
     def test_unknown_source_schema_is_rejected(self):
         with self.assertRaises(ValueError):catalog.build([])
         with self.assertRaises(ValueError):
