@@ -49,7 +49,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add progress-engine/src/main/resources/asterion_exercises/v2/ \
                   app/src/main/assets/unified_exercises/v2/ \
-                  docs/datos/auditoria_dominio_publico.csv
+                  docs/datos/
           if ! git diff --cached --quiet; then
             git commit -m 'data(catalog): generar inventario independiente de dominio publico v2'
             git push origin 'HEAD:${{ github.ref_name }}'
