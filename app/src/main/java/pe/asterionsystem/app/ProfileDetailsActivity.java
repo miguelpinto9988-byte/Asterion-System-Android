@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.activity.ComponentActivity;
 import org.json.JSONObject;
 
@@ -86,6 +87,22 @@ public final class ProfileDetailsActivity extends ComponentActivity {
                 +data.optString("experience","Sin configurar"),14));
         content.addView(label("Modalidad: "
                 +data.optString("mode","Sin configurar"),14));
+        content.addView(title("DURACIÓN DE RUTINAS",16));
+        int preferredMinutes=RoutineDurationPreference.parse(
+                data.optString("minutes","30"));
+        content.addView(label("Tiempo disponible por rutina: "
+                +preferredMinutes+" minutos (orientativo)",14));
+        Button changeDuration=button("Cambiar tiempo de rutina");
+        changeDuration.setContentDescription(
+                "Cambiar tiempo disponible por rutina. Actual: "
+                +preferredMinutes+" minutos");
+        LinearLayout.LayoutParams timeLayout=new LinearLayout.LayoutParams(-1,dp(54));
+        timeLayout.topMargin=dp(8);
+        timeLayout.bottomMargin=dp(8);
+        content.addView(changeDuration,timeLayout);
+        changeDuration.setOnClickListener(v->chooseRoutineDuration());
+        content.addView(label("Esta preferencia permanece visible incluso "
+                +"si utilizas Misiones; las rutinas no son obligatorias.",12));
         content.addView(label("Preferencia de intensidad: "
                 +data.optString("intensity","Sin configurar"),14));
         content.addView(label("Tema: "+(light?"Claro":"Oscuro"),14));
@@ -105,6 +122,36 @@ public final class ProfileDetailsActivity extends ComponentActivity {
         content.addView(label("Tu perfil permanece guardado localmente. "
                 +"Modificar un ajuste de entrenamiento puede requerir una "
                 +"nueva revisión de Monarca, sin sustituir sesiones aceptadas.",12));
+    }
+
+    private void chooseRoutineDuration() {
+        final String[] labels=RoutineDurationPreference.displayOptions();
+        int selected=RoutineDurationPreference.indexOf(
+                RoutineDurationPreference.parse(ProfileStore.getRegistration(this)
+                        .optString("minutes","30")));
+        new AlertDialog.Builder(this)
+                .setTitle("Tiempo disponible por rutina")
+                .setSingleChoiceItems(labels,selected,(dialog,index)->{
+                    int value=RoutineDurationPreference.options()[index];
+                    JSONObject updated=ProfileStore.getRegistration(this);
+                    try {
+                        updated.put("minutes",String.valueOf(value));
+                    } catch(org.json.JSONException invalid) {
+                        Toast.makeText(this,"No se pudo actualizar la duración.",
+                                Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        return;
+                    }
+                    if(ProfileStore.saveRegistration(this,updated)) {
+                        dialog.dismiss();
+                        render();
+                    } else {
+                        Toast.makeText(this,"No se pudo guardar la preferencia. "
+                                +"Revisa los datos de tu perfil.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                })
+                .setNegativeButton("Cancelar",null).show();
     }
 
     private void showOtherTools() {
