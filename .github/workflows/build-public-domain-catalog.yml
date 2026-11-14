@@ -6,6 +6,8 @@ on:
     paths:
       - 'tools/build_public_domain_catalog.py'
       - 'tools/test_public_domain_catalog.py'
+      - 'tools/audit_technical_readiness.py'
+      - 'tools/test_technical_readiness_audit.py'
       - '.github/workflows/build-public-domain-catalog.yml'
   workflow_dispatch:
 permissions:
@@ -25,6 +27,8 @@ jobs:
       - name: Validar y generar catálogo original más dominio público
         run: |
           python -m unittest discover -s tools -p 'test_public_domain_catalog.py' -v
+      - name: Auditar 2104 fichas y bloquear validaciones ficticias
+        run: python -m unittest discover -s tools -p 'test_technical_readiness_audit.py' -v
       - name: Auditoría final de licencia y contrato
         run: |
           python - <<'PY'
@@ -42,6 +46,11 @@ jobs:
           with (p/'volume_profiles.tsv').open(encoding='utf-8') as f:
             volumes=list(csv.DictReader(f,delimiter='\t'))
           assert len(volumes)==d['total']
+          result=json.loads(pathlib.Path('docs/datos/resumen_validacion_tecnica_v2.json').read_text(encoding='utf-8'))
+          assert result['total']==2104 and result['validaciones_profesionales_documentadas']==0
+          assert not result['apto_para_publicacion_de_demostraciones']
+          assert result['nuevos_con_pasos_fuente_ingles']==842
+          assert result['nuevos_sin_pasos_fuente']==5
           PY
       - name: Versionar archivo v2 y auditoría sin GIF de terceros
         run: |
@@ -60,5 +69,5 @@ jobs:
           path: |
             progress-engine/src/main/resources/asterion_exercises/v2/
             app/src/main/assets/unified_exercises/v2/
-            docs/datos/auditoria_dominio_publico.csv
+            docs/datos/
           retention-days: 30
