@@ -48,7 +48,7 @@ def specs(x):
             position="Manos sobre superficie elevada y estable."
         if re.search(r"decline|feet elevated|pies elevados",words):
             tags.append("pies_elevados")
-        if re.search(r"\\bpared\\b",words):
+        if re.search(r"\bpared\b",words):
             tags.append("pared")
             position="Manos apoyadas en pared estable."
         if re.search(r"plyo|depth jump|pliom",words):
@@ -98,9 +98,16 @@ def build():
         raise ValueError("Fichas de origen repetidas o incompletas")
     if len({x["gif_ruta"] for x in rows})!=2104:
         raise ValueError("Cada variante requiere un GIF propio")
+    physically_present=sum(1 for x in rows
+        if (OUT.parent/(x["id"]+".gif")).is_file())
+    for row in rows:
+        if (OUT.parent/(row["id"]+".gif")).is_file():
+            row["gif_estado"]="archivo_presente_pendiente_revision"
     result={"schema":CURRENT_SCHEMA,"idioma":"es","total":2104,
         "gifs_producidos_por_este_importador":0,
-        "gifs_pendientes":2104,"personaje":"cazador_anime_original_aura_azul",
+        "gifs_fisicos":physically_present,
+        "gifs_pendientes":2104-physically_present,
+        "personaje":"cazador_anime_original_aura_azul",
         "formato_recomendado":{"ancho_px":480,"alto_px":640,
             "frames":12,"ms_por_frame":120,"max_bytes":800000,
             "presentacion":"adaptar_sin_recortar_en_movil"},
