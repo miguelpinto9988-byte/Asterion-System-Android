@@ -5,7 +5,7 @@
   "fecha": "2026-11-14",
   "items_esperados": 100,
   "items_registrados": 100,
-  "gifs_nuevos_generados": 0,
+  "gifs_nuevos_generados": 2,
   "gifs_aprobados": 0,
   "gifs_integrados_apk": 0,
   "formato": {
@@ -15,7 +15,7 @@
     "alto": 466,
     "modelo": "personaje_anime_original_negro_aura_azul"
   },
-  "nota": "Este archivo planifica el lote. Ninguna ruta futura es un GIF real hasta que sus bytes estén presentes, hash verificable y revisión registrada.",
+  "nota": "2 prototipos GIF entregados como ZIP en esta conversación; binarios no subidos a GitHub ni APK. Deben revisarse por técnica, en especial la variante con pausa que reutiliza dibujos de la sentadilla libre.",
   "items": [
     {
       "orden": 1,
@@ -63,13 +63,15 @@
       "background_id": "BG_001",
       "background_revision": "pendiente_revision_por_ejercicio",
       "gif_path": "exercise_gifs/v2/sentadilla_bilateral_v03.gif",
-      "gif_estado": "pendiente_generacion",
-      "gif_bytes": null,
-      "gif_sha256": null,
-      "origen_archivo": null,
+      "gif_estado": "generado_pendiente_revision",
+      "gif_bytes": 77258,
+      "gif_sha256": "ef8e480a3c40954bcc87dd0449f51c6c4a7ac3375237169668c92754cfa3f45d",
+      "origen_archivo": "Entrega ZIP en conversación Asterion_lote_0001_2_gifs_transparentes.zip (no alojado en GitHub)",
       "tecnica_revisada": false,
       "integrado_en_apk": false,
-      "observaciones": null
+      "observaciones": "Prototipo de sentadilla libre (ilustraciones reutilizadas del diseño inicial).",
+      "fotogramas": 6,
+      "duracion_ms": 1380
     },
     {
       "orden": 4,
@@ -81,13 +83,15 @@
       "background_id": "BG_001",
       "background_revision": "pendiente_revision_por_ejercicio",
       "gif_path": "exercise_gifs/v2/sentadilla_bilateral_v04.gif",
-      "gif_estado": "pendiente_generacion",
-      "gif_bytes": null,
-      "gif_sha256": null,
-      "origen_archivo": null,
+      "gif_estado": "generado_pendiente_revision",
+      "gif_bytes": 77258,
+      "gif_sha256": "8bd47c9635c8271d0fc1e4fb079516fd413645fb49bf67133ee046da78eb7fa6",
+      "origen_archivo": "Entrega ZIP en conversación Asterion_lote_0001_2_gifs_transparentes.zip (no alojado en GitHub)",
       "tecnica_revisada": false,
       "integrado_en_apk": false,
-      "observaciones": null
+      "observaciones": "Variante con pausa más larga en posición baja; comparte dibujos con v03, distinta cadencia.",
+      "fotogramas": 6,
+      "duracion_ms": 1980
     },
     {
       "orden": 5,
