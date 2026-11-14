@@ -1,0 +1,73 @@
+{
+  "schema": "asterion.mp4.video-job-registry.v1",
+  "actualizado": "2026-11-14",
+  "catalogo_total": 2104,
+  "formatos_finales": {
+    "codec": "h264",
+    "resolucion": "640x360",
+    "fps": 25,
+    "contiene_audio": false,
+    "limite_bytes": 800000
+  },
+  "lotes_activos": 1,
+  "videos_publicados_apk": 0,
+  "protocolos": [
+    "No asignar video sin ID identico a catalogo",
+    "No considerar aceptado un video sin URL binaria y revision",
+    "No subir MP4 a release sin revision tecnica",
+    "Mantener APK base liviano y preparar paquetes offline por categoria"
+  ],
+  "trabajos_higgsfield": [
+    {
+      "lote": 1,
+      "id": "sentadilla_bilateral_v01",
+      "job_id": "fb60ee94-03e8-463c-b477-8897b34fc885",
+      "estado": "waiting",
+      "modelo": "seedance_2_5",
+      "url": null,
+      "aprobado": false
+    }
+  ],
+  "prototipos_locales": [
+    {
+      "id": "flexiones_v04",
+      "sha256": "c0b96ec09524fb8d463df11f28b967f93df1ac80717f6a4262eb1b8a08c7d2f4",
+      "tamano_bytes": 406791,
+      "estado": "prototipo_visual_sin_validacion_tecnica",
+      "en_git_binario": false,
+      "en_apk": false
+    },
+    {
+      "id": "sentadilla_bilateral_v03",
+      "sha256": "cf05fc3ef79b666013a11e5ecac286c2ade203ac2642ab2b2fa83a3ef3e26e5c",
+      "tamano_bytes": 156729,
+      "estado": "prototipo_visual_sin_validacion_tecnica",
+      "en_git_binario": false,
+      "en_apk": false
+    },
+    {
+      "id": "sentadilla_bilateral_v04",
+      "sha256": "df22d044b7a76ebccb45ac977fd31d2993099252ea751cdf873cacb891825721",
+      "tamano_bytes": 151000,
+      "estado": "prototipo_visual_sin_validacion_tecnica",
+      "en_git_binario": false,
+      "en_apk": false
+    },
+    {
+      "id": "puente_gluteo_v02",
+      "sha256": "10030ecaaa7a6ac6b6bfbf9f28fe8c772cd3b0ed6623b9123aeea258130196af",
+      "tamano_bytes": 163100,
+      "estado": "prototipo_visual_sin_validacion_tecnica",
+      "en_git_binario": false,
+      "en_apk": false
+    },
+    {
+      "id": "puente_gluteo_v03",
+      "sha256": "4a7e64da315c01507651ec7c7895c6f4541fe3e205e091b5861079eca2fda6eb",
+      "tamano_bytes": 169015,
+      "estado": "prototipo_visual_sin_validacion_tecnica",
+      "en_git_binario": false,
+      "en_apk": false
+    }
+  ]
+}
