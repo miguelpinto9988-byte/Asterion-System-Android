@@ -100,6 +100,11 @@ class PublicDomainImportTest(unittest.TestCase):
 
     def test_22_pending_cases_are_resolved_individually(self):
         self.assertEqual(22,len(catalog.REVIEWED_22))
+        with catalog.REVIEW_REPORT.open(encoding="utf-8",newline="") as handle:
+            review_rows=list(csv.DictReader(handle))
+        self.assertEqual(22,len(review_rows))
+        self.assertEqual(8,sum(x["estado"]=="duplicado_verificado" for x in review_rows))
+        self.assertEqual(14,sum(x["estado"]=="nuevo_por_evaluar" for x in review_rows))
         with catalog.AUDIT.open(encoding="utf-8",newline="") as handle:
             decisions={x["id_fuente_publico"]:x for x in csv.DictReader(handle)}
         for id,(decision,old_id,reason) in catalog.REVIEWED_22.items():
