@@ -20,7 +20,7 @@ public final class ExerciseVariant {
         this.id = TaxonomyChecks.id(id);
         this.typeId = TaxonomyChecks.id(typeId);
         this.name = TaxonomyChecks.label(name);
-        if (difficulty < 1 || difficulty > 5) {
+        if (difficulty < 0 || difficulty > 5) {
             throw new IllegalArgumentException("Nivel técnico fuera de 1..5");
         }
         this.difficulty = difficulty;
@@ -49,8 +49,8 @@ public final class ExerciseVariant {
     public List<String> equipment() { return equipment; }
     public String execution() { return execution; }
     public boolean supervisionRecommended() { return supervisionRecommended; }
-    /** No automated recommendations for high-complexity movements. */
+    /** Level 0 is pending review and never eligible for automatic suggestions. */
     public boolean eligibleForAutomaticSuggestion() {
-        return difficulty <= 3 && !supervisionRecommended;
+        return difficulty >= 1 && difficulty <= 3 && !supervisionRecommended;
     }
 }

@@ -44,7 +44,7 @@ public final class ExerciseCatalogLoader {
         for (String[] row : rows(variants, 7,
                 "variant_id\\ttype_id\\tname\\tlevel\\tequipment\\texecution\\tsupervision", 10000)) {
             final int level;
-            if (!row[3].matches("[1-5]")) throw new IllegalArgumentException("Nivel inválido: " + row[3]);
+            if (!row[3].matches("[0-5]")) throw new IllegalArgumentException("Nivel inválido: " + row[3]);
             level = Integer.parseInt(row[3]);
             if (!row[6].equals("0") && !row[6].equals("1")) {
                 throw new IllegalArgumentException("Indicador de orientación inválido");
