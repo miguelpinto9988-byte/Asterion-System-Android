@@ -1,0 +1,116 @@
+name: Preparar fichas móviles y GIFs por variante
+on:
+  push:
+    branches:
+      - feature/gifs-por-variante-y-fichas-moviles-20261114
+    paths:
+      - 'tools/build_exercise_motion_specs.py'
+      - 'tools/test_exercise_motion_specs.py'
+      - 'tools/validate_exercise_gifs.py'
+      - '.github/workflows/prepare-exercise-gif-specs.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fichas:
+    name: Generar y auditar 2104 especificaciones de GIF
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generar cuadro por variante y rutas de 2104 GIF
+        run: |
+          python3 tools/build_exercise_motion_specs.py
+          python3 -m unittest discover -s tools -p test_exercise_motion_specs.py -v
+          python3 tools/validate_exercise_gifs.py
+      - name: Comprobar que no se inventan GIFs o aprobación técnica
+        run: |
+          python3 - <<'PY'
+          import json
+          p='app/src/main/assets/exercise_gifs/v1/specs_es.json'
+          d=json.load(open(p,encoding='utf-8'))
+          assert d['total']==2104
+          assert d['gifs_producidos_por_este_importador']==0
+          assert d['gifs_pendientes']==2104-d['gifs_fisicos']
+          assert all(not x['gif_validado'] for x in d['ejercicios'])
+          assert len({x['gif_ruta'] for x in d['ejercicios']})==2104
+          PY
+      - name: Guardar en rama los cuadros generados
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app/src/main/assets/exercise_gifs/v1/specs_es.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data(motion): generar 2104 cuadros técnicos y nombres de GIF exclusivos'
+            git push origin 'HEAD:${{ github.ref_name }}'
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asterion-gifs-por-variante-y-fichas-es
+          path: app/src/main/assets/exercise_gifs/v1/specs_es.json
+          retention-days: 30
+
+      - name: Preparar cola de vídeo Higgsfield por ID (sin generar vídeos ni gastar créditos)
+        run: |
+          python3 - <<'PY'
+          import json,csv
+          from pathlib import Path
+          src=Path('app/src/main/assets/exercise_gifs/v1/specs_es.json')
+          d=json.loads(src.read_text(encoding='utf-8'))
+          rows=d['ejercicios']
+          assert d['total']==len(rows)==2104
+          assert len({x['id'] for x in rows})==2104
+          root=Path('build/higgsfield')
+          root.mkdir(parents=True,exist_ok=True)
+          requests=[]
+          with (root/'seguimiento.csv').open('w',encoding='utf-8-sig',newline='') as f:
+              w=csv.writer(f)
+              w.writerow(['indice','id','nombre','categoria','lote','estado','job_id','url','revision_tecnica'])
+              for index,row in enumerate(rows):
+                  instructions=row.get('instrucciones_es',[])
+                  if isinstance(instructions,str): instructions=[instructions]
+                  instructions=[str(v).strip() for v in instructions if str(v).strip()]
+                  movement='; '.join(instructions[:6]) if instructions else row.get('recorrido_general','')
+                  prompt=(
+                      'Asterion System. Vídeo didáctico 2D anime ORIGINAL. Personaje ficticio adulto de cabello '
+                      'oscuro, uniforme deportivo negro sin logotipos, aura azul discreta. Mismo gimnasio '
+                      'nocturno limpio en TODOS los vídeos. Cámara fija 3/4 lateral, cuerpo entero siempre '
+                      'dentro de cuadro, sin cambios de plano, sin zoom, sin texto ni sonido. '
+                      'Una repetición controlada del movimiento y retorno a la posición inicial. '
+                      f'ID único {row["id"]}; ejercicio: {row["nombre"]}; '
+                      f'categoría: {row["categoria"]}; material: {row.get("material","")}; '
+                      f'variante: {", ".join(row.get("variante",[]))}; '
+                      f'posición: {row.get("posicion","")}; agarre/apoyos: {row.get("agarre_o_apoyo","")}; '
+                      f'movimiento exacto: {movement}; diferencia importante: {row.get("criterio_diferenciador","")}. '
+                      'Nunca reutilizar el movimiento de otra variante. '
+                      'La exactitud biomecánica se verificará con una referencia y revisión humana.'
+                  )
+                  requests.append({'index':index,'params':{
+                      'model':'seedance_2_5','prompt':prompt,'aspect_ratio':'16:9',
+                      'duration':5,'resolution':'480p','generate_audio':False,
+                      'mode':'t2v','use_unlim':True,'count':1}})
+                  w.writerow([index,row['id'],row['nombre'],row['categoria'],index//6+1,
+                              'pendiente_generacion','','','pendiente'])
+          with (root/'lotes_6.jsonl').open('w',encoding='utf-8') as f:
+              for start in range(0,len(requests),6):
+                  f.write(json.dumps({'lote':start//6+1,'requests':requests[start:start+6]},
+                                     ensure_ascii=False)+'\n')
+          (root/'estado.json').write_text(json.dumps({
+              'ejercicios':2104,'lotes':351,'generaciones_enviadas':0,
+              'videos_confirmados':0,'videos_validados':0,
+              'requieren_revision_tecnica':2104,
+              'nota':'Cola de solicitudes; los vídeos no existen. No gastar créditos automáticamente.',
+          },ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          assert len(requests)==2104
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asterion-higgsfield-cola-2104-sin-generar
+          path: build/higgsfield/
+          retention-days: 30
