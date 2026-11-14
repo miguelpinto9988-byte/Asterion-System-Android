@@ -5,6 +5,7 @@ on:
       - feature/unificar-catalogos-y-retirar-avatar-20261113
     paths:
       - 'tools/build_public_domain_catalog.py'
+      - 'tools/catalog_technical_es.py'
       - 'tools/test_public_domain_catalog.py'
       - 'tools/audit_technical_readiness.py'
       - 'tools/test_technical_readiness_audit.py'
