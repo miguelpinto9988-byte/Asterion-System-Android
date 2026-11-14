@@ -226,6 +226,22 @@ NAME_EXACT_OVERRIDES={
  "External_Rotation_with_Band":"rotacion_externa_v02",
  "Lateral_Raise_-_With_Bands":"elevacion_lateral_v02",
  "Dumbbell_Step_Ups":"step_up_v04",
+ # Mismo movimiento, material y posición en el inventario original.
+ "Arnold_Dumbbell_Press":"press_hombros_v04",
+ "Bent_Over_Barbell_Row":"dep_013_remo_con_flexion_de_tronco_barbell_row_v01",
+ "Butt_Lift_Bridge":"puente_gluteo_v01",
+ "Crunches":"crunch_v02",
+ "Dumbbell_Bench_Press":"press_pecho_v04",
+ "Exercise_Ball_Crunch":"crunch_v05",
+ "Incline_Dumbbell_Press":"press_pecho_v05",
+ "Leverage_Chest_Press":"press_pecho_v02",
+ "Monster_Walk":"caminata_banda_v03",
+ "Pallof_Press":"press_pallof_v04",
+ "Plank":"plancha_frontal_v04",
+ "Romanian_Deadlift":"peso_muerto_rumano_v06",
+ "Seated_Leg_Curl":"curl_femoral_v04",
+ "Side_Lateral_Raise":"elevacion_lateral_v03",
+ "Single_Leg_Glute_Bridge":"puente_gluteo_v06",
 }
 
 def normalize(text):
