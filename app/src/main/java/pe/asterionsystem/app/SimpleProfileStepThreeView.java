@@ -56,6 +56,8 @@ final class SimpleProfileStepThreeView extends LinearLayout {
     private ImageView backgroundView;
     private ImageView frameView;
     private ImageView companionView;
+    private final java.util.ArrayList<ImageView> sectionIcons = new java.util.ArrayList<>();
+    private final java.util.ArrayList<String> sectionIconNames = new java.util.ArrayList<>();
 
     SimpleProfileStepThreeView(Activity activity, JSONObject draft,
                                Runnable persist, Runnable onThemeChanged) {
@@ -158,7 +160,25 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         LayoutParams h=new LayoutParams(-1,-2);
         h.topMargin=dp(18);
         h.bottomMargin=dp(6);
-        addView(heading,h);
+        // Use the approved monochrome WebP icon set, not substitute symbols.
+        String iconName = "tema".equals(key) ? "tema"
+                : "accent".equals(key) ? "paleta"
+                : "companion".equals(key) ? "companero"
+                : "card_silhouette".equals(key) ? "silueta"
+                : "card_background".equals(key) ? "fondo" : "marco";
+        LinearLayout headerRow=new LinearLayout(activity);
+        headerRow.setOrientation(LinearLayout.HORIZONTAL);
+        headerRow.setGravity(Gravity.CENTER_VERTICAL);
+        ImageView icon=new ImageView(activity);
+        icon.setTag("asterion_approved_icon");
+        icon.setContentDescription(null);
+        LinearLayout.LayoutParams iconParams=new LinearLayout.LayoutParams(dp(26),dp(26));
+        iconParams.rightMargin=dp(9);
+        headerRow.addView(icon,iconParams);
+        headerRow.addView(heading,new LinearLayout.LayoutParams(-2,-2));
+        addView(headerRow,h);
+        sectionIcons.add(icon);
+        sectionIconNames.add(iconName);
 
         RadioGroup group=new RadioGroup(activity);
         group.setOrientation(RadioGroup.VERTICAL);
@@ -202,6 +222,14 @@ final class SimpleProfileStepThreeView extends LinearLayout {
 
     private void refreshPreview() {
         if(preview==null)return;
+        boolean light = "light".equals(get("theme","light"));
+        for (int i=0;i<sectionIcons.size();i++) {
+            int res=ProfileCardVisualAssets.resourceId(activity,
+                    (light ? "asterion_light_ic_" : "asterion_dark_ic_")
+                            + sectionIconNames.get(i));
+            sectionIcons.get(i).setImageResource(res != 0 ? res
+                    : R.drawable.asterion_ic_settings);
+        }
         int bg=ProfileCardVisualAssets.resourceId(activity,
                 ProfileCardVisualAssets.backgroundDrawable(get("card_background", BACKGROUNDS[0])));
         int hunter=ProfileCardVisualAssets.resourceId(activity,
