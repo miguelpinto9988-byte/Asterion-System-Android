@@ -54,8 +54,8 @@ assert application is not None
 assert application.get(ANDROID + "allowBackup") == "false"
 assert application.get(ANDROID + "usesCleartextTraffic") == "false"
 assert application.get(ANDROID + "icon") == "@drawable/asterion_icon_oficial"
-for asset in ("asterion_icon_oficial.webp", "asterion_loading_manana.png",
-              "asterion_loading_tarde_noche.png"):
+for asset in ("asterion_icon_oficial.webp", "asterion_loading_manana_4k.webp",
+              "asterion_loading_tarde_noche_4k.webp"):
     assert (APP / "res/drawable-nodpi" / asset).is_file(), asset
 
 wizard = (JAVA / "ProfileCreateActivity.java").read_text(encoding="utf-8")
