@@ -55,6 +55,7 @@ final class SimpleProfileStepThreeView extends LinearLayout {
     private ImageView portraitView;
     private ImageView backgroundView;
     private ImageView frameView;
+    private ImageView companionView;
 
     SimpleProfileStepThreeView(Activity activity, JSONObject draft,
                                Runnable persist, Runnable onThemeChanged) {
@@ -95,6 +96,14 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         FrameLayout.LayoutParams portraitParams = new FrameLayout.LayoutParams(-1,-1,
                 Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         card.addView(portraitView, portraitParams);
+        companionView = new ImageView(activity);
+        companionView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        companionView.setContentDescription("Acompañante seleccionado");
+        FrameLayout.LayoutParams companionParams = new FrameLayout.LayoutParams(
+                dp(76), dp(76), Gravity.BOTTOM | Gravity.RIGHT);
+        companionParams.rightMargin = dp(18);
+        companionParams.bottomMargin = dp(12);
+        card.addView(companionView, companionParams);
         frameView = new ImageView(activity);
         frameView.setScaleType(ImageView.ScaleType.FIT_XY);
         frameView.setContentDescription("Marco decorativo de tarjeta horizontal");
@@ -173,6 +182,11 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         int frame=ProfileCardVisualAssets.resourceId(activity,
                 ProfileCardVisualAssets.frameDrawable(get("card_frame",FRAMES[0])));
         frameView.setImageResource(frame != 0 ? frame : android.R.color.transparent);
+        String companionName=ProfileCardVisualAssets.companionDrawable(
+                get("companion", COMPANIONS[0]));
+        int companion=companionName.isEmpty() ? 0 :
+                ProfileCardVisualAssets.resourceId(activity, companionName);
+        companionView.setImageResource(companion != 0 ? companion : android.R.color.transparent);
         preview.setText("Tarjeta del cazador\n"
                 +"Tema: "+("light".equals(get("theme","light"))?"Blanco":"Negro")
                 +" · Borde: "+get("accent",ACCENTS[0])
