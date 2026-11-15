@@ -16,7 +16,7 @@ def read(path):
     return Path(path).read_text(encoding="utf-8")
 
 def values():
-    result = {kind: set() for kind in ("string", "color", "array", "style")}
+    result = {kind: set() for kind in ("string", "color", "array", "style", "id")}
     for path in (APP / "res/values").glob("*.xml"):
         doc = ET.parse(path).getroot()
         for node in doc:
@@ -24,14 +24,17 @@ def values():
             if not name:
                 continue
             tag = node.tag
-            kind = "array" if tag.endswith("-array") else tag
+            kind = node.get("type") if tag == "item" else (
+                "array" if tag.endswith("-array") else tag)
             if kind in result:
                 result[kind].add(name)
+                if kind == "style":
+                    result[kind].add(name.replace(".", "_"))
     return result
 
 def resources():
     available = values()
-    ids = set()
+    ids = set(available["id"])
     available["layout"] = set()
     for path in (APP / "res/layout").glob("*.xml"):
         root = ET.parse(path).getroot()
@@ -129,7 +132,9 @@ class PreflightNoBuild(unittest.TestCase):
         main = read(APP_JAVA / "pe/asterionsystem/app/MainActivity.java")
         app = read(MODULES)
         properties = read(ROOT / "gradle.properties")
-        self.assertIn("extends ComponentActivity", main)
+        base = read(APP_JAVA / "pe/asterionsystem/app/AsterionActivity.java")
+        self.assertIn("extends AsterionActivity", main)
+        self.assertIn("extends ComponentActivity", base)
         self.assertIn("import androidx.activity.OnBackPressedCallback;", main)
         self.assertIn("getOnBackPressedDispatcher().addCallback(this, navigationBackCallback);", main)
         self.assertIn("navigationBackCallback.setEnabled(navigation.state().canGoBack());", main)
