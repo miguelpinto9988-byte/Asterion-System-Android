@@ -58,10 +58,91 @@ final class HomeMissionBinder {
         avatar.setOnClickListener(v->activity.startActivity(
                 new Intent(activity,ProfileDetailsActivity.class)));
 
-        apply(screen,light,activity.getResources().getDisplayMetrics().density);
+        float density=activity.getResources().getDisplayMetrics().density;
+        apply(screen,light,density);
+        bindMonarchArt(activity,screen,density);
         SimpleBottomNav.attach(activity,
                 (FrameLayout)screen.findViewById(R.id.home_bottom_bar),
                 SimpleBottomNav.HOME);
+    }
+
+
+    // Galería visual: nunca cambia la misión real ni su consentimiento.
+    private static void bindMonarchArt(Activity activity, View screen, float density) {
+        View card=screen.findViewById(R.id.home_card_monarch);
+        GradientDrawable panel=new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {0xFF071229, 0xFF040A19});
+        panel.setCornerRadius(18*density);
+        panel.setStroke(Math.max(2,Math.round(1.5f*density)),0xFF178DDC);
+        card.setBackground(panel);
+        recolorMonarchText(card);
+
+        Button openButton=screen.findViewById(R.id.open_monarch);
+        GradientDrawable cta=new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[] {0xFF24CBFF,0xFF3979F5});
+        cta.setCornerRadius(14*density);
+        openButton.setBackground(cta);
+        openButton.setTextColor(0xFF07162E);
+
+        android.widget.ImageView hero=screen.findViewById(R.id.monarch_feature_image);
+        TextView caption=screen.findViewById(R.id.monarch_art_caption);
+        android.widget.ImageButton igris=screen.findViewById(R.id.monarch_portrait_igris);
+        android.widget.ImageButton beru=screen.findViewById(R.id.monarch_portrait_beru);
+        android.widget.ImageButton ashborn=screen.findViewById(R.id.monarch_portrait_ashborn);
+        android.widget.ImageButton baran=screen.findViewById(R.id.monarch_portrait_baran);
+        android.widget.ImageButton[] thumbs={igris,beru,ashborn,baran};
+        int originalIgris=monarchResource(activity,"asterion_monarch_igris");
+        int[] drawings={
+                originalIgris!=0?originalIgris:R.drawable.monarch_igris_capture,
+                monarchResource(activity,"asterion_monarch_beru"),
+                monarchResource(activity,"asterion_monarch_ashborn"),
+                monarchResource(activity,"asterion_monarch_baran")};
+        String[] labels={"IGRIS · COMANDANTE CARMESÍ","BERU · REY HORMIGA",
+                "ASHBORN · MONARCA DE LAS SOMBRAS","BARAN · REY DEMONIO"};
+        for(int k=0;k<thumbs.length;k++) {
+            final int position=k;
+            final int imageId=drawings[k];
+            boolean available=imageId!=0;
+            thumbs[k].setEnabled(available);
+            thumbs[k].setAlpha(available?1.0f:0.35f);
+            if(available)thumbs[k].setImageResource(imageId);
+            thumbs[k].setOnClickListener(v->{
+                hero.setImageResource(imageId);
+                hero.setContentDescription("Arte de "+labels[position]);
+                caption.setText(labels[position]);
+                for(int n=0;n<thumbs.length;n++) {
+                    GradientDrawable frame=new GradientDrawable();
+                    frame.setColor(0xFF081A38);
+                    frame.setStroke(Math.max(1,Math.round(density)),
+                            n==position?0xFF6CE4FF:0xFF26557B);
+                    frame.setCornerRadius(9*density);
+                    thumbs[n].setBackground(frame);
+                }
+            });
+        }
+        igris.performClick();
+    }
+
+    private static int monarchResource(Activity activity, String name) {
+        return activity.getResources().getIdentifier(name,"drawable",
+                activity.getPackageName());
+    }
+
+    private static void recolorMonarchText(View view) {
+        if(view instanceof TextView) {
+            TextView text=(TextView)view;
+            text.setTextColor(0xFFE5F1FF);
+            if(view.getId()==R.id.monarch_eye ||
+                    view.getId()==R.id.monarch_art_caption)
+                text.setTextColor(0xFF63D8FF);
+            if(view.getId()==R.id.monarch_hero_title)
+                text.setTextColor(0xFFFFFFFF);
+        }
+        if(view instanceof ViewGroup) {
+            ViewGroup group=(ViewGroup)view;
+            for(int i=0;i<group.getChildCount();i++)
+                recolorMonarchText(group.getChildAt(i));
+        }
     }
 
     private static void open(Activity activity,String section) {
