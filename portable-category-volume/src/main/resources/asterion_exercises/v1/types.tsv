@@ -1,0 +1,475 @@
+type_id	family_id	name
+sentadilla_bilateral	sentadillas	Sentadilla bilateral
+sentadilla_unilateral	sentadillas	Sentadilla unilateral
+sentadilla_lateral	sentadillas	Sentadilla lateral
+zancada_estatica	zancadas	Zancada estática
+zancada_dinamica	zancadas	Zancada dinámica
+zancada_lateral	zancadas	Zancada lateral
+peso_muerto	bisagra_cadera	Peso muerto
+peso_muerto_rumano	bisagra_cadera	Peso muerto rumano
+buenos_dias	bisagra_cadera	Buenos días
+puente_gluteo	puentes_cadera	Puente de glúteos
+hip_thrust	puentes_cadera	Elevación de cadera con apoyo
+step_up	subida_escalon	Subida al escalón
+step_down	subida_escalon	Descenso controlado
+elevacion_gemelos	pantorrillas	Elevación de talones
+dorsiflexion_tibial	pantorrillas	Elevación de puntas
+curl_femoral	flexion_rodilla	Curl femoral
+curl_deslizante	flexion_rodilla	Curl femoral deslizante
+abduccion	control_cadera	Abducción de cadera
+aduccion	control_cadera	Aducción de cadera
+caminata_banda	control_cadera	Caminata lateral con banda
+extension_cuadriceps	extension_rodilla	Extensión de cuádriceps
+flexiones	empuje_horizontal	Flexiones de brazos
+press_pecho	empuje_horizontal	Press de pecho
+fondos	empuje_horizontal	Fondos asistidos y paralelas
+press_hombros	empuje_vertical	Press de hombros
+flexion_pica	empuje_vertical	Flexiones en pica
+apertura_pecho	aperturas_pecho	Aperturas pectorales
+extension_triceps	extension_codo	Extensiones de tríceps
+press_cerrado	extension_codo	Press de agarre cerrado
+remo	traccion_horizontal	Remo de fuerza
+remo_invertido	traccion_horizontal	Remo invertido
+dominadas	traccion_vertical	Dominadas y asistencias
+jalon	traccion_vertical	Jalones verticales
+curl_biceps	flexion_codo	Curl de bíceps
+curl_martillo	flexion_codo	Curl de agarre neutro
+elevacion_lateral	elevaciones_hombro	Elevación lateral
+elevacion_frontal	elevaciones_hombro	Elevación frontal
+pajaros	elevaciones_hombro	Apertura posterior
+face_pull	escapulas	Tracción hacia la cara
+retraccion_escapular	escapulas	Retracción escapular
+rotacion_externa	rotacion_hombro	Rotación externa
+rotacion_interna	rotacion_hombro	Rotación interna
+superman	extension_espalda	Extensión en suelo
+extension_banco	extension_espalda	Extensión en banco
+plancha_frontal	core_antextension	Plancha frontal
+dead_bug	core_antextension	Control contralateral supino
+rueda_abdominal	core_antextension	Extensión abdominal controlada
+press_pallof	core_anti_rotacion	Press antirrotación
+plancha_lateral	core_anti_rotacion	Plancha lateral
+crunch	core_flexion	Encogimiento abdominal
+elevacion_rodillas	core_flexion	Elevación de rodillas
+rotacion_tronco	core_rotacion	Rotación de tronco controlada
+rotacion_polea	core_rotacion	Rotación con resistencia
+equilibrio_unipodal	equilibrio	Equilibrio sobre una pierna
+alcance_unipodal	equilibrio	Alcances con apoyo unilateral
+paseo_granjero	transportes	Paseo con cargas simétricas
+paseo_maleta	transportes	Paseo con carga asimétrica
+marcha	caminata	Marcha y caminata
+caminata_inclinada	caminata	Caminata con inclinación
+trote	carrera	Trote recreativo
+carrera_intervalos	carrera	Alternancia de marcha y carrera
+ciclo_estatico	bicicleta	Bicicleta estática
+ciclo_exterior	bicicleta	Bicicleta exterior
+remo_ergometro	remo_cardio	Remo en ergómetro
+eliptica_cardio	eliptica	Trabajo en elíptica
+step_cardio	escalon_aerobico	Paso aeróbico sobre escalón
+escalera_agilidad	coordinacion	Escalera de coordinación
+desplazamiento_lateral	coordinacion	Pasos laterales
+rotacion_cadera	movilidad_cadera	Rotaciones de cadera
+flexor_cadera	movilidad_cadera	Movilidad del flexor de cadera
+gato_vaca	movilidad_columna	Gato y vaca
+rotacion_toracica	movilidad_columna	Rotación torácica
+circulos_brazo	movilidad_hombro	Círculos de brazos
+deslizamiento_pared	movilidad_hombro	Deslizamientos en pared
+dorsiflexion_tobillo	movilidad_tobillo	Movilidad de dorsiflexión
+circulos_tobillo	movilidad_tobillo	Círculos de tobillo
+estiramiento_isquios	flexibilidad_piernas	Estiramiento de isquiotibiales
+estiramiento_cuadriceps	flexibilidad_piernas	Estiramiento de cuádriceps
+respiracion_diafragmatica	respiracion_postura	Respiración diafragmática
+control_postura	respiracion_postura	Control postural
+prension_suave	manos_agarre	Prensión suave
+separacion_dedos_mano	manos_agarre	Separación de dedos
+flexion_muneca_activa	control_muneca_fuerza	Flexión activa de muñeca
+extension_muneca_activa	control_muneca_fuerza	Extensión activa de muñeca
+extension_contralateral_cuadrupedia	estabilidad_cuadrupedia	Extensión contralateral en cuadrupedia
+apoyo_cuadrupedia	estabilidad_cuadrupedia	Control en cuatro apoyos
+alineacion_tronco_sentado	postura_tronco_sentado	Alineación del tronco sentado
+alcances_tronco_sentado	postura_tronco_sentado	Alcances sentado con tronco estable
+separacion_dedos_pies	motricidad_pies	Apertura y separación de dedos del pie
+recogida_toalla_pies	motricidad_pies	Prensión de objetos ligeros con dedos del pie
+extension_cadera_bipeda	extension_cadera_pie	Extensión de cadera de pie
+extension_cadera_cuadrupedia	extension_cadera_pie	Extensión de cadera en cuatro apoyos
+rotacion_cervical_suave	movilidad_cervical	Rotación cervical suave
+inclinacion_cervical_suave	movilidad_cervical	Inclinación cervical suave
+oposicion_pulgar	movilidad_dedos_manos	Oposición del pulgar
+flexoextension_dedos	movilidad_dedos_manos	Flexión y extensión suave de dedos
+talones_alternos	pasos_aerobicos_suaves	Toques alternados de talón al frente
+elevaciones_rodillas_cardio	pasos_aerobicos_suaves	Elevación alterna de rodillas en el sitio
+pasos_danza_basicos	danza_bajo_impacto	Pasos básicos de baile
+desplazamiento_ritmico_lateral	danza_bajo_impacto	Desplazamiento rítmico lateral
+empuje_escapular_pared	serrato_escapular	Empuje escapular contra pared
+alcance_serrato_supino	serrato_escapular	Alcances del serrato boca arriba
+deslizamiento_antebrazos	serrato_escapular	Deslizamiento de antebrazos en pared
+abrazo_escapular	serrato_escapular	Apertura y abrazo escapular
+press_suelo_unilateral	press_alternativos	Press de pecho unilateral en suelo
+press_neutro_mancuernas	press_alternativos	Press de pecho con agarre neutro
+press_banda_pie	press_alternativos	Press de pecho con banda de pie
+press_maquina_horizontal	press_alternativos	Press horizontal en máquina guiada
+remo_banda_sentado	remadas_soportadas	Remo con banda desde posición sentada
+remo_banco_unilateral	remadas_soportadas	Remo unilateral con apoyo en banco
+remo_polea_baja	remadas_soportadas	Remo sentado en polea baja
+remo_banda_pecho	remadas_soportadas	Remo con banda a la altura del pecho
+pronacion_antebrazo	antebrazo_rotacional	Pronación del antebrazo
+supinacion_antebrazo	antebrazo_rotacional	Supinación del antebrazo
+desviacion_radial_muneca	antebrazo_rotacional	Desviación radial de muñeca
+desviacion_cubital_muneca	antebrazo_rotacional	Desviación cubital de muñeca
+pase_pelota_pecho	coordinacion_brazos_pelota	Pase suave de pelota desde el pecho
+pase_pelota_lateral	coordinacion_brazos_pelota	Pase lateral de pelota blanda
+bote_pelota_controlado	coordinacion_brazos_pelota	Bote suave de pelota
+alcance_brazos_coordinado	coordinacion_brazos_pelota	Alcances coordinados de ambos brazos
+toque_talon_supino	pilates_suelo_inicial	Toques alternos de talón boca arriba
+basculacion_pelvis	pilates_suelo_inicial	Basculaciones pélvicas en suelo
+control_rodillas_supino	pilates_suelo_inicial	Control de rodillas boca arriba
+contraccion_abdominal_suave	pilates_suelo_inicial	Activación suave del abdomen
+alineacion_bipeda	control_tronco_pie	Alineación de tronco en bipedestación
+transferencia_peso_tronco	control_tronco_pie	Transferencia de peso con tronco estable
+alcance_frontal_bipedo	control_tronco_pie	Alcances frontales con abdomen estable
+cambio_base_apoyo	control_tronco_pie	Cambios de base de apoyo sin carga
+alcance_diagonal_sentado	rotacion_diagonal_tronco	Alcance diagonal sentado
+alcance_diagonal_pie	rotacion_diagonal_tronco	Alcance diagonal de pie
+rotacion_controlada_banda	rotacion_diagonal_tronco	Rotación de tronco con banda
+diagonales_brazos_tronco	rotacion_diagonal_tronco	Diagonales de brazos y tronco
+postura_montana	yoga_estabilidad_general	Postura de la montaña
+postura_guerrero_suave	yoga_estabilidad_general	Postura de guerrero con apoyo
+postura_silla_asistida	yoga_estabilidad_general	Postura de silla asistida
+postura_estrella	yoga_estabilidad_general	Postura de estrella estable
+alcance_lateral_suelo	apoyo_lateral_tronco	Alcance lateral desde el suelo
+control_costal_lateral	apoyo_lateral_tronco	Control costal acostado de lado
+apoyo_antebrazo_lateral	apoyo_lateral_tronco	Control lateral con apoyo del antebrazo
+transferencia_pelota_lateral	apoyo_lateral_tronco	Transferencia lateral de pelota con tronco estable
+sentadilla_isometrica_pared	isometrias_piernas	Sentadilla isométrica en pared
+presion_talones_sentado	isometrias_piernas	Presión de talones sentado
+apoyo_escalonado_estatico	isometrias_piernas	Apoyo escalonado estático
+talones_estaticos	isometrias_piernas	Elevación de talones sostenida
+clam_cadera	abductores_acostado	Apertura de rodilla tumbado de lado
+elevacion_lateral_pierna_suelo	abductores_acostado	Elevación lateral de pierna acostado
+circulos_cadera_acostado	abductores_acostado	Círculos de pierna de lado
+aduccion_pierna_inferior	abductores_acostado	Aducción de pierna inferior de lado
+talon_deslizante_sentado	deslizamientos_rodilla	Deslizamiento de talón sentado
+talon_deslizante_supino	deslizamientos_rodilla	Deslizamiento de talón boca arriba
+extension_rodilla_sin_carga	deslizamientos_rodilla	Extensión corta de rodilla sin carga
+flexion_rodilla_bipeda	deslizamientos_rodilla	Flexión suave de rodilla de pie
+pasos_atras_controlados	pasos_direcciones	Pasos cortos hacia atrás
+pasos_diagonales_suelo	pasos_direcciones	Pasos diagonales en el suelo
+pasos_cruzados_lentos	pasos_direcciones	Pasos cruzados lentos
+pasos_en_v	pasos_direcciones	Desplazamiento de pies en V
+salto_pies_juntos	saltos_recreativos	Salto con ambos pies
+salto_lateral_sencillo	saltos_recreativos	Salto lateral recreativo
+saltos_abre_cierra	saltos_recreativos	Saltos de apertura y cierre
+saltos_alternos_recreativos	saltos_recreativos	Saltos alternos recreativos
+estiramiento_flexores_muneca	flexibilidad_antebrazos	Estiramiento de flexores de muñeca
+estiramiento_extensores_muneca	flexibilidad_antebrazos	Estiramiento de extensores de muñeca
+movilidad_pulgar	flexibilidad_antebrazos	Movilidad del pulgar y base de la mano
+circulos_muneca	flexibilidad_antebrazos	Círculos articulares de muñeca
+apertura_pectoral_pie	movilidad_torax_pie	Apertura pectoral de pie
+rotacion_torax_pared	movilidad_torax_pie	Rotación torácica con apoyo
+deslizamiento_costal_pie	movilidad_torax_pie	Deslizamiento costal lateral
+extensiones_torax_sentado	movilidad_torax_pie	Extensión torácica sentada
+estiramiento_mariposa	flexibilidad_cadera_suelo	Apertura de caderas sentado en mariposa
+rodillas_costado_supino	flexibilidad_cadera_suelo	Rodillas al costado acostado
+flexor_cadera_apoyo	flexibilidad_cadera_suelo	Movilidad del flexor de cadera con soporte
+rotacion_cadera_tumbado	flexibilidad_cadera_suelo	Rotación de cadera tumbado
+apoyo_semi_tandem	equilibrio_tandem	Apoyo semitándem
+marcha_tandem_corta	equilibrio_tandem	Marcha en línea talón-punta
+balanceo_peso_tandem	equilibrio_tandem	Balanceo de peso en postura alineada
+alcance_equilibrio_tandem	equilibrio_tandem	Alcances con equilibrio semialineado
+postura_nino_apoyada	yoga_movilidad_restaurativa	Postura de niño con apoyo
+postura_cobra_suave	yoga_movilidad_restaurativa	Extensión suave en postura de cobra
+postura_mariposa_restaurativa	yoga_movilidad_restaurativa	Mariposa restaurativa tumbado
+postura_triangulo_apoyo	yoga_movilidad_restaurativa	Postura de triángulo con soporte
+marcha_acuatica	natacion_recreativa	Marcha recreativa dentro del agua
+nado_espalda_recreativo	natacion_recreativa	Natación recreativa de espalda
+nado_crol_recreativo	natacion_recreativa	Natación recreativa de crol
+aerobicos_agua	natacion_recreativa	Movimientos aeróbicos en agua
+baile_cumbia_recreativo	danza_recreativa_diversa	Baile recreativo de cumbia
+baile_salsa_recreativo	danza_recreativa_diversa	Baile recreativo de salsa
+baile_merengue_recreativo	danza_recreativa_diversa	Baile recreativo de merengue
+baile_linea_recreativo	danza_recreativa_diversa	Danza recreativa en línea
+baloncesto_tiros	pelota_deportiva_recreativa	Tiros recreativos de baloncesto
+futbol_control_balon	pelota_deportiva_recreativa	Conducción recreativa de balón de fútbol
+voleibol_pases	pelota_deportiva_recreativa	Pases recreativos de voleibol
+balonmano_pases	pelota_deportiva_recreativa	Pases recreativos de balonmano
+cuerda_giro_sin_salto	cuerda_saltar_recreativa	Movimiento de cuerda sin saltar
+cuerda_salto_basico	cuerda_saltar_recreativa	Salto básico recreativo con cuerda
+cuerda_paso_alterno	cuerda_saltar_recreativa	Paso alternado recreativo con cuerda
+cuerda_salto_lateral	cuerda_saltar_recreativa	Paso lateral con cuerda recreativa
+tenis_mesa_recreativo	deportes_raqueta_recreativos	Tenis de mesa recreativo
+badminton_recreativo	deportes_raqueta_recreativos	Bádminton recreativo
+tenis_peloteo	deportes_raqueta_recreativos	Peloteo recreativo de tenis
+padel_recreativo	deportes_raqueta_recreativos	Pádel recreativo
+senderismo_recreativo	recorridos_al_aire_libre	Senderismo recreativo por terreno fácil
+caminata_nordica	recorridos_al_aire_libre	Caminata recreativa con bastones
+caminar_terreno_arena	recorridos_al_aire_libre	Caminata sobre superficie de arena firme
+juegos_movimiento_recreativo	recorridos_al_aire_libre	Juegos recreativos de movimiento
+elevacion_frontal_sentado	elevacion_brazos_funcional	Elevación frontal de brazos sentado
+elevacion_lateral_sentado	elevacion_brazos_funcional	Elevación lateral de brazos sentado
+alcance_pared_brazo	alcances_pared_brazos	Alcance alto con una mano en pared
+deslizamiento_manos_vertical	alcances_pared_brazos	Deslizamiento vertical de manos
+abrazo_brazos_sentado	control_brazos_cruzados	Apertura y abrazo de brazos sentado
+cruce_brazos_alterno	control_brazos_cruzados	Cruce alterno de brazos delante del pecho
+apoyo_manos_pared	apoyos_superiores_estables	Apoyo de ambas manos sobre pared
+apoyo_brazo_mano_sentado	apoyos_superiores_estables	Apoyo alterno de manos sentado
+toque_dedos_pulgares	destreza_manos_brazos	Toques coordinados de dedos y pulgar
+giro_palmas_brazos	destreza_manos_brazos	Giro de palmas con brazos extendidos
+inclinacion_pelvis_pie	alineacion_tronco_suave	Inclinación pélvica de pie
+postura_erguida_suave	alineacion_tronco_suave	Control de postura erguida
+alcance_manos_frente_sentado	alcances_tronco_asistidos	Alcance frontal de manos sentado
+alcance_lateral_brazo_sentado	alcances_tronco_asistidos	Alcance lateral de brazo sentado
+marcha_estable_tronco	coordinacion_tronco_pie	Marcha con tronco estable en sitio
+alternancia_hombros_pie	coordinacion_tronco_pie	Alternancia de hombros con tronco estable
+expansion_costal_suave	respiracion_movimiento_tronco	Expansión costal suave
+respiracion_alcance_brazos	respiracion_movimiento_tronco	Respiración con alcance de brazos
+basculacion_pelvis_supina	control_pelvis_suelo	Basculación leve de pelvis acostado
+apoyo_pies_cadera_suelo	control_pelvis_suelo	Control de apoyo de pies en suelo
+extension_rodilla_sentado_corta	movilidad_rodilla_sentada	Extensión corta de rodilla sentado
+activacion_muslo_sentado	movilidad_rodilla_sentada	Activación de muslo sentado
+paso_frente_y_retorno	pasos_cortos_funcionales	Paso al frente y retorno
+paso_lateral_y_retorno	pasos_cortos_funcionales	Paso lateral y retorno
+balanceo_talon_punta_sentado	tobillo_control_equilibrio	Balanceo talón y punta sentado
+circulo_pies_sentado	tobillo_control_equilibrio	Círculos de pie sentado
+separacion_pierna_pared	cadera_lateral_pie	Separación lateral de pierna con pared
+retorno_pierna_lateral	cadera_lateral_pie	Retorno de pierna lateral
+incorporacion_silla_suave	transiciones_silla_estable	Incorporación suave desde silla
+sentarse_controlado	transiciones_silla_estable	Descenso controlado a silla
+circulos_hombros_sentado	movilidad_hombros_sentada	Círculos suaves de hombros sentado
+elevacion_escapulas_sentado	movilidad_hombros_sentada	Elevación y relajación de hombros
+apertura_rodilla_sentado	movilidad_cadera_silla	Apertura suave de rodilla sentado
+elevar_rodilla_sentado	movilidad_cadera_silla	Elevación de rodilla sentado
+flexion_rodilla_sin_carga_pie	movilidad_rodilla_suave	Flexión libre de rodilla de pie
+deslizamiento_pie_sentado	movilidad_rodilla_suave	Deslizamiento corto de pie sentado
+giro_talon_suelo	movilidad_pies_suelo	Giro de talón con pie apoyado
+desplazamiento_punta_suelo	movilidad_pies_suelo	Giro de la punta del pie en suelo
+inclinacion_torax_sentado	movilidad_toracica_silla	Inclinación lateral de tórax sentado
+rotacion_suave_tronco_silla	movilidad_toracica_silla	Rotación de torso sentado
+marcha_pasitos_sitio	marcha_en_sitio_bajoimpacto	Marcha de pasos pequeños en sitio
+marcha_lenta_brazos	marcha_en_sitio_bajoimpacto	Marcha lenta con brazos
+paso_diagonal_bajoimpacto	pasos_aerobicos_direcciones	Paso diagonal de bajo impacto
+paso_atras_bajoimpacto	pasos_aerobicos_direcciones	Paso atrás de bajo impacto
+palmada_paso_controlado	ritmos_brazos_pasos	Palmada coordinada con paso
+brazos_ritmicos_caminando	ritmos_brazos_pasos	Brazos rítmicos durante marcha
+marcha_sentada_recreativa	cardio_desde_silla	Marcha recreativa sentado
+brazos_cardio_sentado	cardio_desde_silla	Movimiento aeróbico de brazos sentado
+pasos_imitar_figuras	juegos_pasos_recreativos	Pasos para imitar figuras
+seguir_pasos_ritmicos	juegos_pasos_recreativos	Seguimiento de pasos rítmicos
+dep_011_press_de_pecho_con_mancuernas	deporte_empujes_superiores	Press de pecho con mancuernas
+dep_019_oruga_inchworm	deporte_empujes_superiores	Oruga (inchworm)
+dep_020_reptado_de_oso_bear_crawl	deporte_empujes_superiores	Reptado de oso (bear crawl)
+dep_026_flexiones_con_balon_de_estabilidad	deporte_empujes_superiores	Flexiones con balón de estabilidad
+dep_012_jalon_al_pecho_en_rodillas_lat_pulldow	deporte_tracciones_superiores	Jalón al pecho en rodillas (lat pulldown)
+dep_013_remo_con_flexion_de_tronco_barbell_row	deporte_tracciones_superiores	Remo con flexión de tronco (barbell row)
+dep_044_dominadas_para_usuarios_de_silla_de_ru	deporte_tracciones_superiores	Dominadas (para usuarios de silla de ruedas)
+dep_107_pullover_con_mancuerna	deporte_tracciones_superiores	Pullover con mancuerna
+dep_116_travesia_con_brazos_rectos_boulder	deporte_tracciones_superiores	Travesía con brazos rectos (boulder)
+dep_117_suspension_en_tabla_de_colgacion_hangb	deporte_tracciones_superiores	Suspensión en tabla de colgación (hangboard)
+dep_045_bandas_de_resistencia_para_hombro_sent	deporte_estabilidad_hombros	Bandas de resistencia para hombro (sentado)
+dep_048_elevacion_de_brazo_sobre_la_cabeza_sen	deporte_estabilidad_hombros	Elevación de brazo sobre la cabeza (sentado)
+dep_095_rotacion_externa_con_banda_manguito_ro	deporte_estabilidad_hombros	Rotación externa con banda (manguito rotador)
+dep_114_aperturas_con_banda_band_pull_aparts	deporte_estabilidad_hombros	Aperturas con banda (band pull-aparts)
+dep_089_escalado_vertical_vertical_sculling	deporte_gestos_implementos	Escalado vertical (vertical sculling)
+dep_094_simulacion_de_tiro_isometrica_con_band	deporte_gestos_implementos	Simulación de tiro isométrica con banda (arquería)
+dep_069_preparacion_de_natacion_breaststroke_p	deporte_control_brazos_prono	Preparación de natación (breaststroke prep, pilates)
+dep_005_perro_pajaro_bird_dog	deporte_centro_estabilidad	Perro-pájaro (bird-dog)
+dep_006_superman	deporte_centro_estabilidad	Superman
+dep_051_plancha_lateral_estatica_fifa_11	deporte_centro_estabilidad	Plancha lateral estática (FIFA 11+)
+dep_052_plancha_lateral_con_elevacion_de_cader	deporte_centro_estabilidad	Plancha lateral con elevación de cadera (FIFA 11+)
+dep_062_los_cien_hundred_pilates	deporte_centro_estabilidad	Los cien (hundred, pilates)
+dep_063_estiramiento_de_una_pierna_pilates	deporte_centro_estabilidad	Estiramiento de una pierna (pilates)
+dep_066_tijeras_scissors_pilates	deporte_centro_estabilidad	Tijeras (scissors, pilates)
+dep_110_crunch_bicicleta	deporte_centro_estabilidad	Crunch bicicleta
+dep_022_segador_de_heno_en_rodilla_media_hay_b	deporte_centro_rotacion	Segador de heno en rodilla media (hay baler)
+dep_027_rotaciones_de_tronco_con_balon_medicin	deporte_centro_rotacion	Rotaciones de tronco con balón medicinal sentado
+dep_070_giro_de_cadera_hip_twist_pilates	deporte_centro_rotacion	Giro de cadera (hip twist, pilates)
+dep_105_lanzamiento_rotacional_de_balon_medici	deporte_centro_rotacion	Lanzamiento rotacional de balón medicinal
+dep_106_lanzamiento_tipo_scoop_en_rodilla_medi	deporte_centro_rotacion	Lanzamiento tipo scoop en rodilla media
+dep_120_press_pallof_anti_rotacion	deporte_centro_rotacion	Press Pallof (anti-rotación)
+dep_049_respiracion_profunda_expansion_costal	deporte_centro_respiracion	Respiración profunda (expansión costal)
+dep_088_patada_subacuatica_tipo_delfin	deporte_centro_acuatico	Patada subacuática tipo delfín
+dep_097_trabajo_sin_estribios_al_trote_estabil	deporte_centro_transiciones	Trabajo sin estribios al trote (estabilidad de core)
+dep_098_pop_up_en_seco_surf	deporte_centro_transiciones	Pop-up en seco (surf)
+dep_017_salto_al_cajon_box_jump	deporte_piernas_potencia	Salto al cajón (box jump)
+dep_023_ejercicio_del_hexagono	deporte_piernas_potencia	Ejercicio del hexágono
+dep_053_nordic_curl_de_isquiotibiales_fifa_11	deporte_piernas_potencia	Nordic curl de isquiotibiales (FIFA 11+)
+dep_057_sentadilla_a_una_pierna_fifa_11	deporte_piernas_potencia	Sentadilla a una pierna (FIFA 11+)
+dep_058_saltos_verticales_fifa_11	deporte_piernas_potencia	Saltos verticales (FIFA 11+)
+dep_076_zancadas_saltadas_bounding	deporte_piernas_potencia	Zancadas saltadas (bounding)
+dep_077_sprints_con_resistencia_trineo_paracai	deporte_piernas_potencia	Sprints con resistencia (trineo, paracaídas o banda)
+dep_080_saltos_con_rodillas_al_pecho_tuck_jump	deporte_piernas_potencia	Saltos con rodillas al pecho (tuck jumps)
+dep_122_saltos_laterales_de_patinador_skater_j	deporte_piernas_potencia	Saltos laterales de patinador (skater jumps)
+dep_018_escalera_de_agilidad_desplazamiento_la	deporte_pies_agilidad	Escalera de agilidad: desplazamiento lateral
+dep_059_frenado_y_cambio_de_direccion_fifa_11	deporte_pies_agilidad	Frenado y cambio de dirección (FIFA 11+)
+dep_061_carrera_circundando_al_companero_fifa	deporte_pies_agilidad	Carrera circundando al compañero (FIFA 11+)
+dep_072_skip_a_a_skip	deporte_pies_agilidad	Skip A (A-skip)
+dep_073_rodillas_altas_high_knees	deporte_pies_agilidad	Rodillas altas (high knees)
+dep_074_carioca_uva_cruzada	deporte_pies_agilidad	Carioca (uva cruzada)
+dep_075_talones_al_gluteo_butt_kicks	deporte_pies_agilidad	Talones al glúteo (butt kicks)
+dep_084_drill_de_pivote_boxeo	deporte_pies_agilidad	Drill de pivote (boxeo)
+dep_085_caminatas_laterales_con_banda_resistan	deporte_pies_agilidad	Caminatas laterales con banda (resistance band lateral walks)
+dep_086_drill_del_espejo_boxeo_con_pareja	deporte_pies_agilidad	Drill del espejo (boxeo, con pareja)
+dep_118_drill_de_split_step_padel_tenis	deporte_pies_agilidad	Drill de split step (pádel/tenis)
+dep_119_shuffle_lateral_entre_conos	deporte_pies_agilidad	Shuffle lateral entre conos
+dep_029_elevacion_de_talones_en_maquina_calf_r	deporte_fuerza_piernas	Elevación de talones en máquina (calf raise)
+dep_032_elevacion_lateral_de_pierna	deporte_fuerza_piernas	Elevación lateral de pierna
+dep_033_extension_de_cadera_de_pie_pierna_rect	deporte_fuerza_piernas	Extensión de cadera de pie (pierna recta atrás)
+dep_121_sentadilla_isometrica_en_pared_wall_si	deporte_fuerza_piernas	Sentadilla isométrica en pared (wall sit)
+dep_064_puente_de_hombros_pilates	deporte_piernas_pilates	Puente de hombros (pilates)
+dep_065_almeja_clam_pilates	deporte_piernas_pilates	Almeja (clam, pilates)
+dep_067_natacion_pilates_en_prono	deporte_piernas_pilates	Natación (pilates, en prono)
+dep_068_patada_lateral_side_kick_pilates	deporte_piernas_pilates	Patada lateral (side kick, pilates)
+dep_071_patada_de_una_pierna_one_leg_kick_pila	deporte_piernas_pilates	Patada de una pierna (one-leg kick, pilates)
+dep_096_posicion_de_dos_puntos_a_caballo	deporte_piernas_danza	Posición de dos puntos a caballo
+dep_103_plies_ballet	deporte_piernas_danza	Pliés (ballet)
+dep_104_tendus_ballet	deporte_piernas_danza	Tendus (ballet)
+dep_111_deslizamientos_en_tabla_deslizante_sli	deporte_deslizamientos	Deslizamientos en tabla deslizante (slide board)
+dep_112_equilibrio_unipodal_en_posicion_baja_d	deporte_deslizamientos	Equilibrio unipodal en posición baja de patinaje
+dep_007_gato_vaca_cat_cow	deporte_mov_yoga	Gato-vaca (cat-cow)
+dep_008_perro_boca_abajo	deporte_mov_yoga	Perro boca abajo
+dep_009_postura_del_nino	deporte_mov_yoga	Postura del niño
+dep_028_cobra	deporte_mov_yoga	Cobra
+dep_024_estiramiento_de_flexor_de_cadera_en_de	deporte_mov_articular	Estiramiento de flexor de cadera en decúbito supino
+dep_025_estiramiento_de_dorsal_90	deporte_mov_articular	Estiramiento de dorsal 90
+dep_037_estiramiento_de_pecho_sentado	deporte_mov_articular	Estiramiento de pecho sentado
+dep_040_estiramiento_de_tobillo_sentado	deporte_mov_articular	Estiramiento de tobillo sentado
+dep_041_rotacion_de_cuello	deporte_mov_articular	Rotación de cuello
+dep_093_deslizamientos_escapulares_en_pared_sc	deporte_mov_articular	Deslizamientos escapulares en pared (scapular wall slides)
+dep_109_estiramiento_figura_4	deporte_mov_articular	Estiramiento figura 4
+dep_054_equilibrio_unipodal_sujetando_el_balon	deporte_mov_equilibrio	Equilibrio unipodal sujetando el balón (FIFA 11+)
+dep_100_caminata_lateral	deporte_mov_equilibrio	Caminata lateral
+dep_101_caminata_talon_punta	deporte_mov_equilibrio	Caminata talón-punta
+dep_102_apoyo_en_un_pie_equilibrio_unipodal	deporte_mov_equilibrio	Apoyo en un pie (equilibrio unipodal)
+dep_115_silencio_en_los_pies_boulder	deporte_mov_equilibrio	Silencio en los pies (boulder)
+dep_078_movilidad_de_vallas_hurdle_mobility	deporte_mov_tecnica	Movilidad de vallas (hurdle mobility)
+dep_087_streamline_en_prono_posicion_hidrodina	deporte_mov_tecnica	Streamline en prono (posición hidrodinámica)
+dep_099_pop_up_invertido_excentrico_surf	deporte_mov_tecnica	Pop-up invertido excéntrico (surf)
+dep_050_correr_en_linea_recta_fifa_11	deporte_cardio_carrera	Correr en línea recta (FIFA 11+)
+dep_060_sprints_rapidos_adelante_y_atras_fifa	deporte_cardio_carrera	Sprints rápidos adelante y atrás (FIFA 11+)
+dep_079_progresiones_strides	deporte_cardio_carrera	Progresiones (strides)
+dep_081_saltos_de_tijera_jumping_jacks	deporte_cardio_ritmo	Saltos de tijera (jumping jacks)
+dep_082_salto_de_boxeador_con_cuerda_jump_rope	deporte_cardio_ritmo	Salto de boxeador con cuerda (jump rope)
+dep_043_remo_adaptado_en_maquina	deporte_cardio_agua	Remo adaptado en máquina
+dep_090_nado_continuo_y_patada_5_10_minutos	deporte_cardio_agua	Nado continuo y patada (5-10 minutos)
+dep_042_esprint_en_silla_de_ruedas	deporte_cardio_adaptado	Esprint en silla de ruedas
+dep_016_escaladores_mountain_climbers	deporte_cardio_funcional	Escaladores (mountain climbers)
+dep_burpee_tecnico	deporte_cardio_funcional	Burpee (ejercicio combinado)
+dep_carrera_ida_vuelta	deporte_cardio_carrera	Carrera de ida y vuelta (shuttle/suicides)
+sujecion_barra_pies	calistenia_suspension	Sujeción asistida de barra
+retraccion_colgado_asistido	calistenia_suspension	Control escapular en barra asistida
+dominada_neutra_asistida	calistenia_suspension	Tracción neutra asistida
+negativa_traccion_soportada	calistenia_suspension	Descenso asistido en tracción
+press_vertical_guiado	gimnasio_maquinas_superior	Press vertical guiado
+remo_apoyo_pecho_maquina	gimnasio_maquinas_superior	Remo con apoyo de pecho
+apertura_posterior_maquina	gimnasio_maquinas_superior	Apertura posterior en máquina
+curl_brazo_maquina	gimnasio_maquinas_superior	Flexión de codo en máquina
+voleibol_toque_antebrazos	voleibol_toques	Toque de antebrazos
+voleibol_colocacion_dedos	voleibol_toques	Colocación con dedos
+voleibol_saque_bajo	voleibol_toques	Saque bajo de voleibol
+voleibol_recepcion_alta	voleibol_toques	Recepción alta
+derecha_raqueta_suave	raqueta_golpes	Golpe de derecha recreativo
+reves_raqueta_suave	raqueta_golpes	Golpe de revés recreativo
+volea_raqueta_corta	raqueta_golpes	Volea corta recreativa
+servicio_raqueta_control	raqueta_golpes	Servicio recreativo controlado
+conduccion_palo_hockey_lenta	hockey_control_palo	Conducción suave con palo
+recepcion_palo_hockey	hockey_control_palo	Recepción con palo
+pase_corto_palo_hockey	hockey_control_palo	Pase controlado de hockey
+orientacion_palo_hockey	hockey_control_palo	Orientación del implemento
+pase_pecho_balonmano	balonmano_pases	Pase de pecho en balonmano
+recepcion_balonmano	balonmano_pases	Recepción de balón de mano
+pase_picado_balonmano	balonmano_pases	Pase picado en balonmano
+pase_lateral_balonmano	balonmano_pases	Pase lateral en balonmano
+pilates_centrado_supino	pilates_control_respiracion	Centrado corporal en suelo
+pilates_pierna_deslizante	pilates_control_respiracion	Deslizamiento de pierna de Pilates
+pilates_alcance_brazo_supino	pilates_control_respiracion	Alcance de brazo boca arriba
+pilates_pelvis_neutra	pilates_control_respiracion	Control de pelvis neutra
+resistencia_rotacion_estatica	tronco_antirotacion_deporte	Resistencia suave a giro con banda
+alcance_frontal_banda_tronco	tronco_antirotacion_deporte	Alcance frontal con resistencia
+retorno_diagonal_banda	tronco_antirotacion_deporte	Retorno diagonal controlado
+estabilizacion_banda_costado	tronco_antirotacion_deporte	Estabilidad de costado con banda
+remo_alineacion_sentado	tronco_tecnica_remo	Alineación sentada de remero
+remo_bisagra_sentada	tronco_tecnica_remo	Bisagra sentada de tronco
+remo_retorno_tronco	tronco_tecnica_remo	Retorno postural de remo
+remo_ritmo_brazos_tronco	tronco_tecnica_remo	Coordinación de brazos y tronco
+nado_control_toracico	postura_nadador_en_seco	Control torácico de nadador
+nado_alcance_supino	postura_nadador_en_seco	Alcance alterno de nadador
+nado_pelvis_estable	postura_nadador_en_seco	Estabilidad pélvica de nadador
+nado_coordinacion_cruzada_seca	postura_nadador_en_seco	Coordinación cruzada en seco
+transferencia_balon_torso	tronco_control_balon	Transferencia de balón frente al torso
+alcance_diagonal_balon_deporte	tronco_control_balon	Alcance diagonal de balón
+giro_balon_torso_corto	tronco_control_balon	Giro corto de torso con balón
+control_balon_arriba_abajo	tronco_control_balon	Control de balón a distintas alturas
+yoga_postura_mesa_suave	tronco_yoga_equilibrio	Postura de mesa adaptada
+yoga_alcance_lateral_de_pie	tronco_yoga_equilibrio	Alcance lateral de yoga de pie
+yoga_postura_gato_neutro	tronco_yoga_equilibrio	Transición a columna neutra
+yoga_postura_centro_estable	tronco_yoga_equilibrio	Centro estable de pie
+pase_interior_futbol	futbol_pases_recepciones	Pase con interior del pie
+control_planta_futbol	futbol_pases_recepciones	Control con planta de pie
+recepcion_interior_futbol	futbol_pases_recepciones	Recepción interior del pie
+pase_exterior_futbol	futbol_pases_recepciones	Pase suave de exterior de pie
+prensa_piernas_guiada	gimnasio_maquinas_inferior	Prensa de piernas guiada
+curl_femoral_sentado_maquina	gimnasio_maquinas_inferior	Curl femoral sentado guiado
+abduccion_cadera_maquina	gimnasio_maquinas_inferior	Separación de cadera en máquina
+aduccion_cadera_maquina	gimnasio_maquinas_inferior	Aproximación de cadera en máquina
+pivote_basico_baloncesto	baloncesto_pivotes	Pivote de baloncesto
+parada_dos_tiempos_basket	baloncesto_pivotes	Parada en dos tiempos
+orientacion_pies_tiro_basket	baloncesto_pivotes	Orientación de pies para lanzamiento
+desplazamiento_pie_apoyo_basket	baloncesto_pivotes	Cambio de apoyo de baloncesto
+despegue_talones_pista	atletismo_despegue_control	Preparación de despegue con talones
+apoyo_unipodal_pista	atletismo_despegue_control	Apoyo unilateral deportivo
+balanceo_brazos_salto	atletismo_despegue_control	Balanceo de brazos preparatorio
+aterrizaje_base_footwork	atletismo_despegue_control	Control de base de apoyo
+patinaje_apoyo_lateral_seco	patinaje_apoyos_seco	Apoyo lateral sin patines
+patinaje_posicion_base	patinaje_apoyos_seco	Postura base de patinaje en seco
+patinaje_paso_diagonal_seco	patinaje_apoyos_seco	Paso diagonal de patinaje en seco
+patinaje_equilibrio_suelo	patinaje_apoyos_seco	Equilibrio en seco de patinaje
+beisbol_inicio_carrera_base	beisbol_pasos_bases	Inicio de carrera recreativa a base
+beisbol_pie_apoyo_lanzamiento	beisbol_pasos_bases	Pie de apoyo de lanzador sin pelota
+beisbol_retorno_base	beisbol_pasos_bases	Retorno hacia base
+beisbol_giro_base	beisbol_pasos_bases	Giro controlado alrededor de base
+raqueta_movilidad_escapulas	movilidad_hombro_raqueta	Movilidad escapular de raqueta
+raqueta_rotacion_brazo_suave	movilidad_hombro_raqueta	Rotación suave de brazos
+raqueta_pronacion_sin_carga	movilidad_hombro_raqueta	Pronación recreativa sin carga
+raqueta_movilidad_munecas	movilidad_hombro_raqueta	Preparación de muñecas
+atleta_cadera_suave	movilidad_atletismo_pista	Movilidad de cadera de atleta
+atleta_tobillos_preparacion	movilidad_atletismo_pista	Movilidad de tobillos de atleta
+atleta_rodilla_en_sitio	movilidad_atletismo_pista	Movilidad de rodilla en sitio
+atleta_torax_preparacion	movilidad_atletismo_pista	Preparación torácica de atleta
+nadador_circulo_brazos_corto	movilidad_nadador_hombros	Círculos cortos de brazos de nadador
+nadador_abertura_pecho	movilidad_nadador_hombros	Apertura pectoral sin carga
+nadador_escapulas_pie	movilidad_nadador_hombros	Control escapular de nadador
+nadador_rotacion_costal_pie	movilidad_nadador_hombros	Rotación costal para natación
+patinaje_movilidad_cadera_pie	movilidad_patinaje_cadera	Movilidad de cadera para patinaje
+patinaje_tobillo_base	movilidad_patinaje_cadera	Movilidad de tobillo para patinaje
+patinaje_muslo_lateral	movilidad_patinaje_cadera	Movilidad lateral de muslo
+patinaje_rodilla_base	movilidad_patinaje_cadera	Preparación de rodillas de patinaje
+pelota_mano_apertura_dedos	movilidad_deportiva_manos	Apertura de dedos de deportista
+pelota_mano_pulgar	movilidad_deportiva_manos	Movilidad de pulgar de deportista
+pelota_mano_antebrazo	movilidad_deportiva_manos	Giro de antebrazo sin carga
+pelota_mano_muneca	movilidad_deportiva_manos	Flexión suave de muñecas
+danza_cuello_hombros	movilidad_danza_yoga	Movilidad de cuello y hombros para danza
+danza_torax_latitud	movilidad_danza_yoga	Movilidad lateral de tronco para danza
+danza_cadera_sin_salto	movilidad_danza_yoga	Cadera móvil sin salto
+danza_pie_plantas	movilidad_danza_yoga	Movilidad de plantas de pies para danza
+atletismo_marcha_a	atletismo_cadencia	Marcha técnica de pista
+atletismo_brazos_carrera	atletismo_cadencia	Coordinación de brazos de carrera
+atletismo_pasos_ritmicos	atletismo_cadencia	Pasos rítmicos de atletismo
+atletismo_trote_postura	atletismo_cadencia	Trote con postura controlada
+relevo_entrega_estatica	relevos_movimiento	Entrega estática de testigo
+relevo_paso_caminando	relevos_movimiento	Relevo caminando
+relevo_ritmo_suave	relevos_movimiento	Relevo a ritmo cómodo
+relevo_marca_suelo	relevos_movimiento	Referencia de marcas para relevo
+futbol_conduccion_recta	futbol_conduccion	Conducción recta de fútbol
+futbol_conduccion_slalom	futbol_conduccion	Conducción recreativa entre marcas
+futbol_cambio_sentido_balon	futbol_conduccion	Cambio de sentido con balón de fútbol
+futbol_arrastre_lateral_balon	futbol_conduccion	Arrastre lateral de balón
+baloncesto_bote_bajo	baloncesto_bote	Bote de baloncesto controlado
+baloncesto_bote_desplazando	baloncesto_bote	Bote con desplazamiento
+baloncesto_bote_cruzado	baloncesto_bote	Bote cruzado recreativo
+baloncesto_bote_sentado	baloncesto_bote	Bote sentado de baloncesto
+hockey_pasos_laterales	hockey_desplazamientos	Pasos laterales de hockey en seco
+hockey_giro_amplio	hockey_desplazamientos	Cambio de dirección recreativo de hockey
+hockey_pasos_defensivos	hockey_desplazamientos	Pasos de posición defensiva sin contacto
+hockey_retorno_posicion	hockey_desplazamientos	Retorno a posición deportiva
+burpee_adaptado	acondicionamiento_multideporte	Burpee adaptado
+carreras_ida_vuelta_controladas	acondicionamiento_multideporte	Carreras de ida y vuelta
+pasos_circuito_suave	acondicionamiento_multideporte	Pasos de circuito recreativo
+marcha_y_paso_lateral	acondicionamiento_multideporte	Combinación de marcha y paso lateral

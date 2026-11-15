@@ -1,0 +1,31 @@
+name: Validar modulo portable de categorias y volumen
+on:
+  push:
+    paths:
+      - 'portable-category-volume/**'
+      - '.github/workflows/portable-category-volume.yml'
+  pull_request:
+    paths:
+      - 'portable-category-volume/**'
+      - '.github/workflows/portable-category-volume.yml'
+jobs:
+  java-17:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Validar Java puro
+        run: gradle -p portable-category-volume clean test jar --no-daemon
+      - name: Publicar kit Java portable y su configuración
+        uses: actions/upload-artifact@v4
+        with:
+          name: asterion-category-volume-portable
+          path: portable-category-volume/
+          if-no-files-found: error
+          retention-days: 14
