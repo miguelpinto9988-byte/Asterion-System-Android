@@ -81,7 +81,14 @@ final class SimpleProfileStepThreeView extends LinearLayout {
 
         // Native layered horizontal card: background WebP + transparent hunter WebP.
         // Missing drawables show a safe fallback, never reset saved selections.
-        FrameLayout card = new FrameLayout(activity);
+        FrameLayout card = new FrameLayout(activity) {
+            @Override protected void onMeasure(int widthMeasureSpec,int heightMeasureSpec) {
+                int width = View.MeasureSpec.getSize(widthMeasureSpec);
+                int height = Math.round(width * 9f / 16f);
+                super.onMeasure(widthMeasureSpec,View.MeasureSpec.makeMeasureSpec(
+                        height,View.MeasureSpec.EXACTLY));
+            }
+        };
         GradientDrawable cardFallback = new GradientDrawable(
                 GradientDrawable.Orientation.TL_BR,
                 new int[]{Color.rgb(31,37,61), Color.rgb(91,58,136)});
@@ -95,8 +102,12 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         portraitView = new ImageView(activity);
         portraitView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         portraitView.setTag("asterion_fullcolor_art");
+        // The approved portrait is a transparent square; never crop it to a circle.
+        // The card's fixed 16:9 aspect ratio makes 56.25% width equal 100% height.
+        int cardWidth = activity.getResources().getDisplayMetrics().widthPixels;
+        int squareSide = Math.round(cardWidth * 0.53f);
         FrameLayout.LayoutParams portraitParams = new FrameLayout.LayoutParams(
-                dp(198), -1, Gravity.LEFT | Gravity.BOTTOM);
+                squareSide, -1, Gravity.LEFT | Gravity.BOTTOM);
         card.addView(portraitView, portraitParams);
         companionView = new ImageView(activity);
         companionView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -126,7 +137,7 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         nameParams.topMargin=dp(30);
         nameParams.rightMargin=dp(30);
         card.addView(nameOnCard,nameParams);
-        LayoutParams cardLayout = new LayoutParams(-1,dp(190));
+        LayoutParams cardLayout = new LayoutParams(-1,-2);
         cardLayout.topMargin = dp(18);
         addView(card, cardLayout);
 
