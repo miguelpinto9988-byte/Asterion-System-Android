@@ -35,7 +35,8 @@ final class ProfileWizardTheme {
         // Never overwrite colored activity tiles or their colored legend text.
         Object tag = view.getTag();
         if ("asterion_week_color".equals(tag)) {
-            if (view instanceof TextView) ((TextView)view).setTextColor(Color.WHITE);
+            // The weekly tile owns its darker semantic ink, shared across
+            // light and dark themes; never replace that ink with white.
             return;
         }
         if ("asterion_week_legend".equals(tag)) {
