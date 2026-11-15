@@ -61,9 +61,7 @@
         <item name="android:alertDialogTheme">@style/Asterion.Dialog.Light</item>
         <item name="android:spinnerDropDownItemStyle">@style/Asterion.BoldSpinner.Light</item>
     </style>
-    <style name="Asterion.BoldSpinner">
-        <item name="android:textStyle">bold</item>
-    </style>
+    <style name="Asterion.BoldSpinner" parent="@style/Asterion.BoldTextView"/>
     <style name="Asterion.BoldSpinner.Dark">
         <item name="android:textColor">#F5F4FA</item>
     </style>
