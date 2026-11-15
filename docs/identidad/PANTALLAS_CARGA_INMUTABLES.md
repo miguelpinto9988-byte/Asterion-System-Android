@@ -1,32 +1,22 @@
-# Regla obligatoria — Pantallas de carga permanentes
+# Política de pantallas de carga — revisión aprobada por el propietario
 
-**Decisión del propietario:** las dos ilustraciones aprobadas de Asterion System son oficiales, definitivas e inmutables ante todas las actualizaciones futuras. La decisión complementa, sin alterar, la política del icono oficial `ICONO_OFICIAL_INMUTABLE.md`.
+Las ilustraciones anteriores se sustituyen por dos composiciones verticales a pantalla completa sin rótulos de hora. Esta aprobación actualiza la política anterior; el **ícono oficial del lanzador** continúa protegido e inalterado.
 
-## Ilustraciones bloqueadas
+## Recursos vigentes
 
-| Horario local en el teléfono | Imagen obligatoria | SHA-256 inmutable |
+| Horario local del teléfono | Recurso usado por la aplicación | SHA-256 |
 |---|---|---|
-| 00:00:00 a 11:59:59 | `app/src/main/res/drawable-nodpi/asterion_loading_manana.png` | `67c495b89b0acd631e1a64c113c6803df31e488cef559237b936b1ed6a88ff27` |
-| 12:00:00 a 23:59:59 | `app/src/main/res/drawable-nodpi/asterion_loading_tarde_noche.png` | `d1af6660b3c1afb9db0e6b5bdca2d7c4e457e302e1f363f3d03226c3461b3cba` |
+| 00:00:00–11:59:59 | `app/src/main/res/drawable-nodpi/asterion_loading_manana_4k.webp` | `2124c87d5bfc9d793fae5a9e558b91eb34884fbbb3c9d5df36667617f0f4b434` |
+| 12:00:00–23:59:59 | `app/src/main/res/drawable-nodpi/asterion_loading_tarde_noche_4k.webp` | `dc1c38e2d6699c0a7c18506e1c2dc1b382be1796166f4f858f91e246e19ac494` |
 
-Los archivos incluyen ilustración, decoración, título, barra dibujada y texto de estado; **no está permitido retocar, regenerar, sustituir, recolorear, alterar textos, recortar, aplicar filtros, reemplazar personajes ni agregar otros emblemas**. Las imágenes finales están almacenadas como PNG 1080 × 1920 dentro del código fuente del repositorio y empaquetadas en la APK debug. Se obtuvieron ampliando las previsualizaciones aprobadas de 941 × 1672 px mediante remuestreo; la ampliación técnica conserva la composición pero no añade detalle real.
+- Cada ilustración es **WebP de 2160 × 4800** con alto nivel de calidad y menor peso que PNG.
+- Se creó a partir de la composición vertical aprobada mediante un remuestreo de buena calidad y enfoque suave. No se afirma que se haya añadido detalle real equivalente a generación nativa a 4K.
+- No hay etiquetas de hora en las ilustraciones. Se mantiene el personaje delante del portal, el título y la barra decorativa de carga.
+- El `ImageView` usa `centerCrop` para cubrir físicamente toda la pantalla y evitar márgenes o bandas; según la relación de aspecto, se recortan bordes exteriores. No se deforma la imagen.
+- `SplashActivity` oculta las barras de sistema mientras es visible y utiliza `Calendar.getInstance().get(Calendar.HOUR_OF_DAY)` para seleccionar automáticamente.
+- La barra dibujada **no representa progreso real de descarga**. La ilustración se muestra aproximadamente 1,6 segundos; luego sigue el flujo normal de perfil e inicio.
+- El ícono oficial `asterion_icon_oficial.webp` y su prueba de integridad permanecen sin cambios.
 
-## Comportamiento obligatorio
+## Verificación
 
-- Al arrancar desde el lanzador, `SplashActivity` muestra **exactamente una** de estas dos imágenes.
-- Para la selección usa `Calendar.getInstance().get(Calendar.HOUR_OF_DAY)`, es decir, la hora local del dispositivo, formato 24 horas.
-- De medianoche hasta antes de mediodía, muestra la versión clara; desde mediodía hasta medianoche, la oscura.
-- Muestra la ilustración en `fitCenter` para no recortar el texto ni el personaje en teléfonos con otras relaciones de aspecto; las franjas adicionales usarán el fondo oscuro.
-- La imagen de carga **no contiene el icono oficial**. El icono de lanzador de Android queda intacto.
-- Se muestra aproximadamente 1,6 segundos cuando la actividad está visible y después abre `MainActivity`. El indicador gráfico de progreso es parte fija de la imagen aprobada, **no representa progreso de descarga o inicialización**.
-- No necesita internet ni añade permisos. No modifica preferencias, catálogo, planificación, seguimiento ni base de datos.
-- No se implementa creación de perfil en esta entrega; se aborda después, separadamente.
-
-## Protección técnica para futuras versiones
-
-- `tests/branding_splash_lock.py` valida byte por byte ambos recursos con sus SHA-256, dimensiones, horario y declaración del lanzador.
-- `SplashTimeWindowTest` cubre todas las 24 horas y dos entradas inválidas.
-- `.github/workflows/android-ci.yml` ejecuta la validación de integridad en cada push a `main`, antes de compilar `debug`. Fallará ante cambios no aprobados de imágenes o configuración horaria.
-- Queda prohibida toda modificación al arte, a la política o al control de integridad. La actualización de otras funciones **no debe modificar estos recursos**.
-
-**Límite:** los controles automáticos detectan cambios bajo el proceso de CI actual; no pueden impedir que alguien con privilegios administrativos quite los controles o reescriba el historial. Para máxima protección, configurar la rama `main` para requerir que pase CI y revisión de archivos de identidad.
+`tests/branding_splash_lock.py` comprueba la integridad SHA-256, dimensiones reales WebP, selección horaria, manifest, referencias 4K y `centerCrop`. `tests/splash_window_insets_regression.py` mantiene la protección contra el acceso prematuro al controlador de barras en Android 16. La actualización del contenido de las pantallas fue solicitada explícitamente por el propietario.

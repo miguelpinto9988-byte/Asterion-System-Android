@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lock Asterion's two permanent 1080x1920 splash images and local-time schedule."""
+"""Guard the approved 2160 x 4800 full-bleed WebP splash art and time schedule."""
 import hashlib
 from pathlib import Path
 import re
@@ -11,25 +11,31 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "app/src/main"
 ANDROID = "{http://schemas.android.com/apk/res/android}"
 ASSETS = {
-    "asterion_loading_manana.png": "67c495b89b0acd631e1a64c113c6803df31e488cef559237b936b1ed6a88ff27",
-    "asterion_loading_tarde_noche.png": "d1af6660b3c1afb9db0e6b5bdca2d7c4e457e302e1f363f3d03226c3461b3cba",
+    "asterion_loading_manana_4k.webp": "2124c87d5bfc9d793fae5a9e558b91eb34884fbbb3c9d5df36667617f0f4b434",
+    "asterion_loading_tarde_noche_4k.webp": "dc1c38e2d6699c0a7c18506e1c2dc1b382be1796166f4f858f91e246e19ac494",
 }
+
+
+def webp_dimensions(data: bytes):
+    """Read the dimensions of a simple lossy WebP/VP8 image."""
+    if data[:4] != b"RIFF" or data[8:12] != b"WEBP" or data[12:16] != b"VP8 ":
+        raise AssertionError("Recurso no es WebP/VP8")
+    if data[23:26] != b"\x9d\x01\x2a":
+        raise AssertionError("Cabecera VP8 de imagen no reconocida")
+    return (struct.unpack("<H", data[26:28])[0] & 0x3FFF,
+            struct.unpack("<H", data[28:30])[0] & 0x3FFF)
 
 
 def main() -> int:
     for name, expected_sha in ASSETS.items():
         path = BASE / "res/drawable-nodpi" / name
-        if not path.is_file():
-            raise AssertionError(f"Falta la pantalla permanente: {path}")
         data = path.read_bytes()
         actual = hashlib.sha256(data).hexdigest()
         if actual != expected_sha:
-            raise AssertionError(f"Pantalla oficial modificada: {name}; SHA256 {actual}")
-        if not data.startswith(b"\x89PNG\r\n\x1a\n"):
-            raise AssertionError(f"Archivo no es PNG: {name}")
-        width, height = struct.unpack(">II", data[16:24])
-        if (width, height) != (1080, 1920):
-            raise AssertionError(f"Resolución alterada: {name} {width}x{height}")
+            raise AssertionError(f"Pantalla de carga alterada: {name}, SHA256={actual}")
+        if webp_dimensions(data) != (2160, 4800):
+            raise AssertionError(f"Resolución incorrecta de {name}: {webp_dimensions(data)}")
+
     manifest = ET.parse(BASE / "AndroidManifest.xml").getroot()
     app = manifest.find("application")
     activities = {a.get(ANDROID + "name"): a for a in app.findall("activity")}
@@ -42,24 +48,28 @@ def main() -> int:
     actions = [n.get(ANDROID + "name") for n in launcher.findall("./intent-filter/action")]
     categories = [n.get(ANDROID + "name") for n in launcher.findall("./intent-filter/category")]
     if "android.intent.action.MAIN" not in actions or "android.intent.category.LAUNCHER" not in categories:
-        raise AssertionError("Lanzador no apunta a SplashActivity")
+        raise AssertionError("El lanzador debe apuntar a SplashActivity")
+
     selector = (BASE / "java/pe/asterionsystem/app/SplashTimeWindow.java").read_text()
     if not re.search(r"return\s+hourOfDay\s*<\s*12\s*;", selector):
-        raise AssertionError("Cambio no autorizado del límite de mediodía")
+        raise AssertionError("Cambió el límite de mediodía")
     activity = (BASE / "java/pe/asterionsystem/app/SplashActivity.java").read_text()
-    for expected in (
+    for required in (
         "Calendar.getInstance().get(Calendar.HOUR_OF_DAY)",
         "SplashTimeWindow.isMorning(",
-        "R.drawable.asterion_loading_manana",
-        "R.drawable.asterion_loading_tarde_noche",
+        "R.drawable.asterion_loading_manana_4k",
+        "R.drawable.asterion_loading_tarde_noche_4k",
         "R.layout.activity_splash",
+        "WindowInsets.Type.systemBars()",
     ):
-        if expected not in activity:
-            raise AssertionError("Contrato de arranque modificado: " + expected)
+        if required not in activity:
+            raise AssertionError("Contrato de arranque alterado: " + required)
     layout = (BASE / "res/layout/activity_splash.xml").read_text()
-    if 'android:scaleType="fitCenter"' not in layout:
-        raise AssertionError("Se perdió la presentación sin recortes")
-    print("OK: ambas pantallas Full HD y horario 00-12/12-24 protegidos.")
+    if 'android:scaleType="centerCrop"' not in layout:
+        raise AssertionError("La ilustración debe cubrir la pantalla sin márgenes")
+    if 'android:layout_width="match_parent"' not in layout or 'android:layout_height="match_parent"' not in layout:
+        raise AssertionError("La pantalla no ocupa toda la superficie")
+    print("OK: pantallas 4K sin márgenes y horario local 00-12 / 12-24 protegidos")
     return 0
 
 
@@ -67,5 +77,5 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except (AssertionError, OSError, ET.ParseError) as exc:
-        print("ERROR: bloqueo de identidad visual:", exc)
+        print("ERROR: contrato de pantalla de carga:", exc)
         sys.exit(1)

@@ -19,13 +19,15 @@ Es una vista previa: la auditoría registra 0 fallos técnicos, 128 alertas sem�
 
 **Regla obligatoria del proyecto:** el ícono de caballero sombra aprobado por el propietario es la identidad visual definitiva de Asterion System. **No se permite reemplazarlo, rediseñarlo, recolorearlo ni alterarlo en actualizaciones futuras**, tanto de la app como de sus pantallas de carga y materiales vinculados. El archivo de lanzamiento oficial está en [`app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp`](app/src/main/res/drawable-nodpi/asterion_icon_oficial.webp). Su integridad se verifica mediante `tests/branding_icon_lock.py` en GitHub Actions. Véase [la política de identidad visual permanente](docs/identidad/ICONO_OFICIAL_INMUTABLE.md).
 
-## Pantallas de carga oficiales — horario permanente
+## Pantallas de carga — versión 4K sin márgenes
 
-Las dos ilustraciones aprobadas se integran sin alteraciones de composición como recursos nativos PNG Full HD vertical (1080 × 1920), **sin agregar el ícono de la app dentro de las pantallas**. La pantalla de arranque dedicada `SplashActivity` elige automáticamente según la hora local del dispositivo:
-- **00:00–11:59:** amanecer (`app/src/main/res/drawable-nodpi/asterion_loading_manana.png`).
-- **12:00–23:59:** sombras de tarde/noche (`app/src/main/res/drawable-nodpi/asterion_loading_tarde_noche.png`).
+Por petición del propietario, las dos pantallas anteriores fueron reemplazadas por composiciones sin rótulos de horario y con el personaje frente al portal. Las imágenes tienen **2160 × 4800 píxeles** (WebP, calidad alta), obtenidos mediante escalado de alta calidad desde los artes aprobados; el remuestreo no crea el detalle nativo de una ilustración 4K. El diseño conserva el nombre de Asterion y su barra de carga ilustrada.
 
-La identidad original del ícono de lanzador queda sin cambios. Estas dos imágenes son permanentes y su modificación queda prohibida en futuras actualizaciones. Los SHA-256 de ambas imágenes, la selección horaria y el manifiesto están protegidos por `tests/branding_splash_lock.py` en GitHub Actions. [Política permanente de pantallas de carga](docs/identidad/PANTALLAS_CARGA_INMUTABLES.md).
+`SplashActivity` selecciona según la **hora local del teléfono**:
+- **00:00:00–11:59:59:** `app/src/main/res/drawable-nodpi/asterion_loading_manana_4k.webp`.
+- **12:00:00–23:59:59:** `app/src/main/res/drawable-nodpi/asterion_loading_tarde_noche_4k.webp`.
+
+`centerCrop` cubre toda la superficie sin bordes ni franjas; en pantallas con distinta relación de aspecto se pueden recortar únicamente las zonas externas de la ilustración. Las barras del sistema se ocultan durante la carga. El **ícono de lanzador oficial sigue intacto** y el resto de la aplicación mantiene sus pantallas. El control `tests/branding_splash_lock.py` valida las nuevas imágenes, dimensiones, selección horaria y visualización inmersiva. Consulta [política de pantallas de carga](docs/identidad/PANTALLAS_CARGA_INMUTABLES.md).
 
 ## Puerta de perfil: ventana del Sistema (nativa)
 

@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.activity.ComponentActivity;
@@ -32,13 +33,17 @@ public final class SplashActivity extends ComponentActivity {
         // The decor view does not exist yet during onCreate on Android 16.
         // Never request the WindowInsetsController before window focus.
         setContentView(R.layout.activity_splash);
+        if (Build.VERSION.SDK_INT >= 30) {
+            // Draw behind the system bar areas for an edge-to-edge illustration.
+            getWindow().setDecorFitsSystemWindows(false);
+        }
 
         boolean morning = SplashTimeWindow.isMorning(
                 Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
         ImageView artwork = findViewById(R.id.splash_artwork);
         artwork.setImageResource(morning
-                ? R.drawable.asterion_loading_manana
-                : R.drawable.asterion_loading_tarde_noche);
+                ? R.drawable.asterion_loading_manana_4k
+                : R.drawable.asterion_loading_tarde_noche_4k);
         artwork.setContentDescription(getString(morning
                 ? R.string.splash_day_description
                 : R.string.splash_night_description));
@@ -53,8 +58,18 @@ public final class SplashActivity extends ComponentActivity {
             WindowInsetsController controller =
                     getWindow().getDecorView().getWindowInsetsController();
             if (controller != null) {
-                controller.hide(WindowInsets.Type.navigationBars());
+                controller.hide(WindowInsets.Type.systemBars());
+                controller.setSystemBarsBehavior(
+                        WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
             }
+        } else if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         }
     }
 
