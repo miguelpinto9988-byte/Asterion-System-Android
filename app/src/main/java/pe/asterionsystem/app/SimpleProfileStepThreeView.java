@@ -90,14 +90,17 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         card.setClipToOutline(true);
         backgroundView = new ImageView(activity);
         backgroundView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        backgroundView.setTag("asterion_fullcolor_art");
         card.addView(backgroundView, new FrameLayout.LayoutParams(-1,-1));
         portraitView = new ImageView(activity);
         portraitView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        FrameLayout.LayoutParams portraitParams = new FrameLayout.LayoutParams(-1,-1,
-                Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+        portraitView.setTag("asterion_fullcolor_art");
+        FrameLayout.LayoutParams portraitParams = new FrameLayout.LayoutParams(
+                dp(198), -1, Gravity.LEFT | Gravity.BOTTOM);
         card.addView(portraitView, portraitParams);
         companionView = new ImageView(activity);
         companionView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        companionView.setTag("asterion_fullcolor_art");
         companionView.setContentDescription("Acompañante seleccionado");
         FrameLayout.LayoutParams companionParams = new FrameLayout.LayoutParams(
                 dp(76), dp(76), Gravity.BOTTOM | Gravity.RIGHT);
@@ -106,8 +109,23 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         card.addView(companionView, companionParams);
         frameView = new ImageView(activity);
         frameView.setScaleType(ImageView.ScaleType.FIT_XY);
+        frameView.setTag("asterion_fullcolor_art");
         frameView.setContentDescription("Marco decorativo de tarjeta horizontal");
         card.addView(frameView, new FrameLayout.LayoutParams(-1,-1));
+        TextView nameOnCard = new TextView(activity);
+        String hunterName = draft.optString("name", "CAZADOR").trim();
+        nameOnCard.setText(hunterName.isEmpty() ? "CAZADOR" : hunterName);
+        nameOnCard.setTextColor(Color.WHITE);
+        nameOnCard.setShadowLayer(dp(4),dp(1),dp(2),Color.BLACK);
+        nameOnCard.setTextSize(15);
+        nameOnCard.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        nameOnCard.setGravity(Gravity.RIGHT);
+        nameOnCard.setTag("asterion_card_name");
+        FrameLayout.LayoutParams nameParams = new FrameLayout.LayoutParams(
+                -2,-2,Gravity.RIGHT | Gravity.TOP);
+        nameParams.topMargin=dp(30);
+        nameParams.rightMargin=dp(30);
+        card.addView(nameOnCard,nameParams);
         LayoutParams cardLayout = new LayoutParams(-1,dp(190));
         cardLayout.topMargin = dp(18);
         addView(card, cardLayout);
