@@ -186,7 +186,10 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         String value=get(key,"");
         for(int i=0;i<older.length;i++) {
             if(older[i].equals(value)) {
-                put(key,current[i]);
+                // A retired fifth avatar must remain in the saved draft until
+                // the user explicitly chooses another; never index beyond the
+                // four approved options or silently discard their selection.
+                if(i < current.length) put(key,current[i]);
                 break;
             }
         }
