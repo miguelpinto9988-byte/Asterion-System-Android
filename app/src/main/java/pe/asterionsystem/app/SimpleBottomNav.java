@@ -33,8 +33,8 @@ public final class SimpleBottomNav {
         JSONObject settings=ProfileStore.getRegistration(activity);
         boolean light="light".equals(settings.optString("theme","light"));
         float density=activity.getResources().getDisplayMetrics().density;
-        int foreground=light?0xFF161616:Color.WHITE;
-        int background=light?Color.WHITE:0xFF080808;
+        int foreground=AppTheme.foreground(light);
+        int background=AppTheme.surface(light);
         LinearLayout bar=new LinearLayout(activity);
         bar.setOrientation(LinearLayout.HORIZONTAL);
         bar.setGravity(Gravity.CENTER_VERTICAL);
@@ -53,19 +53,26 @@ public final class SimpleBottomNav {
         Button button=new Button(activity);
         button.setAllCaps(false);
         button.setText(label);
-        button.setTextSize(13);
+        button.setTextSize(12);
+        button.setTag("preserve");
+        int icon=HOME.equals(route)?R.drawable.ic_as_home:ROUTINES.equals(route)?R.drawable.ic_as_routines:R.drawable.ic_as_calendar;
+        android.graphics.drawable.Drawable glyph=activity.getDrawable(icon).mutate();
+        glyph.setTint(selected?AppTheme.accent(light):AppTheme.muted(light));
+        glyph.setBounds(0,0,dp(density,23),dp(density,23));
+        button.setCompoundDrawables(null,glyph,null,null);
+        button.setCompoundDrawablePadding(dp(density,4));
+        button.setStateListAnimator(null);
+        button.setPadding(dp(density,4),dp(density,6),dp(density,4),dp(density,4));
         button.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        button.setTextColor(foreground);
+        button.setTextColor(selected?AppTheme.accent(light):AppTheme.muted(light));
         button.setContentDescription(label+(selected?", sección actual":""));
         button.setMinHeight(dp(density,48));
         GradientDrawable shape=new GradientDrawable();
-        shape.setColor(selected?(light?0xFFF0EEF5:0xFF292432):background);
-        shape.setStroke(dp(density,1),selected?0xFF9B83BD
-                :(light?0xFFDDDDDD:0xFF5C5C5C));
-        shape.setCornerRadius(dp(density,9));
+        shape.setColor(selected?AppTheme.soft(light):background);
+        shape.setCornerRadius(dp(density,16));
         button.setBackground(shape);
         LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(
-                0,dp(density,50),1f);
+                0,dp(density,62),1f);
         lp.setMargins(dp(density,3),0,dp(density,3),0);
         bar.addView(button,lp);
         button.setOnClickListener(v->navigate(activity,current,route));

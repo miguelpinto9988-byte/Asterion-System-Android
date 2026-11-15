@@ -46,7 +46,7 @@ import pe.asterionsystem.core.engine.progression.WeeklyCategoryChallengePolicy;
  * Proposals contain no numeric workout quotas or unsupervised advanced
  * movements. This Activity does not mark tasks completed in legacy SQLite.
  */
-public final class MissionsActivity extends ComponentActivity {
+public final class MissionsActivity extends AsterionActivity {
     private static final String SECTION_MONARCH="monarch";
     private static final String SECTION_DAILY="daily";
     private static final String SECTION_LIBRARY="library";
@@ -71,7 +71,7 @@ public final class MissionsActivity extends ComponentActivity {
         setContentView(R.layout.screen_missions);
         density=getResources().getDisplayMetrics().density;
         light="light".equals(ProfileStore.getRegistration(this).optString("theme","light"));
-        section=getIntent().getStringExtra("section");
+        section=savedState==null?getIntent().getStringExtra("section"):savedState.getString("section",SECTION_DAILY);
         if(!SECTION_LIBRARY.equals(section)&&!SECTION_MONARCH.equals(section)
                 && !SECTION_PROGRESS.equals(section)) {
             section=SECTION_DAILY;
@@ -80,6 +80,7 @@ public final class MissionsActivity extends ComponentActivity {
         content=findViewById(R.id.missions_content);
         scroll=findViewById(R.id.missions_scroll);
         header=findViewById(R.id.missions_header);
+        AppHeader.bindAvatar(this,findViewById(R.id.asterion_profile_entry));
         loading=findViewById(R.id.missions_loading);
         SimpleBottomNav.attach(this,
                 findViewById(R.id.missions_bottom_bar),
@@ -135,11 +136,20 @@ public final class MissionsActivity extends ComponentActivity {
         if(planner==null)return;
         content.removeAllViews();
         loading.setText("");
+        loading.setVisibility(View.GONE);
         if(SECTION_DAILY.equals(section))daily();
         if(SECTION_MONARCH.equals(section))monarch();
         if(SECTION_LIBRARY.equals(section))library();
         if(SECTION_PROGRESS.equals(section))progress();
         themeTree(content);
+        for(int id:new int[]{R.id.missions_tab_daily,R.id.missions_tab_monarch,R.id.missions_tab_library}) {
+            View tab=findViewById(id);
+            boolean selected=id==R.id.missions_tab_daily&&SECTION_DAILY.equals(section)
+                    ||id==R.id.missions_tab_monarch&&SECTION_MONARCH.equals(section)
+                    ||id==R.id.missions_tab_library&&SECTION_LIBRARY.equals(section);
+            tab.setTag(selected?"selected":"secondary");
+        }
+        AppTheme.apply(findViewById(R.id.missions_root),light);
         scroll.post(()->scroll.scrollTo(0,0));
     }
 
@@ -156,7 +166,7 @@ public final class MissionsActivity extends ComponentActivity {
                 && SessionSafetyStore.categoryPaused(this,category)) {
             paragraph("Esta categoría quedó en pausa por una molestia comunicada. "
                     +"No se propondrán ejercicios hasta que haya cesado.");
-            action("Revisar la pausa de esta categoría",()->new AlertDialog.Builder(this)
+            action("Revisar la pausa de esta categoría",()->new AsterionDialog(this)
                     .setTitle("¿Ha cesado la molestia?")
                     .setMessage("No continúes si persiste o empeora el dolor. "
                             +"Busca orientación médica si es necesario.")
@@ -345,8 +355,8 @@ public final class MissionsActivity extends ComponentActivity {
         done.setText("Actividad realizada (opcional)");
         done.setTextSize(14);
         done.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        done.setTextColor(light?Color.BLACK:Color.WHITE);
-        done.setButtonTintList(ColorStateList.valueOf(light?Color.BLACK:Color.WHITE));
+        done.setTextColor(AppTheme.foreground(light));
+        done.setButtonTintList(ColorStateList.valueOf(AppTheme.foreground(light)));
         done.setMinHeight(dp(48));
         done.setChecked(MissionTrackingStore.completedToday(this,day).contains(entry.id()));
         done.setOnCheckedChangeListener((button,checked)->{
@@ -367,7 +377,7 @@ public final class MissionsActivity extends ComponentActivity {
         String[] values=new String[10];
         for(int i=0;i<10;i++) values[i]=String.valueOf(i+1);
         final int[] selected={MissionTrackingStore.ratingForCategory(this,day,category)};
-        AlertDialog.Builder builder=new AlertDialog.Builder(this)
+        AlertDialog.Builder builder=new AsterionDialog(this)
                 .setTitle("Esfuerzo: "+CategoryEffortPolicy.CATEGORY_NAMES[category])
                 .setMessage("Valora de 1 (muy ligero) a 10 (muy exigente). "
                         +"Solo afectará a esta categoría. Puedes descansar o detenerte.")
@@ -392,6 +402,13 @@ public final class MissionsActivity extends ComponentActivity {
         }
         MonarchSessionStore.Snapshot snapshot=MonarchSessionStore.current(
                 this,LocalDate.now(),planner,profile,catalog);
+        MonarchBoss boss=MonarchBoss.byId(snapshot.bossId);
+        boolean bossUnlocked=!MonarchSessionStore.ACTIVE.equals(snapshot.status)
+                && !MonarchSessionStore.REVIEW_REQUIRED.equals(snapshot.status);
+        content.addView(MonarchBossPicker.create(this,snapshot.bossId,bossUnlocked,id->{
+            if(MonarchSessionStore.selectBoss(this,id))show(SECTION_MONARCH);
+        }));
+        paragraph(boss.name+" · "+boss.difficulty+" · "+boss.focus+". "+boss.description);
         paragraph("Misión especial: cinco opciones para un ciclo de cinco días. "
                 +"El sorteo se mantiene estable al reabrir la app y puede variar "
                 +"entre ciclos, siempre dentro del equipo y perfil compatible. "
@@ -456,7 +473,7 @@ public final class MissionsActivity extends ComponentActivity {
                     });
                 }
             }
-            action("Abandonar sin penalización",()->new AlertDialog.Builder(this)
+            action("Abandonar sin penalización",()->new AsterionDialog(this)
                     .setTitle("Finalizar misión Monarca")
                     .setMessage("Puedes abandonar cuando quieras sin penalizaciones. "
                             +"¿Deseas retirarla?")
@@ -477,7 +494,7 @@ public final class MissionsActivity extends ComponentActivity {
                 .append(" · Complejidad ").append(exercise.difficulty())
                 .append("\\n\\n");
         }
-        new AlertDialog.Builder(this).setTitle(heading)
+        new AsterionDialog(this).setTitle(heading)
                 .setMessage(body.toString()+note)
                 .setPositiveButton("Cerrar",null).show();
     }
@@ -504,7 +521,7 @@ public final class MissionsActivity extends ComponentActivity {
         paragraph(SessionSafetyStore.globalReason(this));
         paragraph("No se reanudan automáticamente al día siguiente. "
                 +"Ante síntomas graves solicita asistencia médica urgente.");
-        action("Ya recibí evaluación médica",()->new AlertDialog.Builder(this)
+        action("Ya recibí evaluación médica",()->new AsterionDialog(this)
                 .setTitle("Confirmar evaluación médica")
                 .setMessage("Esta opción no sustituye una evaluación profesional. "
                         +"Confirma únicamente si realmente has recibido una evaluación "
@@ -523,7 +540,7 @@ public final class MissionsActivity extends ComponentActivity {
             details.append(i+1).append(". ")
                     .append(reviewed.exercises.get(i).name()).append("\n");
         }
-        new AlertDialog.Builder(this)
+        new AsterionDialog(this)
                 .setTitle("Autorizar misión Monarca")
                 .setMessage("Revisa los cinco ejercicios:\n\n"+details
                         +"\nSon propuestas sin cuotas obligatorias. "
@@ -601,7 +618,7 @@ public final class MissionsActivity extends ComponentActivity {
         paragraph("No se sube automáticamente la intensidad, "
                 +"ni siquiera el día 21. Puedes ajustar el plan manualmente o descansar.");
         action("Ir a misiones diarias",()->show(SECTION_DAILY));
-        action("Borrar estas valoraciones y marcas",()->new AlertDialog.Builder(this)
+        action("Borrar estas valoraciones y marcas",()->new AsterionDialog(this)
                 .setTitle("Borrar seguimiento de misiones")
                 .setMessage("Se eliminarán valoraciones y actividades marcadas de este módulo. "
                         +"No se alteran los registros históricos del sistema.")
@@ -640,7 +657,7 @@ public final class MissionsActivity extends ComponentActivity {
         List<String> codes=catalog.sportIndex().sports();
         String[] names=new String[codes.size()];
         for(int i=0;i<codes.size();i++)names[i]=catalog.sportIndex().sportName(codes.get(i));
-        new AlertDialog.Builder(this).setTitle("Explorar por deporte")
+        new AsterionDialog(this).setTitle("Explorar por deporte")
                 .setItems(names,(dialog,which)->showSportLibrary(codes.get(which)))
                 .setNegativeButton("Cancelar",null).show();
     }
@@ -664,6 +681,14 @@ public final class MissionsActivity extends ComponentActivity {
         if(count==0)paragraph("Sin movimientos registrados para este deporte.");
         action("Volver al catálogo",this::libraryFromDetail);
         themeTree(content);
+        for(int id:new int[]{R.id.missions_tab_daily,R.id.missions_tab_monarch,R.id.missions_tab_library}) {
+            View tab=findViewById(id);
+            boolean selected=id==R.id.missions_tab_daily&&SECTION_DAILY.equals(section)
+                    ||id==R.id.missions_tab_monarch&&SECTION_MONARCH.equals(section)
+                    ||id==R.id.missions_tab_library&&SECTION_LIBRARY.equals(section);
+            tab.setTag(selected?"selected":"secondary");
+        }
+        AppTheme.apply(findViewById(R.id.missions_root),light);
         scroll.post(()->scroll.scrollTo(0,0));
     }
 
@@ -673,7 +698,7 @@ public final class MissionsActivity extends ComponentActivity {
         List<String> codes=new ArrayList<>(materials);
         String[] labels=new String[codes.size()];
         for(int i=0;i<codes.size();i++)labels[i]=codes.get(i).replace('_',' ');
-        new AlertDialog.Builder(this).setTitle("Filtrar por material")
+        new AsterionDialog(this).setTitle("Filtrar por material")
                 .setItems(labels,(dialog,which)->showEquipmentLibrary(codes.get(which)))
                 .setNegativeButton("Cancelar",null).show();
     }
@@ -701,6 +726,14 @@ public final class MissionsActivity extends ComponentActivity {
         if(count==0)paragraph("No existen ejercicios para este material.");
         action("Volver al catálogo",this::libraryFromDetail);
         themeTree(content);
+        for(int id:new int[]{R.id.missions_tab_daily,R.id.missions_tab_monarch,R.id.missions_tab_library}) {
+            View tab=findViewById(id);
+            boolean selected=id==R.id.missions_tab_daily&&SECTION_DAILY.equals(section)
+                    ||id==R.id.missions_tab_monarch&&SECTION_MONARCH.equals(section)
+                    ||id==R.id.missions_tab_library&&SECTION_LIBRARY.equals(section);
+            tab.setTag(selected?"selected":"secondary");
+        }
+        AppTheme.apply(findViewById(R.id.missions_root),light);
         scroll.post(()->scroll.scrollTo(0,0));
     }
 
@@ -722,6 +755,14 @@ public final class MissionsActivity extends ComponentActivity {
         }
         action("Volver a las familias",this::libraryFromDetail);
         themeTree(content);
+        for(int id:new int[]{R.id.missions_tab_daily,R.id.missions_tab_monarch,R.id.missions_tab_library}) {
+            View tab=findViewById(id);
+            boolean selected=id==R.id.missions_tab_daily&&SECTION_DAILY.equals(section)
+                    ||id==R.id.missions_tab_monarch&&SECTION_MONARCH.equals(section)
+                    ||id==R.id.missions_tab_library&&SECTION_LIBRARY.equals(section);
+            tab.setTag(selected?"selected":"secondary");
+        }
+        AppTheme.apply(findViewById(R.id.missions_root),light);
         scroll.post(()->scroll.scrollTo(0,0));
     }
 
@@ -755,7 +796,7 @@ public final class MissionsActivity extends ComponentActivity {
             final ExerciseIntensity[] tags={null,ExerciseIntensity.LOW,
                     ExerciseIntensity.MODERATE,ExerciseIntensity.HIGH,
                     ExerciseIntensity.VARIABLE,ExerciseIntensity.UNCLASSIFIED};
-            new AlertDialog.Builder(this).setTitle("Intensidad orientativa")
+            new AsterionDialog(this).setTitle("Intensidad orientativa")
                     .setItems(labels,(dialog,which)->showTypeFiltered(
                             type,family,tags[which])).show();
         });
@@ -777,6 +818,14 @@ public final class MissionsActivity extends ComponentActivity {
         if(shown==0)paragraph("No hay variantes de este tipo con el filtro elegido.");
         action("Volver a "+family.name(),()->showFamily(family));
         themeTree(content);
+        for(int id:new int[]{R.id.missions_tab_daily,R.id.missions_tab_monarch,R.id.missions_tab_library}) {
+            View tab=findViewById(id);
+            boolean selected=id==R.id.missions_tab_daily&&SECTION_DAILY.equals(section)
+                    ||id==R.id.missions_tab_monarch&&SECTION_MONARCH.equals(section)
+                    ||id==R.id.missions_tab_library&&SECTION_LIBRARY.equals(section);
+            tab.setTag(selected?"selected":"secondary");
+        }
+        AppTheme.apply(findViewById(R.id.missions_root),light);
         scroll.post(()->scroll.scrollTo(0,0));
     }
 
@@ -804,6 +853,7 @@ public final class MissionsActivity extends ComponentActivity {
         LinearLayout box=new LinearLayout(this);
         box.setOrientation(LinearLayout.VERTICAL);
         box.setPadding(dp(14),dp(14),dp(14),dp(14));
+        box.setTag("card");
         box.setBackground(boxDrawable());
         TextView name=text(title,15,true);
         TextView detail=text(subtitle,12,false);
@@ -831,40 +881,29 @@ public final class MissionsActivity extends ComponentActivity {
         view.setText(raw);
         view.setTextSize(size);
         view.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        view.setTextColor(light?Color.BLACK:Color.WHITE);
+        view.setTextColor(emphatic?AppTheme.foreground(light):AppTheme.muted(light));
+        if(!emphatic)view.setTag("muted");
         return view;
     }
 
     private GradientDrawable boxDrawable() {
         GradientDrawable d=new GradientDrawable();
-        d.setColor(light?Color.WHITE:0xFF080808);
-        d.setCornerRadius(dp(10));
-        d.setStroke(dp(1),light?0xFFBBBBBB:0xFF5C5C5C);
+        d.setColor(AppTheme.surface(light));
+        d.setCornerRadius(dp(16));
+        d.setStroke(dp(1),AppTheme.border(light));
         return d;
     }
 
     private void themeTree(View root) {
-        root.setBackgroundColor(light?Color.WHITE:0xFF080808);
-        themeDescendants(root);
-    }
-
-    private void themeDescendants(View view) {
-        if(view instanceof TextView) {
-            TextView label=(TextView)view;
-            label.setTextColor(light?Color.BLACK:Color.WHITE);
-            label.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-            if(view instanceof Button) {
-                view.setBackground(boxDrawable());
-                view.setMinimumHeight(dp(48));
-            }
-        }
-        if(view instanceof android.view.ViewGroup) {
-            android.view.ViewGroup group=(android.view.ViewGroup)view;
-            for(int i=0;i<group.getChildCount();i++)themeDescendants(group.getChildAt(i));
-        }
+        if(root.getId()==R.id.missions_root)root.setBackgroundColor(AppTheme.background(light));
+        AppTheme.apply(root,light);
     }
 
     private int dp(int n){return Math.round(n*density);}
+
+    @Override protected void onSaveInstanceState(Bundle state) {
+        state.putString("section",section);super.onSaveInstanceState(state);
+    }
 
     @Override protected void onDestroy() {
         destroyed=true;

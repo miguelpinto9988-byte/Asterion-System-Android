@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/catalog_title"
-        android:textColor="@color/asterion_text"
+        android:textColor="?attr/asterionInk"
         android:textSize="24sp"
             android:letterSpacing="0.04"
         android:textStyle="bold"
@@ -31,7 +31,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/catalog_demo_note"
-        android:textColor="@color/asterion_text_secondary"
+        android:textColor="?attr/asterionMuted"
         android:textSize="13sp"
         android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
         android:inputType="text"
         android:maxLength="120"
         android:singleLine="true"
-        android:textColor="@color/asterion_text"
+        android:textColor="?attr/asterionInk"
         android:textStyle="bold" />
 
     <Spinner
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/catalog_loading"
-        android:textColor="@color/asterion_text_secondary"
+        android:textColor="?attr/asterionMuted"
         android:textSize="13sp"
         android:textStyle="bold" />
 

@@ -21,7 +21,7 @@ import org.json.JSONObject;
  * be edited without silently resetting the active profile or mission data.
  * Former secondary tools stay reachable in a collapsed options dialog.
  */
-public final class ProfileDetailsActivity extends ComponentActivity {
+public final class ProfileDetailsActivity extends AsterionActivity {
     private LinearLayout content;
     private Button backButton;
     private float density;
@@ -56,8 +56,8 @@ public final class ProfileDetailsActivity extends ComponentActivity {
         light="light".equals(data.optString("theme","light"));
         if(backButton!=null)styleButton(backButton);
         content.removeAllViews();
-        content.getRootView().setBackgroundColor(light?Color.WHITE:0xFF080808);
-        content.addView(title("MI PERFIL",23));
+        content.getRootView().setBackgroundColor(AppTheme.background(light));
+        content.addView(title("Tu perfil",26));
         TextView hint=label("Puedes consultar tu configuración y modificarla. "
                 +"Los cambios se guardan solo después de confirmarlos.",13);
         content.addView(hint);
@@ -88,10 +88,16 @@ public final class ProfileDetailsActivity extends ComponentActivity {
                 +data.optString("mode","Sin configurar"),14));
         content.addView(label("Preferencia de intensidad: "
                 +data.optString("intensity","Sin configurar"),14));
-        content.addView(label("Tema: "+(light?"Claro":"Oscuro"),14));
+        Button appearance=button("Apariencia · "+(light?"Claro":"Oscuro"));
+        content.addView(appearance,new LinearLayout.LayoutParams(-1,dp(52)));
+        appearance.setOnClickListener(v->new AsterionDialog(this).setTitle("Apariencia")
+                .setSingleChoiceItems(new String[]{"Claro · Blanco y violeta","Oscuro · Negro y lavanda"},light?0:1,(dialog,which)->{
+                    if(ProfileStore.saveTheme(this,which==0?"light":"dark")){dialog.dismiss();recreate();}
+                }).setNegativeButton("Cerrar",null).show());
         Button edit=button("Editar mi perfil y avatar");
         LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(-1,dp(54));
         lp.topMargin=dp(22);
+        AppTheme.primary(edit,light);
         content.addView(edit,lp);
         edit.setOnClickListener(v->startActivity(
                 new Intent(this,ProfileCreateActivity.class)
@@ -112,7 +118,7 @@ public final class ProfileDetailsActivity extends ComponentActivity {
                 "Seguimiento histórico","Biblioteca clásica","Más información"};
         String[] sections={"plan","settings","local_status","progress",
                 "catalog","secondary"};
-        new AlertDialog.Builder(this)
+        new AsterionDialog(this)
                 .setTitle("Otras herramientas")
                 .setItems(options,(dialog,which)->{
                     startActivity(new Intent(this,MainActivity.class)
@@ -132,7 +138,7 @@ public final class ProfileDetailsActivity extends ComponentActivity {
         TextView view=new TextView(this);
         view.setText(text);
         view.setTextSize(size);
-        view.setTextColor(light?0xFF111111:Color.WHITE);
+        view.setTextColor(AppTheme.foreground(light));
         view.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         view.setPadding(0,dp(10),0,dp(5));
         return view;
@@ -147,11 +153,11 @@ public final class ProfileDetailsActivity extends ComponentActivity {
         return button;
     }
     private void styleButton(Button button) {
-        button.setTextColor(light?Color.BLACK:Color.WHITE);
+        button.setTextColor(AppTheme.foreground(light));
         GradientDrawable background=new GradientDrawable();
         background.setColor(light?Color.WHITE:0xFF14131A);
-        background.setStroke(dp(1),light?0xFFBBBBBB:0xFF777777);
-        background.setCornerRadius(dp(10));
+        background.setStroke(dp(1),AppTheme.border(light));
+        background.setCornerRadius(dp(16));
         button.setBackground(background);
     }
     private int dp(int size){return Math.round(size*density);}

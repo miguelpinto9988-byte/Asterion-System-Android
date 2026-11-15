@@ -31,9 +31,8 @@ final class HomeMissionBinder {
         screen.<TextView>findViewById(R.id.home_profile_name)
                 .setText(name.isEmpty()?"Cazador":name);
         screen.<TextView>findViewById(R.id.home_profile_summary).setText(
-                "Nivel configurado: "+profile.optString("experience","Sin configurar")
-                +" · Objetivo: "+profile.optString("goal","Sin configurar")
-                +". Para editar tu perfil, toca el avatar de arriba.");
+                profile.optString("experience","Sin configurar")
+                +" · "+profile.optString("goal","Sin configurar"));
 
         screen.<Button>findViewById(R.id.open_monarch)
                 .setOnClickListener(v->open(activity,"monarch"));
@@ -45,20 +44,10 @@ final class HomeMissionBinder {
                 .setOnClickListener(v->open(activity,"progress"));
 
         ImageButton avatar=screen.findViewById(R.id.home_avatar);
-        String savedUri=profile.optString("avatar_uri","");
-        if(!savedUri.isEmpty()) {
-            try {
-                avatar.setImageURI(Uri.parse(savedUri));
-                if(avatar.getDrawable()==null)
-                    avatar.setImageResource(R.drawable.asterion_reg_profile);
-            } catch(RuntimeException badUri) {
-                avatar.setImageResource(R.drawable.asterion_reg_profile);
-            }
-        }
-        avatar.setOnClickListener(v->activity.startActivity(
-                new Intent(activity,ProfileDetailsActivity.class)));
-
-        apply(screen,light,activity.getResources().getDisplayMetrics().density);
+        pe.asterionsystem.app.AppHeader.bindAvatar(activity,avatar);
+        avatar.setOnClickListener(v->activity.startActivity(new Intent(activity,ProfileDetailsActivity.class)));
+        pe.asterionsystem.app.AppTheme.apply(screen,light);
+        pe.asterionsystem.app.HomeOverview.bind(activity,screen);
         SimpleBottomNav.attach(activity,
                 (FrameLayout)screen.findViewById(R.id.home_bottom_bar),
                 SimpleBottomNav.HOME);
@@ -69,46 +58,4 @@ final class HomeMissionBinder {
                 .putExtra("section",section));
     }
 
-    private static boolean isCard(View view) {
-        int id=view.getId();
-        return id==R.id.home_card_monarch || id==R.id.home_card_profile
-                || id==R.id.home_card_daily || id==R.id.home_card_progress
-                || id==R.id.home_card_library;
-    }
-
-    private static void apply(View root,boolean light,float density) {
-        int fg=light?0xFF151515:Color.WHITE;
-        int bg=light?Color.WHITE:0xFF080808;
-        if(root instanceof TextView) {
-            TextView text=(TextView)root;
-            text.setTextColor(fg);
-            text.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-            if(root instanceof Button) {
-                GradientDrawable shape=new GradientDrawable();
-                shape.setColor(light?0xFFF9F9FB:0xFF16151C);
-                shape.setStroke(Math.max(1,Math.round(density)),
-                        light?0xFFB9B9C2:0xFF77717F);
-                shape.setCornerRadius(9*density);
-                root.setBackground(shape);
-                root.setMinimumHeight(Math.round(48*density));
-            }
-        }
-        if(isCard(root)) {
-            GradientDrawable rectangle=new GradientDrawable();
-            rectangle.setColor(light?0xFFFFFFFF:0xFF14131A);
-            rectangle.setStroke(Math.max(1,Math.round(density)),
-                    light?0xFFD4D0D9:0xFF635A70);
-            rectangle.setCornerRadius(14*density);
-            root.setBackground(rectangle);
-        }else if(root.getId()==R.id.home_shell ||
-                root.getId()==R.id.home_root ||
-                root.getId()==R.id.home_scroll) {
-            root.setBackgroundColor(bg);
-        }
-        if(root instanceof ViewGroup) {
-            ViewGroup group=(ViewGroup)root;
-            for(int i=0;i<group.getChildCount();i++)
-                apply(group.getChildAt(i),light,density);
-        }
-    }
 }

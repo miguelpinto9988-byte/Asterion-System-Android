@@ -13,7 +13,7 @@ INSTR=(ROOT/"app/src/androidTest/java/pe/asterionsystem/app/DailyMissionPersiste
 SMOKE=(ROOT/"ci/android_daily_instrumented_smoke.sh").read_text()
 
 for marker in ('"asterion.monarch.v3|"', "profile.missionSignature()",
-               "monarchSeed(profile,starts)", "previousCycleIds",
+               "monarchSeed(profile,starts,boss)", "previousCycleIds",
                "shuffled=takeDiverse(pool,pool.size(),",
                "usedCategories.add(", "restoreMonarch(",
                "catalog.eligibleForAutomaticSuggestion(v)",
@@ -37,7 +37,7 @@ assert "MonarchSessionStore.abandon(this)" in SCREEN
 for name in ("sameCycleAndProfileRemainStableAcrossNewPlannerInstances",
              "newFiveDayCyclesProduceMultipleSelections",
              "previousCycleGetsNewCompatibleAlternativesWhenAvailable",
-             "spreadAcrossAvailableScheduledCategories",
+             "bossFocusConcentratesChoicesWithoutRemovingDiversity",
              "noAdvancedOrSupervisedAutomaticMonarchSelection",
              "restoredAcceptedListMustRemainCompatible"):
     assert name in UNIT,name

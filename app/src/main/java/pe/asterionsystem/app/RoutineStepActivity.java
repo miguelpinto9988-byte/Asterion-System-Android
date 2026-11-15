@@ -46,7 +46,7 @@ import pe.asterionsystem.core.engine.progression.ExerciseVolumeProfileCatalog;
  *
  * No prescribed reps/sets, no forced exercise, no auto-resume after serious signs.
  */
-public final class RoutineStepActivity extends ComponentActivity {
+public final class RoutineStepActivity extends AsterionActivity {
     private final ExecutorService worker=Executors.newSingleThreadExecutor();
     private List<ExerciseVariant> exercises=Collections.emptyList();
     private ExerciseVolumeProfileCatalog volumeProfiles;
@@ -129,7 +129,7 @@ public final class RoutineStepActivity extends ComponentActivity {
         applyTheme(findViewById(R.id.routine_root));
 
         restButton.setOnClickListener(v->startOrCancelRest());
-        pauseButton.setOnClickListener(v->new AlertDialog.Builder(this)
+        pauseButton.setOnClickListener(v->new AsterionDialog(this)
                 .setTitle("Pausar sesión")
                 .setMessage("Puedes detenerte y continuar en otro momento, "
                         +"siempre que no haya dolor ni señales de alarma. "
@@ -314,7 +314,7 @@ public final class RoutineStepActivity extends ComponentActivity {
                 if("daily".equals(kind))askEffortAfterDailyMission();
                 else if("custom".equals(kind)) {
                     int gained=RoutineExperienceStore.awardOnce(this,planDate);
-                    new AlertDialog.Builder(this)
+                    new AsterionDialog(this)
                             .setTitle("Rutina registrada")
                             .setMessage("Has marcado todos los pasos de esta rutina. "
                                     +(gained>0?"+10 XP de participación voluntaria. "
@@ -409,7 +409,7 @@ public final class RoutineStepActivity extends ComponentActivity {
                 ?"Segundos por serie (1 a 3600)"
                 :"Repeticiones por serie (1 a 60)");
         effort.setHint("Esfuerzo percibido (1 a 10)");
-        AlertDialog dialog=new AlertDialog.Builder(this)
+        AlertDialog dialog=new AsterionDialog(this)
                 .setTitle("Registro voluntario · "+current.name())
                 .setMessage("Anota lo que realmente hiciste; no es una meta "
                         +"ni implica que debas hacer más la próxima vez.")
@@ -452,7 +452,7 @@ public final class RoutineStepActivity extends ComponentActivity {
             try {
                 VolumeProgressStore.recordCompleted(this,volume);
             } catch(RuntimeException error) {
-                new AlertDialog.Builder(this).setTitle("No se guardó el volumen")
+                new AsterionDialog(this).setTitle("No se guardó el volumen")
                         .setMessage("Se conserva este ejercicio sin completar. "
                                 +"Puedes revisarlo o continuar sin registro numérico.")
                         .setPositiveButton("Entendido",null).show();
@@ -529,7 +529,7 @@ public final class RoutineStepActivity extends ComponentActivity {
         for(int i=0;i<10;i++)choices[i]=(i+1)+" / 10";
         final int[] selected={0};
         final AlertDialog[] open={null};
-        AlertDialog dialog=new AlertDialog.Builder(this)
+        AlertDialog dialog=new AsterionDialog(this)
                 .setTitle("Valoración de la misión diaria")
                 .setMessage("¿Qué esfuerzo percibiste en esta categoría? "
                         +"Puedes omitir la valoración.")
@@ -563,7 +563,7 @@ public final class RoutineStepActivity extends ComponentActivity {
                 "Mareo muy intenso, vómitos o desmayo",
                 "Quiero detenerme sin explicar el motivo"
         };
-        new AlertDialog.Builder(this)
+        new AsterionDialog(this)
                 .setTitle("Detener sesión por lesión o malestar")
                 .setMessage("Selecciona la situación que mejor describa lo ocurrido. "
                         +"No es un diagnóstico médico.")
@@ -585,7 +585,7 @@ public final class RoutineStepActivity extends ComponentActivity {
         nextButton.setEnabled(false);
         restButton.setEnabled(false);
         stopButton.setEnabled(false);
-        new AlertDialog.Builder(this)
+        new AsterionDialog(this)
                 .setTitle(assessment.urgentMedicalAdvice
                         ?"Sesión suspendida: solicita atención médica"
                         :"Sesión detenida")
@@ -613,7 +613,7 @@ public final class RoutineStepActivity extends ComponentActivity {
         view.setText(value);
         view.setTextSize(size);
         view.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        view.setTextColor(light?0xFF111111:Color.WHITE);
+        view.setTextColor(AppTheme.foreground(light));
         LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(-1,-2);
         lp.bottomMargin=dp(15);
         details.addView(view,lp);
@@ -626,7 +626,7 @@ public final class RoutineStepActivity extends ComponentActivity {
         button.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         button.setOnClickListener(v->action.run());
         button.setBackground(outline());
-        button.setTextColor(light?0xFF111111:Color.WHITE);
+        button.setTextColor(AppTheme.foreground(light));
         LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(-1,dp(52));
         lp.bottomMargin=dp(10);
         details.addView(button,lp);
@@ -635,25 +635,16 @@ public final class RoutineStepActivity extends ComponentActivity {
 
     private GradientDrawable outline() {
         GradientDrawable shape=new GradientDrawable();
-        shape.setColor(light?Color.WHITE:0xFF090909);
-        shape.setStroke(dp(1),light?0xFFB0B0B0:0xFF888888);
-        shape.setCornerRadius(dp(10));
+        shape.setColor(AppTheme.surface(light));
+        shape.setStroke(dp(1),AppTheme.border(light));
+        shape.setCornerRadius(dp(16));
         return shape;
     }
 
     private void applyTheme(View view) {
-        if(view instanceof TextView) {
-            TextView text=(TextView)view;
-            text.setTextColor(light?0xFF111111:Color.WHITE);
-            text.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-            if(view instanceof Button)text.setBackground(outline());
-        }
-        if(view instanceof ViewGroup) {
-            ViewGroup group=(ViewGroup)view;
-            for(int i=0;i<group.getChildCount();i++)applyTheme(group.getChildAt(i));
-        }
-        if(view.getId()==R.id.routine_root)
-            view.setBackgroundColor(light?Color.WHITE:0xFF090909);
+        if(view.getId()==R.id.routine_root)view.setBackgroundColor(AppTheme.background(light));
+        AppTheme.apply(view,light);
+        if(nextButton!=null)AppTheme.primary(nextButton,light);
     }
 
     private int dp(int value) {return Math.round(value*density);}

@@ -51,6 +51,14 @@ public final class ProfileStore {
         catch (org.json.JSONException badData) { return new JSONObject(); }
     }
 
+    public static boolean saveTheme(Context context,String theme) {
+        if(!"light".equals(theme)&&!"dark".equals(theme))return false;
+        JSONObject data=getRegistration(context);
+        try {data.put("theme",theme);}catch(org.json.JSONException impossible){return false;}
+        return context.getApplicationContext().getSharedPreferences(PREFS,Context.MODE_PRIVATE)
+                .edit().putString("complete_registration_v2",data.toString()).commit();
+    }
+
     /** Synchronous commit ensures the profile is available on the very next app launch. */
     public static boolean saveName(Context context, String requestedName) {
         String name = requestedName == null ? "" : requestedName.trim();

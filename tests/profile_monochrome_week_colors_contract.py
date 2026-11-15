@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Monochrome registration themes must never wash out weekly training colors."""
+"""Approved light/dark violet themes must never wash out weekly training colors."""
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
@@ -26,8 +26,10 @@ assert "ProfileWizardTheme.applyWizard(" in activity
 assert "onThemeChanged.run()" in step3
 assert "new SimpleProfileStepThreeView(" in activity
 assert "box(light" in palette
-assert "LIGHT_BG = Color.WHITE" in palette
-assert "DARK_BG = 0xFF080808" in palette
+assert "AppTheme.foreground(light)" in palette
+assert "AppTheme.background(light)" in palette
+assert "AppTheme.accent(light)" in palette
+assert 'view.setVisibility(View.VISIBLE)' in palette
 
 for name in ("Tren superior","Tren central","Tren inferior",
              "Movilidad","Cardio","Descanso"):
@@ -49,4 +51,4 @@ for fragment in ('"asterion_week_color".equals(tag)',
                  '"asterion_week_legend".equals(tag)'):
     assert fragment in palette,fragment
 
-print("OK: blancos/negros uniformes, tema en paso 3 y 6 colores con leyenda conservados.")
+print("OK: temas claro/oscuro violetas, iconografía visible y 6 colores con leyenda conservados.")

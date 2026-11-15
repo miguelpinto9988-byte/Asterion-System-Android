@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <solid android:color="#355CA0"/>
     <corners android:radius="12dp"/>
-    <stroke android:width="2dp" android:color="@color/asterion_accent"/>
+    <stroke android:width="2dp" android:color="?attr/asterionAccent"/>
 </shape>

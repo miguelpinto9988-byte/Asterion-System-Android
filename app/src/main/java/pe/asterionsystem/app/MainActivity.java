@@ -44,7 +44,7 @@ import pe.asterionsystem.core.settings.AppPreferences;
 import pe.asterionsystem.core.settings.PreferencesService;
 
 /** Native Android shell with XML screens and private preferences; no reminders or auto-execution. */
-public final class MainActivity extends ComponentActivity {
+public final class MainActivity extends AsterionActivity {
     private static final String KEY_CATALOG_SELECTED_ID = "asterion.catalog.selected.id.v1";
 
     private AndroidLifecycleAdapter lifecycleAdapter;

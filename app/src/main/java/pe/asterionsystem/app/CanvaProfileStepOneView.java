@@ -147,7 +147,7 @@ final class CanvaProfileStepOneView extends FrameLayout {
         edit.setSingleLine(true);
         edit.setInputType(inputType);
         edit.setTextSize(TypedValue.COMPLEX_UNIT_PX, 27);
-        edit.setTypeface(Typeface.create(Typeface.SERIF, Typeface.NORMAL));
+        edit.setTypeface(Typeface.create(Typeface.SERIF, Typeface.BOLD));
         edit.setTextColor(Color.rgb(244, 247, 255));
         edit.setHintTextColor(Color.rgb(177, 194, 213));
         edit.setHint(hint);

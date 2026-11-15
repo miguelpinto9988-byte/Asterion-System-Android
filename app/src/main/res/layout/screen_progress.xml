@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/progress_title"
-        android:textColor="@color/asterion_text"
+        android:textColor="?attr/asterionInk"
         android:textSize="24sp"
             android:letterSpacing="0.04"
         android:textStyle="bold"
@@ -31,7 +31,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/progress_description"
-        android:textColor="@color/asterion_text_secondary"
+        android:textColor="?attr/asterionMuted"
         android:textSize="13sp"
         android:textStyle="bold" />
 
@@ -56,7 +56,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/progress_loading"
-        android:textColor="@color/asterion_text_secondary"
+        android:textColor="?attr/asterionMuted"
         android:textSize="13sp"
         android:textStyle="bold" />
 

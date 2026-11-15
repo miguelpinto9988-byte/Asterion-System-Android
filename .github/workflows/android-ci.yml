@@ -92,6 +92,7 @@ jobs:
           python3 tests/branding_icon_lock.py
           python3 tests/no_svg_artifact_contract.py
           python3 tests/global_bold_contract.py
+          python3 tests/global_redesign_contract.py
           python3 tests/branding_splash_lock.py
           python3 tests/splash_window_insets_regression.py
           python3 tests/profile_gate_contract.py

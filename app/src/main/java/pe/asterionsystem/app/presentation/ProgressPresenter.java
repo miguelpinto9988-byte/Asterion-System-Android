@@ -1,5 +1,6 @@
 package pe.asterionsystem.app.presentation;
 
+import pe.asterionsystem.app.AsterionDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -161,7 +162,7 @@ public final class ProgressPresenter implements AutoCloseable {
         content.setPadding(margin, margin / 2, margin, 0);
         content.addView(selection);
         content.addView(noteInput);
-        AlertDialog dialog = new AlertDialog.Builder(activity)
+        AlertDialog dialog = new AsterionDialog(activity)
                 .setTitle(entry.title())
                 .setView(content)
                 .setNegativeButton(android.R.string.cancel, (d, which) -> { })

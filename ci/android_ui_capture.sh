@@ -9,4 +9,4 @@ adb shell am instrument -w -e class pe.asterionsystem.app.UiSnapshotTest#capture
   | tee build/ui-screens/instrumentation.txt
 adb pull /sdcard/Android/data/pe.asterionsystem.app/files/ui-screens/. build/ui-screens/
 grep -q 'OK (1 test)' build/ui-screens/instrumentation.txt
-test "$(find build/ui-screens -maxdepth 1 -name '*.png' | wc -l)" -ge 24
+test "$(find build/ui-screens -maxdepth 1 -name '*.png' | wc -l)" -ge 31

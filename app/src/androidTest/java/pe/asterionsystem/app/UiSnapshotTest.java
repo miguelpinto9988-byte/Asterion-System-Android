@@ -137,6 +137,17 @@ public final class UiSnapshotTest {
         instrument.runOnMainSync(first::performClick);
         pause(1200);
         capture("25_ficha_con_gif");
+
+        assertTrue("No se pudo activar el tema oscuro",
+                ProfileStore.saveTheme(context, "dark"));
+        start(MainActivity.class, "asterion_open_section", "home", 500);
+        capture("26_inicio_oscuro");
+        start(ProfileDetailsActivity.class, null, null, 450);
+        capture("27_perfil_oscuro");
+        start(MissionsActivity.class, "section", "monarch", 1400);
+        capture("28_monarca_oscuro");
+        start(RoutinesActivity.class, null, null, 1400);
+        capture("29_rutinas_oscuro");
     }
 
     private void captureRoutineStep() throws Exception {

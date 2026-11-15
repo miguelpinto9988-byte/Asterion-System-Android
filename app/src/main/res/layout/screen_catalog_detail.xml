@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/catalog_loading"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="24sp"
             android:letterSpacing="0.04"
             android:textStyle="bold"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:textColor="@color/asterion_text_secondary"
+            android:textColor="?attr/asterionMuted"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/asterion_text_secondary"
+            android:textColor="?attr/asterionMuted"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColor="@color/asterion_text_secondary"
+            android:textColor="?attr/asterionMuted"
             android:textSize="14sp"
             android:textStyle="bold" />
 

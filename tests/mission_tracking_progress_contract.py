@@ -23,7 +23,7 @@ for control in ("open_daily","open_monarch","open_library","open_progress",
 for text in ("MissionTrackingStore.setDailyCompleted(", "MissionTrackingStore.rateCategory(",
              "MissionTrackingStore.markMonarch(", "MissionTrackingStore.completedToday(",
              "MissionTrackingStore.monarchCompleted(", "EffortReviewEngine.review(",
-             "new AlertDialog.Builder(this)", "setSingleChoiceItems",
+             "new AsterionDialog(this)", "setSingleChoiceItems",
              "show(SECTION_PROGRESS)", "requestEffort("):
     assert text in activity,text
 for text in ('open(activity,"library")', 'open(activity,"progress")',

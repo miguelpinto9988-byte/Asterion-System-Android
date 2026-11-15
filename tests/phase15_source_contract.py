@@ -20,7 +20,9 @@ class Phase15QualityTest(unittest.TestCase):
     def test_layouts_parse_and_resource_references_exist(self):
         defs = ET.parse(APP / "res/values/strings.xml").getroot()
         strings = {e.attrib["name"] for e in defs.findall("string")}
-        ids = set()
+        ids = {e.attrib["name"] for values in (APP / "res/values").glob("*.xml")
+               for e in ET.parse(values).getroot().findall("item")
+               if e.attrib.get("type")=="id"}
         for path in sorted((APP / "res/layout").glob("*.xml")):
             root = ET.parse(path).getroot()
             local = []
@@ -34,7 +36,7 @@ class Phase15QualityTest(unittest.TestCase):
             self.assertEqual(len(local), len(set(local)), path.name)
             ids.update(local)
         for path in JAVA.rglob("*.java"):
-            for match in re.finditer(r"R\.id\.([A-Za-z0-9_]+)", path.read_text(encoding="utf-8")):
+            for match in re.finditer(r"(?<!android\.)R\.id\.([A-Za-z0-9_]+)", path.read_text(encoding="utf-8")):
                 self.assertIn(match.group(1), ids, path.name)
 
     def test_accessibility_labels_and_live_regions(self):
@@ -91,7 +93,8 @@ class Phase15QualityTest(unittest.TestCase):
         workflow = read(".github/workflows/android-ci.yml")
         self.assertIn("  workflow_dispatch:", workflow)
         self.assertIn("  push:\n    branches:\n      - main\n", workflow)
-        self.assertNotRegex(workflow, r"(?m)^  (pull_request|schedule):")
+        self.assertIn("  pull_request:\n    branches:\n      - main\n", workflow)
+        self.assertNotRegex(workflow, r"(?m)^  schedule:")
 
     def test_html_does_not_enter_android_sources(self):
         self.assertFalse(list(APP.rglob("*.html")))

@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/local_status_title"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="24sp"
             android:letterSpacing="0.04"
             android:textStyle="bold"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/local_status_description"
-            android:textColor="@color/asterion_text_secondary"
+            android:textColor="?attr/asterionMuted"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/local_status_checking"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/local_status_readonly"
-            android:textColor="@color/asterion_text_secondary"
+            android:textColor="?attr/asterionMuted"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/local_status_advisory"
-            android:textColor="@color/asterion_text_secondary"
+            android:textColor="?attr/asterionMuted"
             android:textSize="13sp"
             android:textStyle="bold" />
 

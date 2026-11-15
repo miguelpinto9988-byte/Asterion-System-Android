@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/plan_title"
-        android:textColor="@color/asterion_text"
+        android:textColor="?attr/asterionInk"
         android:textSize="24sp"
             android:letterSpacing="0.04"
         android:textStyle="bold"
@@ -31,7 +31,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/plan_subtitle"
-        android:textColor="@color/asterion_text_secondary"
+        android:textColor="?attr/asterionMuted"
         android:textSize="13sp"
         android:textStyle="bold" />
 
@@ -55,7 +55,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:gravity="center"
-        android:textColor="@color/asterion_text"
+        android:textColor="?attr/asterionInk"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/plan_loading"
-        android:textColor="@color/asterion_text_secondary"
+        android:textColor="?attr/asterionMuted"
         android:textSize="12sp"
         android:textStyle="bold" />
 

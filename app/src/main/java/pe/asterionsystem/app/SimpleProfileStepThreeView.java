@@ -64,7 +64,7 @@ final class SimpleProfileStepThreeView extends LinearLayout {
 
         preview = new TextView(activity);
         preview.setTextSize(13);
-        preview.setTypeface(Typeface.DEFAULT,Typeface.NORMAL);
+        preview.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         preview.setPadding(dp(8),dp(14),dp(8),dp(14));
         addView(preview,new LayoutParams(-1,-2));
         refreshPreview();

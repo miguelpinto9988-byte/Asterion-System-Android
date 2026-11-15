@@ -11,14 +11,31 @@
     android:paddingBottom="12dp"
     android:background="#FFFFFF">
 
-    <TextView
-        android:id="@+id/missions_header"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ASTERION · MISIONES Y BIBLIOTECA"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:contentDescription="Asterion, misiones y biblioteca"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="ASTERION / SYSTEM" android:textSize="11sp"
+                android:textStyle="bold" android:tag="overline"/>
+            <TextView
+                android:id="@+id/missions_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Misiones"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:contentDescription="Asterion, misiones y biblioteca"/>
+        </LinearLayout>
+        <ImageButton android:id="@+id/asterion_profile_entry"
+            android:layout_width="52dp" android:layout_height="52dp"
+            android:padding="12dp" android:src="@drawable/ic_as_profile"
+            android:scaleType="centerCrop" android:clipToOutline="true"
+            android:tag="avatar" android:contentDescription="Abrir perfil y configuración"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,19 +44,22 @@
         android:layout_marginTop="16dp">
         <Button android:id="@+id/missions_tab_monarch"
             android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="52dp" android:text="Monarca"
+            android:layout_height="64dp" android:text="Monarca"
             android:textSize="12sp" android:textAllCaps="false"
-            android:textStyle="bold"/>
+            android:textStyle="bold" android:drawableTop="@drawable/ic_as_crown"
+            android:drawablePadding="3dp"/>
         <Button android:id="@+id/missions_tab_daily"
             android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="52dp" android:text="Diarias"
+            android:layout_height="64dp" android:text="Diarias"
             android:textSize="12sp" android:textAllCaps="false"
-            android:textStyle="bold"/>
+            android:textStyle="bold" android:drawableTop="@drawable/ic_as_check"
+            android:drawablePadding="3dp"/>
         <Button android:id="@+id/missions_tab_library"
             android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="52dp" android:text="Biblioteca"
+            android:layout_height="64dp" android:text="Biblioteca"
             android:textSize="12sp" android:textAllCaps="false"
-            android:textStyle="bold"/>
+            android:textStyle="bold" android:drawableTop="@drawable/ic_as_library"
+            android:drawablePadding="3dp"/>
     </LinearLayout>
 
     <TextView
@@ -65,5 +85,5 @@
 
     <FrameLayout android:id="@+id/missions_bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="62dp"/>
+        android:layout_height="72dp"/>
 </LinearLayout>

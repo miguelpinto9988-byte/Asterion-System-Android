@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="asterionPage" format="color"/>
+    <attr name="asterionSurface" format="color"/>
+    <attr name="asterionInk" format="color"/>
+    <attr name="asterionMuted" format="color"/>
+    <attr name="asterionAccent" format="color"/>
+    <attr name="asterionLine" format="color"/>
+    <item name="asterion_theme_applied" type="id"/>
+    <item name="asterion_profile_entry" type="id"/>
+</resources>

@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/settings_title"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="24sp"
             android:letterSpacing="0.04"
             android:textStyle="bold"
@@ -35,7 +35,7 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="@string/settings_description"
-            android:textColor="@color/asterion_text_secondary"
+            android:textColor="?attr/asterionMuted"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
             android:text="@string/settings_text_heading"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_text_normal"
-                android:textColor="@color/asterion_text"
+                android:textColor="?attr/asterionInk"
                 android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_text_large"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_text_large"
-                android:textColor="@color/asterion_text"
+                android:textColor="?attr/asterionInk"
                 android:textStyle="bold" />
         </RadioGroup>
 
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/settings_density_heading"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_density_normal"
-                android:textColor="@color/asterion_text"
+                android:textColor="?attr/asterionInk"
                 android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_density_compact"
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_density_compact"
-                android:textColor="@color/asterion_text"
+                android:textColor="?attr/asterionInk"
                 android:textStyle="bold" />
         </RadioGroup>
 
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/settings_start_heading"
-            android:textColor="@color/asterion_text"
+            android:textColor="?attr/asterionInk"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_start_home"
-                android:textColor="@color/asterion_text"
+                android:textColor="?attr/asterionInk"
                 android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_start_catalog"
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_start_catalog"
-                android:textColor="@color/asterion_text"
+                android:textColor="?attr/asterionInk"
                 android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_start_plan"
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_start_plan"
-                android:textColor="@color/asterion_text"
+                android:textColor="?attr/asterionInk"
                 android:textStyle="bold" />
             <RadioButton
                 android:id="@+id/settings_start_progress"
@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:text="@string/settings_start_progress"
-                android:textColor="@color/asterion_text"
+                android:textColor="?attr/asterionInk"
                 android:textStyle="bold" />
         </RadioGroup>
 
@@ -165,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/settings_start_explanation"
-            android:textColor="@color/asterion_text_secondary"
+            android:textColor="?attr/asterionMuted"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -190,7 +190,7 @@
             android:layout_marginTop="14dp"
             android:gravity="center"
             android:text="@string/settings_privacy_note"
-            android:textColor="@color/asterion_text_secondary"
+            android:textColor="?attr/asterionMuted"
             android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>

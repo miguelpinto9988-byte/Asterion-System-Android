@@ -27,7 +27,7 @@ profile=(java/"ProfileRegistrationSteps.java").read_text()
 
 for keyword in ('"series".equals(savedProfile.optString("sequence","rondas"))',
                 'savedProfile.optString("rest_seconds","60")',
-                "new CountDownTimer(", 'case' if False else 'new AlertDialog.Builder(this)',
+                "new CountDownTimer(", 'case' if False else 'new AsterionDialog(this)',
                 "SessionInterruptionPolicy.assess(choice)",
                 "SessionSafetyStore.report(this,affected,LocalDate.now(),assessment)",
                 'setOnClickListener(v->questionnaire())',

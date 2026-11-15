@@ -51,7 +51,8 @@
         android:minHeight="48dp"
         android:text="Descanso opcional"
         android:textAllCaps="false"
-        android:textStyle="bold"/>
+        android:textStyle="bold" android:drawableStart="@drawable/ic_as_timer"
+        android:drawablePadding="8dp"/>
     <Button
         android:id="@+id/routine_next"
         android:layout_width="match_parent"
@@ -60,7 +61,8 @@
         android:minHeight="48dp"
         android:text="Registrar y continuar"
         android:textAllCaps="false"
-        android:textStyle="bold"/>
+        android:textStyle="bold" android:drawableStart="@drawable/ic_as_check"
+        android:drawablePadding="8dp" android:tag="primary"/>
     <Button
         android:id="@+id/routine_pause"
         android:layout_width="match_parent"
@@ -69,7 +71,8 @@
         android:minHeight="48dp"
         android:text="Pausar o finalizar sin indicar motivo"
         android:textAllCaps="false"
-        android:textStyle="bold"/>
+        android:textStyle="bold" android:drawableStart="@drawable/ic_as_pause"
+        android:drawablePadding="8dp"/>
     <Button
         android:id="@+id/routine_stop"
         android:layout_width="match_parent"

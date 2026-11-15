@@ -20,6 +20,7 @@ public final class NativePreferencesApplier {
         Objects.requireNonNull(root, "root");
         Objects.requireNonNull(preferences, "preferences");
         scale(root, preferences);
+        pe.asterionsystem.app.AppTheme.apply(root,pe.asterionsystem.app.AppTheme.isLight(root.getContext()));
     }
 
     private static void scale(View view, AppPreferences p) {

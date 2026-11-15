@@ -1,5 +1,6 @@
 package pe.asterionsystem.app.presentation;
 
+import pe.asterionsystem.app.AsterionDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -269,7 +270,7 @@ public final class SchedulePresenter implements AutoCloseable {
                         }
                     });
                     if (original != null) {
-                        delete.setOnClickListener(v -> new AlertDialog.Builder(activity)
+                        delete.setOnClickListener(v -> new AsterionDialog(activity)
                                 .setMessage(R.string.plan_confirm_delete)
                                 .setNegativeButton(android.R.string.cancel, (d, w) -> { })
                                 .setPositiveButton(R.string.plan_delete, (d, w) -> {

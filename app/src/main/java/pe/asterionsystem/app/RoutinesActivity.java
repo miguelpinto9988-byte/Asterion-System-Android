@@ -28,7 +28,7 @@ import pe.asterionsystem.core.engine.missions.RoutineGenerator;
  * Six offline reproducible previews, user-selected only; separate from
  * daily missions and Monarca. No forced targets, timed exertion or auto level-up.
  */
-public final class RoutinesActivity extends ComponentActivity {
+public final class RoutinesActivity extends AsterionActivity {
     private static final int[] MINUTES={10,15,20,30,45,60};
     private static final String[] LEVELS={"basico","intermedio","avanzado"};
     private static final String[] LEVEL_NAMES={"Básico","Intermedio","Avanzado"};
@@ -54,19 +54,14 @@ public final class RoutinesActivity extends ComponentActivity {
         LinearLayout root=column();
         root.setPadding(dp(18),dp(22),dp(18),dp(16));
         root.setBackgroundColor(background());
-        TextView name=label("ASTERION · RUTINAS",22,true);
-        root.addView(name);
-        TextView explanation=label("Elige una categoría, tu tiempo disponible "
-                +"y un nivel técnico. Se muestran hasta seis opciones; "
-                +"tú decides si quieres comenzar.",13,false);
-        root.addView(explanation);
+        root.addView(AppHeader.create(this,"Tus rutinas","Elige cómo quieres entrenar hoy."));
         ScrollView scroller=new ScrollView(this);
         body=column();
         body.setPadding(0,dp(18),0,dp(16));
         scroller.addView(body);
         root.addView(scroller,new LinearLayout.LayoutParams(-1,0,1));
         root.addView(SimpleBottomNav.create(this,SimpleBottomNav.ROUTINES),
-                new LinearLayout.LayoutParams(-1,dp(62)));
+                new LinearLayout.LayoutParams(-1,dp(72)));
         setContentView(root);
         body.addView(label("Cargando catálogo de ejercicios…",15,true));
         worker.execute(()->{
@@ -108,11 +103,11 @@ public final class RoutinesActivity extends ComponentActivity {
     private void render() {
         if(catalog==null||profile==null)return;
         body.removeAllViews();
-        choose("Explorar catálogo independiente en español",()->
+        choose("Biblioteca de ejercicios y GIFs",()->
                 startActivity(new Intent(this,ImportedExerciseCatalogActivity.class)));
-        body.addView(label("CONFIGURACIÓN",16,true));
+        body.addView(label("TU SESIÓN",16,true));
         choose("Categoría · "+ExerciseCategoryMapper.displayName(categoryIndex),
-                ()->new AlertDialog.Builder(this)
+                ()->new AsterionDialog(this)
                         .setTitle("Escoger una de cinco categorías")
                         .setSingleChoiceItems(new String[]{
                                 "Tren superior","Tren central","Tren inferior",
@@ -122,13 +117,13 @@ public final class RoutinesActivity extends ComponentActivity {
         choose("Tiempo disponible · "+minutes+" min",()->{
             String[] options={"10 minutos","15 minutos","20 minutos",
                     "30 minutos","45 minutos","60 minutos"};
-            new AlertDialog.Builder(this).setTitle("Tiempo disponible (orientativo)")
+            new AsterionDialog(this).setTitle("Tiempo disponible (orientativo)")
                     .setSingleChoiceItems(options,indexOfMinutes(),(d,index)->{
                         minutes=MINUTES[index];variation=0;d.dismiss();render();
                     }).setNegativeButton("Cancelar",null).show();
         });
         choose("Nivel técnico · "+LEVEL_NAMES[levelIndex],()->
-                new AlertDialog.Builder(this).setTitle("Seleccionar nivel")
+                new AsterionDialog(this).setTitle("Seleccionar nivel")
                         .setMessage("Todos los niveles mantienen los filtros de "
                                 +"seguridad. Avanzado no habilita movimientos "
                                 +"de supervisión obligatoria.")
@@ -199,7 +194,7 @@ public final class RoutinesActivity extends ComponentActivity {
                     .append(" · ").append(String.join(", ",variant.equipment())
                             .replace('_',' ')).append("\n\n");
         }
-        new AlertDialog.Builder(this)
+        new AsterionDialog(this)
                 .setTitle("Rutina "+number+" · vista previa")
                 .setMessage("Tiempo disponible: "+offer.minutes()+" minutos.\n"
                         +"Nivel: "+LEVEL_NAMES[levelIndex]+".\n\n"
@@ -227,7 +222,7 @@ public final class RoutinesActivity extends ComponentActivity {
             }
         }
         if(!stillValid) {
-            new AlertDialog.Builder(this).setTitle("Revisar rutina")
+            new AsterionDialog(this).setTitle("Revisar rutina")
                     .setMessage("Cambió tu configuración. Revisa otra vez las opciones.")
                     .setPositiveButton("Aceptar",(d,w)->render()).show();
             return;
@@ -250,13 +245,13 @@ public final class RoutinesActivity extends ComponentActivity {
         col.setOrientation(LinearLayout.VERTICAL);
         return col;
     }
-    private int background(){return light?Color.WHITE:0xFF080808;}
+    private int background(){return AppTheme.background(light);}
     private int foreground(){return light?0xFF171717:Color.WHITE;}
     private TextView label(String value,int size,boolean bold) {
         TextView label=new TextView(this);
         label.setText(value);label.setTextSize(size);
         label.setTextColor(foreground());
-        if(bold)label.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        label.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         label.setPadding(0,dp(7),0,dp(7));
         return label;
     }
@@ -265,8 +260,8 @@ public final class RoutinesActivity extends ComponentActivity {
         button.setText(value);button.setAllCaps(false);
         button.setMinHeight(dp(48));button.setTextColor(foreground());
         GradientDrawable shape=new GradientDrawable();
-        shape.setColor(background());shape.setCornerRadius(dp(10));
-        shape.setStroke(dp(1),light?0xFFBBBBBB:0xFF777777);
+        shape.setColor(background());shape.setCornerRadius(dp(16));
+        shape.setStroke(dp(1),AppTheme.border(light));
         button.setBackground(shape);
         return button;
     }

@@ -367,15 +367,22 @@ public final class MissionPlanner {
 
     /** Five optional proposals for five days, never mandatory workouts. */
     public Proposal monarch(Profile profile, LocalDate starts) {
-        return monarch(profile,starts,Collections.emptyList());
+        return monarch(profile,starts,Collections.emptyList(),"igris");
     }
 
     /** Deterministic variation across five-day proposals, preferring new IDs. */
     public Proposal monarch(Profile profile, LocalDate starts,
                             List<String> previousCycleIds) {
+        return monarch(profile,starts,previousCycleIds,"igris");
+    }
+
+    /** Boss identity changes focus ordering and the stable draw, never safety limits. */
+    public Proposal monarch(Profile profile, LocalDate starts,
+                            List<String> previousCycleIds,String bossId) {
         Objects.requireNonNull(profile, "profile");
         Objects.requireNonNull(starts, "starts");
         Objects.requireNonNull(previousCycleIds,"previousCycleIds");
+        String boss=normalizeBoss(bossId);
         Set<String> scheduledCategories = new LinkedHashSet<>();
         for (int index : profile.weekly) {
             if (index != 5) scheduledCategories.add(WEEK_CATEGORIES[index]);
@@ -388,7 +395,9 @@ public final class MissionPlanner {
         // Profile objective influences the order of eligible categories,
         // never the numerical workload or technical difficulty.
         List<String> ranked = new ArrayList<>(scheduledCategories);
-        ranked.sort(Comparator.comparingInt(category -> priority(profile.goal, category)));
+        ranked.sort(Comparator
+                .comparingInt((String category)->bossPriority(boss,category))
+                .thenComparingInt(category -> priority(profile.goal, category)));
         List<ExerciseVariant> pool = new ArrayList<>();
         for (String category : ranked) {
             // Preserve the established Monarca candidate cap independently
@@ -399,13 +408,21 @@ public final class MissionPlanner {
             }
         }
         List<ExerciseVariant> shuffled=takeDiverse(pool,pool.size(),
-                monarchSeed(profile,starts),new HashSet<>(previousCycleIds));
-        // Prefer different scheduled categories for five independent options.
-        // The preceding cycle's IDs are already ranked last when alternatives
-        // remain; no intensity, technical cap or equipment filter is bypassed.
+                monarchSeed(profile,starts,boss),new HashSet<>(previousCycleIds));
+        // Concentrate up to three choices in the encounter focus, then recover
+        // category diversity. Safety, equipment and profile caps remain unchanged.
         List<ExerciseVariant> chosen=new ArrayList<>();
         Set<String> usedCategories=new HashSet<>();
         Set<String> usedIds=new HashSet<>();
+        Set<String> usedTypes=new HashSet<>();
+        for(ExerciseVariant variant:shuffled) {
+            if(chosen.size()==3)break;
+            String category=categoryForType.get(variant.typeId());
+            if(bossPriority(boss,category)==0
+                    && usedTypes.add(variant.typeId()) && usedIds.add(variant.id())) {
+                chosen.add(variant);usedCategories.add(category);
+            }
+        }
         for(ExerciseVariant variant:shuffled) {
             if(chosen.size()==5)break;
             if(usedCategories.add(categoryForType.get(variant.typeId()))
@@ -422,12 +439,34 @@ public final class MissionPlanner {
     }
 
     /** Independent seeded draw: different cycles and profiles vary predictably. */
-    private static long monarchSeed(Profile profile,LocalDate starts) {
+    private static long monarchSeed(Profile profile,LocalDate starts,String boss) {
         byte[] bytes=digest("asterion.monarch.v3|"+starts+"|"
-                +profile.missionSignature());
+                +profile.missionSignature()+"|"+boss);
         long seed=0L;
         for(int i=0;i<8;i++)seed=(seed<<8)|(bytes[i]&0xffL);
         return seed;
+    }
+
+    private static String normalizeBoss(String value) {
+        if("beru".equals(value)||"baran".equals(value)||"antares".equals(value))return value;
+        return "igris";
+    }
+
+    private static int bossPriority(String boss,String category) {
+        switch(boss) {
+            case "igris":
+                return ("tren_superior".equals(category)||"tren_inferior".equals(category))?0:
+                        "tren_central".equals(category)?1:2;
+            case "beru":
+                return ("cardio".equals(category)||"movilidad".equals(category))?0:2;
+            case "baran":
+                return ("tren_central".equals(category)||"cardio".equals(category))?0:
+                        "tren_inferior".equals(category)?1:2;
+            case "antares":
+                return 0;
+            default:
+                return 1;
+        }
     }
 
     /**

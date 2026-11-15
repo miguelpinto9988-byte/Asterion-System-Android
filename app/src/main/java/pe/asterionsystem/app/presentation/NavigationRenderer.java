@@ -5,8 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.view.Gravity;
 import java.util.Objects;
 import pe.asterionsystem.app.R;
+import pe.asterionsystem.app.AppHeader;
 import pe.asterionsystem.core.navigation.NavigationRoute;
 import pe.asterionsystem.core.settings.PreferencesService;
 
@@ -52,6 +55,21 @@ public final class NavigationRenderer {
         NativePreferencesApplier.apply(screen, preferences.current());
         host.removeAllViews();
         host.addView(screen);
+        if(route!=NavigationRoute.HOME) {
+            ImageButton avatar=new ImageButton(activity);
+            AppHeader.bindAvatar(activity,avatar);
+            int size=Math.round(52*activity.getResources().getDisplayMetrics().density);
+            int margin=Math.round(14*activity.getResources().getDisplayMetrics().density);
+            avatar.setPadding(Math.round(12*activity.getResources().getDisplayMetrics().density),
+                    Math.round(12*activity.getResources().getDisplayMetrics().density),
+                    Math.round(12*activity.getResources().getDisplayMetrics().density),
+                    Math.round(12*activity.getResources().getDisplayMetrics().density));
+            FrameLayout.LayoutParams profile=new FrameLayout.LayoutParams(size,size,Gravity.TOP|Gravity.END);
+            profile.setMargins(margin,margin,margin,0);
+            host.addView(avatar,profile);
+            pe.asterionsystem.app.AppTheme.apply(avatar,
+                    pe.asterionsystem.app.AppTheme.isLight(activity));
+        }
         return screen;
     }
 }

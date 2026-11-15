@@ -2,30 +2,38 @@
 <resources>
     <style name="Theme.AsterionSystem" parent="android:style/Theme.Material.NoActionBar">
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:fontFamily">sans</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="asterionPage">#09090F</item>
+        <item name="asterionSurface">#17171F</item>
+        <item name="asterionInk">#F5F4FA</item>
+        <item name="asterionMuted">#B5B3C3</item>
+        <item name="asterionAccent">#C4ABFF</item>
+        <item name="asterionLine">#383342</item>
+        <item name="android:alertDialogTheme">@style/Asterion.Dialog.Dark</item>
         <!-- Regla de tipografia global: texto nativo siempre en negrita. -->
         <item name="android:textViewStyle">@style/Asterion.BoldTextView</item>
-        <item name="android:colorAccent">@color/asterion_accent</item>
-        <item name="android:windowBackground">@color/asterion_background</item>
-        <item name="android:statusBarColor">@color/asterion_background</item>
-        <item name="android:navigationBarColor">@color/asterion_background</item>
-        <item name="android:colorControlNormal">@color/asterion_text_secondary</item>
-        <item name="android:colorControlActivated">@color/asterion_accent</item>
-        <item name="android:textColorPrimary">@color/asterion_text</item>
-        <item name="android:textColorSecondary">@color/asterion_text_secondary</item>
+        <item name="android:colorAccent">?attr/asterionAccent</item>
+        <item name="android:windowBackground">?attr/asterionPage</item>
+        <item name="android:statusBarColor">?attr/asterionPage</item>
+        <item name="android:navigationBarColor">?attr/asterionPage</item>
+        <item name="android:colorControlNormal">?attr/asterionMuted</item>
+        <item name="android:colorControlActivated">?attr/asterionAccent</item>
+        <item name="android:textColorPrimary">?attr/asterionInk</item>
+        <item name="android:textColorSecondary">?attr/asterionMuted</item>
+        <item name="android:spinnerDropDownItemStyle">@style/Asterion.BoldSpinner.Dark</item>
         <item name="android:buttonStyle">@style/Asterion.ActionButton</item>
         <item name="android:editTextStyle">@style/Asterion.TextInput</item>
     </style>
     <style name="Theme.AsterionSplash" parent="Theme.AsterionSystem">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@color/asterion_background</item>
+        <item name="android:windowBackground">?attr/asterionPage</item>
     </style>
     <style name="Asterion.BoldTextView" parent="android:style/Widget.TextView">
         <item name="android:textStyle">bold</item>
     </style>
     <style name="Asterion.ActionButton" parent="android:style/Widget.Material.Button">
         <item name="android:background">@drawable/asterion_button_selector</item>
-        <item name="android:textColor">@color/asterion_text</item>
+        <item name="android:textColor">?attr/asterionInk</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
         <item name="android:minHeight">48dp</item>
@@ -33,10 +41,48 @@
         <item name="android:paddingRight">16dp</item>
     </style>
     <style name="Asterion.TextInput" parent="android:style/Widget.Material.EditText">
-        <item name="android:textColor">@color/asterion_text</item>
-        <item name="android:textColorHint">@color/asterion_text_secondary</item>
+        <item name="android:textColor">?attr/asterionInk</item>
+        <item name="android:textColorHint">?attr/asterionMuted</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:backgroundTint">@color/asterion_accent</item>
+        <item name="android:backgroundTint">?attr/asterionAccent</item>
         <item name="android:minHeight">48dp</item>
+    </style>
+
+    <style name="Theme.AsterionSystem.Light" parent="Theme.AsterionSystem">
+        <item name="asterionPage">#F6F6F9</item>
+        <item name="asterionSurface">#FFFFFF</item>
+        <item name="asterionInk">#181821</item>
+        <item name="asterionMuted">#656170</item>
+        <item name="asterionAccent">#6544AA</item>
+        <item name="asterionLine">#DDD9E8</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:colorBackground">#F6F6F9</item>
+        <item name="android:alertDialogTheme">@style/Asterion.Dialog.Light</item>
+        <item name="android:spinnerDropDownItemStyle">@style/Asterion.BoldSpinner.Light</item>
+    </style>
+    <style name="Asterion.BoldSpinner.Dark">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#F5F4FA</item>
+    </style>
+    <style name="Asterion.BoldSpinner.Light">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#181821</item>
+    </style>
+    <style name="Asterion.Dialog.Dark" parent="android:style/Theme.Material.Dialog.Alert">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textViewStyle">@style/Asterion.BoldTextView</item>
+        <item name="android:colorAccent">#C4ABFF</item>
+        <item name="android:colorBackground">#17171F</item>
+        <item name="android:textColorPrimary">#F5F4FA</item>
+        <item name="android:textColorSecondary">#B5B3C3</item>
+    </style>
+    <style name="Asterion.Dialog.Light" parent="android:style/Theme.Material.Light.Dialog.Alert">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textViewStyle">@style/Asterion.BoldTextView</item>
+        <item name="android:colorAccent">#6544AA</item>
+        <item name="android:colorBackground">#FFFFFF</item>
+        <item name="android:textColorPrimary">#181821</item>
+        <item name="android:textColorSecondary">#656170</item>
     </style>
 </resources>

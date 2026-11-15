@@ -148,7 +148,7 @@ final class CanvaProfileStepTwoView extends FrameLayout {
 
     private void editDumbbells() {
         boolean enabled=bool("dumbbells",false);
-        new AlertDialog.Builder(activity).setTitle("Mancuernas disponibles")
+        new AsterionDialog(activity).setTitle("Mancuernas disponibles")
                 .setMessage("Configura tus mancuernas y sus pesos disponibles en kg.")
                 .setPositiveButton(enabled?"Desactivar":"Activar",
                     (d,w)->{put("dumbbells",!enabled);render();})
@@ -157,7 +157,7 @@ final class CanvaProfileStepTwoView extends FrameLayout {
                     field.setHint("Ej.: 2, 4, 6 kg");
                     field.setInputType(InputType.TYPE_CLASS_TEXT);
                     field.setText(get("dumbbell_weights",""));
-                    new AlertDialog.Builder(activity).setTitle("Pesos disponibles")
+                    new AsterionDialog(activity).setTitle("Pesos disponibles")
                         .setView(field).setPositiveButton("Guardar",(dialog,which)->{
                             put("dumbbells",true);
                             put("dumbbell_weights",field.getText().toString());
@@ -168,7 +168,7 @@ final class CanvaProfileStepTwoView extends FrameLayout {
     private void editGym() {
         boolean[] checked=new boolean[GYM_KEYS.length];
         for(int i=0;i<checked.length;i++)checked[i]=bool("gym_"+GYM_KEYS[i],false);
-        new AlertDialog.Builder(activity).setTitle("Equipamiento de gimnasio")
+        new AsterionDialog(activity).setTitle("Equipamiento de gimnasio")
             .setMultiChoiceItems(GYM_NAMES,checked,(d,i,value)->checked[i]=value)
             .setPositiveButton("Guardar",(d,w)->{
                 put("gym",true);
@@ -178,13 +178,13 @@ final class CanvaProfileStepTwoView extends FrameLayout {
             .setNegativeButton("Cancelar",null).show();
     }
     private void editWeek() {
-        new AlertDialog.Builder(activity).setTitle("Planificación semanal")
+        new AsterionDialog(activity).setTitle("Planificación semanal")
             .setItems(DAYS,(dialog,day)->{
                 String[] current=get("week","5,5,5,5,5,5,5").split(",");
                 int selected=5;
                 if(current.length==7)try{selected=Integer.parseInt(current[day]);}
                 catch(NumberFormatException ignored){}
-                new AlertDialog.Builder(activity).setTitle(DAYS[day])
+                new AsterionDialog(activity).setTitle(DAYS[day])
                     .setSingleChoiceItems(CATEGORIES,Math.max(0,Math.min(5,selected)),
                         (d,chosen)->{
                             String[] week=get("week","5,5,5,5,5,5,5").split(",");

@@ -24,6 +24,7 @@ final class MonarchSessionStore {
     private static final String STATUS="state";
     private static final String ACCEPTED="accepted_date";
     private static final String PROFILE_SIGNATURE="profile_signature";
+    private static final String BOSS="boss_id";
 
     static final String PREVIEW="preview";
     static final String ACTIVE="active";
@@ -34,13 +35,15 @@ final class MonarchSessionStore {
         final LocalDate previewStart;
         final LocalDate acceptedDate;
         final String status;
+        final String bossId;
         final List<ExerciseVariant> exercises;
 
-        Snapshot(LocalDate previewStart, LocalDate acceptedDate, String status,
+        Snapshot(LocalDate previewStart, LocalDate acceptedDate, String status,String bossId,
                  List<ExerciseVariant> exercises) {
             this.previewStart=previewStart;
             this.acceptedDate=acceptedDate;
             this.status=status;
+            this.bossId=bossId;
             this.exercises=Collections.unmodifiableList(new ArrayList<>(exercises));
         }
 
@@ -62,6 +65,7 @@ final class MonarchSessionStore {
         LocalDate preview=parse(sp.getString(START,""));
         LocalDate accepted=parse(sp.getString(ACCEPTED,""));
         String status=sp.getString(STATUS,PREVIEW);
+        String boss=normalizeBoss(sp.getString(BOSS,"igris"));
         String profileSignature=signature(profile);
         boolean profileChanged=!profileSignature.equals(
                 sp.getString(PROFILE_SIGNATURE,""));
@@ -104,12 +108,13 @@ final class MonarchSessionStore {
             // never a second historical workout or automatically completed mark.
             List<String> previous=profileChanged || invalidIds
                     ?Collections.emptyList():stored;
-            MissionPlanner.Proposal generated=planner.monarch(profile,today,previous);
+            MissionPlanner.Proposal generated=planner.monarch(profile,today,previous,boss);
             List<String> ids=new ArrayList<>();
             for(ExerciseVariant variant:generated.candidates())ids.add(variant.id());
             if(!sp.edit().putString(PROFILE_SIGNATURE,profileSignature)
                     .putString(START,today.toString())
                     .putString(IDS,String.join(",",ids))
+                    .putString(BOSS,boss)
                     .putString(STATUS,PREVIEW)
                     .remove(ACCEPTED).commit()) {
                 throw new IllegalStateException("No se pudo guardar Monarca");
@@ -121,11 +126,19 @@ final class MonarchSessionStore {
         }
 
         if(REVIEW_REQUIRED.equals(status)) {
-            return new Snapshot(preview,accepted,status,Collections.emptyList());
+            return new Snapshot(preview,accepted,status,boss,Collections.emptyList());
         }
         List<ExerciseVariant> selected=new ArrayList<>();
         for(String id:stored)catalog.variant(id).ifPresent(selected::add);
-        return new Snapshot(preview,accepted,status,selected);
+        return new Snapshot(preview,accepted,status,boss,selected);
+    }
+
+    static boolean selectBoss(Context context,String requested) {
+        String boss=normalizeBoss(requested);
+        SharedPreferences sp=preferences(context);
+        String state=sp.getString(STATUS,PREVIEW);
+        if(ACTIVE.equals(state)||REVIEW_REQUIRED.equals(state))return false;
+        return sp.edit().clear().putString(BOSS,boss).commit();
     }
 
     static boolean accept(Context context, LocalDate today, Snapshot reviewed,
@@ -177,6 +190,11 @@ final class MonarchSessionStore {
 
     static void abandon(Context context) {
         preferences(context).edit().clear().apply();
+    }
+
+    private static String normalizeBoss(String value) {
+        if("beru".equals(value)||"baran".equals(value)||"antares".equals(value))return value;
+        return "igris";
     }
 
     private static String signature(MissionPlanner.Profile profile) {

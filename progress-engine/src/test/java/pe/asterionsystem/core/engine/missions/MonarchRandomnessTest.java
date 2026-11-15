@@ -94,7 +94,7 @@ public final class MonarchRandomnessTest {
                 new ArrayList<>(previous))));
     }
 
-    @Test public void spreadAcrossAvailableScheduledCategories() {
+    @Test public void bossFocusConcentratesChoicesWithoutRemovingDiversity() {
         MissionPlanner.Profile p=broad("intermedio");
         Map<String,String> categoryForFamily=new HashMap<>();
         for(ExerciseFamily family:catalog.families()) {
@@ -106,11 +106,17 @@ public final class MonarchRandomnessTest {
             categoryForType.put(type.id(),categoryForFamily.get(type.familyId()));
         }
         Set<String> categories=new HashSet<>();
-        for(ExerciseVariant variant:planner.monarch(p,START).candidates()) {
-            categories.add(categoryForType.get(variant.typeId()));
+        int strength=0;
+        for(ExerciseVariant variant:planner.monarch(p,START,
+                Collections.emptyList(),"igris").candidates()) {
+            String category=categoryForType.get(variant.typeId());
+            categories.add(category);
+            if("tren_superior".equals(category)||"tren_inferior".equals(category))strength++;
         }
-        assertEquals("One candidate for each of five compatible categories",5,
-                categories.size());
+        assertTrue("Igris must concentrate strength-compatible choices",strength>=3);
+        assertTrue("The encounter must still include more than one category",categories.size()>=2);
+        assertNotEquals(ids(planner.monarch(p,START,Collections.emptyList(),"igris")),
+                ids(planner.monarch(p,START,Collections.emptyList(),"beru")));
     }
 
     @Test public void noAdvancedOrSupervisedAutomaticMonarchSelection() {

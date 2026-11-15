@@ -26,7 +26,7 @@ import org.json.JSONObject;
  * The original option keys, validation, draft and profile storage remain
  * unchanged. Screenshots are never used as form backgrounds or touch targets.
  */
-public final class ProfileCreateActivity extends ComponentActivity {
+public final class ProfileCreateActivity extends AsterionActivity {
     private JSONObject draft;
     private int step=1;
     private boolean confirmed=false;
@@ -66,7 +66,6 @@ public final class ProfileCreateActivity extends ComponentActivity {
 
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.screen_profile_create);
         density=getResources().getDisplayMetrics().density;
         // Editing starts from the committed profile, not an abandoned draft.
@@ -122,6 +121,7 @@ public final class ProfileCreateActivity extends ComponentActivity {
 
     private void applyTheme() {
         boolean light="light".equals(draft.optString("theme","light"));
+        previewTheme(light);
         ProfileWizardTheme.applyWizard(root,panel,forward,forwardText,
                 light,density);
     }

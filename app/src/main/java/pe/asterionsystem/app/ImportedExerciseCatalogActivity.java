@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * from its metadata and loaded only by exact exercise ID. Imported entries are
  * not currently eligible for automatic workout planning.
  */
-public final class ImportedExerciseCatalogActivity extends ComponentActivity {
+public final class ImportedExerciseCatalogActivity extends AsterionActivity {
     private static final String ASSET="unified_exercises/v2/catalogo_es.json";
     private static final String CALISTHENICS_ASSET="unified_exercises/v2/calistenia_casa_es.json";
     private static final String MOTION_ASSET="exercise_gifs/v10/specs_es.json";
@@ -72,20 +72,12 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         LinearLayout root=column();
         root.setPadding(dp(16),dp(12),dp(16),dp(12));
         root.setBackgroundColor(background());
-        TextView heading=text("CATÁLOGO INDEPENDIENTE · ESPAÑOL",21);
-        root.addView(heading);
-        root.addView(text("Se conservan todos los ejercicios históricos. "
-                +"Las variantes nuevas proceden de fuentes documentadas y "
-                +"tienen nombre descriptivo en español. Su nivel debe revisarse "
-                +"antes de incluirlas en propuestas automáticas.",13));
-        root.addView(text("La app incluye un GIF local por variante. "
-                +"Cada ficha mantiene su ID exacto; la correspondencia y la técnica "
-                +"siguen pendientes de revisión individual.",12));
+        root.addView(AppHeader.create(this,"Biblioteca","Encuentra tu ejercicio, paso a paso."));
         search=new EditText(this);
         search.setSingleLine(true);
         search.setHint("Buscar un ejercicio en español");
         search.setTextColor(foreground());
-        search.setHintTextColor(dark?0xFFC0C0C0:0xFF666666);
+        search.setHintTextColor(AppTheme.muted(!dark));
         root.addView(search,new LinearLayout.LayoutParams(-1,dp(54)));
         category=new Spinner(this);
         ArrayAdapter<String> adapter=new ArrayAdapter<>(this,
@@ -293,7 +285,7 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
     private void details(JSONObject x) {
         JSONObject spec=motionSpecs.get(x.optString("id"));
         if(spec==null) {
-            new AlertDialog.Builder(this)
+            new AsterionDialog(this)
                     .setTitle("Ficha no disponible")
                     .setMessage("El cuadro técnico de esta variante no se ha cargado. "
                             +"No se mostrará una demostración de otro ejercicio.")
@@ -326,7 +318,7 @@ public final class ImportedExerciseCatalogActivity extends ComponentActivity {
         b.setTextSize(13);b.setTextColor(foreground());
         return b;
     }
-    private int background(){return dark?0xFF080808:Color.WHITE;}
+    private int background(){return AppTheme.background(!dark);}
     private int foreground(){return dark?Color.WHITE:0xFF111111;}
     private int dp(int px){return Math.max(1,Math.round(px*density));}
     @Override protected void onDestroy() {

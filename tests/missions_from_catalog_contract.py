@@ -35,7 +35,7 @@ assert "today.getDayOfWeek().getValue() - 1" in planner
 assert "today.plusDays(1)" in planner
 assert "starts.plusDays(5)" in planner
 assert "takeDiverse(pool,pool.size()," in planner
-assert "monarchSeed(profile,starts)" in planner
+assert "monarchSeed(profile,starts,boss)" in planner
 assert "restoreMonarch(" in planner
 assert "return new Proposal(MONARCH" in planner
 assert "requiresConsent" in planner
@@ -43,7 +43,7 @@ assert not any(fragment in planner for fragment in (
     "targetReps", "setRepetitions", "100 *", "75 *", "maxRep"))
 assert 'putString(STATUS,ACTIVE)' in session
 assert 'putString(ACCEPTED,today.toString())' in session
-assert 'new AlertDialog.Builder(this)' in activity
+assert 'new AsterionDialog(this)' in activity
 assert 'setPositiveButton("Aceptar y activar"' in activity
 assert 'MonarchSessionStore.decline(this)' in activity
 assert 'MonarchSessionStore.abandon(this)' in activity

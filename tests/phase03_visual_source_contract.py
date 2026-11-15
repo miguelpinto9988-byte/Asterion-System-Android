@@ -95,9 +95,12 @@ class NativeVisualTest(unittest.TestCase):
         styles=(RES/"values/styles.xml").read_text()
         colors={c.get("name"):c.text for c in xml(RES/"values/colors.xml") if c.tag=="color"}
         self.assertIn("Theme.Material.NoActionBar",styles)
-        self.assertEqual("#090E1D",colors["asterion_background"])
-        self.assertEqual("#F4F7FF",colors["asterion_text"])
-        self.assertEqual("#76C7FF",colors["asterion_accent"])
+        self.assertEqual("#09090F",colors["asterion_background"])
+        self.assertEqual("#F5F4FA",colors["asterion_text"])
+        self.assertEqual("#C4ABFF",colors["asterion_accent"])
+        self.assertIn("Theme.AsterionSystem.Light",styles)
+        self.assertIn("#F6F6F9",styles)
+        self.assertIn("#6544AA",styles)
 
     def test_offline_constraints_preserved(self):
         self.assertFalse(list(APP.rglob("*.html")))

@@ -10,7 +10,7 @@ import androidx.activity.ComponentActivity;
 import pe.asterionsystem.app.presentation.NeonFrameDrawable;
 
 /** Appears once after splash when no local hunter identity exists. */
-public final class ProfileGateActivity extends ComponentActivity {
+public final class ProfileGateActivity extends AsterionActivity {
     private static final int PURPLE = Color.rgb(182, 121, 255);
     private static final int BLUE = Color.rgb(80, 196, 255);
 
@@ -27,7 +27,7 @@ public final class ProfileGateActivity extends ComponentActivity {
         restore.setBackground(new NeonFrameDrawable(BLUE, density));
         create.setOnClickListener(v -> startActivity(
                 new Intent(this, ProfileCreateActivity.class)));
-        restore.setOnClickListener(v -> new AlertDialog.Builder(this)
+        restore.setOnClickListener(v -> new AsterionDialog(this)
                 .setTitle(R.string.profile_restoration_unavailable_title)
                 .setMessage(R.string.profile_restoration_unavailable_body)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())

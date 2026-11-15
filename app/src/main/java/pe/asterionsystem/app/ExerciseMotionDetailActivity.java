@@ -26,7 +26,7 @@ import java.io.IOException;
  * Ficha móvil por variante: jamás muestra un GIF de otro ID.
  * Los movimientos sin revisión técnica NO son demostraciones aprobadas.
  */
-public final class ExerciseMotionDetailActivity extends Activity {
+public final class ExerciseMotionDetailActivity extends AsterionActivity {
     public static final String EXTRA_EXERCISE="exercise_v2_json";
     public static final String EXTRA_MOTION_SPEC="motion_spec_v2_json";
     private ImageView animation;
@@ -39,12 +39,11 @@ public final class ExerciseMotionDetailActivity extends Activity {
         density=getResources().getDisplayMetrics().density;
         dark=!"light".equals(ProfileStore.getRegistration(this)
                 .optString("theme","light"));
-        fg=dark?Color.WHITE:0xFF10131B;
+        fg=AppTheme.foreground(!dark);
         LinearLayout outer=column();
         outer.setPadding(dp(16),dp(12),dp(16),dp(12));
-        outer.setBackgroundColor(dark?0xFF10121B:0xFFF6F7FA);
-        TextView title=label("DEMOSTRACIÓN · ASTERION",19,true);
-        outer.addView(title);
+        outer.setBackgroundColor(AppTheme.background(!dark));
+        outer.addView(AppHeader.create(this,"Demostración","Aprende el movimiento."));
         ScrollView scroll=new ScrollView(this);
         LinearLayout content=column();
         content.setPadding(0,dp(8),0,dp(18));
@@ -80,7 +79,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
         demo.setPadding(dp(8),dp(8),dp(8),dp(8));
         GradientDrawable gradient=new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[]{0xFF242939,0xFF10131D});
+                new int[]{AppTheme.surface(!dark),AppTheme.soft(!dark)});
         gradient.setCornerRadius(dp(16));
         demo.setBackground(gradient);
         int displayWidth=getResources().getDisplayMetrics().widthPixels-dp(48);
@@ -171,7 +170,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
     }
     private void field(LinearLayout parent,String name,String value) {
         TextView heading=label(name,12,true);
-        heading.setTextColor(dark?0xFF92C8FF:0xFF235A9B);
+        heading.setTextColor(AppTheme.accent(!dark));
         parent.addView(heading);
         TextView body=label(value,14,false);
         body.setPadding(dp(10),0,dp(10),dp(7));
@@ -186,7 +185,7 @@ public final class ExerciseMotionDetailActivity extends Activity {
         TextView t=new TextView(this);
         t.setText(value);t.setTextSize(size);t.setTextColor(fg);
         t.setPadding(dp(5),dp(7),dp(5),dp(7));
-        t.setTypeface(Typeface.DEFAULT,bold?Typeface.BOLD:Typeface.NORMAL);
+        t.setTypeface(Typeface.DEFAULT,bold?Typeface.BOLD:Typeface.BOLD);
         return t;
     }
     private Button button(String text) {

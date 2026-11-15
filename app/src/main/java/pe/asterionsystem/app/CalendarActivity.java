@@ -28,7 +28,7 @@ import pe.asterionsystem.core.engine.missions.MissionPlanner;
  * Gregorian leap years, day selection and read-only history markers.
  * Dates are not exercise quotas and never cause automatic mission assignment.
  */
-public final class CalendarActivity extends ComponentActivity {
+public final class CalendarActivity extends AsterionActivity {
     private static final DateTimeFormatter MONTH_NAME=DateTimeFormatter
             .ofPattern("LLLL yyyy",Locale.forLanguageTag("es-PE"));
     private YearMonth month;
@@ -64,9 +64,7 @@ public final class CalendarActivity extends ComponentActivity {
 
     private void render() {
         root.removeAllViews();
-        root.addView(label("ASTERION · CALENDARIO",22,true));
-        root.addView(label("Navega por meses y años. Los símbolos de registro "
-                +"son informativos; no generan entrenamientos ni obligaciones.",12,false));
+        root.addView(AppHeader.create(this,"Calendario","Consulta tu actividad y planificación."));
         LinearLayout actions=horizontal();
         addNav(actions,"◀ Mes",()->shift(-1));
         addNav(actions,"Mes ▶",()->shift(1));
@@ -135,13 +133,13 @@ public final class CalendarActivity extends ComponentActivity {
         today.setOnClickListener(v->{selected=LocalDate.now();month=YearMonth.from(selected);render();});
         root.addView(today,new LinearLayout.LayoutParams(-1,dp(48)));
         root.addView(SimpleBottomNav.create(this,SimpleBottomNav.CALENDAR),
-                new LinearLayout.LayoutParams(-1,dp(62)));
+                new LinearLayout.LayoutParams(-1,dp(72)));
     }
 
     private void shift(int delta) {
         try {month=MonthCalendar.shift(month,delta);render();}
         catch(DateTimeException boundary) {
-            new AlertDialog.Builder(this).setTitle("Límite de fecha")
+            new AsterionDialog(this).setTitle("Límite de fecha")
                     .setMessage("Se alcanzó el límite de años admitido por el calendario del dispositivo.")
                     .setPositiveButton("Aceptar",null).show();
         }
@@ -152,7 +150,7 @@ public final class CalendarActivity extends ComponentActivity {
         input.setSingleLine(true);
         input.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_SIGNED);
         input.setText(String.valueOf(month.getYear()));
-        new AlertDialog.Builder(this)
+        new AsterionDialog(this)
                 .setTitle("Elegir año")
                 .setMessage("Escribe un año para ir directamente a él, sin desplazarte mes a mes.")
                 .setView(input)
@@ -163,7 +161,7 @@ public final class CalendarActivity extends ComponentActivity {
                         month=MonthCalendar.chooseYear(month,year);
                         render();
                     }catch(RuntimeException invalid) {
-                        new AlertDialog.Builder(this)
+                        new AsterionDialog(this)
                                 .setMessage("El año está fuera del rango admitido.")
                                 .setPositiveButton("Aceptar",null).show();
                     }
@@ -181,12 +179,12 @@ public final class CalendarActivity extends ComponentActivity {
         row.addView(button,new LinearLayout.LayoutParams(0,dp(46),1));
         button.setOnClickListener(v->action.run());
     }
-    private int background(){return light?Color.WHITE:0xFF080808;}
-    private int foreground(){return light?Color.BLACK:Color.WHITE;}
+    private int background(){return AppTheme.background(light);}
+    private int foreground(){return AppTheme.foreground(light);}
     private TextView label(String text,int size,boolean bold) {
         TextView view=new TextView(this);
         view.setText(text);view.setTextColor(foreground());view.setTextSize(size);
-        if(bold)view.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        view.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
         view.setPadding(dp(3),dp(7),dp(3),dp(7));
         return view;
     }
@@ -197,7 +195,7 @@ public final class CalendarActivity extends ComponentActivity {
         button.setMinHeight(dp(44));
         GradientDrawable shape=new GradientDrawable();
         shape.setColor(background());shape.setCornerRadius(dp(7));
-        shape.setStroke(dp(1),light?0xFFB0B0B0:0xFF666666);
+        shape.setStroke(dp(1),AppTheme.border(light));
         button.setBackground(shape);
         return button;
     }
