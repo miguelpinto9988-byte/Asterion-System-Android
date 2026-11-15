@@ -108,9 +108,9 @@ final class ProfileRegistrationSteps {
     private static final String[][] HEADING_ICONS = {
         {},
         {},
-        {"experience","goal","custom_goal","mode","calendar","equipment"},
+        {"experiencia","objetivo","objetivo","misiones","calendario","equipamiento"},
         {"theme","border","companion","hunter_card"},
-        {"review","confirmation"}
+        {"resumen","verificacion"}
     };
     private static final int[][] HEADING_FALLBACKS = {
         {},
@@ -126,8 +126,10 @@ final class ProfileRegistrationSteps {
     private int sectionNumber = 0;
 
     private int iconResource(String name, int fallback) {
+        boolean light = "light".equals(get("theme","light"));
+        String resourceName = (light ? "asterion_light_ic_" : "asterion_dark_ic_") + name;
         int id = activity.getResources().getIdentifier(
-                "asterion_ic_" + name, "drawable", activity.getPackageName());
+                resourceName, "drawable", activity.getPackageName());
         return id != 0 ? id : fallback;
     }
 
@@ -137,6 +139,7 @@ final class ProfileRegistrationSteps {
         if (currentSection < names.length) {
             LinearLayout header = row();
             ImageView icon = new ImageView(activity);
+            icon.setTag("asterion_approved_icon");
             icon.setImageResource(iconResource(
                     names[currentSection], HEADING_FALLBACKS[visualStep][currentSection]));
             icon.setContentDescription(null);
