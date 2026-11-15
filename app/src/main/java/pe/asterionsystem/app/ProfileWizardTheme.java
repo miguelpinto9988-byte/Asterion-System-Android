@@ -45,6 +45,10 @@ final class ProfileWizardTheme {
         // Full-color WebP layers must not inherit the monochrome icon tint.
         // Otherwise changing light/dark mode recolors portraits, landscapes,
         // frames and companions and destroys the approved visual palette.
+        if ("asterion_approved_icon".equals(tag)) {
+            // Already black on light, white on dark; do not tint with violet.
+            return;
+        }
         if ("asterion_card_name".equals(tag)) {
             // White lettering over any photo landscape in both app themes.
             return;
