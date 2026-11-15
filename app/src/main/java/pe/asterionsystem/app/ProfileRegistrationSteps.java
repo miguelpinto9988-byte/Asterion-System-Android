@@ -31,16 +31,22 @@ import pe.asterionsystem.app.presentation.NeonFrameDrawable;
 final class ProfileRegistrationSteps {
     static final int WHITE = Color.rgb(243, 247, 255);
     static final int MUTED = Color.rgb(186, 203, 236);
+    // Soft backgrounds and stronger icons are paired by semantic category.
+    // Preserve the persistent 0-5 order of the existing weekly plan.
     static final int[] CAT_COLORS = {
-        Color.rgb(32,136,183), Color.rgb(132,86,202), Color.rgb(211,148,55),
-        Color.rgb(37,141,112), Color.rgb(185,81,114), Color.rgb(100,116,139)
+        Color.rgb(243,187,192), Color.rgb(246,217,162), Color.rgb(191,233,208),
+        Color.rgb(218,199,250), Color.rgb(184,219,250), Color.rgb(212,216,224)
+    };
+    static final int[] CAT_INK_COLORS = {
+        Color.rgb(175,39,55), Color.rgb(169,103,18), Color.rgb(32,117,75),
+        Color.rgb(110,55,179), Color.rgb(23,109,175), Color.rgb(76,89,106)
     };
     static final String[] CATS = {
         "Tren superior", "Tren central", "Tren inferior", "Movilidad", "Cardio", "Descanso"
     };
     static final String[] CAT_GLYPHS = {"↟", "◈", "↡", "✧", "♥", "☾"};
     static final String[] CAT_ASSETS = {
-        "upper", "core", "lower", "mobility", "cardio", "rest"
+        "tren_superior", "tren_central", "tren_inferior", "movilidad", "cardio", "descanso"
     };
     static final String[] DAYS = {"L","M","M","J","V","S","D"};
     static final String[] DAY_NAMES = {"Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"};
@@ -348,6 +354,7 @@ final class ProfileRegistrationSteps {
                 bg.setColor(CAT_COLORS[index[d]]);
                 bg.setCornerRadius(dp(9));
                 chip.setBackground(bg);
+                chip.setTextColor(CAT_INK_COLORS[index[d]]);
                 chip.setContentDescription(DAY_NAMES[d]+": "+CATS[index[d]]+". Tocar para cambiar.");
             };
             refresh.run();
@@ -359,7 +366,9 @@ final class ProfileRegistrationSteps {
         }
         out.addView(week);
         for(int k=0;k<6;k++){
-            TextView legend=text(CAT_GLYPHS[k]+"  "+CATS[k],12,CAT_COLORS[k]);
+            boolean lightTheme = "light".equals(get("theme", "light"));
+            TextView legend=text(CAT_GLYPHS[k]+"  "+CATS[k],12,
+                    lightTheme ? CAT_INK_COLORS[k] : CAT_COLORS[k]);
             legend.setTag("asterion_week_legend");
             legend.setContentDescription("Leyenda: " + CATS[k] + ", color de categoría");
             legend.setPadding(dp(2),dp(4),0,dp(4));
