@@ -496,7 +496,8 @@ final class ProfileRegistrationSteps {
                 +"\nBordes: "+get("accent","#9A68F2")
                 +"\nAcompañante: "+get("companion","igris")
                 +"\nSilueta: "+get("card_silhouette","sung_jinwoo")
-                +"\nFondo de tarjeta: "+get("card_background","ruinas"),13,WHITE);
+                +"\nFondo de tarjeta: "+get("card_background","ruinas")
+                +"\nMarco: "+get("card_frame","tecnologico"),13,WHITE);
         addExpandableReview(out,visual,"PERSONALIZACIÓN");
         addHeading(out,"02 — Confirmación final");
         addInfo(out,"El perfil se guardará en almacenamiento privado. Podrás editar tus preferencias posteriormente; no se compartirá por internet.");
