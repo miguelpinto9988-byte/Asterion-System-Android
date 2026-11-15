@@ -42,6 +42,15 @@ final class ProfileWizardTheme {
         if ("asterion_week_legend".equals(tag)) {
             return;
         }
+        // Full-color WebP layers must not inherit the monochrome icon tint.
+        // Otherwise changing light/dark mode recolors portraits, landscapes,
+        // frames and companions and destroys the approved visual palette.
+        if ("asterion_fullcolor_art".equals(tag)) {
+            if (view instanceof ImageView) {
+                ((ImageView)view).setImageTintList(null);
+            }
+            return;
+        }
         if (view instanceof ImageView && view.getId() != R.id.profile_avatar_preview) {
             view.setVisibility(View.VISIBLE);
             ((ImageView)view).setImageTintList(ColorStateList.valueOf(AppTheme.accent(light)));
