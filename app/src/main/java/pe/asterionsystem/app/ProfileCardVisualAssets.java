@@ -36,6 +36,16 @@ final class ProfileCardVisualAssets {
         return "asterion_frame_tech";
     }
 
+    /** Stable companion IDs already persisted by the original profile wizard. */
+    static String companionDrawable(String id) {
+        if ("igris".equals(id)) return "asterion_companion_igris";
+        if ("beru".equals(id)) return "asterion_companion_beru";
+        if ("tank".equals(id)) return "asterion_companion_tank";
+        if ("tusk".equals(id)) return "asterion_companion_tusk";
+        if ("iron".equals(id)) return "asterion_companion_iron";
+        return "";
+    }
+
     static int resourceId(Context context, String drawableName) {
         return context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
     }
