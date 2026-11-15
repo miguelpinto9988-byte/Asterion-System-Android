@@ -24,6 +24,18 @@ final class ProfileCardVisualAssets {
         return "asterion_card_temple";
     }
 
+    static String frameDrawable(String id) {
+        if ("tecnologico".equals(id)) return "asterion_frame_tech";
+        if ("celestial".equals(id)) return "asterion_frame_celestial";
+        if ("epico".equals(id)) return "asterion_frame_epic";
+        if ("natural".equals(id)) return "asterion_frame_nature";
+        if ("arcano".equals(id)) return "asterion_frame_arcane";
+        if ("glacial".equals(id)) return "asterion_frame_glacial";
+        if ("oriental".equals(id)) return "asterion_frame_oriental";
+        if ("legendario".equals(id)) return "asterion_frame_legendary";
+        return "asterion_frame_tech";
+    }
+
     static int resourceId(Context context, String drawableName) {
         return context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
     }
