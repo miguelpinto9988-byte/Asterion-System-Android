@@ -20,8 +20,6 @@ android {
     sourceSets {
         main {
             assets.srcDir '../progress-engine/src/main/resources'
-            // Recursos originales descargados en compilación; la APK sigue offline.
-            res.srcDir "$buildDir/generated/monarchArt/res"
         }
     }
 
@@ -75,15 +73,4 @@ tasks.register('prepareExerciseGifAssets', Exec) {
 
 tasks.named('preBuild').configure {
     dependsOn tasks.named('prepareExerciseGifAssets')
-}
-
-tasks.register('prepareMonarchArt', Exec) {
-    group = 'build setup'
-    description = 'Prepara ilustraciones canónicas de Beru, Ashborn y Baran como recursos locales.'
-    workingDir rootProject.projectDir
-    commandLine 'python3', 'tools/prepare_monarch_art.py',
-            '--dest', project.layout.buildDirectory.dir('generated/monarchArt/res/drawable-nodpi').get().asFile.absolutePath
-}
-tasks.named('preBuild').configure {
-    dependsOn tasks.named('prepareMonarchArt')
 }
