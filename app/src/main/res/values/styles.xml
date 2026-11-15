@@ -56,7 +56,6 @@
         <item name="asterionAccent">#6544AA</item>
         <item name="asterionLine">#DDD9E8</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:colorBackground">#F6F6F9</item>
         <item name="android:alertDialogTheme">@style/Asterion.Dialog.Light</item>
         <item name="android:spinnerDropDownItemStyle">@style/Asterion.BoldSpinner.Light</item>
