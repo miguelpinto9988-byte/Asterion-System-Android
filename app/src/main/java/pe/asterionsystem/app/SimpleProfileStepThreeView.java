@@ -2,6 +2,11 @@ package pe.asterionsystem.app;
 
 import android.app.Activity;
 import android.graphics.Typeface;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.view.Gravity;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -26,14 +31,15 @@ final class SimpleProfileStepThreeView extends LinearLayout {
             "igris","beru","tank","tusk","iron"};
     private static final String[] COMPANION_LABELS = {
             "Igris","Beru","Tank","Tusk","Iron"};
+    // Keep stable stored IDs; the artwork is now the four approved ORIGINAL portraits.
     private static final String[] HUNTERS = {
-            "sung_jinwoo","cha_haein","kim_dokja","yoo_joonghyuk","yoo_sangah"};
+            "sung_jinwoo","cha_haein","yoo_joonghyuk","kim_dokja"};
     private static final String[] HUNTER_LABELS = {
-            "Sung Jinwoo","Cha Hae-In","Kim Dokja","Yoo Joonghyuk","Yoo Sangah"};
+            "Cazador azul","Cazadora blanca y dorada","Guerrero oscuro","Estratega de blanco"};
     private static final String[] BACKGROUNDS = {
             "ruinas","niebla","obsidiana","aurora","bosque"};
     private static final String[] BACKGROUND_LABELS = {
-            "Ruinas arcanas","Niebla violeta","Obsidiana","Aurora dorada","Bosque ancestral"};
+            "Templo oriental","Playa tropical","Ciudad occidental","Desierto y cañones","Bosque oriental"};
 
     private final Activity activity;
     private final JSONObject draft;
@@ -41,6 +47,8 @@ final class SimpleProfileStepThreeView extends LinearLayout {
     private final Runnable onThemeChanged;
     private final float density;
     private TextView preview;
+    private ImageView portraitView;
+    private ImageView backgroundView;
 
     SimpleProfileStepThreeView(Activity activity, JSONObject draft,
                                Runnable persist, Runnable onThemeChanged) {
@@ -61,6 +69,27 @@ final class SimpleProfileStepThreeView extends LinearLayout {
                 HUNTERS, HUNTER_LABELS, HUNTERS[0]);
         section("05 · Fondo de la tarjeta", "card_background",
                 BACKGROUNDS, BACKGROUND_LABELS, BACKGROUNDS[0]);
+
+        // Native layered horizontal card: background WebP + transparent hunter WebP.
+        // Missing drawables show a safe fallback, never reset saved selections.
+        FrameLayout card = new FrameLayout(activity);
+        GradientDrawable cardFallback = new GradientDrawable(
+                GradientDrawable.Orientation.TL_BR,
+                new int[]{Color.rgb(31,37,61), Color.rgb(91,58,136)});
+        cardFallback.setCornerRadius(dp(14));
+        card.setBackground(cardFallback);
+        card.setClipToOutline(true);
+        backgroundView = new ImageView(activity);
+        backgroundView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        card.addView(backgroundView, new FrameLayout.LayoutParams(-1,-1));
+        portraitView = new ImageView(activity);
+        portraitView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        FrameLayout.LayoutParams portraitParams = new FrameLayout.LayoutParams(-1,-1,
+                Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+        card.addView(portraitView, portraitParams);
+        LayoutParams cardLayout = new LayoutParams(-1,dp(190));
+        cardLayout.topMargin = dp(18);
+        addView(card, cardLayout);
 
         preview = new TextView(activity);
         preview.setTextSize(13);
@@ -97,6 +126,17 @@ final class SimpleProfileStepThreeView extends LinearLayout {
             if(ids[i].equals(selected))checkedId=radio.getId();
         }
         if(checkedId>0)group.check(checkedId);
+        if(checkedId<0 && "card_silhouette".equals(key) && "yoo_sangah".equals(selected)) {
+            // Existing profiles may have an older fifth avatar selection.
+            // Keep the stored value visible rather than silently overwriting it.
+            RadioButton legacy=new RadioButton(activity);
+            legacy.setId(View.generateViewId());
+            legacy.setText("Retrato anterior (conservado)");
+            legacy.setTextSize(14);
+            legacy.setMinHeight(dp(48));
+            group.addView(legacy,new RadioGroup.LayoutParams(-1,-2));
+            group.check(legacy.getId());
+        }
         group.setOnCheckedChangeListener((changed, id)-> {
             for(int i=0;i<ids.length;i++) {
                 if(changed.getChildAt(i).getId()==id) {
@@ -112,6 +152,12 @@ final class SimpleProfileStepThreeView extends LinearLayout {
 
     private void refreshPreview() {
         if(preview==null)return;
+        int bg=ProfileCardVisualAssets.resourceId(activity,
+                ProfileCardVisualAssets.backgroundDrawable(get("card_background", BACKGROUNDS[0])));
+        int hunter=ProfileCardVisualAssets.resourceId(activity,
+                ProfileCardVisualAssets.hunterDrawable(get("card_silhouette", HUNTERS[0])));
+        backgroundView.setImageResource(bg != 0 ? bg : android.R.color.transparent);
+        portraitView.setImageResource(hunter != 0 ? hunter : android.R.color.transparent);
         preview.setText("Tarjeta del cazador\n"
                 +"Tema: "+("light".equals(get("theme","light"))?"Blanco":"Negro")
                 +" · Borde: "+get("accent",ACCENTS[0])
