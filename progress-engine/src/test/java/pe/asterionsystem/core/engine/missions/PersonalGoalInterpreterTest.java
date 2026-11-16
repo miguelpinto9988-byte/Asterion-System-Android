@@ -55,8 +55,9 @@ public final class PersonalGoalInterpreterTest {
         String root="/asterion_exercises/v1/";
         try(InputStreamReader family=reader(root+"families.tsv");
             InputStreamReader types=reader(root+"types.tsv");
-            InputStreamReader variants=reader(root+"variants.tsv")) {
-            ExerciseCatalog catalog=ExerciseCatalogLoader.load(family,types,variants);
+            InputStreamReader variants=reader(root+"variants.tsv");
+            InputStreamReader intensity=reader(root+"intensity.tsv")) {
+            ExerciseCatalog catalog=ExerciseCatalogLoader.load(family,types,variants,intensity);
             MissionPlanner planner=new MissionPlanner(catalog);
             MissionPlanner.Profile rest=new MissionPlanner.Profile(
                     "principiante","bienestar",Arrays.asList(5,4,4,4,4,4,5),
@@ -76,12 +77,13 @@ public final class PersonalGoalInterpreterTest {
         String root="/asterion_exercises/v1/";
         try(InputStreamReader family=reader(root+"families.tsv");
             InputStreamReader types=reader(root+"types.tsv");
-            InputStreamReader variants=reader(root+"variants.tsv")) {
-            ExerciseCatalog catalog=ExerciseCatalogLoader.load(family,types,variants);
+            InputStreamReader variants=reader(root+"variants.tsv");
+            InputStreamReader intensity=reader(root+"intensity.tsv")) {
+            ExerciseCatalog catalog=ExerciseCatalogLoader.load(family,types,variants,intensity);
             MissionPlanner planner=new MissionPlanner(catalog);
             MissionPlanner.Profile profile=new MissionPlanner.Profile(
                     "principiante","resistencia",Arrays.asList(4,4,4,4,4,4,4),
-                    Set.of("sin_equipo","pared","silla"),3,"baja","",
+                    Set.of("sin_equipo","pared","silla"),3,"moderada","",
                     "Me gustaría caminar con frecuencia");
             LocalDate monday=LocalDate.of(2026,11,9);
             List<ExerciseVariant> first=planner.daily(profile,monday).candidates();
