@@ -182,6 +182,7 @@ final class ProfileRegistrationSteps {
                 ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE
                 : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         if(multiline)edit.setMinLines(3); else edit.setSingleLine(true);
+        edit.setBackgroundTintList(null);
         edit.setBackground(fieldBackground());
         edit.setText(get(key, ""));
         edit.addTextChangedListener(new TextWatcher() {
@@ -260,6 +261,7 @@ final class ProfileRegistrationSteps {
             }
         };
         control.setAdapter(adapter);
+        control.setBackgroundTintList(null);
         control.setBackground(fieldBackground());
         control.setPadding(dp(7),0,dp(7),0);
         String selected=get(key,defaultValue);
@@ -281,21 +283,36 @@ final class ProfileRegistrationSteps {
         return control;
     }
 
+    /** Individual visible cards for each independent part of the training form. */
+    private LinearLayout sectionCard(LinearLayout parent) {
+        LinearLayout section=vertical();
+        section.setTag("card");
+        section.setPadding(dp(14),dp(12),dp(14),dp(12));
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2);
+        params.topMargin=dp(12);
+        parent.addView(section,params);
+        return section;
+    }
+
     View step2() {
         visualStep = 2;
         sectionNumber = 0;
-        LinearLayout out=vertical();
+        LinearLayout root=vertical();
+        LinearLayout out=sectionCard(root);
         addHeading(out,"01 — Experiencia de entrenamiento");
         radios(out,"experience",new String[]{"principiante","intermedio","avanzado"},
                 new String[]{"Principiante","Intermedio","Avanzado"},"principiante");
+        out=sectionCard(root);
         addHeading(out,"02 — Objetivo principal");
         radios(out,"goal",new String[]{"bienestar","fuerza","resistencia","movilidad","constancia"},
                 new String[]{"Mejorar mi bienestar general","Desarrollar fuerza funcional",
                         "Mejorar mi resistencia","Mejorar mi movilidad",
                         "Crear un hábito de actividad física"},"bienestar");
+        out=sectionCard(root);
         addHeading(out,"03 — Objetivo personalizado");
         addInfo(out,"Escribe qué deseas conseguir. Se guardará con tu perfil para que el sistema pueda usarlo como preferencia al planificar misiones. La adaptación automática depende del generador de misiones.");
         input(out,"custom_goal","Describe tu objetivo con tus propias palabras",true);
+        out=sectionCard(root);
         addHeading(out,"04 — Modalidad del Sistema");
         LinearLayout missionExtra=vertical();
         LinearLayout routineExtra=vertical();
@@ -326,6 +343,7 @@ final class ProfileRegistrationSteps {
             });
         }
 
+        out=sectionCard(root);
         addHeading(out,"05 — Planificación semanal");
         addInfo(out,"Pulsa varias veces un día para avanzar: superior → central → inferior → movilidad → cardio → descanso.");
         LinearLayout week=row();
@@ -378,6 +396,7 @@ final class ProfileRegistrationSteps {
             out.addView(legend);
         }
 
+        out=sectionCard(root);
         addHeading(out,"06 — Equipamiento disponible");
         CheckBox bodyweight=check(out,"bodyweight","Peso corporal / sin equipo",true);
         // Expand optional support options only when bodyweight training is chosen.
@@ -413,6 +432,7 @@ final class ProfileRegistrationSteps {
         gym.setOnCheckedChangeListener((b,v)->{
             put("gym",v);gymPanel.setVisibility(v?View.VISIBLE:View.GONE);
         });
+        out=sectionCard(root);
         addHeading(out,"07 — Intensidad orientativa de las misiones");
         addInfo(out,"Baja selecciona opciones etiquetadas como suaves. Moderada "
                 +"incluye también actividades moderadas y conserva las variantes "
@@ -425,7 +445,7 @@ final class ProfileRegistrationSteps {
         addInfo(out,"La categoría y la intensidad elegidas determinan qué ejercicios "
                 +"puede proponer el motor. Cambiarlas genera una nueva selección "
                 +"para el mismo día; cambiar de pantalla no la modifica.");
-        return out;
+        return root;
     }
     private int iMode(RadioGroup group, RadioButton selected) {
         for(int i=0;i<group.getChildCount();i++)if(group.getChildAt(i)==selected)return i;
