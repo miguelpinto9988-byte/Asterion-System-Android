@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Safely add 94 approved WebP files from the Android-ready Asterion ZIP.
 
-Usage: python3 scripts/import_asterion_all_resources.py /path/Asterion_Android_104_Recursos_WebP_Aprobados.zip .
+Usage: python3 scripts/import_asterion_all_resources.py /path/Asterion_Android_94_WebP_Sin_Marcos_Cuadrados.zip .
 Never delete or overwrite existing files; verify all source hashes and
 conflicts before writing any file.
 """
