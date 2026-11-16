@@ -85,7 +85,7 @@
                         <ImageView android:id="@+id/profile_avatar_preview"
                             android:layout_width="64dp" android:layout_height="64dp"
                             android:src="@drawable/asterion_reg_profile"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             android:contentDescription="Vista previa de fotografía o avatar"/>
                         <Button android:id="@+id/profile_choose_image"
                             android:layout_width="0dp" android:layout_weight="1"
