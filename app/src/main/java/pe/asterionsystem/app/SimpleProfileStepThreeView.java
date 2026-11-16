@@ -41,11 +41,6 @@ final class SimpleProfileStepThreeView extends LinearLayout {
     private static final String[] BACKGROUND_LABELS = {
             "Templo oriental","Playa tropical","Ciudad occidental","Desierto y cañones","Bosque oriental"};
 
-    private static final String[] FRAMES = {
-            "tecnologico","celestial","epico","natural","arcano","glacial","oriental","legendario"};
-    private static final String[] FRAME_LABELS = {
-            "Tecnológico","Celestial","Épico","Natural","Arcano","Glacial","Oriental","Legendario"};
-
     private final Activity activity;
     private final JSONObject draft;
     private final Runnable persist;
@@ -54,7 +49,6 @@ final class SimpleProfileStepThreeView extends LinearLayout {
     private TextView preview;
     private ImageView portraitView;
     private ImageView backgroundView;
-    private ImageView frameView;
     private ImageView companionView;
     private final java.util.ArrayList<ImageView> sectionIcons = new java.util.ArrayList<>();
     private final java.util.ArrayList<String> sectionIconNames = new java.util.ArrayList<>();
@@ -71,15 +65,13 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         migrateLegacy();
 
         section("01 · Tema del sistema", "theme", THEMES, THEME_LABELS,"light");
-        section("02 · Color de los bordes", "accent", ACCENTS, ACCENT_LABELS,ACCENTS[0]);
+        section("02 · Color de acento", "accent", ACCENTS, ACCENT_LABELS,ACCENTS[0]);
         section("03 · Acompañante del sistema", "companion",
                 COMPANIONS, COMPANION_LABELS, COMPANIONS[0]);
         section("04 · Silueta del cazador", "card_silhouette",
                 HUNTERS, HUNTER_LABELS, HUNTERS[0]);
         section("05 · Fondo de la tarjeta", "card_background",
                 BACKGROUNDS, BACKGROUND_LABELS, BACKGROUNDS[0]);
-        section("06 · Marco decorativo", "card_frame",
-                FRAMES, FRAME_LABELS, FRAMES[0]);
 
         // Native layered horizontal card: background WebP + transparent hunter WebP.
         // Missing drawables show a safe fallback, never reset saved selections.
@@ -120,11 +112,6 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         companionParams.rightMargin = dp(18);
         companionParams.bottomMargin = dp(12);
         card.addView(companionView, companionParams);
-        frameView = new ImageView(activity);
-        frameView.setScaleType(ImageView.ScaleType.FIT_XY);
-        frameView.setTag("asterion_fullcolor_art");
-        frameView.setContentDescription("Marco decorativo de tarjeta horizontal");
-        card.addView(frameView, new FrameLayout.LayoutParams(-1,-1));
         TextView nameOnCard = new TextView(activity);
         String hunterName = draft.optString("name", "CAZADOR").trim();
         nameOnCard.setText(hunterName.isEmpty() ? "CAZADOR" : hunterName);
@@ -165,7 +152,7 @@ final class SimpleProfileStepThreeView extends LinearLayout {
                 : "accent".equals(key) ? "paleta"
                 : "companion".equals(key) ? "companero"
                 : "card_silhouette".equals(key) ? "silueta"
-                : "card_background".equals(key) ? "fondo" : "marco";
+                : "card_background".equals(key) ? "fondo" : "paleta";
         LinearLayout headerRow=new LinearLayout(activity);
         headerRow.setOrientation(LinearLayout.HORIZONTAL);
         headerRow.setGravity(Gravity.CENTER_VERTICAL);
@@ -236,9 +223,6 @@ final class SimpleProfileStepThreeView extends LinearLayout {
                 ProfileCardVisualAssets.hunterDrawable(get("card_silhouette", HUNTERS[0])));
         backgroundView.setImageResource(bg != 0 ? bg : android.R.color.transparent);
         portraitView.setImageResource(hunter != 0 ? hunter : android.R.color.transparent);
-        int frame=ProfileCardVisualAssets.resourceId(activity,
-                ProfileCardVisualAssets.frameDrawable(get("card_frame",FRAMES[0])));
-        frameView.setImageResource(frame != 0 ? frame : android.R.color.transparent);
         String companionName=ProfileCardVisualAssets.companionDrawable(
                 get("companion", COMPANIONS[0]));
         int companion=companionName.isEmpty() ? 0 :
@@ -252,9 +236,7 @@ final class SimpleProfileStepThreeView extends LinearLayout {
                 +"\nSilueta: "+labelFor(HUNTERS,HUNTER_LABELS,
                         get("card_silhouette",HUNTERS[0]))
                 +"\nFondo: "+labelFor(BACKGROUNDS,BACKGROUND_LABELS,
-                        get("card_background",BACKGROUNDS[0]))
-                +"\nMarco: "+labelFor(FRAMES,FRAME_LABELS,
-                        get("card_frame",FRAMES[0])));
+                        get("card_background",BACKGROUNDS[0])));
     }
 
     private String labelFor(String[] ids,String[] labels,String value) {
