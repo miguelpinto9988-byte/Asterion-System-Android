@@ -36,7 +36,8 @@ for marker in ("MissionLevelProgressStore.observe(", "levelState.phase",
                "recentlyInterrupted", "DailyMissionStore.read(this,today,profile,catalog)"):
     assert marker in ACTIVITY,marker
 for key,code in (("mat","colchoneta"),("wall","pared"),("chair","silla")):
-    assert f'check(out,"{key}"' in PROFILE
+    # Bodyweight supports are now inside an expandable panel, not directly on out.
+    assert f'check(bodyweightPanel,"{key}"' in PROFILE
     assert f'equipment.add("{code}")' in ADAPTER
 for name in ("beginnerMissionsContainOnlyTechnicalLevelsOneAndTwo",
              "intermediateEntryIsMostlyBasicThenBecomesMostlyIntermediate",
