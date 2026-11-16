@@ -34,8 +34,11 @@ assert 'view.setVisibility(View.VISIBLE)' in palette
 for name in ("Tren superior","Tren central","Tren inferior",
              "Movilidad","Cardio","Descanso"):
     assert f'"{name}"' in step2,name
-for rgb in ("32,136,183","132,86,202","211,148,55",
-            "37,141,112","185,81,114","100,116,139"):
+# The approved palette uses gentle tile backgrounds and darker matching inks.
+for rgb in ("243,187,192","246,217,162","191,233,208",
+            "218,199,250","184,219,250","212,216,224",
+            "175,39,55","169,103,18","32,117,75",
+            "110,55,179","23,109,175","76,89,106"):
     assert f"Color.rgb({rgb})" in step2,rgb
 for fragment in (
     "index[d]=(index[d]+1)%6",
