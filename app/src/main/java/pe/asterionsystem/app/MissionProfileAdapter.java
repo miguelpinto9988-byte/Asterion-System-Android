@@ -55,8 +55,8 @@ final class MissionProfileAdapter {
                 +profile.optString("sequence","rondas")+"|"
                 +profile.optString("rest_seconds","60")+"|"
                 +profile.optString("minutes","30")+"|"
-                +profile.optString("custom_goal","")+"|"
-                +profile.optString("dumbbell_weights",""));
+                +profile.optString("dumbbell_weights",""),
+                profile.optString("custom_goal",""));
     }
 
     private static boolean isEnabled(JSONObject source, String key, boolean fallback) {
