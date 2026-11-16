@@ -379,11 +379,19 @@ final class ProfileRegistrationSteps {
         }
 
         addHeading(out,"06 — Equipamiento disponible");
-        check(out,"bodyweight","Peso corporal / sin equipo",true);
-        // Optional common supports; never assume the user has these items.
-        check(out,"mat","Colchoneta o superficie acolchada estable",false);
-        check(out,"wall","Pared o apoyo vertical firme",false);
-        check(out,"chair","Silla estable",false);
+        CheckBox bodyweight=check(out,"bodyweight","Peso corporal / sin equipo",true);
+        // Expand optional support options only when bodyweight training is chosen.
+        LinearLayout bodyweightPanel=vertical();
+        addInfo(bodyweightPanel,"Apoyos disponibles para actividades de peso corporal (opcionales)");
+        check(bodyweightPanel,"mat","Colchoneta o superficie acolchada estable",false);
+        check(bodyweightPanel,"wall","Pared o apoyo vertical firme",false);
+        check(bodyweightPanel,"chair","Silla estable",false);
+        out.addView(bodyweightPanel);
+        bodyweightPanel.setVisibility(bodyweight.isChecked()?View.VISIBLE:View.GONE);
+        bodyweight.setOnCheckedChangeListener((button,checked)->{
+            put("bodyweight",checked);
+            bodyweightPanel.setVisibility(checked?View.VISIBLE:View.GONE);
+        });
         CheckBox dumbbells=check(out,"dumbbells","Mancuernas",false);
         LinearLayout dumbbellPanel=vertical();
         addInfo(dumbbellPanel,"Pesos de las mancuernas disponibles (kg), separados por comas");
