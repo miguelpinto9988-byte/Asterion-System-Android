@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -178,6 +179,36 @@ final class SimpleProfileStepThreeView extends LinearLayout {
             radio.setTextSize(14);
             radio.setMinHeight(dp(48));
             radio.setPadding(dp(9),dp(6),dp(9),dp(6));
+            radio.setGravity(Gravity.CENTER_VERTICAL);
+            // Approved WebP artwork stays square/rectangular, never circular.
+            // Keep native RadioButtons as direct children of RadioGroup.
+            String picture="";
+            int imageWidth=dp(64),imageHeight=dp(64);
+            if ("card_silhouette".equals(key)) {
+                picture=ProfileCardVisualAssets.hunterDrawable(ids[i]);
+                radio.setMinHeight(dp(76));
+            } else if ("companion".equals(key)) {
+                picture=ProfileCardVisualAssets.companionDrawable(ids[i]);
+                radio.setMinHeight(dp(68));
+                imageWidth=dp(48);
+                imageHeight=dp(48);
+            } else if ("card_background".equals(key)) {
+                picture=ProfileCardVisualAssets.backgroundDrawable(ids[i]);
+                imageWidth=dp(96);
+                imageHeight=dp(54);
+                radio.setMinHeight(dp(68));
+            }
+            if (!picture.isEmpty()) {
+                int resId=ProfileCardVisualAssets.resourceId(activity,picture);
+                if (resId!=0) {
+                    Drawable image=activity.getDrawable(resId);
+                    if (image!=null) {
+                        image.setBounds(0,0,imageWidth,imageHeight);
+                        radio.setCompoundDrawables(image,null,null,null);
+                        radio.setCompoundDrawablePadding(dp(12));
+                    }
+                }
+            }
             radio.setContentDescription(title + ": " + labels[i]);
             group.addView(radio,new RadioGroup.LayoutParams(-1,-2));
             if(ids[i].equals(selected))checkedId=radio.getId();
