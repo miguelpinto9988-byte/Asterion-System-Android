@@ -15,20 +15,12 @@ El usuario ha descartado por completo los marcos ornamentales de la tarjeta del 
 
 **94 WebP:** 4 retratos originales cuadrados, 5 paisajes horizontales, 5 acompañantes, 2 cabeceras y 78 iconos de interfaz/categorías. El paquete local `Asterion_Android_94_WebP_Sin_Marcos_Cuadrados.zip` incluye `MANIFIESTO_ANDROID.json` con hashes SHA-256. Los 8 recursos `asterion_frame_*.webp` y los dos iconos `asterion_*_ic_marco.webp` han quedado excluidos.
 
-Para importar en un clon de la rama de diseño:
-```bash
-python3 scripts/import_asterion_all_resources.py /ruta/Asterion_Android_94_WebP_Sin_Marcos_Cuadrados.zip .
-git add app/src/main/res/drawable-nodpi
-git commit -m "assets(profile): integrar 94 WebP sin marcos"
-git push origin design/profile-wizard-components-20261115
-```
-
-El script verifica todos los hashes, rechaza los marcos y **no sobrescribe recursos diferentes**.
+**Integrados directamente en GitHub:** los 94 `.webp` individuales ya figuran en `app/src/main/res/drawable-nodpi/` de la rama de diseño. Commit de recursos: `50747b9f18e11a0715de29428ba1cb04583dffe2`. El ZIP solo fue un medio de transferencia; no se ha agregado al repositorio. Se verificó presencia y tamaño de los 94 archivos contra el manifiesto. El script de importación queda como herramienta de recuperación, no es necesario para esta rama.
 
 ## Estado verificable
 
 - Las correcciones Java, el importador de 94 recursos, el resumen y esta nota están guardados en GitHub en `design/profile-wizard-components-20261115`, sin modificar `main`.
-- **Los 94 archivos WebP binarios todavía no se han transferido a GitHub**. Su preparación en un ZIP local no equivale a la subida de archivos de imagen al repositorio.
+- **Los 94 WebP definitivos SÍ están subidos a GitHub** como archivos separados; comprobados por nombre y tamaño en la rama. Junto a 10 WebP anteriores, la carpeta contiene 104 WebP. No contiene marcos ni ZIP.
 - **APK pendiente de compilación y pruebas** con perfiles nuevos y ya existentes antes de aprobar/mergear el PR.
 - No reintroducir marcos ni reconstruirlos en próximas entregas, salvo solicitud expresa nueva del usuario.
 
