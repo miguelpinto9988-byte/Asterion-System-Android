@@ -112,6 +112,14 @@ public final class RoutineGenerator {
         for(int i=0;i<OFFER_COUNT;i++) {
             ArrayList<ExerciseVariant> pool=new ArrayList<>(allowed);
             Collections.shuffle(pool,new Random(seed+0x9E3779B97F4A7C15L*i));
+            // Preference affects ranking only, AFTER the existing safety,
+            // intensity, category and equipment filters have been applied.
+            PersonalGoalInterpreter preference=PersonalGoalInterpreter.from(profile.personalGoal);
+            if(preference.recognized()) {
+                pool.sort(Comparator.comparingInt((ExerciseVariant item)->
+                        preference.score(item,
+                                catalog.categoryIndex().familyForVariant(item.id()))).reversed());
+            }
             ArrayList<ExerciseVariant> selected=new ArrayList<>();
             Set<String> usedIds=new HashSet<>();
             Set<String> usedTypes=new HashSet<>();
