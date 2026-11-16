@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -53,6 +54,7 @@ final class SimpleProfileStepThreeView extends LinearLayout {
     private ImageView companionView;
     private final java.util.ArrayList<ImageView> sectionIcons = new java.util.ArrayList<>();
     private final java.util.ArrayList<String> sectionIconNames = new java.util.ArrayList<>();
+    private final java.util.ArrayList<Runnable> selectorRefreshers = new java.util.ArrayList<>();
 
     SimpleProfileStepThreeView(Activity activity, JSONObject draft,
                                Runnable persist, Runnable onThemeChanged) {
@@ -74,171 +76,246 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         section("05 · Fondo de la tarjeta", "card_background",
                 BACKGROUNDS, BACKGROUND_LABELS, BACKGROUNDS[0]);
 
-        // Native layered horizontal card: background WebP + transparent hunter WebP.
-        // Missing drawables show a safe fallback, never reset saved selections.
+        // A single frameless 16:9 preview, below its own independent section.
+        LinearLayout cardPanel = new LinearLayout(activity);
+        cardPanel.setOrientation(VERTICAL);
+        cardPanel.setTag("card");
+        cardPanel.setPadding(dp(12),dp(12),dp(12),dp(12));
+        LayoutParams panelParams=new LayoutParams(-1,-2);
+        panelParams.topMargin=dp(14);
+        addView(cardPanel,panelParams);
+        TextView previewHeading=new TextView(activity);
+        previewHeading.setText("Vista previa · Tarjeta del cazador");
+        previewHeading.setTextSize(16);
+        previewHeading.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        cardPanel.addView(previewHeading,new LayoutParams(-1,-2));
+
         FrameLayout card = new FrameLayout(activity) {
             @Override protected void onMeasure(int widthMeasureSpec,int heightMeasureSpec) {
-                int width = View.MeasureSpec.getSize(widthMeasureSpec);
-                int height = Math.round(width * 9f / 16f);
+                int width=View.MeasureSpec.getSize(widthMeasureSpec);
+                int height=Math.round(width*9f/16f);
                 super.onMeasure(widthMeasureSpec,View.MeasureSpec.makeMeasureSpec(
                         height,View.MeasureSpec.EXACTLY));
             }
         };
-        GradientDrawable cardFallback = new GradientDrawable(
+        GradientDrawable cardFallback=new GradientDrawable(
                 GradientDrawable.Orientation.TL_BR,
-                new int[]{Color.rgb(31,37,61), Color.rgb(91,58,136)});
-        cardFallback.setCornerRadius(dp(14));
+                new int[]{Color.rgb(31,37,61),Color.rgb(91,58,136)});
+        cardFallback.setCornerRadius(dp(16));
         card.setBackground(cardFallback);
         card.setClipToOutline(true);
-        backgroundView = new ImageView(activity);
-        backgroundView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        backgroundView=new ImageView(activity);
         backgroundView.setTag("asterion_fullcolor_art");
-        card.addView(backgroundView, new FrameLayout.LayoutParams(-1,-1));
-        portraitView = new ImageView(activity);
-        portraitView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        backgroundView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        card.addView(backgroundView,new FrameLayout.LayoutParams(-1,-1));
+
+        // Keep all the approved square hunter art visible, fitted left at
+        // exactly the card height. No CENTER_CROP and no circular clipping.
+        portraitView=new ImageView(activity);
         portraitView.setTag("asterion_fullcolor_art");
-        // The approved portrait is a transparent square; never crop it to a circle.
-        // The card's fixed 16:9 aspect ratio makes 56.25% width equal 100% height.
-        int cardWidth = activity.getResources().getDisplayMetrics().widthPixels;
-        int squareSide = Math.round(cardWidth * 0.53f);
-        FrameLayout.LayoutParams portraitParams = new FrameLayout.LayoutParams(
-                squareSide, -1, Gravity.LEFT | Gravity.BOTTOM);
-        card.addView(portraitView, portraitParams);
-        companionView = new ImageView(activity);
+        portraitView.setScaleType(ImageView.ScaleType.FIT_START);
+        card.addView(portraitView,new FrameLayout.LayoutParams(
+                -1,-1,Gravity.START|Gravity.BOTTOM));
+
+        View textContrast=new View(activity);
+        textContrast.setTag("asterion_fullcolor_art");
+        textContrast.setBackground(new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{0xB3000000,0x00000000,0x00000000,0x77000000}));
+        card.addView(textContrast,new FrameLayout.LayoutParams(-1,-1));
+
+        companionView=new ImageView(activity);
         companionView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         companionView.setTag("asterion_fullcolor_art");
         companionView.setContentDescription("Acompañante seleccionado");
-        FrameLayout.LayoutParams companionParams = new FrameLayout.LayoutParams(
-                dp(76), dp(76), Gravity.BOTTOM | Gravity.RIGHT);
-        companionParams.rightMargin = dp(18);
-        companionParams.bottomMargin = dp(12);
-        card.addView(companionView, companionParams);
-        TextView nameOnCard = new TextView(activity);
-        String hunterName = draft.optString("name", "CAZADOR").trim();
-        nameOnCard.setText(hunterName.isEmpty() ? "CAZADOR" : hunterName);
+        FrameLayout.LayoutParams companionParams=new FrameLayout.LayoutParams(
+                dp(78),dp(78),Gravity.BOTTOM|Gravity.END);
+        companionParams.rightMargin=dp(10);
+        companionParams.bottomMargin=dp(7);
+        card.addView(companionView,companionParams);
+
+        TextView nameOnCard=new TextView(activity);
+        String hunterName=draft.optString("name","CAZADOR").trim();
+        nameOnCard.setText(hunterName.isEmpty()?"CAZADOR":hunterName);
         nameOnCard.setTextColor(Color.WHITE);
-        nameOnCard.setShadowLayer(dp(4),dp(1),dp(2),Color.BLACK);
+        nameOnCard.setShadowLayer(dp(4),0,dp(2),Color.BLACK);
         nameOnCard.setTextSize(15);
         nameOnCard.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        nameOnCard.setGravity(Gravity.RIGHT);
+        nameOnCard.setGravity(Gravity.END);
         nameOnCard.setTag("asterion_card_name");
-        FrameLayout.LayoutParams nameParams = new FrameLayout.LayoutParams(
-                -2,-2,Gravity.RIGHT | Gravity.TOP);
-        nameParams.topMargin=dp(30);
-        nameParams.rightMargin=dp(30);
+        FrameLayout.LayoutParams nameParams=new FrameLayout.LayoutParams(
+                -2,-2,Gravity.END|Gravity.TOP);
+        nameParams.topMargin=dp(12);
+        nameParams.rightMargin=dp(12);
         card.addView(nameOnCard,nameParams);
-        LayoutParams cardLayout = new LayoutParams(-1,-2);
-        cardLayout.topMargin = dp(18);
-        addView(card, cardLayout);
+        LayoutParams cardParams=new LayoutParams(-1,-2);
+        cardParams.topMargin=dp(12);
+        cardPanel.addView(card,cardParams);
 
-        preview = new TextView(activity);
-        preview.setTextSize(13);
+        preview=new TextView(activity);
+        preview.setTextSize(12);
         preview.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        preview.setPadding(dp(8),dp(14),dp(8),dp(14));
-        addView(preview,new LayoutParams(-1,-2));
+        preview.setPadding(dp(3),dp(12),dp(3),dp(2));
+        cardPanel.addView(preview,new LayoutParams(-1,-2));
         refreshPreview();
     }
 
+    /** A separate rounded panel and a finger-scrollable horizontal option strip. */
     private void section(String title, String key, String[] ids,
                          String[] labels, String fallback) {
-        TextView heading=new TextView(activity);
-        heading.setText(title);
-        heading.setTextSize(16);
-        heading.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-        LayoutParams h=new LayoutParams(-1,-2);
-        h.topMargin=dp(18);
-        h.bottomMargin=dp(6);
-        // Use the approved monochrome WebP icon set, not substitute symbols.
-        String iconName = "tema".equals(key) ? "tema"
-                : "accent".equals(key) ? "paleta"
-                : "companion".equals(key) ? "companero"
-                : "card_silhouette".equals(key) ? "silueta"
-                : "card_background".equals(key) ? "fondo" : "paleta";
+        final boolean light="light".equals(get("theme","light"));
+        LinearLayout panel=new LinearLayout(activity);
+        panel.setOrientation(VERTICAL);
+        panel.setTag("card");
+        panel.setPadding(dp(12),dp(12),dp(12),dp(12));
+        LayoutParams panelLayout=new LayoutParams(-1,-2);
+        panelLayout.topMargin=dp(12);
+        addView(panel,panelLayout);
+
+        String iconName="theme".equals(key)?"tema"
+                :"accent".equals(key)?"paleta"
+                :"companion".equals(key)?"companero"
+                :"card_silhouette".equals(key)?"silueta"
+                :"card_background".equals(key)?"fondo":"paleta";
         LinearLayout headerRow=new LinearLayout(activity);
-        headerRow.setOrientation(LinearLayout.HORIZONTAL);
+        headerRow.setOrientation(HORIZONTAL);
         headerRow.setGravity(Gravity.CENTER_VERTICAL);
         ImageView icon=new ImageView(activity);
         icon.setTag("asterion_approved_icon");
         icon.setContentDescription(null);
-        LinearLayout.LayoutParams iconParams=new LinearLayout.LayoutParams(dp(26),dp(26));
+        LinearLayout.LayoutParams iconParams=new LinearLayout.LayoutParams(
+                dp(25),dp(25));
         iconParams.rightMargin=dp(9);
         headerRow.addView(icon,iconParams);
-        headerRow.addView(heading,new LinearLayout.LayoutParams(-2,-2));
-        addView(headerRow,h);
+        TextView heading=new TextView(activity);
+        heading.setText(title);
+        heading.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        heading.setTextSize(16);
+        headerRow.addView(heading,new LinearLayout.LayoutParams(-1,-2));
+        panel.addView(headerRow,new LayoutParams(-1,-2));
         sectionIcons.add(icon);
         sectionIconNames.add(iconName);
 
-        RadioGroup group=new RadioGroup(activity);
-        group.setOrientation(RadioGroup.VERTICAL);
-        String selected=get(key,fallback);
-        int checkedId=-1;
-        for(int i=0;i<ids.length;i++) {
-            RadioButton radio=new RadioButton(activity);
-            radio.setId(View.generateViewId());
-            radio.setText(labels[i]);
-            radio.setTextSize(14);
-            radio.setMinHeight(dp(48));
-            radio.setPadding(dp(9),dp(6),dp(9),dp(6));
-            radio.setGravity(Gravity.CENTER_VERTICAL);
-            // Approved WebP artwork stays square/rectangular, never circular.
-            // Keep native RadioButtons as direct children of RadioGroup.
-            String picture="";
-            int imageWidth=dp(64),imageHeight=dp(64);
-            if ("card_silhouette".equals(key)) {
-                picture=ProfileCardVisualAssets.hunterDrawable(ids[i]);
-                radio.setMinHeight(dp(76));
-            } else if ("companion".equals(key)) {
-                picture=ProfileCardVisualAssets.companionDrawable(ids[i]);
-                radio.setMinHeight(dp(68));
-                imageWidth=dp(48);
-                imageHeight=dp(48);
-            } else if ("card_background".equals(key)) {
-                picture=ProfileCardVisualAssets.backgroundDrawable(ids[i]);
-                imageWidth=dp(96);
-                imageHeight=dp(54);
-                radio.setMinHeight(dp(68));
+        TextView hint=new TextView(activity);
+        hint.setText("Desliza horizontalmente para ver más opciones");
+        hint.setTextSize(11);
+        hint.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+        hint.setTextColor(AppTheme.muted(light));
+        LayoutParams hintLayout=new LayoutParams(-1,-2);
+        hintLayout.topMargin=dp(5);
+        hintLayout.bottomMargin=dp(9);
+        panel.addView(hint,hintLayout);
+
+        HorizontalScrollView scroll=new HorizontalScrollView(activity);
+        scroll.setHorizontalScrollBarEnabled(false);
+        scroll.setFillViewport(false);
+        scroll.setClipToPadding(false);
+        LinearLayout strip=new LinearLayout(activity);
+        strip.setOrientation(HORIZONTAL);
+        strip.setGravity(Gravity.TOP);
+        scroll.addView(strip,new HorizontalScrollView.LayoutParams(-2,-2));
+        panel.addView(scroll,new LayoutParams(-1,-2));
+
+        final java.util.ArrayList<LinearLayout> tiles=new java.util.ArrayList<>();
+        final java.util.ArrayList<TextView> tileLabels=new java.util.ArrayList<>();
+        final String[][] capturedLabels={labels};
+        for(int i=0;i<ids.length;i++){
+            final String id=ids[i];
+            LinearLayout tile=new LinearLayout(activity);
+            tile.setTag("asterion_profile_option");
+            tile.setOrientation(VERTICAL);
+            tile.setGravity(Gravity.CENTER);
+            tile.setPadding(dp(9),dp(9),dp(9),dp(9));
+            int itemWidth="card_background".equals(key)?dp(194)
+                    :"card_silhouette".equals(key)?dp(143)
+                    :"companion".equals(key)?dp(126):dp(112);
+            LinearLayout.LayoutParams tileParams=new LinearLayout.LayoutParams(
+                    itemWidth,-2);
+            tileParams.rightMargin=dp(9);
+            strip.addView(tile,tileParams);
+            View art=null;
+            if("card_silhouette".equals(key)||"card_background".equals(key)
+                    ||"companion".equals(key)) {
+                ImageView picture=new ImageView(activity);
+                picture.setTag("asterion_fullcolor_art");
+                picture.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                String name="card_silhouette".equals(key)
+                        ?ProfileCardVisualAssets.hunterDrawable(id)
+                        :"companion".equals(key)
+                        ?ProfileCardVisualAssets.companionDrawable(id)
+                        :ProfileCardVisualAssets.backgroundDrawable(id);
+                int res=ProfileCardVisualAssets.resourceId(activity,name);
+                if(res!=0)picture.setImageResource(res);
+                int height="card_background".equals(key)?dp(93)
+                        :"card_silhouette".equals(key)?dp(124):dp(103);
+                tile.addView(picture,new LinearLayout.LayoutParams(-1,height));
+                art=picture;
+            }else{
+                View swatch=new View(activity);
+                GradientDrawable swatchBg=new GradientDrawable();
+                int fill="accent".equals(key)?Color.parseColor(id)
+                        :"light".equals(id)?Color.WHITE:Color.rgb(24,24,33);
+                swatchBg.setColor(fill);
+                swatchBg.setCornerRadius(dp(12));
+                swatchBg.setStroke(dp(1),AppTheme.border(light));
+                swatch.setBackground(swatchBg);
+                tile.addView(swatch,new LinearLayout.LayoutParams(dp(74),dp(48)));
+                art=swatch;
             }
-            if (!picture.isEmpty()) {
-                int resId=ProfileCardVisualAssets.resourceId(activity,picture);
-                if (resId!=0) {
-                    Drawable image=activity.getDrawable(resId);
-                    if (image!=null) {
-                        image.setBounds(0,0,imageWidth,imageHeight);
-                        radio.setCompoundDrawables(image,null,null,null);
-                        radio.setCompoundDrawablePadding(dp(12));
-                    }
-                }
-            }
-            radio.setContentDescription(title + ": " + labels[i]);
-            group.addView(radio,new RadioGroup.LayoutParams(-1,-2));
-            if(ids[i].equals(selected))checkedId=radio.getId();
+            TextView caption=new TextView(activity);
+            caption.setText(labels[i]);
+            caption.setTag("asterion_profile_label");
+            caption.setTextSize(12);
+            caption.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+            caption.setGravity(Gravity.CENTER);
+            caption.setTextColor(AppTheme.foreground(light));
+            caption.setMaxLines(2);
+            caption.setMinHeight(dp(38));
+            LayoutParams labelParams=new LayoutParams(-1,-2);
+            labelParams.topMargin=dp(6);
+            tile.addView(caption,labelParams);
+            tiles.add(tile);
+            tileLabels.add(caption);
+            tile.setClickable(true);
+            tile.setFocusable(true);
+            tile.setOnClickListener(v->{
+                put(key,id);
+                if("theme".equals(key))onThemeChanged.run();
+                refreshPreview();
+            });
         }
-        if(checkedId>0)group.check(checkedId);
-        if(checkedId<0 && "card_silhouette".equals(key) && "yoo_sangah".equals(selected)) {
-            // Existing profiles may have an older fifth avatar selection.
-            // Keep the stored value visible rather than silently overwriting it.
-            RadioButton legacy=new RadioButton(activity);
-            legacy.setId(View.generateViewId());
-            legacy.setText("Retrato anterior (conservado)");
-            legacy.setTextSize(14);
-            legacy.setMinHeight(dp(48));
-            group.addView(legacy,new RadioGroup.LayoutParams(-1,-2));
-            group.check(legacy.getId());
-        }
-        group.setOnCheckedChangeListener((changed, id)-> {
-            for(int i=0;i<ids.length;i++) {
-                if(changed.getChildAt(i).getId()==id) {
-                    put(key,ids[i]);
-                    if("theme".equals(key))onThemeChanged.run();
-                    refreshPreview();
-                    return;
-                }
+        Runnable redraw=()->{
+            boolean themeLight="light".equals(get("theme","light"));
+            String selected=get(key,fallback);
+            hint.setTextColor(AppTheme.muted(themeLight));
+            for(int i=0;i<ids.length;i++){
+                LinearLayout tile=tiles.get(i);
+                TextView label=tileLabels.get(i);
+                boolean isSelected=ids[i].equals(selected);
+                GradientDrawable bg=new GradientDrawable();
+                bg.setColor(isSelected?AppTheme.soft(themeLight)
+                        :AppTheme.surface(themeLight));
+                bg.setCornerRadius(dp(14));
+                bg.setStroke(isSelected?dp(2):dp(1),
+                        isSelected?AppTheme.accent(themeLight):AppTheme.border(themeLight));
+                tile.setBackground(bg);
+                label.setTextColor(AppTheme.foreground(themeLight));
+                tile.setSelected(isSelected);
+                tile.setContentDescription(title+": "+labels[i]
+                        +(isSelected?", seleccionado":"; toca para seleccionar"));
             }
-        });
-        addView(group,new LayoutParams(-1,-2));
+        };
+        selectorRefreshers.add(redraw);
+        redraw.run();
+        int selectedIndex=java.util.Arrays.asList(ids).indexOf(get(key,fallback));
+        if(selectedIndex>0){
+            final int pos=selectedIndex;
+            scroll.post(()->scroll.scrollTo(tiles.get(pos).getLeft()-dp(8),0));
+        }
     }
 
     private void refreshPreview() {
+        for(Runnable update:selectorRefreshers)update.run();
         if(preview==null)return;
         boolean light = "light".equals(get("theme","light"));
         for (int i=0;i<sectionIcons.size();i++) {
@@ -261,7 +338,7 @@ final class SimpleProfileStepThreeView extends LinearLayout {
         companionView.setImageResource(companion != 0 ? companion : android.R.color.transparent);
         preview.setText("Tarjeta del cazador\n"
                 +"Tema: "+("light".equals(get("theme","light"))?"Blanco":"Negro")
-                +" · Borde: "+get("accent",ACCENTS[0])
+                +" · Acento: "+get("accent",ACCENTS[0])
                 +"\nAcompañante: "+labelFor(COMPANIONS,COMPANION_LABELS,
                         get("companion",COMPANIONS[0]))
                 +"\nSilueta: "+labelFor(HUNTERS,HUNTER_LABELS,
