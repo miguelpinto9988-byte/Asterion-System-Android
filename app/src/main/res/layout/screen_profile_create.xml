@@ -36,17 +36,55 @@
             android:paddingStart="20dp" android:paddingEnd="20dp"
             android:paddingTop="28dp" android:paddingBottom="38dp">
 
-            <TextView android:id="@+id/profile_brand"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="ASTERION SYSTEM" android:textStyle="bold"
-                android:letterSpacing="0.08" android:textSize="21sp"
-                android:textColor="#111111" />
+            <!-- Panorama approved for both themes. The bottom overlay is a
+                 theme-aware soft fade into the native registration form. -->
+            <FrameLayout
+                android:id="@+id/profile_header_container"
+                android:layout_width="match_parent"
+                android:layout_height="154dp"
+                android:contentDescription="Cabecera panorámica de Asterion System">
 
-            <TextView
-                android:id="@+id/profile_wizard_mode"
-                android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:layout_marginTop="4dp" android:text="CREACIÓN DE PERFIL"
-                android:textColor="#555555" android:textSize="12sp" android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/profile_header_scenery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/asterion_header_light"
+                    android:scaleType="centerCrop"
+                    android:tag="asterion_fullcolor_art"
+                    android:importantForAccessibility="no"
+                    android:contentDescription="@null" />
+
+                <View
+                    android:id="@+id/profile_header_fade"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no" />
+
+                <TextView
+                    android:id="@+id/profile_brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="26dp"
+                    android:gravity="center"
+                    android:text="ASTERION SYSTEM"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08"
+                    android:textSize="21sp"
+                    android:textColor="#111111" />
+
+                <TextView
+                    android:id="@+id/profile_wizard_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="58dp"
+                    android:gravity="center"
+                    android:text="CREACIÓN DE PERFIL"
+                    android:textColor="#555555"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
 
             <TextView android:id="@+id/profile_step_indicator"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
