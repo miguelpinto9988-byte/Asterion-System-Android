@@ -13,11 +13,11 @@ El usuario ha descartado por completo los marcos ornamentales de la tarjeta del 
 
 ## Recursos gráficos vigentes
 
-**94 WebP:** 4 retratos originales cuadrados, 5 paisajes horizontales, 5 acompañantes, 2 cabeceras y 78 iconos de interfaz/categorías. El paquete local `Asterion_Android_94_WebP_Sin_Marcos.zip` incluye `MANIFIESTO_ANDROID.json` con hashes SHA-256. Los 8 recursos `asterion_frame_*.webp` y los dos iconos `asterion_*_ic_marco.webp` han quedado excluidos.
+**94 WebP:** 4 retratos originales cuadrados, 5 paisajes horizontales, 5 acompañantes, 2 cabeceras y 78 iconos de interfaz/categorías. El paquete local `Asterion_Android_94_WebP_Sin_Marcos_Cuadrados.zip` incluye `MANIFIESTO_ANDROID.json` con hashes SHA-256. Los 8 recursos `asterion_frame_*.webp` y los dos iconos `asterion_*_ic_marco.webp` han quedado excluidos.
 
 Para importar en un clon de la rama de diseño:
 ```bash
-python3 scripts/import_asterion_all_resources.py /ruta/Asterion_Android_94_WebP_Sin_Marcos.zip .
+python3 scripts/import_asterion_all_resources.py /ruta/Asterion_Android_94_WebP_Sin_Marcos_Cuadrados.zip .
 git add app/src/main/res/drawable-nodpi
 git commit -m "assets(profile): integrar 94 WebP sin marcos"
 git push origin design/profile-wizard-components-20261115
@@ -31,3 +31,9 @@ El script verifica todos los hashes, rechaza los marcos y **no sobrescribe recur
 - **Los 94 archivos WebP binarios todavía no se han transferido a GitHub**. Su preparación en un ZIP local no equivale a la subida de archivos de imagen al repositorio.
 - **APK pendiente de compilación y pruebas** con perfiles nuevos y ya existentes antes de aprobar/mergear el PR.
 - No reintroducir marcos ni reconstruirlos en próximas entregas, salvo solicitud expresa nueva del usuario.
+
+## Corrección específica: dos cazadores que estaban mal en el ZIP anterior
+
+Se comprobó que los WebP del primer paquete Android aún tenían recortes circulares en `asterion_hunter_blue.webp` y `asterion_hunter_gold.webp`. Fueron sustituidos en el paquete actual por las versiones cuadradas transparentes de 1024×1024 aprobadas en el HTML reciente, sin tocar los demás 92 recursos. Los cuatro retratos tienen canal alfa RGBA.
+
+SHA-256: azul `8aefb2b619...` y blanco/dorado `4f66be94d2...`. Los SHA-256 **completos** están en `MANIFIESTO_ANDROID.json` dentro del ZIP de 94 recursos. El importador se niega a sobrescribir versiones antiguas diferentes; si existen, realizar copia de seguridad y reemplazo revisado explícitamente, no automáticamente.
