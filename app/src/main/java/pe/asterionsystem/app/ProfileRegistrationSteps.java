@@ -294,7 +294,7 @@ final class ProfileRegistrationSteps {
                         "Mejorar mi resistencia","Mejorar mi movilidad",
                         "Crear un hábito de actividad física"},"bienestar");
         addHeading(out,"03 — Objetivo personalizado");
-        addInfo(out,"Tu texto se conservará exactamente para las futuras preferencias del motor de progreso.");
+        addInfo(out,"Escribe qué deseas conseguir. Se guardará con tu perfil para que el sistema pueda usarlo como preferencia al planificar misiones. La adaptación automática depende del generador de misiones.");
         input(out,"custom_goal","Describe tu objetivo con tus propias palabras",true);
         addHeading(out,"04 — Modalidad del Sistema");
         LinearLayout missionExtra=vertical();
