@@ -68,7 +68,11 @@ public final class AppTheme {
                 text.setTypeface(Typeface.create("sans-serif",Typeface.BOLD));
         }
         // Keep the six meaningful calendar/category colors, never wash out their legend.
-        if(weekly||"art".equals(tag)||"preserve".equals(tag))return;
+        if(weekly||"art".equals(tag)||"preserve".equals(tag)
+                ||"asterion_fullcolor_art".equals(tag)
+                ||"asterion_card_name".equals(tag)
+                ||"asterion_profile_option".equals(tag)
+                ||"asterion_profile_label".equals(tag))return;
         String signature=(light?"light:":"dark:")+String.valueOf(tag)+":"+primary+":"+inverse;
         if(!signature.equals(view.getTag(R.id.asterion_theme_applied))) {
             view.setTag(R.id.asterion_theme_applied,signature);
@@ -82,6 +86,9 @@ public final class AppTheme {
                 text.setHighlightColor(soft(light));
                 if("overline".equals(tag))text.setLetterSpacing(.10f);
                 if(view instanceof EditText) {
+                    // Android theme backgroundTint can otherwise paint the white field
+                    // in solid violet even when its drawable is a white panel.
+                    view.setBackgroundTintList(null);
                     text.setHintTextColor(muted(light));
                     text.setBackground(panel(light,12,density));
                     text.setPadding(dp(c,14),dp(c,10),dp(c,14),dp(c,10));
@@ -116,7 +123,10 @@ public final class AppTheme {
                 ((ProgressBar)view).setProgressTintList(ColorStateList.valueOf(accent(light)));
                 ((ProgressBar)view).setProgressBackgroundTintList(ColorStateList.valueOf(soft(light)));
             }
-            if(view instanceof Spinner)view.setBackground(panel(light,12,density));
+            if(view instanceof Spinner){
+                view.setBackgroundTintList(null);
+                view.setBackground(panel(light,12,density));
+            }
             if(view instanceof ViewGroup) {
                 Drawable old=view.getBackground();
                 if("card".equals(tag))view.setBackground(panel(light,20,density));

@@ -1,6 +1,8 @@
 package pe.asterionsystem.app;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -124,6 +126,31 @@ public final class ProfileCreateActivity extends AsterionActivity {
         previewTheme(light);
         ProfileWizardTheme.applyWizard(root,panel,forward,forwardText,
                 light,density);
+        // The training, personalization and activation steps have their own
+        // independent cards; do not nest them inside one large white box.
+        if(step>=2 && step<=4) {
+            panel.setBackground(null);
+            panel.setPadding(0,0,0,0);
+        } else {
+            panel.setPadding(dp(16),dp(16),dp(16),dp(16));
+        }
+        // Apply approved panorama in both themes. Preserve full-color artwork:
+        // a transparent-to-theme fade softens only the header's lower edge.
+        ImageView scenery=findViewById(R.id.profile_header_scenery);
+        scenery.setImageResource(light
+                ?R.drawable.asterion_header_light:R.drawable.asterion_header_dark);
+        scenery.setImageTintList(null);
+        int base=light?Color.WHITE:Color.rgb(9,9,15);
+        GradientDrawable fade=new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{Color.TRANSPARENT,
+                        Color.argb(20,Color.red(base),Color.green(base),Color.blue(base)),
+                        Color.argb(176,Color.red(base),Color.green(base),Color.blue(base)),
+                        base});
+        findViewById(R.id.profile_header_fade).setBackground(fade);
+        TextView brand=findViewById(R.id.profile_brand);
+        brand.setShadowLayer(2*density,0,1*density,
+                light?Color.WHITE:Color.BLACK);
     }
 
     private void loadStepOne() {
@@ -139,6 +166,13 @@ public final class ProfileCreateActivity extends AsterionActivity {
         if(!photo.isEmpty()) {
             try{avatar.setImageURI(Uri.parse(photo));}
             catch(RuntimeException invalid){avatar.setImageResource(R.drawable.asterion_reg_profile);}
+        } else {
+            // Display the approved square hunter image when the user has not
+            // chosen a personal photo; never render a circular mask.
+            String imageName=ProfileCardVisualAssets.hunterDrawable(
+                    draft.optString("card_silhouette","sung_jinwoo"));
+            int id=ProfileCardVisualAssets.resourceId(this,imageName);
+            avatar.setImageResource(id!=0?id:R.drawable.asterion_reg_profile);
         }
     }
 
@@ -198,6 +232,7 @@ public final class ProfileCreateActivity extends AsterionActivity {
 
     private void showStep(int target) {
         if(step==1 && target!=1)saveStepOne(false);
+        if(target==1)loadStepOne();
         step=target;
         confirmed=false;
         firstStep.setVisibility(step==1?View.VISIBLE:View.GONE);

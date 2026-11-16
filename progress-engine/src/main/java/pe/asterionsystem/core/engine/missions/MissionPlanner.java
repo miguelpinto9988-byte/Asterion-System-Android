@@ -47,6 +47,7 @@ public final class MissionPlanner {
         public final Set<String> equipment;
         public final int dailyLimit;
         public final String intensityPreference;
+        public final String personalGoal;
         private final String additionalPreferences;
 
         public Profile(String experience, String goal, List<Integer> weekly,
@@ -62,6 +63,15 @@ public final class MissionPlanner {
         public Profile(String experience, String goal, List<Integer> weekly,
                        Set<String> equipment, int dailyLimit, String intensityPreference,
                        String additionalPreferences) {
+            this(experience,goal,weekly,equipment,dailyLimit,intensityPreference,
+                    additionalPreferences,"");
+        }
+
+        /** Last argument is the optional free-text training goal, never a safety override. */
+        public Profile(String experience, String goal, List<Integer> weekly,
+                       Set<String> equipment, int dailyLimit, String intensityPreference,
+                       String additionalPreferences,String personalGoal) {
+            this.personalGoal=personalGoal==null?"":personalGoal.trim();
             this.additionalPreferences=additionalPreferences==null?"":additionalPreferences;
             this.experience = experience == null ? "principiante" : experience;
             this.goal = goal == null ? "bienestar" : goal;
@@ -84,7 +94,7 @@ public final class MissionPlanner {
         /** Conservative adaptation retaining the original profile settings. */
         public Profile adapted(String experienceForToday,int limitForToday) {
             return new Profile(experienceForToday,goal,weekly,equipment,
-                    limitForToday,intensityPreference,additionalPreferences);
+                    limitForToday,intensityPreference,additionalPreferences,personalGoal);
         }
 
         /**
@@ -96,7 +106,8 @@ public final class MissionPlanner {
             Collections.sort(gear);
             String canonical=experience+"|"+goal+"|"+weekly.toString()
                     +"|"+String.join(",",gear)+"|"+dailyLimit
-                    +"|"+intensityPreference+"|"+additionalPreferences;
+                    +"|"+intensityPreference+"|"+additionalPreferences
+                    +"|goalText="+personalGoal;
             return digestHex(canonical);
         }
     }
@@ -181,7 +192,7 @@ public final class MissionPlanner {
         List<ExerciseVariant> matching = candidates(profile, selectedCategory);
         List<ExerciseVariant> chosen = takeLevelMix(matching, profile.dailyLimit,
                 daySeed(profile,today),Collections.emptySet(),profile.experience,0,
-                Collections.emptyList());
+                Collections.emptyList(),profile.personalGoal);
         return new Proposal(DAILY, today, today.plusDays(1), chosen, false,
                 chosen.isEmpty()
                 ? "No hay alternativas compatibles con el equipo y la categoría de este día."
@@ -274,7 +285,7 @@ public final class MissionPlanner {
                     enableEquivalentRotation,recentCompleted);
             List<ExerciseVariant> mixed=takeLevelMix(eligible,limit,
                     daySeed(profile,today),recentCompleted,profile.experience,
-                    mixPhase,preferred);
+                    mixPhase,preferred,profile.personalGoal);
             return new Proposal(DAILY,today,today.plusDays(1),mixed,false,
                     decision.explanation+" La mezcla de niveles respeta "
                     +"las opciones compatibles y el historial de la categoría.");
@@ -316,7 +327,7 @@ public final class MissionPlanner {
                     .thenComparing(ExerciseVariant::id));
         } else {
             ranked=takeDiverse(ranked,ranked.size(),daySeed(profile,today),
-                    recentCompleted);
+                    recentCompleted,profile.personalGoal);
         }
         for(ExerciseVariant option:ranked) {
             if(chosen.size()==limit)break;
@@ -570,13 +581,14 @@ public final class MissionPlanner {
      */
     private List<ExerciseVariant> takeLevelMix(List<ExerciseVariant> eligible,
             int count,long seed,Set<String> recentCompleted,
-            String experience,int mixPhase,List<ExerciseVariant> preferred) {
+            String experience,int mixPhase,List<ExerciseVariant> preferred,
+            String personalGoal) {
         if(eligible.isEmpty() || count<=0)return Collections.emptyList();
         if(!MissionDifficultyMixPolicy.mixed(experience)) {
-            return takeDiverse(eligible,count,seed,recentCompleted);
+            return takeDiverse(eligible,count,seed,recentCompleted,personalGoal);
         }
         List<ExerciseVariant> shuffled=takeDiverse(eligible,eligible.size(),
-                seed,recentCompleted);
+                seed,recentCompleted,personalGoal);
         ArrayList<ExerciseVariant> ranked=new ArrayList<>();
         Set<String> seen=new HashSet<>();
         for(ExerciseVariant candidate:preferred) {
@@ -643,6 +655,13 @@ public final class MissionPlanner {
     private List<ExerciseVariant> takeDiverse(List<ExerciseVariant> pool,
                                               int count,long seed,
                                               Set<String> recentlyCompleted) {
+        return takeDiverse(pool,count,seed,recentlyCompleted,"");
+    }
+
+    private List<ExerciseVariant> takeDiverse(List<ExerciseVariant> pool,
+                                              int count,long seed,
+                                              Set<String> recentlyCompleted,
+                                              String personalGoal) {
         if(pool.isEmpty() || count<=0)return Collections.emptyList();
         Objects.requireNonNull(recentlyCompleted,"recentlyCompleted");
         // Seeded full-catalog shuffle is reproducible for one date/profile.
@@ -652,6 +671,13 @@ public final class MissionPlanner {
         // This shared selection is used by both daily and Monarca proposals.
         shuffled.sort(Comparator.comparing(ExerciseVariant::id));
         Collections.shuffle(shuffled,new Random(seed));
+        // Stable sort preserves the seeded order among equally relevant candidates.
+        // Only the already eligible pool is reordered; never add new exercises.
+        PersonalGoalInterpreter intent=PersonalGoalInterpreter.from(personalGoal);
+        if(intent.recognized()) {
+            shuffled.sort(Comparator.comparingInt((ExerciseVariant v)->
+                    intent.score(v,familyForType.get(v.typeId()))).reversed());
+        }
         ArrayList<ExerciseVariant> selected=new ArrayList<>();
         Set<String> usedIds=new HashSet<>();
         // First prefer exercises not completed recently. Only afterwards reuse

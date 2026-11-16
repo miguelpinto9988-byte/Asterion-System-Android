@@ -35,10 +35,30 @@ final class ProfileWizardTheme {
         // Never overwrite colored activity tiles or their colored legend text.
         Object tag = view.getTag();
         if ("asterion_week_color".equals(tag)) {
-            if (view instanceof TextView) ((TextView)view).setTextColor(Color.WHITE);
+            // The weekly tile owns its darker semantic ink, shared across
+            // light and dark themes; never replace that ink with white.
             return;
         }
         if ("asterion_week_legend".equals(tag)) {
+            return;
+        }
+        // Full-color WebP layers must not inherit the monochrome icon tint.
+        // Otherwise changing light/dark mode recolors portraits, landscapes,
+        // frames and companions and destroys the approved visual palette.
+        if ("asterion_approved_icon".equals(tag)) {
+            // Already black on light, white on dark; do not tint with violet.
+            return;
+        }
+        if ("asterion_card_name".equals(tag)
+                || "asterion_profile_option".equals(tag)
+                || "asterion_profile_label".equals(tag)) {
+            // The card keeps white text; carousel options manage own selection colors.
+            return;
+        }
+        if ("asterion_fullcolor_art".equals(tag)) {
+            if (view instanceof ImageView) {
+                ((ImageView)view).setImageTintList(null);
+            }
             return;
         }
         if (view instanceof ImageView && view.getId() != R.id.profile_avatar_preview) {
@@ -52,6 +72,7 @@ final class ProfileWizardTheme {
             text.setTextColor(foreground(light));
             text.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             if (view instanceof EditText) {
+                view.setBackgroundTintList(null);
                 text.setHintTextColor(muted(light));
                 text.setBackground(box(light,false,8,density));
                 text.setPadding(dp(12,density),dp(5,density),
@@ -70,6 +91,7 @@ final class ProfileWizardTheme {
             }
         }
         if (view instanceof Spinner) {
+            view.setBackgroundTintList(null);
             view.setBackground(box(light,false,8,density));
         }
         if (view instanceof ViewGroup) {

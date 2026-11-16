@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""All four steps use native controls; step 3 retains the exact option IDs."""
+"""All four steps use native controls and four currently approved portrait IDs."""
 from pathlib import Path
 import sys
 import xml.etree.ElementTree as ET
@@ -32,11 +32,11 @@ def main():
                      '"card_silhouette"', '"card_background"',
                      '"igris","beru","tank","tusk","iron"',
                      '"ruinas","niebla","obsidiana","aurora","bosque"',
-                     '"sung_jinwoo","cha_haein","kim_dokja","yoo_joonghyuk","yoo_sangah"',
+                     '"sung_jinwoo","cha_haein","yoo_joonghyuk","kim_dokja"',
                      '"#258FE6","#9A68F2","#ED72B8","#34BC91","#E65260","#F2F5FF"',
                      "migrateLegacy()", "persist.run()"):
         expect(fragment,step3)
-    print("OK: cuatro pasos minimalistas y mismas opciones.")
+    print("OK: cuatro pasos nativos, cuatro cazadores cuadrados, cinco acompañantes y cero marcos.")
 if __name__=="__main__":
     try: main()
     except (AssertionError,ET.ParseError,OSError) as error:

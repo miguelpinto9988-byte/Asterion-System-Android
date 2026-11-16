@@ -33,6 +33,7 @@ import pe.asterionsystem.core.engine.exercises.ExerciseType;
 import pe.asterionsystem.core.engine.exercises.ExerciseVariant;
 import pe.asterionsystem.core.engine.exercises.ExerciseMuscleFocus;
 import pe.asterionsystem.core.engine.missions.MissionPlanner;
+import pe.asterionsystem.core.engine.missions.PersonalGoalInterpreter;
 import pe.asterionsystem.core.engine.missions.MissionDifficultyMixPolicy;
 import pe.asterionsystem.core.engine.progression.EffortReviewEngine;
 import pe.asterionsystem.core.engine.progression.CategoryEffortPolicy;
@@ -271,6 +272,19 @@ public final class MissionsActivity extends AsterionActivity {
             }
         }
         paragraph(dayProposal.explanation());
+        if(!profile.personalGoal.isBlank()) {
+            PersonalGoalInterpreter preference=PersonalGoalInterpreter.from(profile.personalGoal);
+            if(preference.recognized()) {
+                paragraph("Objetivo personal: cuando hay alternativas compatibles, "
+                        +"se favorecen actividades relacionadas con lo que escribiste. "
+                        +"No se cambian el calendario, los descansos, el equipamiento "
+                        +"ni los límites de intensidad y técnica.");
+            } else {
+                paragraph("Tu objetivo escrito está guardado. No se identificó "
+                        +"una actividad específica en el texto; las misiones se "
+                        +"organizan con las demás preferencias de tu perfil.");
+            }
+        }
         paragraph(MissionDifficultyMixPolicy.explanation(
                 profile.experience,levelState.phase));
         paragraph("Punto de revisión técnica (7/14/21 días, por categoría): "

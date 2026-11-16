@@ -31,16 +31,22 @@ import pe.asterionsystem.app.presentation.NeonFrameDrawable;
 final class ProfileRegistrationSteps {
     static final int WHITE = Color.rgb(243, 247, 255);
     static final int MUTED = Color.rgb(186, 203, 236);
+    // Soft backgrounds and stronger icons are paired by semantic category.
+    // Preserve the persistent 0-5 order of the existing weekly plan.
     static final int[] CAT_COLORS = {
-        Color.rgb(32,136,183), Color.rgb(132,86,202), Color.rgb(211,148,55),
-        Color.rgb(37,141,112), Color.rgb(185,81,114), Color.rgb(100,116,139)
+        Color.rgb(243,187,192), Color.rgb(246,217,162), Color.rgb(191,233,208),
+        Color.rgb(218,199,250), Color.rgb(184,219,250), Color.rgb(212,216,224)
+    };
+    static final int[] CAT_INK_COLORS = {
+        Color.rgb(175,39,55), Color.rgb(169,103,18), Color.rgb(32,117,75),
+        Color.rgb(110,55,179), Color.rgb(23,109,175), Color.rgb(76,89,106)
     };
     static final String[] CATS = {
         "Tren superior", "Tren central", "Tren inferior", "Movilidad", "Cardio", "Descanso"
     };
     static final String[] CAT_GLYPHS = {"↟", "◈", "↡", "✧", "♥", "☾"};
     static final String[] CAT_ASSETS = {
-        "upper", "core", "lower", "mobility", "cardio", "rest"
+        "tren_superior", "tren_central", "tren_inferior", "movilidad", "cardio", "descanso"
     };
     static final String[] DAYS = {"L","M","M","J","V","S","D"};
     static final String[] DAY_NAMES = {"Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"};
@@ -102,9 +108,9 @@ final class ProfileRegistrationSteps {
     private static final String[][] HEADING_ICONS = {
         {},
         {},
-        {"experience","goal","custom_goal","mode","calendar","equipment"},
+        {"experiencia","objetivo","objetivo","misiones","calendario","equipamiento"},
         {"theme","border","companion","hunter_card"},
-        {"review","confirmation"}
+        {"resumen","verificacion"}
     };
     private static final int[][] HEADING_FALLBACKS = {
         {},
@@ -120,8 +126,10 @@ final class ProfileRegistrationSteps {
     private int sectionNumber = 0;
 
     private int iconResource(String name, int fallback) {
+        boolean light = "light".equals(get("theme","light"));
+        String resourceName = (light ? "asterion_light_ic_" : "asterion_dark_ic_") + name;
         int id = activity.getResources().getIdentifier(
-                "asterion_ic_" + name, "drawable", activity.getPackageName());
+                resourceName, "drawable", activity.getPackageName());
         return id != 0 ? id : fallback;
     }
 
@@ -131,6 +139,7 @@ final class ProfileRegistrationSteps {
         if (currentSection < names.length) {
             LinearLayout header = row();
             ImageView icon = new ImageView(activity);
+            icon.setTag("asterion_approved_icon");
             icon.setImageResource(iconResource(
                     names[currentSection], HEADING_FALLBACKS[visualStep][currentSection]));
             icon.setContentDescription(null);
@@ -173,6 +182,7 @@ final class ProfileRegistrationSteps {
                 ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE
                 : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         if(multiline)edit.setMinLines(3); else edit.setSingleLine(true);
+        edit.setBackgroundTintList(null);
         edit.setBackground(fieldBackground());
         edit.setText(get(key, ""));
         edit.addTextChangedListener(new TextWatcher() {
@@ -251,6 +261,7 @@ final class ProfileRegistrationSteps {
             }
         };
         control.setAdapter(adapter);
+        control.setBackgroundTintList(null);
         control.setBackground(fieldBackground());
         control.setPadding(dp(7),0,dp(7),0);
         String selected=get(key,defaultValue);
@@ -272,21 +283,36 @@ final class ProfileRegistrationSteps {
         return control;
     }
 
+    /** Individual visible cards for each independent part of the training form. */
+    private LinearLayout sectionCard(LinearLayout parent) {
+        LinearLayout section=vertical();
+        section.setTag("card");
+        section.setPadding(dp(14),dp(12),dp(14),dp(12));
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(-1,-2);
+        params.topMargin=dp(12);
+        parent.addView(section,params);
+        return section;
+    }
+
     View step2() {
         visualStep = 2;
         sectionNumber = 0;
-        LinearLayout out=vertical();
+        LinearLayout root=vertical();
+        LinearLayout out=sectionCard(root);
         addHeading(out,"01 — Experiencia de entrenamiento");
         radios(out,"experience",new String[]{"principiante","intermedio","avanzado"},
                 new String[]{"Principiante","Intermedio","Avanzado"},"principiante");
+        out=sectionCard(root);
         addHeading(out,"02 — Objetivo principal");
         radios(out,"goal",new String[]{"bienestar","fuerza","resistencia","movilidad","constancia"},
                 new String[]{"Mejorar mi bienestar general","Desarrollar fuerza funcional",
                         "Mejorar mi resistencia","Mejorar mi movilidad",
                         "Crear un hábito de actividad física"},"bienestar");
+        out=sectionCard(root);
         addHeading(out,"03 — Objetivo personalizado");
-        addInfo(out,"Tu texto se conservará exactamente para las futuras preferencias del motor de progreso.");
+        addInfo(out,"Escribe qué deseas conseguir. Se guardará con tu perfil para que el sistema pueda usarlo como preferencia al planificar misiones. La adaptación automática depende del generador de misiones.");
         input(out,"custom_goal","Describe tu objetivo con tus propias palabras",true);
+        out=sectionCard(root);
         addHeading(out,"04 — Modalidad del Sistema");
         LinearLayout missionExtra=vertical();
         LinearLayout routineExtra=vertical();
@@ -317,6 +343,7 @@ final class ProfileRegistrationSteps {
             });
         }
 
+        out=sectionCard(root);
         addHeading(out,"05 — Planificación semanal");
         addInfo(out,"Pulsa varias veces un día para avanzar: superior → central → inferior → movilidad → cardio → descanso.");
         LinearLayout week=row();
@@ -348,6 +375,7 @@ final class ProfileRegistrationSteps {
                 bg.setColor(CAT_COLORS[index[d]]);
                 bg.setCornerRadius(dp(9));
                 chip.setBackground(bg);
+                chip.setTextColor(CAT_INK_COLORS[index[d]]);
                 chip.setContentDescription(DAY_NAMES[d]+": "+CATS[index[d]]+". Tocar para cambiar.");
             };
             refresh.run();
@@ -359,19 +387,30 @@ final class ProfileRegistrationSteps {
         }
         out.addView(week);
         for(int k=0;k<6;k++){
-            TextView legend=text(CAT_GLYPHS[k]+"  "+CATS[k],12,CAT_COLORS[k]);
+            boolean lightTheme = "light".equals(get("theme", "light"));
+            TextView legend=text(CAT_GLYPHS[k]+"  "+CATS[k],12,
+                    lightTheme ? CAT_INK_COLORS[k] : CAT_COLORS[k]);
             legend.setTag("asterion_week_legend");
             legend.setContentDescription("Leyenda: " + CATS[k] + ", color de categoría");
             legend.setPadding(dp(2),dp(4),0,dp(4));
             out.addView(legend);
         }
 
+        out=sectionCard(root);
         addHeading(out,"06 — Equipamiento disponible");
-        check(out,"bodyweight","Peso corporal / sin equipo",true);
-        // Optional common supports; never assume the user has these items.
-        check(out,"mat","Colchoneta o superficie acolchada estable",false);
-        check(out,"wall","Pared o apoyo vertical firme",false);
-        check(out,"chair","Silla estable",false);
+        CheckBox bodyweight=check(out,"bodyweight","Peso corporal / sin equipo",true);
+        // Expand optional support options only when bodyweight training is chosen.
+        LinearLayout bodyweightPanel=vertical();
+        addInfo(bodyweightPanel,"Apoyos disponibles para actividades de peso corporal (opcionales)");
+        check(bodyweightPanel,"mat","Colchoneta o superficie acolchada estable",false);
+        check(bodyweightPanel,"wall","Pared o apoyo vertical firme",false);
+        check(bodyweightPanel,"chair","Silla estable",false);
+        out.addView(bodyweightPanel);
+        bodyweightPanel.setVisibility(bodyweight.isChecked()?View.VISIBLE:View.GONE);
+        bodyweight.setOnCheckedChangeListener((button,checked)->{
+            put("bodyweight",checked);
+            bodyweightPanel.setVisibility(checked?View.VISIBLE:View.GONE);
+        });
         CheckBox dumbbells=check(out,"dumbbells","Mancuernas",false);
         LinearLayout dumbbellPanel=vertical();
         addInfo(dumbbellPanel,"Pesos de las mancuernas disponibles (kg), separados por comas");
@@ -393,6 +432,7 @@ final class ProfileRegistrationSteps {
         gym.setOnCheckedChangeListener((b,v)->{
             put("gym",v);gymPanel.setVisibility(v?View.VISIBLE:View.GONE);
         });
+        out=sectionCard(root);
         addHeading(out,"07 — Intensidad orientativa de las misiones");
         addInfo(out,"Baja selecciona opciones etiquetadas como suaves. Moderada "
                 +"incluye también actividades moderadas y conserva las variantes "
@@ -405,7 +445,7 @@ final class ProfileRegistrationSteps {
         addInfo(out,"La categoría y la intensidad elegidas determinan qué ejercicios "
                 +"puede proponer el motor. Cambiarlas genera una nueva selección "
                 +"para el mismo día; cambiar de pantalla no la modifica.");
-        return out;
+        return root;
     }
     private int iMode(RadioGroup group, RadioButton selected) {
         for(int i=0;i<group.getChildCount();i++)if(group.getChildAt(i)==selected)return i;
