@@ -126,6 +126,14 @@ public final class ProfileCreateActivity extends AsterionActivity {
         previewTheme(light);
         ProfileWizardTheme.applyWizard(root,panel,forward,forwardText,
                 light,density);
+        // The training, personalization and activation steps have their own
+        // independent cards; do not nest them inside one large white box.
+        if(step>=2 && step<=4) {
+            panel.setBackground(null);
+            panel.setPadding(0,0,0,0);
+        } else {
+            panel.setPadding(dp(16),dp(16),dp(16),dp(16));
+        }
         // Apply approved panorama in both themes. Preserve full-color artwork:
         // a transparent-to-theme fade softens only the header's lower edge.
         ImageView scenery=findViewById(R.id.profile_header_scenery);
