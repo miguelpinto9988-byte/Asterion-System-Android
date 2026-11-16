@@ -89,6 +89,13 @@ public final class PersonalGoalInterpreterTest {
             assertEquals(first.stream().map(ExerciseVariant::id).toList(),
                     again.stream().map(ExerciseVariant::id).toList());
             assertTrue(first.size()<=profile.dailyLimit);
+            PersonalGoalInterpreter interpretation=PersonalGoalInterpreter.from(
+                    profile.personalGoal);
+            assertTrue("La preferencia por caminar debe favorecer una opción "
+                            +"afín cuando el catálogo ofrece opciones seguras",
+                    first.stream().anyMatch(exercise ->
+                            interpretation.score(exercise,
+                                catalog.categoryIndex().familyForVariant(exercise.id()))>0));
             for(ExerciseVariant exercise:first) {
                 assertTrue(catalog.eligibleForAutomaticSuggestion(exercise));
                 assertTrue(profile.equipment.containsAll(exercise.equipment()));
