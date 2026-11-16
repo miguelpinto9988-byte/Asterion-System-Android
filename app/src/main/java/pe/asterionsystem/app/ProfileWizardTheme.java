@@ -49,8 +49,10 @@ final class ProfileWizardTheme {
             // Already black on light, white on dark; do not tint with violet.
             return;
         }
-        if ("asterion_card_name".equals(tag)) {
-            // White lettering over any photo landscape in both app themes.
+        if ("asterion_card_name".equals(tag)
+                || "asterion_profile_option".equals(tag)
+                || "asterion_profile_label".equals(tag)) {
+            // The card keeps white text; carousel options manage own selection colors.
             return;
         }
         if ("asterion_fullcolor_art".equals(tag)) {
@@ -70,6 +72,7 @@ final class ProfileWizardTheme {
             text.setTextColor(foreground(light));
             text.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             if (view instanceof EditText) {
+                view.setBackgroundTintList(null);
                 text.setHintTextColor(muted(light));
                 text.setBackground(box(light,false,8,density));
                 text.setPadding(dp(12,density),dp(5,density),
@@ -88,6 +91,7 @@ final class ProfileWizardTheme {
             }
         }
         if (view instanceof Spinner) {
+            view.setBackgroundTintList(null);
             view.setBackground(box(light,false,8,density));
         }
         if (view instanceof ViewGroup) {
