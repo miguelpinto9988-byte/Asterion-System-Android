@@ -139,6 +139,13 @@ public final class ProfileCreateActivity extends AsterionActivity {
         if(!photo.isEmpty()) {
             try{avatar.setImageURI(Uri.parse(photo));}
             catch(RuntimeException invalid){avatar.setImageResource(R.drawable.asterion_reg_profile);}
+        } else {
+            // Display the approved square hunter image when the user has not
+            // chosen a personal photo; never render a circular mask.
+            String imageName=ProfileCardVisualAssets.hunterDrawable(
+                    draft.optString("card_silhouette","sung_jinwoo"));
+            int id=ProfileCardVisualAssets.resourceId(this,imageName);
+            avatar.setImageResource(id!=0?id:R.drawable.asterion_reg_profile);
         }
     }
 
@@ -198,6 +205,7 @@ public final class ProfileCreateActivity extends AsterionActivity {
 
     private void showStep(int target) {
         if(step==1 && target!=1)saveStepOne(false);
+        if(target==1)loadStepOne();
         step=target;
         confirmed=false;
         firstStep.setVisibility(step==1?View.VISIBLE:View.GONE);
