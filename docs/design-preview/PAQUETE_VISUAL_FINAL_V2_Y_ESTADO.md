@@ -1,3 +1,5 @@
+> **DOCUMENTO HISTÓRICO / SUPERADO.** Los marcos ornamentales se descartaron después de esta versión. No seguir sus instrucciones de marcos ni importar sus paquetes. La especificación vigente es [REGISTRO_DEFINITIVO_SIN_MARCOS.md](REGISTRO_DEFINITIVO_SIN_MARCOS.md) (94 WebP, sin marcos).
+
 # Paquete visual definitivo v2 — aprobado el 15 de noviembre de 2026
 
 ## Recursos aprobados y verificados localmente
