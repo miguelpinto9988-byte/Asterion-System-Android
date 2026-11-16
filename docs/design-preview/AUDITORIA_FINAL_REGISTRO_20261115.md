@@ -1,3 +1,5 @@
+> **DOCUMENTO HISTÓRICO / SUPERADO.** Los marcos ornamentales se descartaron después de esta versión. No seguir sus instrucciones de marcos ni importar sus paquetes. La especificación vigente es [REGISTRO_DEFINITIVO_SIN_MARCOS.md](REGISTRO_DEFINITIVO_SIN_MARCOS.md) (94 WebP, sin marcos).
+
 # Informe de auditoría — creación y personalización de perfil
 
 **Fecha:** 15/11/2026 — **rama de diseño:** `design/profile-wizard-components-20261115`.
