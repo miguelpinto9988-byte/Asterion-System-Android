@@ -24,18 +24,6 @@ final class ProfileCardVisualAssets {
         return "asterion_card_temple";
     }
 
-    static String frameDrawable(String id) {
-        if ("tecnologico".equals(id)) return "asterion_frame_tech";
-        if ("celestial".equals(id)) return "asterion_frame_celestial";
-        if ("epico".equals(id)) return "asterion_frame_epic";
-        if ("natural".equals(id)) return "asterion_frame_nature";
-        if ("arcano".equals(id)) return "asterion_frame_arcane";
-        if ("glacial".equals(id)) return "asterion_frame_glacial";
-        if ("oriental".equals(id)) return "asterion_frame_oriental";
-        if ("legendario".equals(id)) return "asterion_frame_legendary";
-        return "asterion_frame_tech";
-    }
-
     /** Stable companion IDs already persisted by the original profile wizard. */
     static String companionDrawable(String id) {
         if ("igris".equals(id)) return "asterion_companion_igris";
