@@ -32,16 +32,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="20dp" android:paddingEnd="20dp"
-            android:paddingTop="28dp" android:paddingBottom="38dp">
+            android:orientation="vertical">
 
             <!-- Panorama approved for both themes. The bottom overlay is a
                  theme-aware soft fade into the native registration form. -->
             <FrameLayout
                 android:id="@+id/profile_header_container"
                 android:layout_width="match_parent"
-                android:layout_height="154dp"
+                android:layout_height="220dp"
                 android:contentDescription="Cabecera panorámica de Asterion System">
 
                 <ImageView
@@ -65,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
-                    android:layout_marginTop="26dp"
+                    android:layout_marginTop="35dp"
                     android:gravity="center"
                     android:text="ASTERION SYSTEM"
                     android:textStyle="bold"
@@ -78,13 +76,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|center_horizontal"
-                    android:layout_marginTop="58dp"
+                    android:layout_marginTop="69dp"
                     android:gravity="center"
                     android:text="CREACIÓN DE PERFIL"
                     android:textColor="#555555"
                     android:textSize="12sp"
                     android:textStyle="bold" />
             </FrameLayout>
+
+            <!-- Form controls keep 20dp gutters while the panorama extends
+                 edge to edge, matching the approved mobile mockup. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="38dp">
 
             <TextView android:id="@+id/profile_step_indicator"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -244,6 +252,7 @@
                         android:textStyle="bold" android:textSize="15sp"
                         android:textColor="#0A0A0A"/>
                 </LinearLayout>
+            </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
